@@ -1,18 +1,19 @@
-package model;
+package model.entityDB;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.*;
 
 /**
  * Created by Christian on 18/11/2015.
  */
-public class PacchettoOffertaEntityPK implements Serializable {
+@Entity
+@Table(name = "Pacchetto_Offerta", schema = "trip_broker", catalog = "")
+@IdClass(PacchettoOffertaEntityPK.class)
+public class PacchettoOffertaEntity {
     private int idPacchetto;
     private int idOfferta;
 
-    @Column(name = "id_pacchetto")
     @Id
+    @Column(name = "id_pacchetto")
     public int getIdPacchetto() {
         return idPacchetto;
     }
@@ -21,8 +22,8 @@ public class PacchettoOffertaEntityPK implements Serializable {
         this.idPacchetto = idPacchetto;
     }
 
-    @Column(name = "id_offerta")
     @Id
+    @Column(name = "id_offerta")
     public int getIdOfferta() {
         return idOfferta;
     }
@@ -36,7 +37,7 @@ public class PacchettoOffertaEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PacchettoOffertaEntityPK that = (PacchettoOffertaEntityPK) o;
+        PacchettoOffertaEntity that = (PacchettoOffertaEntity) o;
 
         if (idPacchetto != that.idPacchetto) return false;
         if (idOfferta != that.idOfferta) return false;

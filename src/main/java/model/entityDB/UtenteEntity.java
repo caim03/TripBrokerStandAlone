@@ -1,16 +1,20 @@
-package model;
+package model.entityDB;
 
 import javax.persistence.*;
 
+/**
+ * Created by Christian on 18/11/2015.
+ */
 @Entity
-@Table(name = "Dipendenti", schema = "trip_broker", catalog = "")
-public class DipendentiEntity {
+@Table(name = "Utente", schema = "trip_broker", catalog = "")
+public class UtenteEntity {
     private int id;
     private String nome;
     private String cognome;
-    private String passwordLogin;
     private String mail;
-    private Ruolo job;
+    private String passwordLogin;
+    private String codiceFiscale;
+    private String numeroCarta;
 
     @Id
     @Column(name = "id")
@@ -43,20 +47,13 @@ public class DipendentiEntity {
     }
 
     @Basic
-    @Column(name = "ruolo")
-    public String getRuolo() {
-        if (job != null) return job.getRole();
-        else return null;
+    @Column(name = "mail")
+    public String getMail() {
+        return mail;
     }
 
-    public void setRuolo(String ruolo) {
-
-        if ("Amministratore".equals(ruolo)) job = new Amministratore();
-        else if ("Designer".equals(ruolo)) job = new Designer();
-        else if ("Scout".equals(ruolo)) job = new Scout();
-        else {
-            //TODO DEFAULT
-        }
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     @Basic
@@ -70,13 +67,23 @@ public class DipendentiEntity {
     }
 
     @Basic
-    @Column(name = "mail")
-    public String getMail() {
-        return mail;
+    @Column(name = "codice_fiscale")
+    public String getCodiceFiscale() {
+        return codiceFiscale;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
+    }
+
+    @Basic
+    @Column(name = "numero_carta")
+    public String getNumeroCarta() {
+        return numeroCarta;
+    }
+
+    public void setNumeroCarta(String numeroCarta) {
+        this.numeroCarta = numeroCarta;
     }
 
     @Override
@@ -84,15 +91,17 @@ public class DipendentiEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DipendentiEntity that = (DipendentiEntity) o;
+        UtenteEntity that = (UtenteEntity) o;
 
         if (id != that.id) return false;
         if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
         if (cognome != null ? !cognome.equals(that.cognome) : that.cognome != null) return false;
-        if (job != null ? !job.equals(that.job) : that.job != null) return false;
+        if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
         if (passwordLogin != null ? !passwordLogin.equals(that.passwordLogin) : that.passwordLogin != null)
             return false;
-        if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
+        if (codiceFiscale != null ? !codiceFiscale.equals(that.codiceFiscale) : that.codiceFiscale != null)
+            return false;
+        if (numeroCarta != null ? !numeroCarta.equals(that.numeroCarta) : that.numeroCarta != null) return false;
 
         return true;
     }
@@ -102,9 +111,10 @@ public class DipendentiEntity {
         int result = id;
         result = 31 * result + (nome != null ? nome.hashCode() : 0);
         result = 31 * result + (cognome != null ? cognome.hashCode() : 0);
-        result = 31 * result + (job != null ? job.getRole().hashCode() : 0);
-        result = 31 * result + (passwordLogin != null ? passwordLogin.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
+        result = 31 * result + (passwordLogin != null ? passwordLogin.hashCode() : 0);
+        result = 31 * result + (codiceFiscale != null ? codiceFiscale.hashCode() : 0);
+        result = 31 * result + (numeroCarta != null ? numeroCarta.hashCode() : 0);
         return result;
     }
 }

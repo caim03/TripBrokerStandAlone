@@ -1,4 +1,4 @@
-package model;
+package model.entityDB;
 
 import javax.persistence.*;
 

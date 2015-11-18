@@ -6,17 +6,17 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://db4free.net:3306/trip_broker</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <mapping class="model.CreaPacchettoEntity"/>
-    <mapping class="model.DipendentiEntity"/>
-    <mapping class="model.EventoEntity"/>
-    <mapping class="model.OffertaEntity"/>
-    <mapping class="model.PacchettoOffertaEntity"/>
-    <mapping class="model.PernottamentoEntity"/>
-    <mapping class="model.PoliticheEntity"/>
-    <mapping class="model.ProdottoEntity"/>
-    <mapping class="model.ProdottoUtenteEntity"/>
-    <mapping class="model.UtenteEntity"/>
-    <mapping class="model.ViaggioEntity"/>
+    <mapping class="model.entityDB.CreaPacchettoEntity"/>
+    <mapping class="model.entityDB.DipendentiEntity"/>
+    <mapping class="model.entityDB.EventoEntity"/>
+    <mapping class="model.entityDB.OffertaEntity"/>
+    <mapping class="model.entityDB.PacchettoOffertaEntity"/>
+    <mapping class="model.entityDB.PernottamentoEntity"/>
+    <mapping class="model.entityDB.PoliticheEntity"/>
+    <mapping class="model.entityDB.ProdottoEntity"/>
+    <mapping class="model.entityDB.ProdottoUtenteEntity"/>
+    <mapping class="model.entityDB.UtenteEntity"/>
+    <mapping class="model.entityDB.ViaggioEntity"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
