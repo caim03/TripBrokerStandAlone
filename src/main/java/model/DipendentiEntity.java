@@ -2,18 +2,15 @@ package model;
 
 import javax.persistence.*;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Dipendenti", schema = "trip_broker", catalog = "")
 public class DipendentiEntity {
     private int id;
     private String nome;
     private String cognome;
-    private String ruolo;
     private String passwordLogin;
     private String mail;
+    private Ruolo job;
 
     @Id
     @Column(name = "id")
@@ -48,11 +45,18 @@ public class DipendentiEntity {
     @Basic
     @Column(name = "ruolo")
     public String getRuolo() {
-        return ruolo;
+        if (job != null) return job.getRole();
+        else return null;
     }
 
     public void setRuolo(String ruolo) {
-        this.ruolo = ruolo;
+
+        if ("Amministratore".equals(ruolo)) job = new Amministratore();
+        else if ("Designer".equals(ruolo)) job = new Designer();
+        else if ("Scout".equals(ruolo)) job = new Scout();
+        else {
+            //TODO DEFAULT
+        }
     }
 
     @Basic
@@ -85,7 +89,7 @@ public class DipendentiEntity {
         if (id != that.id) return false;
         if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
         if (cognome != null ? !cognome.equals(that.cognome) : that.cognome != null) return false;
-        if (ruolo != null ? !ruolo.equals(that.ruolo) : that.ruolo != null) return false;
+        if (job != null ? !job.equals(that.job) : that.job != null) return false;
         if (passwordLogin != null ? !passwordLogin.equals(that.passwordLogin) : that.passwordLogin != null)
             return false;
         if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
@@ -98,7 +102,7 @@ public class DipendentiEntity {
         int result = id;
         result = 31 * result + (nome != null ? nome.hashCode() : 0);
         result = 31 * result + (cognome != null ? cognome.hashCode() : 0);
-        result = 31 * result + (ruolo != null ? ruolo.hashCode() : 0);
+        result = 31 * result + (job != null ? job.getRole().hashCode() : 0);
         result = 31 * result + (passwordLogin != null ? passwordLogin.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
         return result;
