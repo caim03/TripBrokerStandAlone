@@ -8,9 +8,19 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class CreaPacchettoDaoHibernate implements DAO{
+public class CreaPacchettoDaoHibernate implements DAO {
 
-    public List<CreaPacchettoEntity> getAll(){
+    private static DAO singleton;
+
+    protected CreaPacchettoDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new CreaPacchettoDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<CreaPacchettoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity").list();
@@ -18,7 +28,7 @@ public class CreaPacchettoDaoHibernate implements DAO{
         return creaPacchettoEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
 
@@ -30,7 +40,7 @@ public class CreaPacchettoDaoHibernate implements DAO{
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
 
@@ -42,7 +52,7 @@ public class CreaPacchettoDaoHibernate implements DAO{
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
 

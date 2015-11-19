@@ -10,7 +10,17 @@ import java.util.List;
 
 public class PernottamentoDaoHibernate implements DAO {
 
-    public List<PernottamentoEntity> getAll(){
+    private static DAO singleton;
+
+    protected PernottamentoDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new PernottamentoDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<PernottamentoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity").list();
@@ -18,7 +28,7 @@ public class PernottamentoDaoHibernate implements DAO {
         return pernottamentoEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
 
@@ -30,7 +40,7 @@ public class PernottamentoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity){
+    public synchronized void delete(AbstractEntity entity){
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
 
@@ -42,7 +52,7 @@ public class PernottamentoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
 

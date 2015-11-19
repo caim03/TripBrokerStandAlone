@@ -9,7 +9,17 @@ import java.util.List;
 
 public class OffertaDaoHibernate implements DAO {
 
-    public List<OffertaEntity> getAll() {
+    private static DAO singleton;
+
+    protected OffertaDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new OffertaDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<OffertaEntity> getAll() {
         Session session = DBManager.getSession();
 
         List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity").list();
@@ -17,7 +27,7 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;
 
@@ -29,7 +39,7 @@ public class OffertaDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;
 
@@ -41,7 +51,7 @@ public class OffertaDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;
 

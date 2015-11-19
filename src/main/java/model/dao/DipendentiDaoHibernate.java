@@ -9,7 +9,17 @@ import java.util.List;
 
 public class DipendentiDaoHibernate implements DAO {
 
-    public List<DipendentiEntity> getAll(){
+    private static DAO singleton;
+
+    protected DipendentiDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new DipendentiDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<DipendentiEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity").list();
@@ -17,7 +27,7 @@ public class DipendentiDaoHibernate implements DAO {
         return dipendentiEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
 
@@ -29,7 +39,7 @@ public class DipendentiDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
 
@@ -41,7 +51,7 @@ public class DipendentiDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
 

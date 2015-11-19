@@ -10,7 +10,17 @@ import java.util.List;
 
 public class ProdottoDaoHibernate implements DAO {
 
-    public List<ProdottoEntity> getAll(){
+    private static DAO singleton;
+
+    protected ProdottoDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new ProdottoDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<ProdottoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
@@ -18,7 +28,7 @@ public class ProdottoDaoHibernate implements DAO {
         return prodottoEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
 
@@ -30,7 +40,7 @@ public class ProdottoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
 
@@ -42,7 +52,7 @@ public class ProdottoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
 

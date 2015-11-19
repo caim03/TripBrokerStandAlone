@@ -16,8 +16,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class Amministratore extends Ruolo {
+
     @Override
-    public Stage generateView() {
+    public Scene generateView() {
 
         Stage stage = new Stage();
 
@@ -58,11 +59,7 @@ public class Amministratore extends Ruolo {
 
         BorderPane container = new BorderPane(new Pane(), toolbar, null, drawer, null);
 
-        Scene scene = new Scene(container);
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-
-        return stage;
+        return new Scene(container);
     }
 
     @Override

@@ -1,4 +1,4 @@
 package model.entityDB;
 
-public class AbstractEntity {
+public abstract class AbstractEntity {
 }

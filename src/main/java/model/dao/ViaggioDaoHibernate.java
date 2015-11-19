@@ -10,7 +10,17 @@ import java.util.List;
 
 public class ViaggioDaoHibernate implements DAO {
 
-    public List<ViaggioEntity> getAll(){
+    private static DAO singleton;
+
+    protected ViaggioDaoHibernate() { }
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new ViaggioDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<ViaggioEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity").list();
@@ -18,7 +28,7 @@ public class ViaggioDaoHibernate implements DAO {
         return viaggioEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
 
@@ -30,7 +40,7 @@ public class ViaggioDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
 
@@ -42,7 +52,7 @@ public class ViaggioDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
 

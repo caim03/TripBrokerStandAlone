@@ -1,10 +1,10 @@
 package model;
 
-import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 public abstract class Ruolo {
 
-    public abstract Stage generateView();
+    public abstract Scene generateView();
 
     public abstract String getRole();
 }

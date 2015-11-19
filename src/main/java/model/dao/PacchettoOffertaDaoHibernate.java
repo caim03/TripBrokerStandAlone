@@ -11,7 +11,17 @@ import java.util.List;
 
 public class PacchettoOffertaDaoHibernate implements DAO {
 
-    public List<PacchettoOffertaEntity> getAll(){
+    private static DAO singleton;
+
+    protected PacchettoOffertaDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new PacchettoOffertaDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<PacchettoOffertaEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<PacchettoOffertaEntity> pacchettoOffertaEntities = session.createQuery("from PacchettoOffertaEntity").list();
@@ -19,7 +29,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         return pacchettoOffertaEntities;
     }
 
-    public void store(AbstractEntity entity){
+    public synchronized void store(AbstractEntity entity){
 
         PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
 
@@ -31,7 +41,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
 
@@ -43,7 +53,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
 

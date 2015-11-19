@@ -10,7 +10,17 @@ import java.util.List;
 
 public class PoliticheDaoHibernate implements DAO {
 
-    public List<PoliticheEntity> getAll(){
+    private static DAO singleton;
+
+    protected PoliticheDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new PoliticheDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<PoliticheEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<PoliticheEntity> politicheEntities = session.createQuery("from PoliticheEntity").list();
@@ -18,7 +28,7 @@ public class PoliticheDaoHibernate implements DAO {
         return politicheEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;
 
@@ -30,7 +40,7 @@ public class PoliticheDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;
 
@@ -42,7 +52,7 @@ public class PoliticheDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;
 

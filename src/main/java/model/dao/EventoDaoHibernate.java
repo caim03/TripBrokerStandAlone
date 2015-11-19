@@ -9,7 +9,17 @@ import java.util.List;
 
 public class EventoDaoHibernate implements DAO {
 
-    public List<EventoEntity> getAll(){
+    private static DAO singleton;
+
+    protected EventoDaoHibernate() {}
+
+    public static DAO instance() {
+
+        if (singleton == null) singleton = new EventoDaoHibernate();
+        return singleton;
+    }
+
+    public synchronized List<EventoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity").list();
@@ -17,7 +27,7 @@ public class EventoDaoHibernate implements DAO {
         return eventoEntities;
     }
 
-    public void store(AbstractEntity entity) {
+    public synchronized void store(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;
 
@@ -29,7 +39,7 @@ public class EventoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void delete(AbstractEntity entity) {
+    public synchronized void delete(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;
 
@@ -41,7 +51,7 @@ public class EventoDaoHibernate implements DAO {
         session.close();
     }
 
-    public void update(AbstractEntity entity) {
+    public synchronized void update(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;
 
