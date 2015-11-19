@@ -9,8 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class TripBrokerLogin extends Application {
@@ -19,7 +22,7 @@ public class TripBrokerLogin extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setScene(buildScene());
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -39,6 +42,7 @@ public class TripBrokerLogin extends Application {
         Button button = new Button("Accedi");
 
         GridPane pane = new GridPane();
+        pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
         pane.setPadding(new Insets(25, 25, 25, 25));
@@ -47,9 +51,9 @@ public class TripBrokerLogin extends Application {
         pane.add(surLbl, 0, 2);
         pane.add(passLbl, 0, 3);
 
-        pane.add(nameField, 1, 1, 2, 1);
-        pane.add(surnameField, 1, 2, 2, 1);
-        pane.add(passField, 1, 3, 2, 1);
+        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(surnameField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(passField, Color.GOLD), 1, 3, 2, 1);
 
         pane.add(button, 1, 4);
 
@@ -62,9 +66,13 @@ public class TripBrokerLogin extends Application {
         toolbar.setStyle("-fx-background-color: crimson");
 
         VBox login = new VBox(toolbar, pane);
+        login.setStyle("-fx-background-color: white");
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
 
-        return new Scene(login);
+        Scene scene = new Scene(login);
+        scene.setFill(Color.WHITE);
+        scene.getStylesheets().add("material.css");
+        return scene;
     }
 }

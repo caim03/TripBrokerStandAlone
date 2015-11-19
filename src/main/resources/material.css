@@ -1,0 +1,13 @@
+.text-field:focused {
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 1;
+    -fx-border-color: null;
+    -fx-background-color: null;
+}
+
+.text-field{
+    -fx-border-color: null;
+    -fx-border-radius: 0;
+    -fx-background-color: null;
+    -fx-select-on-focus:false;
+}
