@@ -1,20 +1,15 @@
 package view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Amministratore;
 import model.DBManager;
@@ -27,20 +22,23 @@ import org.controlsfx.control.Notifications;
 
 public class TripBrokerLogin extends Application {
 
+    Stage stage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        this.primaryStage = primaryStage;
-        this.primaryStage.setScene(buildScene());
-        this.primaryStage.setResizable(false);
-        this.primaryStage.show();
+        stage = primaryStage;
+
+        primaryStage.setScene(buildScene());
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     private Scene buildScene() {
 
         TextField nameField = new TextField(),
                   surnameField = new TextField(),
-                  passField = new TextField();
+                  passField = new PasswordField();
         nameField.setPromptText("Inserisci nome");
         surnameField.setPromptText("Inserisci cognome");
         passField.setPromptText("Inserisci password");
@@ -111,19 +109,21 @@ public class TripBrokerLogin extends Application {
                             stage.setScene(new Scout().generateView());
                         }
 
+                        TripBrokerLogin.this.stage.close();
+
                         TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
                         try {
                             tripBrokerConsole.start(stage);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        primaryStage.close();
                     }
-
                 }
             }
         });
 
-        return new Scene(login);
+        Scene scene = new Scene(login);
+        scene.getStylesheets().add("material.css");
+        return scene;
     }
 }

@@ -11,3 +11,16 @@
     -fx-background-color: null;
     -fx-select-on-focus:false;
 }
+
+.button {
+    -fx-background-color: gold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, lightgrey, 1, 0.3, 1, 1);
+}
+
+.button:pressed {
+    -fx-border-color: null;
+    -fx-background-color: gold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, lightgrey, 1, 1, 1, 1);
+}
