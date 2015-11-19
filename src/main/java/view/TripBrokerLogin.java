@@ -95,7 +95,7 @@ public class TripBrokerLogin extends Application {
                     DAO dao = DipendentiDaoHibernate.instance();
                     DBManager.initHibernate();
                     dipendentiEntity = (DipendentiEntity) dao.getByCriteria(where);
-
+                    DBManager.shutdown();
                     if (dipendentiEntity == null) {
                         Notifications.create().title("Not Found").text("This user is not registered").show();
                     } else {
