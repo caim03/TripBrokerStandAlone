@@ -6,6 +6,8 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://db4free.net:3306/trip_broker</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.username">caim03</property>
+    <property name="hibernate.connection.password">asroma93</property>
     <mapping class="model.entityDB.CreaPacchettoEntity"/>
     <mapping class="model.entityDB.DipendentiEntity"/>
     <mapping class="model.entityDB.EventoEntity"/>

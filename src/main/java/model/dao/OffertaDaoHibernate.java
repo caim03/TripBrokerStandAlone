@@ -27,6 +27,11 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;

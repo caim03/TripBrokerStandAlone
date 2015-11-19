@@ -28,6 +28,11 @@ public class ProdottoDaoHibernate implements DAO {
         return prodottoEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;

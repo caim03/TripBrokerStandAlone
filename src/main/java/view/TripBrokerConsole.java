@@ -9,7 +9,6 @@ public class TripBrokerConsole extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setScene(new Amministratore().generateView());
         primaryStage.show();
     }
 }
