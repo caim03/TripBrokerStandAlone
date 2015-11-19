@@ -30,7 +30,16 @@ public class PoliticheDaoHibernate implements DAO {
 
     @Override
     public AbstractEntity getByCriteria(String where) {
-        return null;
+        Session session = DBManager.getSession();
+
+        List<PoliticheEntity> politicheEntities = session.createQuery("from PoliticheEntity "+where).list();
+        session.close();
+        if(politicheEntities.isEmpty()){
+            return null;
+        }
+        else {
+            return politicheEntities.get(0);
+        }
     }
 
     public synchronized void store(AbstractEntity entity) {

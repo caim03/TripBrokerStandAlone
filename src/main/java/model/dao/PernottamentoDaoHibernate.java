@@ -30,7 +30,16 @@ public class PernottamentoDaoHibernate implements DAO {
 
     @Override
     public AbstractEntity getByCriteria(String where) {
-        return null;
+        Session session = DBManager.getSession();
+
+        List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity "+where).list();
+        session.close();
+        if(pernottamentoEntities.isEmpty()){
+            return null;
+        }
+        else {
+            return pernottamentoEntities.get(0);
+        }
     }
 
     public synchronized void store(AbstractEntity entity) {

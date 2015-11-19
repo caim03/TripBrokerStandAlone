@@ -29,7 +29,16 @@ public class OffertaDaoHibernate implements DAO {
 
     @Override
     public AbstractEntity getByCriteria(String where) {
-        return null;
+        Session session = DBManager.getSession();
+
+        List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity "+where).list();
+        session.close();
+        if(offertaEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return offertaEntities.get(0);
+        }
     }
 
     public synchronized void store(AbstractEntity entity) {

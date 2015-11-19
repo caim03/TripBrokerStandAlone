@@ -29,7 +29,16 @@ public class EventoDaoHibernate implements DAO {
 
     @Override
     public AbstractEntity getByCriteria(String where) {
-        return null;
+        Session session = DBManager.getSession();
+
+        List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity "+where).list();
+        session.close();
+        if (eventoEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return eventoEntities.get(0);
+        }
     }
 
     public synchronized void store(AbstractEntity entity) {

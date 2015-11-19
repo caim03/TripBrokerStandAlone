@@ -31,9 +31,13 @@ public class CreaPacchettoDaoHibernate implements DAO {
     public synchronized CreaPacchettoEntity getByCriteria(String where) {
         Session session = DBManager.getSession();
 
-        List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity "+ where).list();
+        List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity " + where).list();
         session.close();
-        return creaPacchettoEntities.get(0);  // return first
+        if (creaPacchettoEntities.isEmpty()) {
+            return null;
+        } else {
+            return creaPacchettoEntities.get(0);  // return first
+        }
     }
 
     public synchronized void store(AbstractEntity entity) {
