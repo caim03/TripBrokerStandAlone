@@ -27,6 +27,11 @@ public class EventoDaoHibernate implements DAO {
         return eventoEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;

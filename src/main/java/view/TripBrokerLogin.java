@@ -1,6 +1,7 @@
 package view;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,15 +16,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Amministratore;
+import model.DBManager;
+import model.Designer;
+import model.Scout;
+import model.dao.DipendentiDaoHibernate;
+import model.daoInterface.DAO;
+import model.entityDB.DipendentiEntity;
+import org.controlsfx.control.Notifications;
 
 public class TripBrokerLogin extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setScene(buildScene());
-        //primaryStage.setResizable(false);
-        primaryStage.show();
+        this.primaryStage = primaryStage;
+        this.primaryStage.setScene(buildScene());
+        this.primaryStage.setResizable(false);
+        this.primaryStage.show();
     }
 
     private Scene buildScene() {
@@ -70,9 +80,50 @@ public class TripBrokerLogin extends Application {
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
 
-        Scene scene = new Scene(login);
-        scene.setFill(Color.WHITE);
-        scene.getStylesheets().add("material.css");
-        return scene;
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String name, surname, password;
+                name = nameField.getText();
+                surname = surnameField.getText();
+                password = passField.getText();
+
+                if (name.equals("") || surname.equals("") || password.equals("")) {
+                    Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
+                } else {
+                    String where = "where nome='" + name + "' AND cognome='" + surname + "' AND password_login='" + password + "'";
+
+                    DipendentiEntity dipendentiEntity = new DipendentiEntity();
+                    DAO dao = DipendentiDaoHibernate.instance();
+                    DBManager.initHibernate();
+                    dipendentiEntity = (DipendentiEntity) dao.getByCriteria(where);
+
+                    if (dipendentiEntity == null) {
+                        Notifications.create().title("Not Found").text("This user is not registered").show();
+                    } else {
+                        Stage stage = new Stage();
+
+                        if (dipendentiEntity.getRuolo().equals("Amministratore")) {
+                            stage.setScene(new Amministratore().generateView());
+                        } else if (dipendentiEntity.getRuolo().equals("Designer")) {
+                            stage.setScene(new Designer().generateView());
+                        } else {
+                            stage.setScene(new Scout().generateView());
+                        }
+
+                        TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
+                        try {
+                            tripBrokerConsole.start(stage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        primaryStage.close();
+                    }
+
+                }
+            }
+        });
+
+        return new Scene(login);
     }
 }

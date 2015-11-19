@@ -28,6 +28,11 @@ public class ViaggioDaoHibernate implements DAO {
         return viaggioEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;

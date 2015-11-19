@@ -28,6 +28,11 @@ public class PernottamentoDaoHibernate implements DAO {
         return pernottamentoEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;

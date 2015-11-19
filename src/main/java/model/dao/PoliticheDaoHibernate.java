@@ -28,6 +28,11 @@ public class PoliticheDaoHibernate implements DAO {
         return politicheEntities;
     }
 
+    @Override
+    public AbstractEntity getByCriteria(String where) {
+        return null;
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;

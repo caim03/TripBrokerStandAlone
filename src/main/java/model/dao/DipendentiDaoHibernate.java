@@ -27,6 +27,18 @@ public class DipendentiDaoHibernate implements DAO {
         return dipendentiEntities;
     }
 
+    public synchronized DipendentiEntity getByCriteria(String where) {
+        Session session = DBManager.getSession();
+
+        List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity " + where).list();
+        session.close();
+        if (dipendentiEntities.isEmpty()) {
+            return null;
+        } else {
+            return dipendentiEntities.get(0);
+        }
+    }
+
     public synchronized void store(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
