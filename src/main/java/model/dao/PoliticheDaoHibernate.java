@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.DBManager;
+import model.daoInterface.PoliticheDaoInterface;
 import model.entityDB.PoliticheEntity;
 import org.hibernate.Session;
 
@@ -9,9 +10,9 @@ import java.util.List;
 /**
  * Created by Christian on 18/11/2015.
  */
-public class PoliticheDaoHibernate {
+public class PoliticheDaoHibernate implements PoliticheDaoInterface{
 
-    public static List<PoliticheEntity> getAll(){
+    public List<PoliticheEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<PoliticheEntity> politicheEntities = session.createQuery("from PoliticheEntity").list();
@@ -19,7 +20,7 @@ public class PoliticheDaoHibernate {
         return politicheEntities;
     }
 
-    public static void store(PoliticheEntity politicheEntity){
+    public void store(PoliticheEntity politicheEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -28,7 +29,7 @@ public class PoliticheDaoHibernate {
         session.close();
     }
 
-    public static void delete(PoliticheEntity politicheEntity){
+    public void delete(PoliticheEntity politicheEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -37,7 +38,7 @@ public class PoliticheDaoHibernate {
         session.close();
     }
 
-    public static void update(PoliticheEntity politicheEntity){
+    public void update(PoliticheEntity politicheEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();

@@ -1,44 +1,48 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DipendentiDaoInterface;
+import model.daoInterface.ViaggioDaoInterface;
+import model.entityDB.ViaggioEntity;
 import org.hibernate.Session;
-import model.entityDB.DipendentiEntity;
+
 import java.util.List;
 
-public class DipendentiDaoHibernate implements DipendentiDaoInterface{
+/**
+ * Created by Christian on 18/11/2015.
+ */
+public class ViaggioDaoHibernate implements ViaggioDaoInterface{
 
-    public List<DipendentiEntity> getAll(){
+    public List<ViaggioEntity> getAll(){
         Session session = DBManager.getSession();
 
-        List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity").list();
+        List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity").list();
         session.close();
-        return dipendentiEntities;
+        return viaggioEntities;
     }
 
-    public void store(DipendentiEntity dipendentiEntity){
+    public void store(ViaggioEntity viaggioEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.save(dipendentiEntity);
+        session.save(viaggioEntity);
         session.getTransaction().commit();
         session.close();
     }
 
-    public void delete(DipendentiEntity dipendentiEntity){
+    public void delete(ViaggioEntity viaggioEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.delete(dipendentiEntity);
+        session.delete(viaggioEntity);
         session.getTransaction().commit();
         session.close();
     }
 
-    public void update(DipendentiEntity dipendentiEntity){
+    public void update(ViaggioEntity viaggioEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.update(dipendentiEntity);
+        session.update(viaggioEntity);
         session.getTransaction().commit();
         session.close();
     }

@@ -1,8 +1,8 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.ProdottoDaoInterface;
-import model.entityDB.ProdottoEntity;
+import model.daoInterface.CreaPacchettoDaoInterface;
+import model.entityDB.CreaPacchettoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -10,39 +10,39 @@ import java.util.List;
 /**
  * Created by Christian on 18/11/2015.
  */
-public class ProdottoDaoHibernate implements ProdottoDaoInterface{
+public class CreaPacchettoDaoHibernate implements CreaPacchettoDaoInterface{
 
-    public List<ProdottoEntity> getAll(){
+    public List<CreaPacchettoEntity> getAll(){
         Session session = DBManager.getSession();
 
-        List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
+        List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity").list();
         session.close();
-        return prodottoEntities;
+        return creaPacchettoEntities;
     }
 
-    public void store(ProdottoEntity prodottoEntity){
+    public void store(CreaPacchettoEntity creaPacchettoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.save(prodottoEntity);
+        session.save(creaPacchettoEntity);
         session.getTransaction().commit();
         session.close();
     }
 
-    public void delete(ProdottoEntity prodottoEntity){
+    public void delete(CreaPacchettoEntity creaPacchettoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.delete(prodottoEntity);
+        session.delete(creaPacchettoEntity);
         session.getTransaction().commit();
         session.close();
     }
 
-    public void update(ProdottoEntity prodottoEntity){
+    public void update(CreaPacchettoEntity creaPacchettoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.update(prodottoEntity);
+        session.update(creaPacchettoEntity);
         session.getTransaction().commit();
         session.close();
     }

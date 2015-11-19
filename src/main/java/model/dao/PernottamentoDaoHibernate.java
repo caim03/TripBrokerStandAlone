@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.DBManager;
+import model.daoInterface.PernottamentoDaoInterface;
 import model.entityDB.PernottamentoEntity;
 import org.hibernate.Session;
 
@@ -9,9 +10,9 @@ import java.util.List;
 /**
  * Created by Christian on 18/11/2015.
  */
-public class PernottamentoDaoHibernate {
+public class PernottamentoDaoHibernate implements PernottamentoDaoInterface{
 
-    public static List<PernottamentoEntity> getAll(){
+    public List<PernottamentoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity").list();
@@ -19,7 +20,7 @@ public class PernottamentoDaoHibernate {
         return pernottamentoEntities;
     }
 
-    public static void store(PernottamentoEntity pernottamentoEntity){
+    public void store(PernottamentoEntity pernottamentoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -28,7 +29,7 @@ public class PernottamentoDaoHibernate {
         session.close();
     }
 
-    public static void delete(PernottamentoEntity pernottamentoEntity){
+    public void delete(PernottamentoEntity pernottamentoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -37,7 +38,7 @@ public class PernottamentoDaoHibernate {
         session.close();
     }
 
-    public static void update(PernottamentoEntity pernottamentoEntity){
+    public void update(PernottamentoEntity pernottamentoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();

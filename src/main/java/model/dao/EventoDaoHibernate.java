@@ -1,13 +1,14 @@
 package model.dao;
 
 import model.DBManager;
+import model.daoInterface.EventoDaoInterface;
 import model.entityDB.EventoEntity;
 import org.hibernate.Session;
 import java.util.List;
 
-public class EventoDaoHibernate {
+public class EventoDaoHibernate implements EventoDaoInterface{
 
-    public static List<EventoEntity> getAll(){
+    public List<EventoEntity> getAll(){
         Session session = DBManager.getSession();
 
         List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity").list();
@@ -15,7 +16,7 @@ public class EventoDaoHibernate {
         return eventoEntities;
     }
 
-    public static void store(EventoEntity eventoEntity){
+    public void store(EventoEntity eventoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -24,7 +25,7 @@ public class EventoDaoHibernate {
         session.close();
     }
 
-    public static void delete(EventoEntity eventoEntity){
+    public void delete(EventoEntity eventoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -33,7 +34,7 @@ public class EventoDaoHibernate {
         session.close();
     }
 
-    public static void update(EventoEntity eventoEntity){
+    public void update(EventoEntity eventoEntity){
         Session session = DBManager.getSession();
 
         session.beginTransaction();
