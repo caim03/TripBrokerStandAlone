@@ -1,12 +1,13 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.OffertaDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import org.hibernate.Session;
 import model.entityDB.OffertaEntity;
 import java.util.List;
 
-public class OffertaDaoHibernate implements OffertaDaoInterface{
+public class OffertaDaoHibernate implements DAO {
 
     public List<OffertaEntity> getAll() {
         Session session = DBManager.getSession();
@@ -16,7 +17,10 @@ public class OffertaDaoHibernate implements OffertaDaoInterface{
         return offertaEntities;
     }
 
-    public void store(OffertaEntity offertaEntity) {
+    public void store(AbstractEntity entity) {
+
+        OffertaEntity offertaEntity = (OffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -25,7 +29,10 @@ public class OffertaDaoHibernate implements OffertaDaoInterface{
         session.close();
     }
 
-    public void delete(OffertaEntity offertaEntity) {
+    public void delete(AbstractEntity entity) {
+
+        OffertaEntity offertaEntity = (OffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -34,7 +41,10 @@ public class OffertaDaoHibernate implements OffertaDaoInterface{
         session.close();
     }
 
-    public void update(OffertaEntity offertaEntity) {
+    public void update(AbstractEntity entity) {
+
+        OffertaEntity offertaEntity = (OffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Politiche", schema = "trip_broker", catalog = "")
-public class PoliticheEntity {
+public class PoliticheEntity extends AbstractEntity {
     private int id;
     private int percentualeMax;
     private int percentualeMin;

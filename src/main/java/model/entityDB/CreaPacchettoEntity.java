@@ -2,12 +2,9 @@ package model.entityDB;
 
 import javax.persistence.*;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Crea_Pacchetto", schema = "trip_broker", catalog = "")
-public class CreaPacchettoEntity {
+public class CreaPacchettoEntity extends AbstractEntity {
     private int id;
     private int stato;
     private String motivazione;

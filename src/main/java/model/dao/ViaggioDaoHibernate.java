@@ -1,16 +1,14 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.ViaggioDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.ViaggioEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 18/11/2015.
- */
-public class ViaggioDaoHibernate implements ViaggioDaoInterface{
+public class ViaggioDaoHibernate implements DAO {
 
     public List<ViaggioEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +18,10 @@ public class ViaggioDaoHibernate implements ViaggioDaoInterface{
         return viaggioEntities;
     }
 
-    public void store(ViaggioEntity viaggioEntity){
+    public void store(AbstractEntity entity) {
+
+        ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +30,10 @@ public class ViaggioDaoHibernate implements ViaggioDaoInterface{
         session.close();
     }
 
-    public void delete(ViaggioEntity viaggioEntity){
+    public void delete(AbstractEntity entity) {
+
+        ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +42,10 @@ public class ViaggioDaoHibernate implements ViaggioDaoInterface{
         session.close();
     }
 
-    public void update(ViaggioEntity viaggioEntity){
+    public void update(AbstractEntity entity) {
+
+        ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

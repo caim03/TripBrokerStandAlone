@@ -1,13 +1,11 @@
 package model.entityDB;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Evento", schema = "trip_broker", catalog = "")
-public class EventoEntity {
+public class EventoEntity extends AbstractEntity {
     private int id;
     private int numeroPosto;
     private int oraInizio;

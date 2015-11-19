@@ -1,12 +1,13 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DipendentiDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import org.hibernate.Session;
 import model.entityDB.DipendentiEntity;
 import java.util.List;
 
-public class DipendentiDaoHibernate implements DipendentiDaoInterface{
+public class DipendentiDaoHibernate implements DAO {
 
     public List<DipendentiEntity> getAll(){
         Session session = DBManager.getSession();
@@ -16,7 +17,10 @@ public class DipendentiDaoHibernate implements DipendentiDaoInterface{
         return dipendentiEntities;
     }
 
-    public void store(DipendentiEntity dipendentiEntity){
+    public void store(AbstractEntity entity) {
+
+        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -25,7 +29,10 @@ public class DipendentiDaoHibernate implements DipendentiDaoInterface{
         session.close();
     }
 
-    public void delete(DipendentiEntity dipendentiEntity){
+    public void delete(AbstractEntity entity) {
+
+        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -34,7 +41,10 @@ public class DipendentiDaoHibernate implements DipendentiDaoInterface{
         session.close();
     }
 
-    public void update(DipendentiEntity dipendentiEntity){
+    public void update(AbstractEntity entity) {
+
+        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

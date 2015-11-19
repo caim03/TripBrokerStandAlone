@@ -1,16 +1,15 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.PacchettoOffertaDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.PacchettoOffertaEntity;
+import model.entityDB.PernottamentoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 19/11/2015.
- */
-public class PacchettoOffertaDaoHibernate implements PacchettoOffertaDaoInterface{
+public class PacchettoOffertaDaoHibernate implements DAO {
 
     public List<PacchettoOffertaEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +19,10 @@ public class PacchettoOffertaDaoHibernate implements PacchettoOffertaDaoInterfac
         return pacchettoOffertaEntities;
     }
 
-    public void store(PacchettoOffertaEntity pacchettoOffertaEntity){
+    public void store(AbstractEntity entity){
+
+        PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +31,10 @@ public class PacchettoOffertaDaoHibernate implements PacchettoOffertaDaoInterfac
         session.close();
     }
 
-    public void delete(PacchettoOffertaEntity pacchettoOffertaEntity){
+    public void delete(AbstractEntity entity) {
+
+        PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +43,10 @@ public class PacchettoOffertaDaoHibernate implements PacchettoOffertaDaoInterfac
         session.close();
     }
 
-    public void update(PacchettoOffertaEntity pacchettoOffertaEntity){
+    public void update(AbstractEntity entity) {
+
+        PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

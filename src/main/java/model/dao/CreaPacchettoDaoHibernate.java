@@ -1,16 +1,14 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.CreaPacchettoDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.CreaPacchettoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 18/11/2015.
- */
-public class CreaPacchettoDaoHibernate implements CreaPacchettoDaoInterface{
+public class CreaPacchettoDaoHibernate implements DAO{
 
     public List<CreaPacchettoEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +18,10 @@ public class CreaPacchettoDaoHibernate implements CreaPacchettoDaoInterface{
         return creaPacchettoEntities;
     }
 
-    public void store(CreaPacchettoEntity creaPacchettoEntity){
+    public void store(AbstractEntity entity) {
+
+        CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +30,10 @@ public class CreaPacchettoDaoHibernate implements CreaPacchettoDaoInterface{
         session.close();
     }
 
-    public void delete(CreaPacchettoEntity creaPacchettoEntity){
+    public void delete(AbstractEntity entity) {
+
+        CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +42,10 @@ public class CreaPacchettoDaoHibernate implements CreaPacchettoDaoInterface{
         session.close();
     }
 
-    public void update(CreaPacchettoEntity creaPacchettoEntity){
+    public void update(AbstractEntity entity) {
+
+        CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

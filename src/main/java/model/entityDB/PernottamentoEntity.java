@@ -3,12 +3,9 @@ package model.entityDB;
 import javax.persistence.*;
 import java.sql.Date;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Pernottamento", schema = "trip_broker", catalog = "")
-public class PernottamentoEntity {
+public class PernottamentoEntity extends AbstractEntity {
     private int id;
     private Date dataFinale;
     private String servizio;

@@ -1,16 +1,14 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.PoliticheDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.PoliticheEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 18/11/2015.
- */
-public class PoliticheDaoHibernate implements PoliticheDaoInterface{
+public class PoliticheDaoHibernate implements DAO {
 
     public List<PoliticheEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +18,10 @@ public class PoliticheDaoHibernate implements PoliticheDaoInterface{
         return politicheEntities;
     }
 
-    public void store(PoliticheEntity politicheEntity){
+    public void store(AbstractEntity entity) {
+
+        PoliticheEntity politicheEntity = (PoliticheEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +30,10 @@ public class PoliticheDaoHibernate implements PoliticheDaoInterface{
         session.close();
     }
 
-    public void delete(PoliticheEntity politicheEntity){
+    public void delete(AbstractEntity entity) {
+
+        PoliticheEntity politicheEntity = (PoliticheEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +42,10 @@ public class PoliticheDaoHibernate implements PoliticheDaoInterface{
         session.close();
     }
 
-    public void update(PoliticheEntity politicheEntity){
+    public void update(AbstractEntity entity) {
+
+        PoliticheEntity politicheEntity = (PoliticheEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

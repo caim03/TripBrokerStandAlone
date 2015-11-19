@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Christian on 18/11/2015.
  */
-public class PacchettoOffertaEntityPK implements Serializable {
+public class PacchettoOffertaEntityPK extends AbstractEntity implements Serializable {
     private int idPacchetto;
     private int idOfferta;
 

@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Viaggio", schema = "trip_broker", catalog = "")
-public class ViaggioEntity {
+public class ViaggioEntity extends AbstractEntity {
     private int id;
     private String destinazione;
     private int oraPartenza;

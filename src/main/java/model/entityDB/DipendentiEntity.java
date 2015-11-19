@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Dipendenti", schema = "trip_broker", catalog = "")
-public class DipendentiEntity {
+public class DipendentiEntity extends AbstractEntity {
     private int id;
     private String nome;
     private String cognome;

@@ -1,16 +1,14 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.ProdottoDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 18/11/2015.
- */
-public class ProdottoDaoHibernate implements ProdottoDaoInterface{
+public class ProdottoDaoHibernate implements DAO {
 
     public List<ProdottoEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +18,10 @@ public class ProdottoDaoHibernate implements ProdottoDaoInterface{
         return prodottoEntities;
     }
 
-    public void store(ProdottoEntity prodottoEntity){
+    public void store(AbstractEntity entity) {
+
+        ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +30,10 @@ public class ProdottoDaoHibernate implements ProdottoDaoInterface{
         session.close();
     }
 
-    public void delete(ProdottoEntity prodottoEntity){
+    public void delete(AbstractEntity entity) {
+
+        ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +42,10 @@ public class ProdottoDaoHibernate implements ProdottoDaoInterface{
         session.close();
     }
 
-    public void update(ProdottoEntity prodottoEntity){
+    public void update(AbstractEntity entity) {
+
+        ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

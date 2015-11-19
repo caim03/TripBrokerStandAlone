@@ -8,7 +8,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "Offerta", schema = "trip_broker", catalog = "")
-public class OffertaEntity {
+public class OffertaEntity extends AbstractEntity {
     private int id;
     private String città;
     private double prezzoFabbrica;

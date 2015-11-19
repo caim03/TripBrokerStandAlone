@@ -1,16 +1,14 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.PernottamentoDaoInterface;
+import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.PernottamentoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-/**
- * Created by Christian on 18/11/2015.
- */
-public class PernottamentoDaoHibernate implements PernottamentoDaoInterface{
+public class PernottamentoDaoHibernate implements DAO {
 
     public List<PernottamentoEntity> getAll(){
         Session session = DBManager.getSession();
@@ -20,7 +18,10 @@ public class PernottamentoDaoHibernate implements PernottamentoDaoInterface{
         return pernottamentoEntities;
     }
 
-    public void store(PernottamentoEntity pernottamentoEntity){
+    public void store(AbstractEntity entity) {
+
+        PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -29,7 +30,10 @@ public class PernottamentoDaoHibernate implements PernottamentoDaoInterface{
         session.close();
     }
 
-    public void delete(PernottamentoEntity pernottamentoEntity){
+    public void delete(AbstractEntity entity){
+
+        PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
@@ -38,7 +42,10 @@ public class PernottamentoDaoHibernate implements PernottamentoDaoInterface{
         session.close();
     }
 
-    public void update(PernottamentoEntity pernottamentoEntity){
+    public void update(AbstractEntity entity) {
+
+        PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();

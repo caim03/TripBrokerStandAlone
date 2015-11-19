@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Prodotto_Utente", schema = "trip_broker", catalog = "")
 @IdClass(ProdottoUtenteEntityPK.class)
-public class ProdottoUtenteEntity {
+public class ProdottoUtenteEntity extends AbstractEntity {
     private int idProdotto;
     private int idUtente;
 

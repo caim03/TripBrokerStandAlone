@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Pacchetto_Offerta", schema = "trip_broker", catalog = "")
 @IdClass(PacchettoOffertaEntityPK.class)
-public class PacchettoOffertaEntity {
+public class PacchettoOffertaEntity extends AbstractEntity {
     private int idPacchetto;
     private int idOfferta;
 
