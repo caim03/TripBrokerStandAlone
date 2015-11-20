@@ -25,6 +25,9 @@ public class ProdottoDaoHibernate implements DAO {
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
         session.close();
+        if (prodottoEntities.isEmpty()){
+            return null;
+        }
         return prodottoEntities;
     }
 
