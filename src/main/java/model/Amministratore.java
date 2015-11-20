@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -30,7 +31,9 @@ public class Amministratore extends Ruolo {
 
         ListView<String> list = new ListView<String>(
                 FXCollections.<String>observableArrayList("OPERATION 1", "OPERATION 2",  "OPERATION 3"));
-        list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+        list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
+
+                /*new Callback<ListView<String>, ListCell<String>>() {
 
             public ListCell<String> call(ListView<String> param) {
                 return new CardCell();
@@ -52,7 +55,7 @@ public class Amministratore extends Ruolo {
                     setGraphic(canvas);
                 }
             }
-        });
+        });*/
 
         VBox drawer = new VBox(25, list);
         drawer.setMaxWidth(240);

@@ -108,6 +108,7 @@ public class TripBrokerLogin extends Application {
                         } else {
                             stage.setScene(new Scout().generateView());
                         }
+                        stage.getScene().getStylesheets().add("material.css");
 
                         TripBrokerLogin.this.stage.close();
 

@@ -24,3 +24,16 @@
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, lightgrey, 1, 1, 1, 1);
 }
+
+.list-cell:odd {
+    -fx-background-color: white;
+}
+
+.list-cell:even {
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: crimson;
+    -fx-text-fill: white;
+}
