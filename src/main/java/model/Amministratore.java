@@ -70,32 +70,13 @@ public class Amministratore extends Ruolo {
             @Override
             public void handle(MouseEvent event) {
                 if(list.getSelectionModel().getSelectedItem().equals("Visualizza Catalogo")){
-                    List<ProdottoEntity> prodottoEntities;
-                    DAO dao = ProdottoDaoHibernate.instance();
-                    DBManager.initHibernate();
-                    prodottoEntities = (List<ProdottoEntity>) dao.getAll();
-                    DBManager.shutdown();
-
-                    if (prodottoEntities == null){
-                        Notifications.create().title("Empty catalog").text("No products in catalog").show();
-                        stage.close();
-                        CatalogView catalogView = new CatalogView();
-                        try {
-                            catalogView.start(new Stage());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    stage.close();
+                    CatalogView catalogView = new CatalogView();
+                    try {
+                        catalogView.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    else{
-                        stage.close();
-                        CatalogView catalogView = new CatalogView();
-                        try {
-                            catalogView.start(new Stage());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
                 }
             }
         });
