@@ -41,7 +41,7 @@ public class CatalogView extends Application {
 
         BorderPane container = new BorderPane(new Pane(), toolbar, null, drawer, null);
 
-        Scene scene = new Scene(drawer);
+        Scene scene = new Scene(container);
         scene.getStylesheets().add("material.css");
         return scene;
     }
