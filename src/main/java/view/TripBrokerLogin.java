@@ -77,7 +77,6 @@ public class TripBrokerLogin extends Application {
         login.setStyle("-fx-background-color: white");
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
-
         button.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -91,7 +90,7 @@ public class TripBrokerLogin extends Application {
                 } else {
                     String where = "where nome='" + name + "' AND cognome='" + surname + "' AND password_login='" + password + "'";
 
-                    DipendentiEntity dipendentiEntity = new DipendentiEntity();
+                    DipendentiEntity dipendentiEntity;
                     DAO dao = DipendentiDaoHibernate.instance();
                     DBManager.initHibernate();
                     dipendentiEntity = (DipendentiEntity) dao.getByCriteria(where);

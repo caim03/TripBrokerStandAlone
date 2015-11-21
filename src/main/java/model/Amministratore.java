@@ -1,12 +1,11 @@
 package model;
 
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.ComboBoxListCell;
@@ -14,13 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import model.dao.ProdottoDaoHibernate;
-import model.daoInterface.DAO;
-import model.entityDB.ProdottoEntity;
-import org.controlsfx.control.Notifications;
+
 import view.CatalogView;
 
 import java.util.List;
@@ -65,13 +59,12 @@ public class Amministratore extends Ruolo {
         drawer.setMaxWidth(240);
 
         BorderPane container = new BorderPane(new Pane(), toolbar, null, drawer, null);
-
         list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(list.getSelectionModel().getSelectedItem().equals("Visualizza Catalogo")){
-                    stage.close();
                     CatalogView catalogView = new CatalogView();
+                    stage.close();
                     try {
                         catalogView.start(new Stage());
                     } catch (Exception e) {
