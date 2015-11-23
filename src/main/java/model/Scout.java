@@ -41,7 +41,7 @@ public class Scout extends Ruolo {
         welcome.setAlignment(Pos.CENTER);
 
         BorderPane container = new BorderPane(welcome, toolbar, null, null, drawer);
-        list.setOnMouseClicked(new CatalogHandler(list));
+        list.setOnMouseClicked(new CatalogHandler(list, container));
 
         return new Scene(container);
     }

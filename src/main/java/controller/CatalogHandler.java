@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import view.CatalogView;
+import view.OfferInsertionView;
 
 public class CatalogHandler implements EventHandler<MouseEvent> {
 
@@ -46,19 +47,14 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
 
         if (stage== null || list == null || pane == null) return;
 
-        if(list.getSelectionModel().getSelectedItem().equals("Visualizza Catalogo")) {
+        if ("Visualizza Catalogo".equals(list.getSelectionModel().getSelectedItem())) {
 
             pane.setCenter(CatalogView.buildScene());
-            /*
+        }
 
-            CatalogView catalogView = new CatalogView();
-            stage.close();
-            try {
-                catalogView.start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
+        else if ("Inserisci offerta".equals(list.getSelectionModel().getSelectedItem())) {
+
+            pane.setCenter(OfferInsertionView.getInstance());
         }
     }
 }
