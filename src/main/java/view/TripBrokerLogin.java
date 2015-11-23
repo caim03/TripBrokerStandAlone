@@ -1,7 +1,7 @@
 package view;
 
+import controller.LoginController;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,12 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Amministratore;
-import model.DBManager;
-import model.Designer;
-import model.Scout;
-import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 
@@ -80,43 +75,27 @@ public class TripBrokerLogin extends Application {
         button.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                String name, surname, password;
-                name = nameField.getText();
-                surname = surnameField.getText();
-                password = passField.getText();
 
-                if (name.equals("") || surname.equals("") || password.equals("")) {
+                AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(), surnameField.getText(), passField.getText()));
+
+                if (entity == null)
                     Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
-                } else {
-                    String where = "where nome='" + name + "' AND cognome='" + surname + "' AND password_login='" + password + "'";
 
-                    DipendentiEntity dipendentiEntity;
-                    DAO dao = DipendentiDaoHibernate.instance();
-                    DBManager.initHibernate();
-                    dipendentiEntity = (DipendentiEntity) dao.getByCriteria(where);
-                    DBManager.shutdown();
-                    if (dipendentiEntity == null) {
-                        Notifications.create().title("Not Found").text("This user is not registered").show();
-                    } else {
-                        Stage stage = new Stage();
+                else if (!entity.isValid())
+                    Notifications.create().title("Not Found").text("This user is not registered").show();
+                else {
 
-                        if (dipendentiEntity.getRuolo().equals("Amministratore")) {
-                            stage.setScene(new Amministratore().generateView());
-                        } else if (dipendentiEntity.getRuolo().equals("Designer")) {
-                            stage.setScene(new Designer().generateView());
-                        } else {
-                            stage.setScene(new Scout().generateView());
-                        }
-                        stage.getScene().getStylesheets().add("material.css");
+                    Stage stage = new Stage();
+                    stage.setScene(((DipendentiEntity)entity).generateView());
+                    stage.getScene().getStylesheets().add("material.css");
 
-                        TripBrokerLogin.this.stage.close();
+                    TripBrokerLogin.this.stage.close();
 
-                        TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
-                        try {
-                            tripBrokerConsole.start(stage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
+                    try {
+                        tripBrokerConsole.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

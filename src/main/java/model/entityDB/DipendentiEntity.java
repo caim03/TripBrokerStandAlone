@@ -1,5 +1,6 @@
 package model.entityDB;
 
+import javafx.scene.Scene;
 import model.Amministratore;
 import model.Designer;
 import model.Ruolo;
@@ -8,7 +9,7 @@ import model.Scout;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Dipendenti", schema = "trip_broker", catalog = "")
+@Table(name = "Dipendenti", schema = "trip_broker")
 public class DipendentiEntity extends AbstractEntity {
     private int id;
     private String nome;
@@ -111,5 +112,10 @@ public class DipendentiEntity extends AbstractEntity {
         result = 31 * result + (passwordLogin != null ? passwordLogin.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
         return result;
+    }
+
+    public Scene generateView() {
+
+        return this.job.generateView();
     }
 }
