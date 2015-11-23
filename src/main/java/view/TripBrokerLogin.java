@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Scout;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
@@ -75,6 +76,23 @@ public class TripBrokerLogin extends Application {
         button.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+
+                Stage s = new Stage();
+                s.setScene(new Scout().generateView());
+                s.getScene().getStylesheets().add("material.css");
+
+                TripBrokerLogin.this.stage.close();
+
+                TripBrokerConsole console = new TripBrokerConsole();
+                try {
+                    console.start(s);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (true) return;
+
+                //TODO: togliere login automatico
 
                 AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(), surnameField.getText(), passField.getText()));
 
