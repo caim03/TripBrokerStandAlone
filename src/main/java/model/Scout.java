@@ -33,6 +33,7 @@ public class Scout extends Ruolo {
         VBox drawer = new VBox(25, list);
         drawer.setMaxWidth(240);
         drawer.setAlignment(Pos.TOP_CENTER);
+        drawer.setStyle("-fx-background-color: white; -fx-border-color: null");
 
         Label welcome = new Label("Welcome");
         welcome.setPadding(new Insets(25, 25, 25, 25));
