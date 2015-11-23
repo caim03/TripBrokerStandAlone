@@ -6,9 +6,9 @@ import javax.persistence.*;
  * Created by Christian on 18/11/2015.
  */
 @Entity
-@Table(name = "Viaggio", schema = "trip_broker", catalog = "")
-public class ViaggioEntity extends AbstractEntity {
-    private int id;
+@Table(name = "Viaggio", schema = "trip_broker")
+public class ViaggioEntity extends OffertaEntity {
+    //private int id;
     private String destinazione;
     private int oraPartenza;
     private int oraArrivo;
@@ -17,15 +17,15 @@ public class ViaggioEntity extends AbstractEntity {
     private String stazionePartenza;
     private String stazioneArrivo;
 
-    @Id
+    /*@Id
     @Column(name = "id")
     public int getId() {
         return id;
-    }
+    }*/
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    /*public void setId() {
+        this.id = super.getId();
+    }*/
 
     @Basic
     @Column(name = "destinazione")
@@ -104,7 +104,7 @@ public class ViaggioEntity extends AbstractEntity {
 
         ViaggioEntity that = (ViaggioEntity) o;
 
-        if (id != that.id) return false;
+        //if (super.getId() != that.id) return false;
         if (oraPartenza != that.oraPartenza) return false;
         if (oraArrivo != that.oraArrivo) return false;
         if (destinazione != null ? !destinazione.equals(that.destinazione) : that.destinazione != null) return false;
@@ -120,7 +120,7 @@ public class ViaggioEntity extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = super.getId();
         result = 31 * result + (destinazione != null ? destinazione.hashCode() : 0);
         result = 31 * result + oraPartenza;
         result = 31 * result + oraArrivo;

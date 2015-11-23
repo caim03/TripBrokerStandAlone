@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "Pernottamento", schema = "trip_broker", catalog = "")
-public class PernottamentoEntity extends AbstractEntity {
-    private int id;
+@Table(name = "Pernottamento", schema = "trip_broker")
+public class PernottamentoEntity extends OffertaEntity {
+    //private int id;
     private Date dataFinale;
     private String servizio;
     private String qualità;
     private String luogo;
 
-    @Id
+    /*@Id
     @Column(name = "id")
     public int getId() {
         return id;
@@ -20,7 +20,7 @@ public class PernottamentoEntity extends AbstractEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     @Basic
     @Column(name = "data_finale")
@@ -69,7 +69,7 @@ public class PernottamentoEntity extends AbstractEntity {
 
         PernottamentoEntity that = (PernottamentoEntity) o;
 
-        if (id != that.id) return false;
+        //if (id != that.id) return false;
         if (dataFinale != null ? !dataFinale.equals(that.dataFinale) : that.dataFinale != null) return false;
         if (servizio != null ? !servizio.equals(that.servizio) : that.servizio != null) return false;
         if (qualità != null ? !qualità.equals(that.qualità) : that.qualità != null) return false;
@@ -80,7 +80,7 @@ public class PernottamentoEntity extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = super.getId();
         result = 31 * result + (dataFinale != null ? dataFinale.hashCode() : 0);
         result = 31 * result + (servizio != null ? servizio.hashCode() : 0);
         result = 31 * result + (qualità != null ? qualità.hashCode() : 0);

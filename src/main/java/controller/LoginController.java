@@ -1,17 +1,10 @@
 package controller;
 
-import javafx.stage.Stage;
-import model.Amministratore;
 import model.DBManager;
-import model.Designer;
-import model.Scout;
 import model.dao.DipendentiDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
-import org.controlsfx.control.Notifications;
-import view.TripBrokerConsole;
-import view.TripBrokerLogin;
 
 public class LoginController {
 

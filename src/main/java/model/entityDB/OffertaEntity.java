@@ -7,16 +7,17 @@ import java.sql.Date;
  * Created by Christian on 18/11/2015.
  */
 @Entity
-@Table(name = "Offerta", schema = "trip_broker", catalog = "")
-public class OffertaEntity extends AbstractEntity {
-    private int id;
+@Table(name = "Offerta", schema = "trip_broker")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class OffertaEntity extends ProdottoEntity {
+    //private int id;
     private String città;
     private double prezzoFabbrica;
     private int quantità;
     private byte stato;
     private Date dataInizio;
 
-    @Id
+    /*@Id
     @Column(name = "id")
     public int getId() {
         return id;
@@ -24,7 +25,7 @@ public class OffertaEntity extends AbstractEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     @Basic
     @Column(name = "città")
@@ -83,7 +84,7 @@ public class OffertaEntity extends AbstractEntity {
 
         OffertaEntity that = (OffertaEntity) o;
 
-        if (id != that.id) return false;
+        //if (id != that.id) return false;
         if (Double.compare(that.prezzoFabbrica, prezzoFabbrica) != 0) return false;
         if (quantità != that.quantità) return false;
         if (stato != that.stato) return false;
@@ -97,7 +98,7 @@ public class OffertaEntity extends AbstractEntity {
     public int hashCode() {
         int result;
         long temp;
-        result = id;
+        result = super.getId();
         result = 31 * result + (città != null ? città.hashCode() : 0);
         temp = Double.doubleToLongBits(prezzoFabbrica);
         result = 31 * result + (int) (temp ^ (temp >>> 32));

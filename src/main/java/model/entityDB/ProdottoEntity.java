@@ -6,7 +6,8 @@ import javax.persistence.*;
  * Created by Christian on 18/11/2015.
  */
 @Entity
-@Table(name = "Prodotto", schema = "trip_broker", catalog = "")
+@Table(name = "Prodotto", schema = "trip_broker")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ProdottoEntity extends AbstractEntity {
     private int id;
     private String nome;
