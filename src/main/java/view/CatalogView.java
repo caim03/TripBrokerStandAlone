@@ -2,8 +2,11 @@ package view;
 
 import controller.CatalogHandler;
 import javafx.application.Application;
+import javafx.beans.NamedArg;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,34 +25,13 @@ import org.controlsfx.control.Notifications;
 import java.util.List;
 
 
-public class CatalogView extends Application {
-    Stage stage;
+public class CatalogView {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        stage = primaryStage;
-
-        primaryStage.setScene(buildScene());
-        primaryStage.setResizable(true);
-        primaryStage.show();
-    }
-
-    private Scene buildScene(){
-
-        Label title = new Label("Trip Broker Catalog");
-        title.setStyle("-fx-text-fill: snow");
-        ToolBar toolbar = new ToolBar(title);
-        toolbar.setStyle("-fx-background-color: cornflowerblue");
-        toolbar.setMinHeight(72);
+    public static Parent buildScene(){
 
         ListView<String> list = new ListView<String>();
         ObservableList<String> names = FXCollections.observableArrayList();
         list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
-
-        BorderPane container = new BorderPane(new Pane(), toolbar, null, list, null);
-
-        Scene scene = new Scene(container);
-        scene.getStylesheets().add("material.css");
 
         List<ProdottoEntity> prodottoEntities;
         DAO dao = ProdottoDaoHibernate.instance();
@@ -66,6 +48,7 @@ public class CatalogView extends Application {
             }
             list.setItems(names);
         }
-        return scene;
+
+        return list;
     }
 }
