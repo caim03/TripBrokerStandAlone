@@ -1,5 +1,6 @@
 package view;
 
+import controller.CatalogHandler;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,8 +45,6 @@ public class CatalogView extends Application {
         ListView<String> list = new ListView<String>();
         ObservableList<String> names = FXCollections.observableArrayList();
         list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
-        //VBox drawer = new VBox(25, list);
-        //drawer.setMaxWidth(240);
 
         BorderPane container = new BorderPane(new Pane(), toolbar, null, list, null);
 

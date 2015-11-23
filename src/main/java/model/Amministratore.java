@@ -1,5 +1,6 @@
 package model;
 
+import controller.CatalogHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -36,43 +37,11 @@ public class Amministratore extends Ruolo {
                 FXCollections.<String>observableArrayList("Visualizza Catalogo", "OPERATION 2",  "OPERATION 3"));
         list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
 
-                /*new Callback<ListView<String>, ListCell<String>>() {
-            public ListCell<String> call(ListView<String> param) {
-                return new CardCell();
-            }
-            class CardCell extends ListCell<String> {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    Canvas canvas = new Canvas(240, 48);
-                    canvas.setStyle("-fx-background-color: snow");
-                    GraphicsContext graphics = canvas.getGraphicsContext2D();
-                    graphics.setStroke(Color.CORNFLOWERBLUE);
-                    graphics.strokeText(item, 20, 20);
-                    graphics.strokeLine(20, 45, 220, 48);
-                    setGraphic(canvas);
-                }
-            }
-        });*/
-
         VBox drawer = new VBox(25, list);
         drawer.setMaxWidth(240);
 
         BorderPane container = new BorderPane(new Pane(), toolbar, null, drawer, null);
-        list.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(list.getSelectionModel().getSelectedItem().equals("Visualizza Catalogo")){
-                    CatalogView catalogView = new CatalogView();
-                    stage.close();
-                    try {
-                        catalogView.start(new Stage());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        list.setOnMouseClicked(new CatalogHandler(list));
 
         return new Scene(container);
     }
