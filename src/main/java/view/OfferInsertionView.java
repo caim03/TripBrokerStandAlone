@@ -33,6 +33,7 @@ public class OfferInsertionView {
         priceField.setPromptText("Insert offer price");
 
         Spinner<String> spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
+        spinner.getEditor().setPromptText(null);
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -80,11 +81,62 @@ public class OfferInsertionView {
     }
 
     private static Node stayAttachment() {
-        return new Label("STAY");
+
+        Label city = new Label("City");
+        TextField ctyField = new TextField();
+        ctyField.setPromptText("Insert city");
+
+        Label location = new Label("Location");
+        TextField locField = new TextField();
+        locField.setPromptText("Insert location");
+
+        Label stars = new Label("Stars");
+        Spinner<String> strSpinner = new Spinner<>(FXCollections.observableArrayList("1", "2", "3", "4", "5"));
+
+        GridPane pane = new GridPane();
+        pane.setStyle("-fx-background-color: white");
+        pane.setHgap(25);
+        pane.setVgap(8);
+
+        pane.add(city, 0, 1);
+        pane.add(location, 0, 2);
+        pane.add(stars, 0, 3);
+
+        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(locField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(strSpinner, 1, 3);
+
+        return pane;
     }
 
     private static Node eventAttachment() {
-        return new Label("EVENT");
+
+        Label city = new Label("City");
+        TextField ctyField = new TextField();
+        ctyField.setPromptText("Insert city");
+
+        Label location = new Label("Location");
+        TextField locField = new TextField();
+        locField.setPromptText("Insert location");
+
+        Label seat = new Label("Seat");
+        TextField seatField = new NumericField(false);
+        seatField.setPromptText("Insert seat number (leave empty for parterre)");
+
+        GridPane pane = new GridPane();
+        pane.setStyle("-fx-background-color: white");
+        pane.setHgap(25);
+        pane.setVgap(8);
+
+        pane.add(city, 0, 1);
+        pane.add(location, 0, 2);
+        pane.add(seat, 0, 3);
+
+        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(locField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(seatField, Color.GOLD), 1, 3);
+
+        return pane;
     }
 
     private static Node travelAttachment() {
@@ -107,7 +159,6 @@ public class OfferInsertionView {
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
-        pane.setPadding(new Insets(25, 25, 25, 25));
 
         pane.add(departure, 0, 1);
         pane.add(arrival, 0, 2);
