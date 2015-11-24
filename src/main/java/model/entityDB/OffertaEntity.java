@@ -8,6 +8,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "Offerta", schema = "trip_broker")
+@PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class OffertaEntity extends ProdottoEntity {
     //private int id;

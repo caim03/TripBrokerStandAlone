@@ -5,6 +5,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "Pernottamento", schema = "trip_broker")
+@PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class PernottamentoEntity extends OffertaEntity {
     //private int id;
     private Date dataFinale;
