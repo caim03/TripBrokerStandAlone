@@ -14,6 +14,7 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import view.material.MaterialField;
+import view.material.Toolbar;
 
 public class TripBrokerLogin extends Application {
 
@@ -64,9 +65,7 @@ public class TripBrokerLogin extends Application {
         title.setTextFill(Color.WHITE);
         title.setStyle("-fx-font-size: 25");
 
-        ToolBar toolbar = new ToolBar(title);
-        toolbar.setPadding(new Insets(12, 12, 12, 12));
-        toolbar.setStyle("-fx-background-color: crimson");
+        Toolbar toolbar = new Toolbar("Login");
 
         VBox login = new VBox(toolbar, pane);
         login.setStyle("-fx-background-color: white");

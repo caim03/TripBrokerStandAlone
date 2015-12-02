@@ -35,18 +35,4 @@ public class ConsolePane extends BorderPane {
         drawer = box;
         setLeft(box);
     }
-
-    public void setContent() {
-
-        Pane pane = new Pane();
-
-        Button btn = new Button();
-        btn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                pane.getChildren();
-            }
-        });
-    }
 }

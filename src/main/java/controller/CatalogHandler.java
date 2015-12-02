@@ -1,34 +1,41 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import view.CatalogView;
-import view.ConsolePane;
-import view.OfferInsertionView;
+import javafx.stage.WindowEvent;
+import view.*;
 import view.material.FlatButton;
 
 public class CatalogHandler implements EventHandler<MouseEvent> {
 
-    ListView list;
+    ListView<String> list;
     ConsolePane pane;
+    Label defaultMsg;
+
     static Stage stage;
 
     public CatalogHandler() {
         this(null, null);
     }
 
-    public CatalogHandler(ListView list) {
+    public CatalogHandler(ListView<String> list) {
         this(list, null);
     }
 
-    public CatalogHandler(ListView list, ConsolePane pane) {
+    public CatalogHandler(ListView<String> list, ConsolePane pane) {
 
         setList(list);
         setPane(pane);
+
+        generateLabel();
     }
 
     public void setList(ListView list) {
@@ -45,27 +52,52 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
         CatalogHandler.stage = stage;
     }
 
+    public void generateLabel() {
+
+        defaultMsg = new Label("Choose an option");
+        defaultMsg.setPadding(new Insets(25,25,25,25));
+        defaultMsg.setTextFill(Color.CRIMSON);
+        defaultMsg.setStyle("-fx-font-size: 128px");
+        defaultMsg.setAlignment(Pos.CENTER);
+    }
+
     @Override
     public void handle(MouseEvent event) {
 
         if (stage== null || list == null || pane == null) return;
 
-        if ("Visualizza Catalogo".equals(list.getSelectionModel().getSelectedItem())) {
+        pane.hideToolbarButtons();
+        String selected = list.getSelectionModel().getSelectedItem();
+
+        if ("Visualizza Catalogo".equals(selected)) {
 
             pane.setCenter(CatalogView.buildScene());
         }
 
-        else if ("Inserisci offerta".equals(list.getSelectionModel().getSelectedItem())) {
-
-            pane.hideToolbarButtons();
+        else if ("Inserisci offerta".equals(selected)) {
 
             Button done = new FlatButton();
             done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
                 InsertOfferController.handle();
-                //TROIA
             });
             pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());
+        }
+
+        else if ("Logout".equals(selected)) {
+
+            stage.close();
+
+            try {
+                new TripBrokerLogin().start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        else {
+
+            pane.setCenter(defaultMsg);
         }
     }
 }

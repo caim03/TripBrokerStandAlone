@@ -50,7 +50,7 @@ public class OfferInsertionView {
         pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
         pane.add(spinner, 1, 3, 2, 1);
 
-        VBox box = new VBox(pane);
+        VBox box = new VBox(pane, fromOffer(spinner.getValue()));
         box.setStyle("-fx-background-color: white");
 
         spinner.valueProperty().addListener(new ChangeListener<String>() {

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 import view.CatalogView;
 import view.ConsolePane;
+import view.material.NavigationDrawer;
 
 import java.util.List;
 
@@ -36,14 +37,11 @@ public class Amministratore extends Ruolo {
         toolbar.setStyle("-fx-background-color: cornflowerblue");
         toolbar.setMinHeight(72);
 
-        ListView<String> list = new ListView<String>(
-                FXCollections.<String>observableArrayList("Visualizza Catalogo", "OPERATION 2",  "OPERATION 3"));
+        ListView<String> list = new ListView<String>(FXCollections.<String>observableArrayList("Visualizza Catalogo",
+                "OPERATION 2",  "OPERATION 3", "Logout"));
         list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
 
-        VBox drawer = new VBox(25, list);
-        drawer.setMaxWidth(240);
-        drawer.setAlignment(Pos.TOP_CENTER);
-        drawer.setStyle("-fx-background-color: white; -fx-border-color: null");
+        NavigationDrawer drawer = new NavigationDrawer(list);
 
         Label welcome = new Label("Welcome");
         welcome.setPadding(new Insets(25, 25, 25, 25));
