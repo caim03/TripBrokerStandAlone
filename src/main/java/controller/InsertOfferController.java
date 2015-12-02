@@ -11,21 +11,24 @@ import model.entityDB.ViaggioEntity;
 
 public class InsertOfferController {
 
-    public static void insertOfferEvent(EventoEntity entity){
+    public static void insertOfferEvent(EventoEntity entity) {
+
         DAO dao = EventoDaoHibernate.instance();
         DBManager.initHibernate();
         dao.store(entity);
         DBManager.shutdown();
     }
 
-    public static void insertOfferStay(PernottamentoEntity entity){
+    public static void insertOfferStay(PernottamentoEntity entity) {
+
         DAO dao = PernottamentoDaoHibernate.instance();
         DBManager.initHibernate();
         dao.store(entity);
         DBManager.shutdown();
     }
 
-    public static void insertOfferTravel(ViaggioEntity entity){
+    public static void insertOfferTravel(ViaggioEntity entity) {
+
         DAO dao = ViaggioDaoHibernate.instance();
         DBManager.initHibernate();
         dao.store(entity);

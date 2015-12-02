@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER" minHeight="64.0" prefHeight="40.0" prefWidth="318.0" style="-fx-background-color: #DC143C;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+    <Label id="#title" textFill="WHITE">
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <font>
+         <Font size="24.0" />
+      </font></Label>
+    <Pane HBox.hgrow="ALWAYS" />
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+   </padding>
+</HBox>

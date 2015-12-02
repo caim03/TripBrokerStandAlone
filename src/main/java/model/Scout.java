@@ -13,17 +13,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import view.ConsolePane;
 
 public class Scout extends Ruolo {
 
     @Override
     public Scene generateView() {
-
-        Label title = new Label("Trip Broker Scout");
-        title.setStyle("-fx-text-fill: snow");
-        ToolBar toolbar = new ToolBar(title);
-        toolbar.setStyle("-fx-background-color: cornflowerblue");
-        toolbar.setMinHeight(72);
 
         ListView<String> list = new ListView<String>(
                 FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3"));
@@ -41,7 +36,8 @@ public class Scout extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        BorderPane container = new BorderPane(welcome, toolbar, null, null, drawer);
+        ConsolePane container = new ConsolePane("TripBroker Scout");
+        container.setDrawer(drawer);
         list.setOnMouseClicked(new CatalogHandler(list, container));
 
         return new Scene(container);

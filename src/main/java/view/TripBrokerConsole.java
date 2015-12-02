@@ -14,6 +14,4 @@ public class TripBrokerConsole extends Application {
         CatalogHandler.setStage(primaryStage);
         primaryStage.show();
     }
-
-
 }

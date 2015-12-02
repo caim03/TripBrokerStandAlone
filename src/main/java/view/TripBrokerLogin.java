@@ -78,6 +78,8 @@ public class TripBrokerLogin extends Application {
             AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
                     surnameField.getText(), passField.getText()));
 
+            System.out.println("HANDLED");
+
             if (entity == null)
                 Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
 
@@ -86,9 +88,14 @@ public class TripBrokerLogin extends Application {
 
             else {
 
+                System.out.println("CREATION");
+
                 Stage stage = new Stage();
-                stage.setScene(((DipendentiEntity)entity).generateView());
-                stage.getScene().getStylesheets().add("material.css");
+                Scene scene = ((DipendentiEntity)entity).generateView();
+                scene.getStylesheets().add("material.css");
+                stage.setScene(scene);
+
+                System.out.println("CREATED");
 
                 TripBrokerLogin.this.stage.close();
 

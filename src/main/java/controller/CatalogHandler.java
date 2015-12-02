@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import view.CatalogView;
+import view.ConsolePane;
 import view.OfferInsertionView;
 
 public class CatalogHandler implements EventHandler<MouseEvent> {
@@ -54,6 +55,7 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
 
         else if ("Inserisci offerta".equals(list.getSelectionModel().getSelectedItem())) {
 
+            ((ConsolePane)pane).addToolbarButton();
             pane.setCenter(OfferInsertionView.getInstance());
         }
     }
