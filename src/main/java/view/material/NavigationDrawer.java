@@ -34,12 +34,6 @@ public class NavigationDrawer extends VBox {
         getChildren().add(canvas);
     }
 
-    public NavigationDrawer(ObservableList<String> opts, ConsolePane pane) {
-
-        this();
-        setOptions(opts, pane);
-    }
-
     public void setOptions(ObservableList<String> opts, ConsolePane container) {
 
         int size;

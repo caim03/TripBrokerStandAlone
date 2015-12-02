@@ -2,9 +2,7 @@ package view.material;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 public class ConsolePane extends BorderPane {
 
