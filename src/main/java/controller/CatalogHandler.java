@@ -62,6 +62,7 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
             Button done = new FlatButton();
             done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
                 InsertOfferController.handle();
+                //TROIA
             });
             pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());
