@@ -3,24 +3,16 @@ package controller;
 import model.entityDB.ViaggioEntity;
 import java.sql.Date;
 
-public class TravelBuilder extends EntityBuilder{
-    @Override
-    public void buildProduct(String name, double price) {
-        entity.setNome(name);
-        entity.setPrezzo(price);
+public class TravelBuilder extends EntityBuilder {
+
+    public TravelBuilder() {
+
+        entity = new ViaggioEntity();
     }
 
     @Override
-    public void buildOffer(String city, double price, int amount, byte state, Date date) {
-        ((ViaggioEntity)entity).setCittà(city);
-        ((ViaggioEntity)entity).setPrezzoFabbrica(price);
-        ((ViaggioEntity)entity).setQuantità(amount);
-        ((ViaggioEntity)entity).setStato(state);
-        ((ViaggioEntity)entity).setDataInizio(date);
-    }
+    public void buildEntity(Object... objects) {
 
-    @Override
-    public void buildEntity(Object... objects) throws ClassCastException{
         ((ViaggioEntity)entity).setDestinazione((String) objects[0]);
         ((ViaggioEntity)entity).setOraPartenza((int) objects[1]);
         ((ViaggioEntity)entity).setOraArrivo((int) objects[2]);
