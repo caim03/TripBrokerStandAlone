@@ -1,9 +1,6 @@
 package controller;
 
 import model.entityDB.EventoEntity;
-import model.entityDB.OffertaEntity;
-
-import java.sql.Date;
 
 public class EventBuilder extends EntityBuilder {
 
