@@ -48,12 +48,10 @@ public class OfferInsertionView {
     private static Parent buildGUI() {
 
         Label name = new Label("Name");
-        TextField nameField = new TextField();
-        nameField.setPromptText("Insert offer name");
+        offerName.setPromptText("Insert offer name");
 
         Label price = new Label("Price");
-        TextField priceField = new NumericField();
-        priceField.setPromptText("Insert offer price");
+        offerPrice.setPromptText("Insert offer price");
 
         spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
         spinner.getEditor().setPromptText(null);
@@ -67,8 +65,8 @@ public class OfferInsertionView {
         pane.add(name, 0, 1);
         pane.add(price, 0, 2);
 
-        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
-        pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(offerName, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(offerPrice, Color.GOLD), 1, 2, 2, 1);
         pane.add(spinner, 1, 3, 2, 1);
 
         VBox box = new VBox(pane, fromOffer(spinner.getValue()));
