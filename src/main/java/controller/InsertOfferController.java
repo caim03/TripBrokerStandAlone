@@ -57,7 +57,7 @@ public class InsertOfferController {
             TravelBuilder travelBuilder = new TravelBuilder();
             travelBuilder.buildProduct(name, Double.parseDouble(price));
             travelBuilder.buildOffer("Roma", Double.parseDouble(price), 5, (byte) 0, new Date(2015, 12, 2));
-            travelBuilder.buildEntity("Milano", 12, 15, "Treno", "Prima", depField, arrField);
+            travelBuilder.buildEntity("Milano", 12, 15, vehSpinner, clsSpinner, depField, arrField);
 
             insertOfferTravel((ViaggioEntity) travelBuilder.getEntity());
         }
