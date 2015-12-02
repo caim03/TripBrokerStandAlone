@@ -4,7 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import jfxtras.scene.control.CalendarTimePicker;
 import jfxtras.scene.control.CalendarTimeTextField;
 import model.DBManager;
 import model.dao.EventoDaoHibernate;
@@ -15,7 +14,6 @@ import model.entityDB.EventoEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.ZoneId;
 
 public class InsertOfferController {
@@ -36,13 +34,12 @@ public class InsertOfferController {
         if ("Evento".equals(spinner)){
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
-            String seatField = ((TextField) list[2]).getText();
-            Date date = (Date) Date.from((((DatePicker) list[3]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int seatField = Integer.parseInt(((TextField) list[2]).getText());
+            Date date = new Date(Date.from((((DatePicker) list[3]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int timePicker = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours();
             int endPicker = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
 
-            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField)) ||
-                    (seatField == null || "".equals(seatField))){
+            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))){
                 return;
             }
 
@@ -59,9 +56,9 @@ public class InsertOfferController {
             String arrField = ((TextField) list[1]).getText();
             String vehSpinner = ((Spinner<String>) list[2]).getValue();
             String clsSpinner = ((Spinner<String>) list[3]).getValue();
-            Date depDate = (Date) Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date depDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int depTime = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
-            Date arrDate = (Date) Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date arrDate = new Date(Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int arrTime = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getHours();
 
             if ((depField == null || "".equals(depField)) || (arrField == null || "".equals(arrField))){
@@ -81,8 +78,8 @@ public class InsertOfferController {
             String locField = ((TextField) list[1]).getText();
             String starSpinner = ((Spinner<String>) list[2]).getValue();
             String srvSpinner = ((Spinner<String>) list[3]).getValue();
-            Date startDate = (Date) Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date endDate = (Date) Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date startDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
+            Date endDate = new Date(Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
 
             if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))){
                 return;
