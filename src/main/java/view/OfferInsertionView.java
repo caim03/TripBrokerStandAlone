@@ -16,6 +16,11 @@ import view.material.MaterialField;
 import view.material.NumericField;
 
 public class OfferInsertionView {
+    private static TextField offerName;
+    private static TextField offerPrice;
+    private static Node[] offerNode;
+    private static Spinner<String> spinner;
+
 
     private static Parent basicGUI;
 
@@ -24,17 +29,31 @@ public class OfferInsertionView {
         return basicGUI;
     }
 
+    public static String getOfferName() {
+        return offerName.getText();
+    }
+
+    public static String getPriceoffer() {
+        return offerPrice.getText();
+    }
+
+    public static String getSpinner() {
+        return spinner.getValue();
+    }
+
+    public static Node[] getOfferNode() {
+        return offerNode;
+    }
+
     private static Parent buildGUI() {
 
         Label name = new Label("Name");
-        TextField nameField = new TextField();
-        nameField.setPromptText("Insert offer name");
+        offerName.setPromptText("Insert offer name");
 
         Label price = new Label("Price");
-        TextField priceField = new NumericField();
-        priceField.setPromptText("Insert offer price");
+        offerPrice.setPromptText("Insert offer price");
 
-        Spinner<String> spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
+        spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
         spinner.getEditor().setPromptText(null);
 
         GridPane pane = new GridPane();
@@ -46,8 +65,8 @@ public class OfferInsertionView {
         pane.add(name, 0, 1);
         pane.add(price, 0, 2);
 
-        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
-        pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(offerName, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(offerPrice, Color.GOLD), 1, 2, 2, 1);
         pane.add(spinner, 1, 3, 2, 1);
 
         VBox box = new VBox(pane, fromOffer(spinner.getValue()));
@@ -108,6 +127,10 @@ public class OfferInsertionView {
         pane.add(new MaterialField(locField, Color.GOLD), 1, 2, 2, 1);
         pane.add(strSpinner, 1, 3);
 
+        offerNode[0] = ctyField;
+        offerNode[1] = locField;
+        offerNode[2] = strSpinner;
+
         return pane;
     }
 
@@ -137,6 +160,10 @@ public class OfferInsertionView {
         pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1, 2, 1);
         pane.add(new MaterialField(locField, Color.GOLD), 1, 2, 2, 1);
         pane.add(new MaterialField(seatField, Color.GOLD), 1, 3);
+
+        offerNode[0] = ctyField;
+        offerNode[1] = locField;
+        offerNode[2] = seatField;
 
         return pane;
     }
@@ -171,6 +198,11 @@ public class OfferInsertionView {
         pane.add(new MaterialField(arrField, Color.GOLD), 1, 2, 2, 1);
         pane.add(vehSpinner, 1, 3, 2, 1);
         pane.add(clsSpinner, 4, 3, 2, 1);
+
+        offerNode[0] = depField;
+        offerNode[1] = arrField;
+        offerNode[2] = vehSpinner;
+        offerNode[3] = clsSpinner;
 
         return pane;
     }

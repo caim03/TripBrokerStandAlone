@@ -1,7 +1,6 @@
 package controller;
 
 import model.entityDB.ViaggioEntity;
-import java.sql.Date;
 
 public class TravelBuilder extends EntityBuilder {
 

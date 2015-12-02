@@ -1,8 +1,7 @@
 package controller;
 
-import model.entityDB.EventoEntity;
-import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
+
 import java.sql.Date;
 
 public class StayBuilder extends EntityBuilder {

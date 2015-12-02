@@ -3,9 +3,11 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -78,7 +80,11 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
 
             Button done = new FlatButton();
             done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
-                InsertOfferController.handle();
+                String offerName = OfferInsertionView.getOfferName();
+                String offerPrice = OfferInsertionView.getPriceoffer();
+                String offerSpinner = OfferInsertionView.getSpinner();
+                Node[] offerList = OfferInsertionView.getOfferNode();
+                InsertOfferController.handle(offerName, offerPrice, offerSpinner, offerList);
             });
             pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());
