@@ -7,13 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import view.*;
+import view.material.ConsolePane;
 import view.material.FlatButton;
 
 public class CatalogHandler implements EventHandler<MouseEvent> {

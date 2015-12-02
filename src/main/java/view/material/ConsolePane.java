@@ -1,23 +1,22 @@
-package view;
+package view.material;
 
-import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import view.material.FlatButton;
-import view.material.Toolbar;
 
 public class ConsolePane extends BorderPane {
 
     Toolbar toolbar;
-    VBox drawer;
+    NavigationDrawer drawer;
 
     public ConsolePane(String title) {
 
         toolbar = new Toolbar(title);
+        drawer = new NavigationDrawer();
         setTop(toolbar);
+        setLeft(drawer);
     }
 
     public void addToolbarButton(Button button) {
@@ -30,9 +29,8 @@ public class ConsolePane extends BorderPane {
         toolbar.removeButtons();
     }
 
-    public void setDrawer(VBox box) {
+    public void setDrawer(ObservableList<String> opts) {
 
-        drawer = box;
-        setLeft(box);
+        drawer.setOptions(opts, this);
     }
 }

@@ -1,10 +1,17 @@
 package view;
 
+import com.sun.javafx.event.EventDispatchChainImpl;
 import controller.LoginController;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -71,7 +78,8 @@ public class TripBrokerLogin extends Application {
         login.setStyle("-fx-background-color: white");
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
-        button.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+
+        EventHandler<MouseEvent> handler = event -> {
 
             AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
                     surnameField.getText(), passField.getText()));
@@ -104,7 +112,20 @@ public class TripBrokerLogin extends Application {
                     e.printStackTrace();
                 }
             }
-        });
+        };
+
+        EventHandler<KeyEvent> enter = event -> {
+
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                Event.fireEvent(button, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, null, 0, false, false, false, false, false, false, false, false, false, false, null));
+            }
+        };
+
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
+        nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+        surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+        passField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+
 
         Scene scene = new Scene(login);
         scene.getStylesheets().add("material.css");
