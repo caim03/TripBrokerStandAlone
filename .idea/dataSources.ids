@@ -306,11 +306,14 @@ id_utente</columns>
       <column id="81" parent="12" name="stazione_arrivo">
         <data-type>varchar(20)</data-type>
       </column>
-      <key id="82" parent="12" name="PRIMARY">
+      <column id="82" parent="12" name="data_arrivo">
+        <data-type>date</data-type>
+      </column>
+      <key id="83" parent="12" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="83" parent="12" name="Viaggio_ibfk_1">
+      <foreign-key id="84" parent="12" name="Viaggio_ibfk_1">
         <columns>id</columns>
         <ref-key>Offerta.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>

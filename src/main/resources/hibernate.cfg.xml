@@ -8,6 +8,8 @@
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">caim03</property>
     <property name="hibernate.connection.password">asroma93</property>
+    <!-- DB schema will be updated if needed -->
+    <!--<property name="hbm2ddl.auto">update</property> -->
     <mapping class="model.entityDB.CreaPacchettoEntity"/>
     <mapping class="model.entityDB.DipendentiEntity"/>
     <mapping class="model.entityDB.EventoEntity"/>
@@ -19,7 +21,5 @@
     <mapping class="model.entityDB.ProdottoUtenteEntity"/>
     <mapping class="model.entityDB.UtenteEntity"/>
     <mapping class="model.entityDB.ViaggioEntity"/>
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

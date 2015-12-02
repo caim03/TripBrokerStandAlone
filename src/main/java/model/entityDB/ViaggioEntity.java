@@ -134,6 +134,8 @@ public class ViaggioEntity extends OffertaEntity {
         return result;
     }
 
+    @Basic
+    @Column (name = "data_arrivo")
     public Date getDataArrivo() {
         return dataArrivo;
     }
