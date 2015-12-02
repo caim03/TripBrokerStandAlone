@@ -7,6 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Viaggio", schema = "trip_broker")
+@PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class ViaggioEntity extends OffertaEntity {
     //private int id;
     private String destinazione;
