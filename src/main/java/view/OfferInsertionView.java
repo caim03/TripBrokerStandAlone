@@ -16,8 +16,8 @@ import view.material.MaterialField;
 import view.material.NumericField;
 
 public class OfferInsertionView {
-    private static TextField offerName;
-    private static TextField offerPrice;
+    private static TextField nameField;
+    private static TextField priceField;
     private static Node[] offerNode;
     private static Spinner<String> spinner;
 
@@ -30,11 +30,11 @@ public class OfferInsertionView {
     }
 
     public static String getOfferName() {
-        return offerName.getText();
+        return nameField.getText();
     }
 
     public static String getPriceoffer() {
-        return offerPrice.getText();
+        return priceField.getText();
     }
 
     public static String getSpinner() {
@@ -48,10 +48,12 @@ public class OfferInsertionView {
     private static Parent buildGUI() {
 
         Label name = new Label("Name");
-        offerName.setPromptText("Insert offer name");
+        nameField = new TextField();
+        nameField.setPromptText("Insert offer name");
 
         Label price = new Label("Price");
-        offerPrice.setPromptText("Insert offer price");
+        priceField = new NumericField();
+        priceField.setPromptText("Insert offer price");
 
         spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
         spinner.getEditor().setPromptText(null);
@@ -65,8 +67,8 @@ public class OfferInsertionView {
         pane.add(name, 0, 1);
         pane.add(price, 0, 2);
 
-        pane.add(new MaterialField(offerName, Color.GOLD), 1, 1, 2, 1);
-        pane.add(new MaterialField(offerPrice, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
         pane.add(spinner, 1, 3, 2, 1);
 
         VBox box = new VBox(pane, fromOffer(spinner.getValue()));
@@ -103,6 +105,8 @@ public class OfferInsertionView {
 
     private static Node stayAttachment() {
 
+        offerNode = new Node[3];
+
         Label city = new Label("City");
         TextField ctyField = new TextField();
         ctyField.setPromptText("Insert city");
@@ -136,6 +140,7 @@ public class OfferInsertionView {
 
     private static Node eventAttachment() {
 
+        offerNode = new Node[3];
         Label city = new Label("City");
         TextField ctyField = new TextField();
         ctyField.setPromptText("Insert city");
@@ -170,12 +175,13 @@ public class OfferInsertionView {
 
     private static Node travelAttachment() {
 
+        offerNode = new Node[4];
         Label departure = new Label("Departure");
         TextField depField = new TextField();
         depField.setPromptText("Insert departure station");
 
         Label arrival = new Label("Arrival");
-        TextField arrField = new NumericField();
+        TextField arrField = new TextField();
         arrField.setPromptText("Insert arrival station");
 
         Label vehicle = new Label("Vehicol");
