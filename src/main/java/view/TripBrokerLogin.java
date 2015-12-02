@@ -73,48 +73,30 @@ public class TripBrokerLogin extends Application {
         login.setStyle("-fx-background-color: white");
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
-        button.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
 
-                Stage s = new Stage();
-                s.setScene(new Scout().generateView());
-                s.getScene().getStylesheets().add("material.css");
+            AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
+                    surnameField.getText(), passField.getText()));
+
+            if (entity == null)
+                Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
+
+            else if (!entity.isValid())
+                Notifications.create().title("Not Found").text("This user is not registered").show();
+
+            else {
+
+                Stage stage = new Stage();
+                stage.setScene(((DipendentiEntity)entity).generateView());
+                stage.getScene().getStylesheets().add("material.css");
 
                 TripBrokerLogin.this.stage.close();
 
-                TripBrokerConsole console = new TripBrokerConsole();
+                TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
                 try {
-                    console.start(s);
+                    tripBrokerConsole.start(stage);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-
-                if (true) return;
-
-                //TODO: togliere login automatico
-
-                AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(), surnameField.getText(), passField.getText()));
-
-                if (entity == null)
-                    Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
-
-                else if (!entity.isValid())
-                    Notifications.create().title("Not Found").text("This user is not registered").show();
-                else {
-
-                    Stage stage = new Stage();
-                    stage.setScene(((DipendentiEntity)entity).generateView());
-                    stage.getScene().getStylesheets().add("material.css");
-
-                    TripBrokerLogin.this.stage.close();
-
-                    TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
-                    try {
-                        tripBrokerConsole.start(stage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         });
