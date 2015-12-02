@@ -15,31 +15,6 @@ import javafx.scene.paint.Color;
 
 public class DrawerCell extends ListCell<String> {
 
-    Label lbl;
-
-    public DrawerCell() {
-
-        ChangeListener listener = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                onFocusedItem(newValue);
-            }
-        };
-
-        hoverProperty().addListener(listener);
-        selectedProperty().addListener(listener);
-    }
-
-    public void onFocusedItem(boolean focused) {
-
-        if (lbl != null) {
-            if (focused) lbl.setTextFill(Color.WHITE);
-            else lbl.setTextFill(Color.CRIMSON);
-        }
-    }
-
-
-
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
@@ -51,8 +26,27 @@ public class DrawerCell extends ListCell<String> {
         cell.setPrefHeight(48);
         cell.setPadding(new Insets(10, 8, 10, 8));
 
-        lbl = new Label(item);
-        lbl.setStyle("-fx-text-fill: crimson");
+        Label lbl = new Label(item);
+        lbl.setTextFill(Color.CRIMSON);
+
+        ChangeListener listener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (isSelected()) return;
+                if (newValue) lbl.setTextFill(Color.WHITE);
+                else lbl.setTextFill(Color.CRIMSON);
+            }
+        };
+
+        hoverProperty().addListener(listener);
+        focusedProperty().addListener(listener);
+        selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) lbl.setTextFill(Color.WHITE);
+                else lbl.setTextFill(Color.CRIMSON);
+            }
+        });
 
         Canvas round = new Canvas(48, 48);
         round.getGraphicsContext2D().setFill(Color.ORANGE);
@@ -62,6 +56,4 @@ public class DrawerCell extends ListCell<String> {
 
         setGraphic(cell);
     }
-
-
 }
