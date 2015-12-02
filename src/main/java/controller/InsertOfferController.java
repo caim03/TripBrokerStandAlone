@@ -11,6 +11,10 @@ import model.entityDB.ViaggioEntity;
 
 public class InsertOfferController {
 
+    public static void handle() {
+
+    }
+
     public static void insertOfferEvent(EventoEntity entity) {
 
         DAO dao = EventoDaoHibernate.instance();

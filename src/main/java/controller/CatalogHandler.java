@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -8,11 +9,12 @@ import javafx.stage.Stage;
 import view.CatalogView;
 import view.ConsolePane;
 import view.OfferInsertionView;
+import view.material.FlatButton;
 
 public class CatalogHandler implements EventHandler<MouseEvent> {
 
     ListView list;
-    BorderPane pane;
+    ConsolePane pane;
     static Stage stage;
 
     public CatalogHandler() {
@@ -23,7 +25,7 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
         this(list, null);
     }
 
-    public CatalogHandler(ListView list, BorderPane pane) {
+    public CatalogHandler(ListView list, ConsolePane pane) {
 
         setList(list);
         setPane(pane);
@@ -34,7 +36,7 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
         this.list = list;
     }
 
-    public void setPane(BorderPane pane) {
+    public void setPane(ConsolePane pane) {
         this.pane = pane;
     }
 
@@ -55,7 +57,13 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
 
         else if ("Inserisci offerta".equals(list.getSelectionModel().getSelectedItem())) {
 
-            ((ConsolePane)pane).addToolbarButton();
+            pane.hideToolbarButtons();
+
+            Button done = new FlatButton();
+            done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
+                InsertOfferController.handle();
+            });
+            pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());
         }
     }

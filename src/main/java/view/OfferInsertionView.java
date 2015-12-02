@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import view.material.MaterialField;
+import view.material.NumericField;
 
 public class OfferInsertionView {
 

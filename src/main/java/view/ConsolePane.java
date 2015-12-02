@@ -1,56 +1,52 @@
 package view;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-
-import java.io.IOException;
+import view.material.FlatButton;
+import view.material.Toolbar;
 
 public class ConsolePane extends BorderPane {
 
-    HBox toolbar;
+    Toolbar toolbar;
     VBox drawer;
 
     public ConsolePane(String title) {
 
-        try {
-
-            toolbar = FXMLLoader.load(getClass().getClassLoader().getResource("toolbar.fxml"));
-            ((Label)toolbar.getChildren().get(0)).setText(title);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        toolbar = new Toolbar(title);
         setTop(toolbar);
     }
 
-    public void addToolbarButton() {
+    public void addToolbarButton(Button button) {
 
-        Button button = new Button();
-        button.setText("YEAH");
-
-        toolbar.getChildren().add(button);
+        toolbar.addToolbarButton(button);
     }
 
-    public void hideToolbarButton() {
+    public void hideToolbarButtons() {
 
-        if (toolbar.getChildren().size() == 3) {
-
-            toolbar.getChildren().remove(2, 3);
-        }
+        toolbar.removeButtons();
     }
 
     public void setDrawer(VBox box) {
 
         drawer = box;
         setLeft(box);
+    }
+
+    public void setContent() {
+
+        Pane pane = new Pane();
+
+        Button btn = new Button();
+        btn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                pane.getChildren();
+            }
+        });
     }
 }

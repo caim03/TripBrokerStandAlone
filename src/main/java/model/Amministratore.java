@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import view.CatalogView;
+import view.ConsolePane;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Amministratore extends Ruolo {
     @Override
     public Scene generateView() {
 
-        Label title = new Label("Trip Broker Administration");
+        Label title = new Label();
         title.setStyle("-fx-text-fill: snow");
         ToolBar toolbar = new ToolBar(title);
         toolbar.setStyle("-fx-background-color: cornflowerblue");
@@ -50,7 +51,9 @@ public class Amministratore extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        BorderPane container = new BorderPane(welcome, toolbar, null, null, drawer);
+        ConsolePane container = new ConsolePane("Trip Broker Administration");
+        container.setDrawer(drawer);
+        container.setCenter(welcome);
         list.setOnMouseClicked(new CatalogHandler(list, container));
 
         return new Scene(container);

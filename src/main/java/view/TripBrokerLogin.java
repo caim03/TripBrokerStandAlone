@@ -2,7 +2,6 @@ package view;
 
 import controller.LoginController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,10 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Scout;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
+import view.material.MaterialField;
 
 public class TripBrokerLogin extends Application {
 
