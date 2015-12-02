@@ -82,9 +82,10 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
             done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
                 String offerName = OfferInsertionView.getOfferName();
                 String offerPrice = OfferInsertionView.getPriceoffer();
+                int offerQuantity = OfferInsertionView.getOfferQuantity();
                 String offerSpinner = OfferInsertionView.getSpinner();
                 Node[] offerList = OfferInsertionView.getOfferNode();
-                InsertOfferController.handle(offerName, offerPrice, offerSpinner, offerList);
+                InsertOfferController.handle(offerName, offerPrice, offerQuantity,offerSpinner, offerList);
             });
             pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());

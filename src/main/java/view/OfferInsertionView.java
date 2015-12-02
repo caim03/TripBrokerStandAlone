@@ -42,6 +42,10 @@ public class OfferInsertionView {
         return priceField.getText();
     }
 
+    public static int getOfferQuantity() {
+        return Integer.parseInt(quField.getText());
+    }
+
     public static String getSpinner() {
         return spinner.getValue();
     }

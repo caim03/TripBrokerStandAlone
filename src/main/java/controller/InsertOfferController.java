@@ -1,8 +1,11 @@
 package controller;
 
 import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
+import jfxtras.scene.control.CalendarTimePicker;
+import jfxtras.scene.control.CalendarTimeTextField;
 import model.DBManager;
 import model.dao.EventoDaoHibernate;
 import model.dao.PernottamentoDaoHibernate;
@@ -11,12 +14,13 @@ import model.daoInterface.DAO;
 import model.entityDB.EventoEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
-
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class InsertOfferController {
 
-    public static void handle(String name, String price, String spinner, Node[] list) {
+    public static void handle(String name, String price, int quantity, String spinner, Node[] list) {
         if (name == null || "".equals(name)){
             return;
         }
@@ -25,21 +29,27 @@ public class InsertOfferController {
             return;
         }
 
+        if (quantity == 0){
+            return;
+        }
+
         if ("Evento".equals(spinner)){
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
             String seatField = ((TextField) list[2]).getText();
+            Date date = (Date) Date.from((((DatePicker) list[3]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int timePicker = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours();
+            int endPicker = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
 
             if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField)) ||
                     (seatField == null || "".equals(seatField))){
                 return;
             }
 
-            // BUILDER DI PROVA STATICO
             EventBuilder eventBuilder = new EventBuilder();
             eventBuilder.buildProduct(name, Double.parseDouble(price));
-            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), 2, (byte) 0, new Date(2015, 12, 2));
-            eventBuilder.buildEntity(8, 12, 14, "Piazza di Spagna");
+            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, date);
+            eventBuilder.buildEntity(seatField, timePicker, endPicker, locField);
 
             insertOfferEvent((EventoEntity) eventBuilder.getEntity());
         }
@@ -49,6 +59,10 @@ public class InsertOfferController {
             String arrField = ((TextField) list[1]).getText();
             String vehSpinner = ((Spinner<String>) list[2]).getValue();
             String clsSpinner = ((Spinner<String>) list[3]).getValue();
+            Date depDate = (Date) Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int depTime = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
+            Date arrDate = (Date) Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int arrTime = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getHours();
 
             if ((depField == null || "".equals(depField)) || (arrField == null || "".equals(arrField))){
                 return;
@@ -56,8 +70,8 @@ public class InsertOfferController {
 
             TravelBuilder travelBuilder = new TravelBuilder();
             travelBuilder.buildProduct(name, Double.parseDouble(price));
-            travelBuilder.buildOffer("Roma", Double.parseDouble(price), 5, (byte) 0, new Date(2015, 12, 2));
-            travelBuilder.buildEntity("Milano", 12, 15, vehSpinner, clsSpinner, depField, arrField);
+            travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, depDate);
+            travelBuilder.buildEntity(arrField, depTime, arrTime, vehSpinner, clsSpinner, depField, arrField, arrDate);
 
             insertOfferTravel((ViaggioEntity) travelBuilder.getEntity());
         }
@@ -66,6 +80,9 @@ public class InsertOfferController {
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
             String starSpinner = ((Spinner<String>) list[2]).getValue();
+            String srvSpinner = ((Spinner<String>) list[3]).getValue();
+            Date startDate = (Date) Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date endDate = (Date) Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))){
                 return;
@@ -73,8 +90,8 @@ public class InsertOfferController {
 
             StayBuilder stayBuilder = new StayBuilder();
             stayBuilder.buildProduct(name, Double.parseDouble(price));
-            stayBuilder.buildOffer(ctyField, Double.parseDouble(price), 7, (byte) 0, new Date(2015, 12, 2));
-            stayBuilder.buildEntity(new Date(2015, 12, 9), "Mezza Pensione", starSpinner, locField);
+            stayBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, startDate);
+            stayBuilder.buildEntity(endDate, srvSpinner, starSpinner, locField);
 
             insertOfferStay((PernottamentoEntity) stayBuilder.getEntity());
         }

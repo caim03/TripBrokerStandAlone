@@ -1,6 +1,7 @@
 package controller;
 
 import model.entityDB.ViaggioEntity;
+import java.sql.Date;
 
 public class TravelBuilder extends EntityBuilder {
 
@@ -19,5 +20,7 @@ public class TravelBuilder extends EntityBuilder {
         ((ViaggioEntity)entity).setClasse((String) objects[4]);
         ((ViaggioEntity)entity).setStazionePartenza((String) objects[5]);
         ((ViaggioEntity)entity).setStazioneArrivo((String) objects[6]);
+        ((ViaggioEntity)entity).setDataArrivo((Date) objects[7]);
+
     }
 }

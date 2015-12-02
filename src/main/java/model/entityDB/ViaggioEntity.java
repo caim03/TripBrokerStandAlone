@@ -1,6 +1,7 @@
 package model.entityDB;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * Created by Christian on 18/11/2015.
@@ -17,6 +18,7 @@ public class ViaggioEntity extends OffertaEntity {
     private String classe;
     private String stazionePartenza;
     private String stazioneArrivo;
+    private Date dataArrivo;
 
     /*@Id
     @Column(name = "id")
@@ -130,5 +132,13 @@ public class ViaggioEntity extends OffertaEntity {
         result = 31 * result + (stazionePartenza != null ? stazionePartenza.hashCode() : 0);
         result = 31 * result + (stazioneArrivo != null ? stazioneArrivo.hashCode() : 0);
         return result;
+    }
+
+    public Date getDataArrivo() {
+        return dataArrivo;
+    }
+
+    public void setDataArrivo(Date dataArrivo) {
+        this.dataArrivo = dataArrivo;
     }
 }
