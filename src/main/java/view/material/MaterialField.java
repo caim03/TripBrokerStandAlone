@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 public class MaterialField extends StackPane {
 
     TextField field;
-    Paint fill;
+    Paint fill, error = Color.RED;
 
     public Paint getPaint() { return this.fill; }
 

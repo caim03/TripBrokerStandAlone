@@ -34,6 +34,9 @@
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:8.40.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jfxtras:jfxtras-controls:8.0-r4" level="project" />
+    <orderEntry type="library" name="Maven: org.jfxtras:jfxtras-fxml:8.0-r4" level="project" />
+    <orderEntry type="library" name="Maven: org.jfxtras:jfxtras-common:8.0-r4" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
