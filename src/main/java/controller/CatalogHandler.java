@@ -80,7 +80,7 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
             done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
                 String offerName = OfferInsertionView.getOfferName();
                 String offerPrice = OfferInsertionView.getPriceoffer();
-                int offerQuantity = OfferInsertionView.getOfferQuantity();
+                String offerQuantity = OfferInsertionView.getOfferQuantity();
                 String offerSpinner = OfferInsertionView.getSpinner();
                 Node[] offerList = OfferInsertionView.getOfferNode();
                 InsertOfferController.handle(offerName, offerPrice, offerQuantity,offerSpinner, offerList);
