@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,7 +29,7 @@ public class NavigationDrawer extends VBox {
 
         Canvas canvas = new Canvas(width, width * ratio);
         GraphicsContext context = canvas.getGraphicsContext2D();
-        context.setFill(Color.ORANGE);
+        context.setFill(Color.web("#FF5252"));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         getChildren().add(canvas);

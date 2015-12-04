@@ -1,15 +1,15 @@
 package view;
 
-import com.sun.javafx.event.EventDispatchChainImpl;
 import controller.LoginController;
 import javafx.application.Application;
 import javafx.event.Event;
-import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -62,9 +62,9 @@ public class TripBrokerLogin extends Application {
         pane.add(surLbl, 0, 2);
         pane.add(passLbl, 0, 3);
 
-        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
-        pane.add(new MaterialField(surnameField, Color.GOLD), 1, 2, 2, 1);
-        pane.add(new MaterialField(passField, Color.GOLD), 1, 3, 2, 1);
+        pane.add(new MaterialField(nameField, Color.web("#B6B6B6")), 1, 1, 2, 1);
+        pane.add(new MaterialField(surnameField, Color.web("#B6B6B6")), 1, 2, 2, 1);
+        pane.add(new MaterialField(passField, Color.web("#B6B6B6")), 1, 3, 2, 1);
 
         pane.add(button, 1, 4);
 

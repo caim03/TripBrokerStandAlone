@@ -46,7 +46,7 @@ public class DrawerCell extends ListCell<String> {
         });
 
         Canvas round = new Canvas(48, 48);
-        round.getGraphicsContext2D().setFill(Color.ORANGE);
+        round.getGraphicsContext2D().setFill(Color.web("#FF5252"));
         round.getGraphicsContext2D().fillOval(4, 4, 40, 40);
 
         cell.getChildren().addAll(round, lbl);

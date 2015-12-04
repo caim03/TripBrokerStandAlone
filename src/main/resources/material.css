@@ -13,14 +13,14 @@
 }
 
 .button {
-    -fx-background-color: gold;
+    -fx-background-color: #FF5252;
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, lightgrey, 1, 0.3, 1, 1);
 }
 
 .button:pressed {
     -fx-border-color: null;
-    -fx-background-color: gold;
+    -fx-background-color: #FF5252;
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, lightgrey, 1, 1, 1, 1);
 }
@@ -47,12 +47,12 @@
 }
 
 .list-cell:filled:hover, .list-cell:filled:selected:hover {
-    -fx-background-color: crimson;
+    -fx-background-color: #3F51B5;
     -fx-text-fill: white;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: #dc143c;
+    -fx-background-color: #3F51B5;
     -fx-opacity: 0.5;
     -fx-text-fill: white;
 }

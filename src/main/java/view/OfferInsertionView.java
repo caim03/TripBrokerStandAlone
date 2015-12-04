@@ -82,9 +82,9 @@ public class OfferInsertionView {
         pane.add(price, 0, 2);
         pane.add(qu, 0, 3);
 
-        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
-        pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
-        pane.add(new MaterialField(quField, Color.GOLD), 1, 3, 2, 1);
+        pane.add(new MaterialField(nameField, Color.web("#B6B6B6")), 1, 1, 2, 1);
+        pane.add(new MaterialField(priceField, Color.web("#B6B6B6")), 1, 2, 2, 1);
+        pane.add(new MaterialField(quField, Color.web("#B6B6B6")), 1, 3, 2, 1);
         pane.add(spinner, 1, 4, 2, 1);
 
         VBox box = new VBox(pane, fromOffer(spinner.getValue()));
@@ -153,8 +153,8 @@ public class OfferInsertionView {
         pane.add(stars, 0, 4);
         pane.add(service, 0, 5);
 
-        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1);
-        pane.add(new MaterialField(locField, Color.GOLD), 1, 2);
+        pane.add(new MaterialField(ctyField, Color.web("#B6B6B6")), 1, 1);
+        pane.add(new MaterialField(locField, Color.web("#B6B6B6")), 1, 2);
         pane.add(datePicker, 1, 3);
         pane.add(endPicker, 3, 3);
         pane.add(strSpinner, 1, 4);
@@ -202,13 +202,13 @@ public class OfferInsertionView {
         pane.add(date, 0, 3);
         pane.add(seat, 0, 4);
 
-        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1);
-        pane.add(new MaterialField(locField, Color.GOLD), 1, 2);
+        pane.add(new MaterialField(ctyField, Color.web("#B6B6B6")), 1, 1);
+        pane.add(new MaterialField(locField, Color.web("#B6B6B6")), 1, 2);
         pane.add(datePicker, 1, 3);
         pane.add(timePicker, 2, 3);
         pane.add(until, 3, 3);
         pane.add(endPicker, 4, 3);
-        pane.add(new MaterialField(seatField, Color.GOLD), 1, 4);
+        pane.add(new MaterialField(seatField, Color.web("#B6B6B6")), 1, 4);
 
         pane.setPadding(new Insets(25, 25, 25, 25));
 
@@ -255,8 +255,8 @@ public class OfferInsertionView {
         pane.add(vehicle, 0, 3);
         pane.add(classLbl, 3, 3);
 
-        pane.add(new MaterialField(depField, Color.GOLD), 1, 1);
-        pane.add(new MaterialField(arrField, Color.GOLD), 1, 2);
+        pane.add(new MaterialField(depField, Color.web("#B6B6B6")), 1, 1);
+        pane.add(new MaterialField(arrField, Color.web("#B6B6B6")), 1, 2);
         pane.add(vehSpinner, 1, 3);
         pane.add(clsSpinner, 4, 3);
 
