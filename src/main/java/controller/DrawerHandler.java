@@ -44,9 +44,7 @@ public class DrawerHandler implements EventHandler<MouseEvent> {
 
         if (commands.containsKey(index)) {
 
-            System.out.println("COMMAND " + index);
             commands.get(index).execute();
-            System.out.println("EXECUTED " + index);
         }
     }
 }

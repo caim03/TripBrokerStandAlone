@@ -1,6 +1,7 @@
 package model.entityDB;
 
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.Amministratore;
 import model.Designer;
 import model.Ruolo;
@@ -114,7 +115,7 @@ public class DipendentiEntity extends AbstractEntity {
         return result;
     }
 
-    public Scene generateView() {
+    public Stage generateView() {
 
         return this.job.generateView();
     }

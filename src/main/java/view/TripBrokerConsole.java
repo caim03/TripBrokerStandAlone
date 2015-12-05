@@ -15,8 +15,6 @@ public class TripBrokerConsole extends Application {
 
         TripBrokerConsole.logoutCommand = new LogoutCommand(primaryStage);
 
-        //primaryStage.setScene(new Scout().generateView());
-
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }

@@ -51,6 +51,7 @@ public class NavigationDrawer extends VBox {
         else if ("Administrator".equals(title)) setOptions(NavigationDrawer.admin);
         else if ("Designer".equals(title)) setOptions(NavigationDrawer.desig);
     }
+
     public void setOptions(ObservableList<String> opts) {
 
         int size;

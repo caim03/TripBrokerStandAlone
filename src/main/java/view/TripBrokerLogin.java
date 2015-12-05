@@ -94,13 +94,7 @@ public class TripBrokerLogin extends Application {
 
             else {
 
-                System.out.println("CREATION");
-
-                Stage stage = new Stage();
-                Scene scene = ((DipendentiEntity)entity).generateView();
-                stage.setScene(scene);
-
-                System.out.println("CREATED");
+                Stage stage =  ((DipendentiEntity)entity).generateView();
 
                 TripBrokerLogin.this.stage.close();
 
