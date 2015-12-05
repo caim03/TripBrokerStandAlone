@@ -12,10 +12,11 @@ public abstract class EntityBuilder {
         return entity;
     }
 
-    public void buildProduct(String name, double price) {
+    public void buildProduct(String name, double price, String type) {
 
         entity.setNome(name);
         entity.setPrezzo(price);
+        entity.setTipo(type);
     }
 
     public void buildOffer(String city, double price, int amount, byte state, Date date) {

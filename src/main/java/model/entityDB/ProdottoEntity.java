@@ -12,6 +12,7 @@ public class ProdottoEntity extends AbstractEntity {
     private int id;
     private String nome;
     private double prezzo;
+    private String tipo;
 
     @Id
     @Column(name = "id")
@@ -43,6 +44,12 @@ public class ProdottoEntity extends AbstractEntity {
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
     }
+
+    @Basic
+    @Column(name = "tipo")
+    public String getTipo() { return tipo; }
+
+    public void setTipo(String tipo) { this.tipo = tipo;}
 
     @Override
     public boolean equals(Object o) {

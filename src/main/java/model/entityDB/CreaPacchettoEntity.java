@@ -3,14 +3,15 @@ package model.entityDB;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Crea_Pacchetto", schema = "trip_broker", catalog = "")
-public class CreaPacchettoEntity extends AbstractEntity {
-    private int id;
+@Table(name = "Crea_Pacchetto", schema = "trip_broker")
+@PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+public class CreaPacchettoEntity extends ProdottoEntity {
+    //private int id;
     private int stato;
     private String motivazione;
     private int creatore;
 
-    @Id
+    /*@Id
     @Column(name = "id")
     public int getId() {
         return id;
@@ -18,7 +19,7 @@ public class CreaPacchettoEntity extends AbstractEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     @Basic
     @Column(name = "stato")
@@ -57,7 +58,7 @@ public class CreaPacchettoEntity extends AbstractEntity {
 
         CreaPacchettoEntity that = (CreaPacchettoEntity) o;
 
-        if (id != that.id) return false;
+        //if (id != that.id) return false;
         if (stato != that.stato) return false;
         if (creatore != that.creatore) return false;
         if (motivazione != null ? !motivazione.equals(that.motivazione) : that.motivazione != null) return false;
@@ -67,7 +68,7 @@ public class CreaPacchettoEntity extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = super.getId();
         result = 31 * result + stato;
         result = 31 * result + (motivazione != null ? motivazione.hashCode() : 0);
         result = 31 * result + creatore;

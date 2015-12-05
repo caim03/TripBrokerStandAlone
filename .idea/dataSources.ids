@@ -218,102 +218,106 @@ id_offerta</columns>
         <mandatory>1</mandatory>
         <data-type>float</data-type>
       </column>
-      <key id="60" parent="9" name="PRIMARY">
+      <column id="60" parent="9" name="tipo">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="61" parent="9" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="61" parent="10" name="id_prodotto">
+      <column id="62" parent="10" name="id_prodotto">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="62" parent="10" name="id_utente">
+      <column id="63" parent="10" name="id_utente">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <key id="63" parent="10" name="PRIMARY">
+      <key id="64" parent="10" name="PRIMARY">
         <columns>id_prodotto
 id_utente</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="64" parent="10" name="Prodotto_Utente_ibfk_1">
+      <foreign-key id="65" parent="10" name="Prodotto_Utente_ibfk_1">
         <columns>id_prodotto</columns>
         <ref-key>Prodotto.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="65" parent="10" name="Prodotto_Utente_ibfk_2">
+      <foreign-key id="66" parent="10" name="Prodotto_Utente_ibfk_2">
         <columns>id_utente</columns>
         <ref-key>Utente.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="66" parent="11" name="id">
+      <column id="67" parent="11" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="67" parent="11" name="nome">
+      <column id="68" parent="11" name="nome">
         <mandatory>1</mandatory>
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="68" parent="11" name="cognome">
+      <column id="69" parent="11" name="cognome">
         <mandatory>1</mandatory>
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="69" parent="11" name="mail">
+      <column id="70" parent="11" name="mail">
         <mandatory>1</mandatory>
         <data-type>varchar(60)</data-type>
       </column>
-      <column id="70" parent="11" name="password_login">
+      <column id="71" parent="11" name="password_login">
         <mandatory>1</mandatory>
         <data-type>varchar(256)</data-type>
       </column>
-      <column id="71" parent="11" name="codice_fiscale">
+      <column id="72" parent="11" name="codice_fiscale">
         <mandatory>1</mandatory>
         <data-type>varchar(16)</data-type>
       </column>
-      <column id="72" parent="11" name="numero_carta">
+      <column id="73" parent="11" name="numero_carta">
         <data-type>varchar(16)</data-type>
       </column>
-      <key id="73" parent="11" name="PRIMARY">
+      <key id="74" parent="11" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="74" parent="12" name="id">
+      <column id="75" parent="12" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="75" parent="12" name="destinazione">
+      <column id="76" parent="12" name="destinazione">
         <mandatory>1</mandatory>
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="76" parent="12" name="ora_partenza">
-        <mandatory>1</mandatory>
-        <data-type>int(11)</data-type>
-      </column>
-      <column id="77" parent="12" name="ora_arrivo">
+      <column id="77" parent="12" name="ora_partenza">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="78" parent="12" name="mezzo">
+      <column id="78" parent="12" name="ora_arrivo">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="79" parent="12" name="mezzo">
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="79" parent="12" name="classe">
+      <column id="80" parent="12" name="classe">
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="80" parent="12" name="stazione_partenza">
+      <column id="81" parent="12" name="stazione_partenza">
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="81" parent="12" name="stazione_arrivo">
+      <column id="82" parent="12" name="stazione_arrivo">
         <data-type>varchar(20)</data-type>
       </column>
-      <column id="82" parent="12" name="data_arrivo">
+      <column id="83" parent="12" name="data_arrivo">
         <data-type>date</data-type>
       </column>
-      <key id="83" parent="12" name="PRIMARY">
+      <key id="84" parent="12" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="84" parent="12" name="Viaggio_ibfk_1">
+      <foreign-key id="85" parent="12" name="Viaggio_ibfk_1">
         <columns>id</columns>
         <ref-key>Offerta.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
