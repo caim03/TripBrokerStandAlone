@@ -1,17 +1,16 @@
 package model;
 
-import controller.CatalogHandler;
-import javafx.collections.FXCollections;
+import controller.command.Command;
+import controller.command.RefreshCommand;
+import controller.command.RefreshMacroCommand;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.paint.Color;
-
+import view.CatalogView;
+import view.TripBrokerConsole;
 import view.material.ConsolePane;
-import view.material.NavigationDrawer;
 
 public class Amministratore extends Ruolo {
 
@@ -24,12 +23,16 @@ public class Amministratore extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Trip Broker Administration");
-        container.setDrawer(FXCollections.<String>observableArrayList("Visualizza Catalogo",
-                "OPERATION 2",  "OPERATION 3", "Logout"));
+        ConsolePane container = new ConsolePane("Administrator");
         container.setCenter(welcome);
+        Command refresh;
+        container.addCommands(new RefreshMacroCommand(container, new Command() {
+            @Override public void execute() { container.setCenter(CatalogView.buildScene()); }}),
+            refresh = new RefreshCommand(container), refresh, TripBrokerConsole.logoutCommand);
 
-        return new Scene(container);
+        Scene scene = new Scene(container);
+        scene.getStylesheets().add("material.css");
+        return scene;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package view;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import controller.InsertOfferController;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,49 +12,71 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import jfxtras.scene.control.CalendarPicker;
-import jfxtras.scene.control.CalendarTimePicker;
 import jfxtras.scene.control.CalendarTimeTextField;
+import org.controlsfx.control.Notifications;
 import view.material.MaterialField;
 import view.material.NumericField;
 
 import java.time.LocalDate;
 
-public class OfferInsertionView {
-    private static TextField nameField, priceField, quField;
-    private static Node[] offerNode;
-    private static Spinner<String> spinner;
+public class OfferInsertionView extends VBox implements Cloneable {
 
+    private TextField nameField, priceField, quField;
+    private Node[] offerNode;
+    private Spinner<String> spinner;
 
-    private static Parent basicGUI;
+    private static OfferInsertionView basicGUI;
 
-    public static Parent getInstance() {
-        if (basicGUI == null) basicGUI = buildGUI();
+    @Override
+    public OfferInsertionView clone() throws CloneNotSupportedException {
+
+        return (OfferInsertionView) super.clone();
+    }
+
+    public static OfferInsertionView getInstance() {
+        if (basicGUI == null) {
+
+            basicGUI = new OfferInsertionView();
+            basicGUI.buildGUI();
+        }
+
         return basicGUI;
     }
 
-    public static String getOfferName() {
+    public String getOfferName() {
         return nameField.getText();
     }
 
-    public static String getPriceoffer() {
+    public String getPriceoffer() {
         return priceField.getText();
     }
 
-    public static String getOfferQuantity() {
-
-        return quField.getText();
+    public int getOfferQuantity() {
+        return Integer.parseInt(quField.getText());
     }
 
-    public static String getSpinner() {
+    public String getSpinner() {
         return spinner.getValue();
     }
 
-    public static Node[] getOfferNode() {
+    public Node[] getOfferNode() {
         return offerNode;
     }
 
-    private static Parent buildGUI() {
+    public void harvest() {
+
+        if (InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode()));
+
+        else {
+
+            Notifications error = Notifications.create();
+            error.text("Could not insert offer, please check fields and retry");
+            error.title("Insertion error");
+            error.showWarning();
+        }
+    }
+
+    private void buildGUI() {
 
         Label name = new Label("Name");
         nameField = new TextField();
@@ -82,28 +103,22 @@ public class OfferInsertionView {
         pane.add(price, 0, 2);
         pane.add(qu, 0, 3);
 
-        pane.add(new MaterialField(nameField, Color.web("#B6B6B6")), 1, 1, 2, 1);
-        pane.add(new MaterialField(priceField, Color.web("#B6B6B6")), 1, 2, 2, 1);
-        pane.add(new MaterialField(quField, Color.web("#B6B6B6")), 1, 3, 2, 1);
+        pane.add(new MaterialField(nameField, Color.GOLD), 1, 1, 2, 1);
+        pane.add(new MaterialField(priceField, Color.GOLD), 1, 2, 2, 1);
+        pane.add(new MaterialField(quField, Color.GOLD), 1, 3, 2, 1);
         pane.add(spinner, 1, 4, 2, 1);
 
-        VBox box = new VBox(pane, fromOffer(spinner.getValue()));
-        box.setStyle("-fx-background-color: white");
+        spinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 
-        spinner.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            try { basicGUI.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
 
-                try { box.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
-
-                box.getChildren().add(OfferInsertionView.fromOffer(newValue));
-            }
+            basicGUI.getChildren().add(fromOffer(newValue));
         });
 
-        return box;
+        basicGUI.getChildren().addAll(pane, fromOffer(spinner.getValue()));
     }
 
-    private static Node fromOffer(String type) {
+    private Node fromOffer(String type) {
 
         Node attachment = null;
 
@@ -119,7 +134,7 @@ public class OfferInsertionView {
         return attachment;
     }
 
-    private static Node stayAttachment() {
+    private Node stayAttachment() {
 
         offerNode = new Node[6];
 
@@ -153,8 +168,8 @@ public class OfferInsertionView {
         pane.add(stars, 0, 4);
         pane.add(service, 0, 5);
 
-        pane.add(new MaterialField(ctyField, Color.web("#B6B6B6")), 1, 1);
-        pane.add(new MaterialField(locField, Color.web("#B6B6B6")), 1, 2);
+        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1);
+        pane.add(new MaterialField(locField, Color.GOLD), 1, 2);
         pane.add(datePicker, 1, 3);
         pane.add(endPicker, 3, 3);
         pane.add(strSpinner, 1, 4);
@@ -172,7 +187,7 @@ public class OfferInsertionView {
         return pane;
     }
 
-    private static Node eventAttachment() {
+    private Node eventAttachment() {
 
         offerNode = new Node[6];
         Label city = new Label("City");
@@ -202,13 +217,13 @@ public class OfferInsertionView {
         pane.add(date, 0, 3);
         pane.add(seat, 0, 4);
 
-        pane.add(new MaterialField(ctyField, Color.web("#B6B6B6")), 1, 1);
-        pane.add(new MaterialField(locField, Color.web("#B6B6B6")), 1, 2);
+        pane.add(new MaterialField(ctyField, Color.GOLD), 1, 1);
+        pane.add(new MaterialField(locField, Color.GOLD), 1, 2);
         pane.add(datePicker, 1, 3);
         pane.add(timePicker, 2, 3);
         pane.add(until, 3, 3);
         pane.add(endPicker, 4, 3);
-        pane.add(new MaterialField(seatField, Color.web("#B6B6B6")), 1, 4);
+        pane.add(new MaterialField(seatField, Color.GOLD), 1, 4);
 
         pane.setPadding(new Insets(25, 25, 25, 25));
 
@@ -222,7 +237,7 @@ public class OfferInsertionView {
         return pane;
     }
 
-    private static Node travelAttachment() {
+    private Node travelAttachment() {
 
         offerNode = new Node[8];
         Label departure = new Label("Departure");
@@ -255,8 +270,8 @@ public class OfferInsertionView {
         pane.add(vehicle, 0, 3);
         pane.add(classLbl, 3, 3);
 
-        pane.add(new MaterialField(depField, Color.web("#B6B6B6")), 1, 1);
-        pane.add(new MaterialField(arrField, Color.web("#B6B6B6")), 1, 2);
+        pane.add(new MaterialField(depField, Color.GOLD), 1, 1);
+        pane.add(new MaterialField(arrField, Color.GOLD), 1, 2);
         pane.add(vehSpinner, 1, 3);
         pane.add(clsSpinner, 4, 3);
 

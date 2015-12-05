@@ -12,6 +12,7 @@ public class DBManager {
     private static ServiceRegistry serviceRegistry;
 
     public static void initHibernate() {
+
         configuration = new Configuration();
         configuration.configure();
 

@@ -1,5 +1,6 @@
 package view.material;
 
+import controller.command.Command;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -11,8 +12,8 @@ public class ConsolePane extends BorderPane {
 
     public ConsolePane(String title) {
 
-        toolbar = new Toolbar(title);
-        drawer = new NavigationDrawer();
+        toolbar = new Toolbar("Trip Broker " + title);
+        drawer = new NavigationDrawer(title);
         setTop(toolbar);
         setLeft(drawer);
     }
@@ -29,6 +30,11 @@ public class ConsolePane extends BorderPane {
 
     public void setDrawer(ObservableList<String> opts) {
 
-        drawer.setOptions(opts, this);
+        drawer.setOptions(opts);
+    }
+
+    public void addCommands(Command... commands) {
+
+        drawer.addCommands(commands);
     }
 }

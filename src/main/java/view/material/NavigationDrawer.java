@@ -1,6 +1,8 @@
 package view.material;
 
 import controller.CatalogHandler;
+import controller.DrawerHandler;
+import controller.command.Command;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -8,8 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -18,7 +18,12 @@ public class NavigationDrawer extends VBox {
 
     static double ratio = 0.67;
 
+    static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
+                          admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "OPERATION 2",  "OPERATION 3", "Logout"),
+                          desig = FXCollections.<String>observableArrayList("Componi pacchetto", "OPERATION 2",  "OPERATION 3", "Logout");
+
     ListView<String> options;
+    DrawerHandler handler;
 
     public NavigationDrawer() {
 
@@ -29,13 +34,25 @@ public class NavigationDrawer extends VBox {
 
         Canvas canvas = new Canvas(width, width * ratio);
         GraphicsContext context = canvas.getGraphicsContext2D();
-        context.setFill(Color.web("#FF5252"));
+        context.setFill(Color.ORANGE);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         getChildren().add(canvas);
     }
 
-    public void setOptions(ObservableList<String> opts, ConsolePane container) {
+    public NavigationDrawer(String title) {
+
+        this();
+        setOptions(title);
+    }
+
+    public void setOptions(String title) {
+
+        if ("Scout".equals(title)) setOptions(NavigationDrawer.scout);
+        else if ("Administrator".equals(title)) setOptions(NavigationDrawer.admin);
+        else if ("Designer".equals(title)) setOptions(NavigationDrawer.desig);
+    }
+    public void setOptions(ObservableList<String> opts) {
 
         int size;
         if ((size = getChildren().size()) > 1) getChildren().remove(1, size);
@@ -45,8 +62,12 @@ public class NavigationDrawer extends VBox {
         options.minHeight(Double.MAX_VALUE);
         options.setPadding(new Insets(16, 16, 16, 16));
 
-        options.setOnMouseClicked(new CatalogHandler(options, container));
-
         getChildren().add(options);
+    }
+
+    public void addCommands(Command... commands) {
+
+        handler = new DrawerHandler(commands);
+        options.setOnMouseClicked(handler);
     }
 }

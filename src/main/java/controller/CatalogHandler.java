@@ -1,5 +1,7 @@
 package controller;
 
+import controller.command.Command;
+import controller.command.CreateOfferCommand;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,20 +73,15 @@ public class CatalogHandler implements EventHandler<MouseEvent> {
 
         if ("Visualizza Catalogo".equals(selected)) {
 
-            pane.setCenter(CatalogView.buildScene());
         }
 
         else if ("Inserisci offerta".equals(selected)) {
 
+            OfferInsertionView view = OfferInsertionView.getInstance();
             Button done = new FlatButton();
-            done.addEventFilter(MouseEvent.MOUSE_CLICKED, event1 -> {
-                String offerName = OfferInsertionView.getOfferName();
-                String offerPrice = OfferInsertionView.getPriceoffer();
-                String offerQuantity = OfferInsertionView.getOfferQuantity();
-                String offerSpinner = OfferInsertionView.getSpinner();
-                Node[] offerList = OfferInsertionView.getOfferNode();
-                InsertOfferController.handle(offerName, offerPrice, offerQuantity,offerSpinner, offerList);
-            });
+            Command command = new CreateOfferCommand(view);
+            done.addEventFilter(MouseEvent.MOUSE_CLICKED, new ButtonInvoker(command));
+
             pane.addToolbarButton(done);
             pane.setCenter(OfferInsertionView.getInstance());
         }

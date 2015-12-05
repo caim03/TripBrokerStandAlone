@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 
 public class DrawerCell extends ListCell<String> {
 
+
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
@@ -36,13 +37,9 @@ public class DrawerCell extends ListCell<String> {
         };
 
         hoverProperty().addListener(listener);
-        focusedProperty().addListener(listener);
-        selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) lbl.setTextFill(Color.WHITE);
-                else lbl.setTextFill(Color.CRIMSON);
-            }
+        selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) lbl.setTextFill(Color.WHITE);
+            else lbl.setTextFill(Color.CRIMSON);
         });
 
         Canvas round = new Canvas(48, 48);

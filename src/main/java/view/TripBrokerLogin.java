@@ -98,7 +98,6 @@ public class TripBrokerLogin extends Application {
 
                 Stage stage = new Stage();
                 Scene scene = ((DipendentiEntity)entity).generateView();
-                scene.getStylesheets().add("material.css");
                 stage.setScene(scene);
 
                 System.out.println("CREATED");
