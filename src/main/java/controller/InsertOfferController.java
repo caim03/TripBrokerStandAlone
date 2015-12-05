@@ -44,7 +44,7 @@ public class InsertOfferController {
             }
 
             EventBuilder eventBuilder = new EventBuilder();
-            eventBuilder.buildProduct(name, Double.parseDouble(price));
+            eventBuilder.buildProduct(name, Double.parseDouble(price), "Evento");
             eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, date);
             eventBuilder.buildEntity(seatField, timePicker, endPicker, locField);
 
@@ -66,7 +66,7 @@ public class InsertOfferController {
             }
 
             TravelBuilder travelBuilder = new TravelBuilder();
-            travelBuilder.buildProduct(name, Double.parseDouble(price));
+            travelBuilder.buildProduct(name, Double.parseDouble(price), "Viaggio");
             travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, depDate);
             travelBuilder.buildEntity(arrField, depTime, arrTime, vehSpinner, clsSpinner, depField, arrField, arrDate);
 
@@ -86,7 +86,7 @@ public class InsertOfferController {
             }
 
             StayBuilder stayBuilder = new StayBuilder();
-            stayBuilder.buildProduct(name, Double.parseDouble(price));
+            stayBuilder.buildProduct(name, Double.parseDouble(price), "Pernottamento");
             stayBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, startDate);
             stayBuilder.buildEntity(endDate, srvSpinner, starSpinner, locField);
 
