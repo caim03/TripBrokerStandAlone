@@ -1,23 +1,13 @@
 package model;
 
-import controller.ButtonInvoker;
-import controller.CatalogHandler;
 import controller.command.*;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import view.OfferInsertionView;
 import view.TripBrokerConsole;
 import view.material.ConsolePane;
-import view.material.DrawerCell;
-import view.material.FlatButton;
-import view.material.NavigationDrawer;
 
 public class Scout extends Ruolo {
 

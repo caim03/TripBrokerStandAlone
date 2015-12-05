@@ -1,6 +1,5 @@
 package view.material;
 
-import controller.CatalogHandler;
 import controller.DrawerHandler;
 import controller.command.Command;
 import javafx.collections.FXCollections;
