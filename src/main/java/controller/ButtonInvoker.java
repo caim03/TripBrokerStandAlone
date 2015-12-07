@@ -5,9 +5,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
-/**
- * Created by stg on 04/12/15.
- */
 public class ButtonInvoker implements EventHandler<MouseEvent> {
 
     private Command command;
@@ -20,6 +17,6 @@ public class ButtonInvoker implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
 
-
+        command.execute();
     }
 }

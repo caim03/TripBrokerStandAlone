@@ -1,8 +1,13 @@
 package view.material;
 
 import controller.command.Command;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 
 public class ConsolePane extends BorderPane {
@@ -14,8 +19,18 @@ public class ConsolePane extends BorderPane {
 
         toolbar = new Toolbar("Trip Broker " + title);
         drawer = new NavigationDrawer(title);
-        setTop(toolbar);
+        toolbar.setAlignment(Pos.TOP_CENTER);
+
         setLeft(drawer);
+        setTop(toolbar);
+
+        centerProperty().addListener(new ChangeListener<Node>() {
+            @Override
+            public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+                setTop(null);
+                setTop(toolbar);
+            }
+        });
     }
 
     public void addToolbarButton(Button button) {

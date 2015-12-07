@@ -27,10 +27,8 @@ public class CatalogView {
 
     public static Parent buildScene(){
 
-        //ListView<String> list = new ListView<String>();
         ObservableList<ProdottoEntity> names = FXCollections.observableArrayList();
         TableView<ProdottoEntity> list = new TableView<ProdottoEntity>();
-        //list.setCellFactory(ComboBoxListCell.forListView(list.getItems()));
 
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(20);

@@ -19,14 +19,14 @@ public class NavigationDrawer extends VBox {
 
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
                           admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "OPERATION 2",  "OPERATION 3", "Logout"),
-                          desig = FXCollections.<String>observableArrayList("Componi pacchetto", "OPERATION 2",  "OPERATION 3", "Logout");
+                          desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout");
 
     ListView<String> options;
     DrawerHandler handler;
 
     public NavigationDrawer() {
 
-        double width = Screen.getPrimary().getVisualBounds().getWidth() * 1 / 4;
+        double width = Screen.getPrimary().getVisualBounds().getWidth() * 0.2;
         setPrefWidth(width);
         setAlignment(Pos.TOP_CENTER);
         setStyle("-fx-background-color: white; -fx-border-color: null");

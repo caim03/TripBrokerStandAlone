@@ -1,5 +1,6 @@
 package model;
 
+import com.jfoenix.controls.JFXTabPane;
 import controller.ButtonInvoker;
 import controller.command.*;
 import javafx.geometry.Insets;
@@ -7,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -15,6 +17,7 @@ import view.OfferInsertionView;
 import view.TripBrokerConsole;
 import view.material.ConsolePane;
 import view.material.FlatButton;
+import view.material.MaterialTabPane;
 
 public class Designer extends Ruolo {
 
@@ -27,7 +30,7 @@ public class Designer extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Administrator");
+        ConsolePane container = new ConsolePane("Designer");
         container.setCenter(welcome);
 
         Scene scene = new Scene(container);
@@ -36,10 +39,27 @@ public class Designer extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
-        Command refresh;
-        container.addCommands(new RefreshMacroCommand(container, new Command() {
-                    @Override public void execute() { container.setCenter(CatalogView.buildScene()); }}),
-                refresh = new RefreshCommand(container), refresh, new LogoutCommand(stage));
+        container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
+                new RefreshMacroCommand(container, new ShowPacketForm(container)), new RefreshMacroCommand(container, new Command() {
+                    @Override
+                    public void execute() {
+
+                        JFXTabPane tabPane = new JFXTabPane();
+                        tabPane.setPrefSize(300, 200);
+                        for (int i = 0; i < 3; ++i) {
+
+                            Tab tab = new Tab();
+                            tab.setText("Tab " + (i + 1));
+                            tab.setContent(new Label("Content " + (i + 1)));
+                            tab.setStyle("-fx-background-color: #3F51B5; -fx-text-fill: white");
+
+                            tabPane.getTabs().add(tab);
+                        }
+
+                        container.setCenter(tabPane);
+                    }
+                }),
+                new LogoutCommand(stage));
 
         return stage;
     }

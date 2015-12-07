@@ -38,7 +38,6 @@ public class DrawerHandler implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
 
         int index = ((ListView)event.getSource()).getSelectionModel().getSelectedIndex();
-        System.out.println("INDEX " + index);
 
         if (index < 0 || index >= commands.size()) return;
 

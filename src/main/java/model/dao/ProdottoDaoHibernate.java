@@ -6,6 +6,7 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProdottoDaoHibernate implements DAO {
@@ -24,6 +25,19 @@ public class ProdottoDaoHibernate implements DAO {
         Session session = DBManager.getSession();
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
+        session.close();
+        if (prodottoEntities.isEmpty()){
+            return null;
+        }
+        return prodottoEntities;
+    }
+
+    public synchronized List<ProdottoEntity> getType(String type) {
+
+        Session session = DBManager.getSession();
+
+        List<ProdottoEntity> prodottoEntities = new ArrayList<>();
+        prodottoEntities.addAll(session.createQuery("from ProdottoEntity where tipo like '" + type + "'").list());
         session.close();
         if (prodottoEntities.isEmpty()){
             return null;
