@@ -27,8 +27,8 @@ public class EventoDaoHibernate implements DAO {
         return eventoEntities;
     }
 
-    @Override
-    public AbstractEntity getByCriteria(String where) {
+
+    public synchronized List<EventoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity "+where).list();
@@ -37,7 +37,7 @@ public class EventoDaoHibernate implements DAO {
             return null;
         }
         else{
-            return eventoEntities.get(0);
+            return eventoEntities;
         }
     }
 

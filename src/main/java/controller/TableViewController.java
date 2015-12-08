@@ -18,6 +18,10 @@ public class TableViewController implements EventHandler<MouseEvent> {
         ProdottoEntity prodottoEntity = tableView.getSelectionModel().getSelectedItem();
         PopupView popupView;
 
+        if (prodottoEntity == null){
+            return;
+        }
+
         if ("Evento".equals(prodottoEntity.getTipo())){
             popupView = new EventPopup((EventoEntity) prodottoEntity);
         }

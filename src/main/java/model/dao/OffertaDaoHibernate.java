@@ -27,8 +27,7 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntities;
     }
 
-    @Override
-    public AbstractEntity getByCriteria(String where) {
+    public synchronized List<OffertaEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity "+where).list();
@@ -37,7 +36,7 @@ public class OffertaDaoHibernate implements DAO {
             return null;
         }
         else{
-            return offertaEntities.get(0);
+            return offertaEntities;
         }
     }
 

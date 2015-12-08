@@ -28,8 +28,8 @@ public class PernottamentoDaoHibernate implements DAO {
         return pernottamentoEntities;
     }
 
-    @Override
-    public AbstractEntity getByCriteria(String where) {
+
+    public synchronized List<PernottamentoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity "+where).list();
@@ -38,7 +38,7 @@ public class PernottamentoDaoHibernate implements DAO {
             return null;
         }
         else {
-            return pernottamentoEntities.get(0);
+            return pernottamentoEntities;
         }
     }
 

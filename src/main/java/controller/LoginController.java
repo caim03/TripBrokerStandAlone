@@ -6,6 +6,8 @@ import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 
+import java.util.List;
+
 public class LoginController {
 
     public static class Credentials {
@@ -37,12 +39,12 @@ public class LoginController {
 
         System.out.println("VALID");
 
-        DipendentiEntity dipendentiEntity;
+        List<DipendentiEntity> dipendentiEntity;
         DAO dao = DipendentiDaoHibernate.instance();
         DBManager.initHibernate();
-        dipendentiEntity = (DipendentiEntity) dao.getByCriteria(credentials.getQuery());
+        dipendentiEntity = (List<DipendentiEntity>) (dao.getByCriteria(credentials.getQuery()));
         DBManager.shutdown();
         if (dipendentiEntity == null) return AbstractEntity.getInvalidEntity();
-        else return dipendentiEntity;
+        else return dipendentiEntity.get(0);
     }
 }

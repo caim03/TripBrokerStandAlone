@@ -29,8 +29,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         return pacchettoOffertaEntities;
     }
 
-    @Override
-    public AbstractEntity getByCriteria(String where) {
+    public synchronized List<PacchettoOffertaEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<PacchettoOffertaEntity> pacchettoOffertaEntities = session.createQuery("from PacchettoOffertaEntity "+where).list();
@@ -39,7 +38,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
             return null;
         }
         else{
-            return pacchettoOffertaEntities.get(0);
+            return pacchettoOffertaEntities;
         }
     }
 

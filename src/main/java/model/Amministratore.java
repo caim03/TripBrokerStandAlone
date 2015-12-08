@@ -1,10 +1,12 @@
 package model;
 
+import com.jfoenix.controls.JFXTabPane;
 import controller.command.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import view.CatalogView;
@@ -33,7 +35,9 @@ public class Amministratore extends Ruolo {
 
         Command refresh;
         container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
-                refresh = new RefreshCommand(container), refresh, new LogoutCommand(stage));
+                new RefreshMacroCommand(container, new ShowApproveCommand(container)),
+                null,
+                new LogoutCommand(stage));
 
         return stage;
     }

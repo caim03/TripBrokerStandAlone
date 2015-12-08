@@ -46,7 +46,7 @@ public class ProdottoDaoHibernate implements DAO {
     }
 
     @Override
-    public AbstractEntity getByCriteria(String where) {
+    public List<ProdottoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity "+where).list();
@@ -55,7 +55,7 @@ public class ProdottoDaoHibernate implements DAO {
             return null;
         }
         else{
-            return prodottoEntities.get(0);
+            return prodottoEntities;
         }
     }
 

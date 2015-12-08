@@ -28,7 +28,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         return creaPacchettoEntities;
     }
 
-    public synchronized CreaPacchettoEntity getByCriteria(String where) {
+    public synchronized List<CreaPacchettoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity " + where).list();
@@ -36,7 +36,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         if (creaPacchettoEntities.isEmpty()) {
             return null;
         } else {
-            return creaPacchettoEntities.get(0);  // return first
+            return creaPacchettoEntities;  // return first
         }
     }
 

@@ -28,8 +28,8 @@ public class PoliticheDaoHibernate implements DAO {
         return politicheEntities;
     }
 
-    @Override
-    public AbstractEntity getByCriteria(String where) {
+
+    public synchronized List<PoliticheEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<PoliticheEntity> politicheEntities = session.createQuery("from PoliticheEntity "+where).list();
@@ -38,7 +38,7 @@ public class PoliticheDaoHibernate implements DAO {
             return null;
         }
         else {
-            return politicheEntities.get(0);
+            return politicheEntities;
         }
     }
 

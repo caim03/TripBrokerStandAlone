@@ -27,7 +27,7 @@ public class DipendentiDaoHibernate implements DAO {
         return dipendentiEntities;
     }
 
-    public synchronized DipendentiEntity getByCriteria(String where) {
+    public synchronized List<DipendentiEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity " + where).list();
@@ -35,7 +35,7 @@ public class DipendentiDaoHibernate implements DAO {
         if (dipendentiEntities.isEmpty()) {
             return null;
         } else {
-            return dipendentiEntities.get(0);
+            return dipendentiEntities;
         }
     }
 
