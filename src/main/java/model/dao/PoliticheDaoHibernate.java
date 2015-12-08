@@ -4,6 +4,7 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.PoliticheEntity;
+import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class PoliticheDaoHibernate implements DAO {
     }
 
     @Override
-    public AbstractEntity getByCriteria(String where) {
+    public List<PoliticheEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<PoliticheEntity> politicheEntities = session.createQuery("from PoliticheEntity "+where).list();
@@ -38,7 +39,7 @@ public class PoliticheDaoHibernate implements DAO {
             return null;
         }
         else {
-            return politicheEntities.get(0);
+            return politicheEntities;
         }
     }
 

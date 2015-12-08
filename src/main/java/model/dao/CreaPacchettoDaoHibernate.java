@@ -4,6 +4,7 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         return creaPacchettoEntities;
     }
 
-    public synchronized CreaPacchettoEntity getByCriteria(String where) {
+    public synchronized List<CreaPacchettoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity " + where).list();
@@ -36,7 +37,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         if (creaPacchettoEntities.isEmpty()) {
             return null;
         } else {
-            return creaPacchettoEntities.get(0);  // return first
+            return creaPacchettoEntities;  // return first
         }
     }
 

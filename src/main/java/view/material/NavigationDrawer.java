@@ -15,6 +15,7 @@ import javafx.stage.Screen;
 
 public class NavigationDrawer extends VBox {
 
+    public static final double WIDTH = 0.2;
     static double ratio = 0.67;
 
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
@@ -26,7 +27,7 @@ public class NavigationDrawer extends VBox {
 
     public NavigationDrawer() {
 
-        double width = Screen.getPrimary().getVisualBounds().getWidth() * 0.2;
+        double width = Screen.getPrimary().getVisualBounds().getWidth() * NavigationDrawer.WIDTH;
         setPrefWidth(width);
         setAlignment(Pos.TOP_CENTER);
         setStyle("-fx-background-color: white; -fx-border-color: null");

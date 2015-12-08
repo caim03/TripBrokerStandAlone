@@ -3,6 +3,7 @@ package model.dao;
 import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
+import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 import model.entityDB.DipendentiEntity;
 import java.util.List;
@@ -27,7 +28,7 @@ public class DipendentiDaoHibernate implements DAO {
         return dipendentiEntities;
     }
 
-    public synchronized DipendentiEntity getByCriteria(String where) {
+    public synchronized List<DipendentiEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity " + where).list();
@@ -35,7 +36,7 @@ public class DipendentiDaoHibernate implements DAO {
         if (dipendentiEntities.isEmpty()) {
             return null;
         } else {
-            return dipendentiEntities.get(0);
+            return dipendentiEntities;
         }
     }
 

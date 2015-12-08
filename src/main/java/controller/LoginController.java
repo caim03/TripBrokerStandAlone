@@ -40,7 +40,7 @@ public class LoginController {
         DipendentiEntity dipendentiEntity;
         DAO dao = DipendentiDaoHibernate.instance();
         DBManager.initHibernate();
-        dipendentiEntity = (DipendentiEntity) dao.getByCriteria(credentials.getQuery());
+        dipendentiEntity = (DipendentiEntity) (dao.getByCriteria(credentials.getQuery())).get(0);
         DBManager.shutdown();
         if (dipendentiEntity == null) return AbstractEntity.getInvalidEntity();
         else return dipendentiEntity;

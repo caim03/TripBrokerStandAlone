@@ -4,7 +4,7 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.PacchettoOffertaEntity;
-import model.entityDB.PernottamentoEntity;
+import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
     }
 
     @Override
-    public AbstractEntity getByCriteria(String where) {
+    public List<PacchettoOffertaEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<PacchettoOffertaEntity> pacchettoOffertaEntities = session.createQuery("from PacchettoOffertaEntity "+where).list();
@@ -39,7 +39,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
             return null;
         }
         else{
-            return pacchettoOffertaEntities.get(0);
+            return pacchettoOffertaEntities;
         }
     }
 

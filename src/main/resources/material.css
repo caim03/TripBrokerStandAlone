@@ -56,3 +56,8 @@
     -fx-opacity: 0.5;
     -fx-text-fill: white;
 }
+
+.tab-pane {
+    -fx-fill-height: true;
+    -fx-cell-size: 33%;
+}

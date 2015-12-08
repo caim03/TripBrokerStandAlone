@@ -1,5 +1,6 @@
 package controller.command;
 
+import view.OffersTabPane;
 import view.PacketAssembleView;
 import view.material.ConsolePane;
 

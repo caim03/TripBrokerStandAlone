@@ -1,26 +1,49 @@
 package view;
 
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXProgressBar;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import model.entityDB.ViaggioEntity;
 
-public class PacketCell extends ListCell<ProdottoEntity> {
+public class DBCell extends ListCell<AbstractEntity> {
 
     @Override
-    protected void updateItem(ProdottoEntity item, boolean empty) {
+    protected void updateItem(AbstractEntity item, boolean empty) {
+
         super.updateItem(item, empty);
 
         if (empty) return;
+
+        Node node;
+        if (!item.isValid()) node = buildProgress();
+        else if (item instanceof ProdottoEntity) node = buildProduct((ProdottoEntity) item);
+        else node = new Label("NOT IMPLEMENTED");
+
+        setGraphic(node);
+    }
+
+    private Node buildProgress() {
+
+        JFXProgressBar bar = new JFXProgressBar(JFXProgressBar.INDETERMINATE_PROGRESS);
+        bar.setStyle("-fx-progress-color: #FF5252; -fx-pref-height: 4px; -fx-pref-width: inherit");
+        return bar;
+    }
+
+    private Node buildProduct(ProdottoEntity item) {
 
         String type = item.getTipo();
 
@@ -28,6 +51,10 @@ public class PacketCell extends ListCell<ProdottoEntity> {
         cell.setAlignment(Pos.CENTER_LEFT);
         cell.setPrefHeight(48);
         cell.setPadding(new Insets(10, 8, 10, 8));
+
+        JFXCheckBox checkBox = new JFXCheckBox();
+        checkBox.setCheckedColor(Color.ORANGE);
+        checkBox.setUnCheckedColor(Color.GREY);
 
         Label lbl = new Label(item.getNome());
         lbl.setTextFill(Color.CRIMSON);
@@ -73,8 +100,10 @@ public class PacketCell extends ListCell<ProdottoEntity> {
 
         context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
 
-        cell.getChildren().addAll(round, lbl);
+        cell.getChildren().addAll(checkBox, round, lbl);
+        cell.setStyle("-fx-hgap: 2px");
 
-        setGraphic(cell);
+        return cell;
     }
+
 }
