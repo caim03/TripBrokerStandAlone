@@ -23,6 +23,8 @@ public class ConsolePane extends BorderPane {
 
         setLeft(drawer);
         setTop(toolbar);
+        setRight(null);
+        setBottom(null);
 
         centerProperty().addListener(new ChangeListener<Node>() {
             @Override

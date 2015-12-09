@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface DAO {
 
-    public List getAll();
-    public List getByCriteria(String where);
-    public void store(AbstractEntity entity) throws ClassCastException;
-    public void delete(AbstractEntity entity) throws ClassCastException;
-    public void update(AbstractEntity entity) throws ClassCastException;
+    List<? extends AbstractEntity> getAll();
+    List<? extends AbstractEntity> getByCriteria(String where);
+    void store(AbstractEntity entity) throws ClassCastException;
+    void delete(AbstractEntity entity) throws ClassCastException;
+    void update(AbstractEntity entity) throws ClassCastException;
 }

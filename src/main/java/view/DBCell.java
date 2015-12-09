@@ -9,9 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -26,7 +24,12 @@ public class DBCell extends ListCell<AbstractEntity> {
 
         super.updateItem(item, empty);
 
-        if (empty) return;
+        if (empty) {
+
+            setText(null);
+            setGraphic(null);
+            return;
+        }
 
         Node node;
         if (!item.isValid()) node = buildProgress();
@@ -39,7 +42,7 @@ public class DBCell extends ListCell<AbstractEntity> {
     private Node buildProgress() {
 
         JFXProgressBar bar = new JFXProgressBar(JFXProgressBar.INDETERMINATE_PROGRESS);
-        bar.setStyle("-fx-progress-color: #FF5252; -fx-pref-height: 4px; -fx-pref-width: inherit");
+
         return bar;
     }
 
@@ -51,10 +54,6 @@ public class DBCell extends ListCell<AbstractEntity> {
         cell.setAlignment(Pos.CENTER_LEFT);
         cell.setPrefHeight(48);
         cell.setPadding(new Insets(10, 8, 10, 8));
-
-        JFXCheckBox checkBox = new JFXCheckBox();
-        checkBox.setCheckedColor(Color.ORANGE);
-        checkBox.setUnCheckedColor(Color.GREY);
 
         Label lbl = new Label(item.getNome());
         lbl.setTextFill(Color.CRIMSON);
@@ -100,7 +99,7 @@ public class DBCell extends ListCell<AbstractEntity> {
 
         context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
 
-        cell.getChildren().addAll(checkBox, round, lbl);
+        cell.getChildren().addAll(round, lbl);
         cell.setStyle("-fx-hgap: 2px");
 
         return cell;

@@ -1,19 +1,18 @@
 package view;
 
-import com.jfoenix.controls.JFXProgressBar;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import model.DBManager;
-import model.dao.ProdottoDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBListView extends ListView<AbstractEntity> {
 
@@ -32,8 +31,7 @@ public class DBListView extends ListView<AbstractEntity> {
 
     @Override
     public void refresh() {
-        super.refresh();
-        System.out.println("REFRESH");
+
         fill();
     }
 
@@ -74,7 +72,7 @@ public class DBListView extends ListView<AbstractEntity> {
         @Override
         protected Void call() throws Exception {
 
-            List<ProdottoEntity> result = retriever.getByCriteria(where);
+            List<ProdottoEntity> result = (List<ProdottoEntity>) retriever.getByCriteria(where);
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -82,12 +80,12 @@ public class DBListView extends ListView<AbstractEntity> {
                 }
             });
 
+            System.out.println("RESULT " + result.size());
+
             for (ProdottoEntity entity : result)
                 Platform.runLater(new Runnable() {
                     @Override
-                    public void run() {
-                        view.getItems().add(entity);
-                    }
+                    public void run() { view.getItems().add(entity); }
                 });
 
             return null;
