@@ -3,7 +3,6 @@ package model.dao;
 import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
 import model.entityDB.ViaggioEntity;
 import org.hibernate.Session;
 
@@ -29,11 +28,11 @@ public class ViaggioDaoHibernate implements DAO {
         return viaggioEntities;
     }
 
-    @Override
-    public List<ViaggioEntity> getByCriteria(String where) {
+
+    public synchronized List<ViaggioEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
-        List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity "+ where).list();
+        List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity "+where).list();
         session.close();
         if(viaggioEntities.isEmpty()){
             return null;

@@ -19,7 +19,7 @@ public class NavigationDrawer extends VBox {
     static double ratio = 0.67;
 
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
-                          admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "OPERATION 2",  "OPERATION 3", "Logout"),
+                          admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "Approva pacchetto",  "OPERATION 3", "Logout"),
                           desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout");
 
     ListView<String> options;

@@ -4,7 +4,6 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.EventoEntity;
-import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class EventoDaoHibernate implements DAO {
         return eventoEntities;
     }
 
-    @Override
-    public List<EventoEntity> getByCriteria(String where) {
+
+    public synchronized List<EventoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity "+where).list();

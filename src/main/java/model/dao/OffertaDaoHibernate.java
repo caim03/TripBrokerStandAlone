@@ -3,7 +3,6 @@ package model.dao;
 import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 import model.entityDB.OffertaEntity;
 import java.util.List;
@@ -28,8 +27,7 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntities;
     }
 
-    @Override
-    public List<OffertaEntity> getByCriteria(String where) {
+    public synchronized List<OffertaEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
         List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity "+where).list();
