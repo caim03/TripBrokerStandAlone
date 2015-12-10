@@ -1,7 +1,6 @@
 package controller.command;
 
-import view.OffersTabPane;
-import view.PacketAssembleView;
+import view.desig.PacketAssembleView;
 import view.material.ConsolePane;
 
 public class ShowPacketForm extends Command {

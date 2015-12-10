@@ -1,7 +1,7 @@
 package controller.command;
 
 
-import view.PacketApproveView;
+import view.admin.PacketApproveView;
 import view.material.ConsolePane;
 
 public class ShowApproveCommand extends Command{

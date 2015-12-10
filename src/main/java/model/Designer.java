@@ -1,23 +1,15 @@
 package model;
 
 import com.jfoenix.controls.JFXTabPane;
-import controller.ButtonInvoker;
 import controller.command.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import view.CatalogView;
-import view.OfferInsertionView;
-import view.TripBrokerConsole;
 import view.material.ConsolePane;
-import view.material.FlatButton;
-import view.material.MaterialTabPane;
 
 public class Designer extends Ruolo {
 

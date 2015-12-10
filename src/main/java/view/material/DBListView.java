@@ -1,4 +1,4 @@
-package view;
+package view.material;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -9,10 +9,7 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DBListView extends ListView<AbstractEntity> {
 

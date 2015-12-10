@@ -1,6 +1,6 @@
 package controller.command;
 
-import view.OfferInsertionView;
+import view.scout.OfferInsertionView;
 
 public class CreateOfferCommand extends Command {
 

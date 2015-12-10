@@ -3,7 +3,7 @@ package controller.command;
 import controller.ButtonInvoker;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import view.OfferInsertionView;
+import view.scout.OfferInsertionView;
 import view.material.ConsolePane;
 import view.material.FlatButton;
 
