@@ -56,14 +56,13 @@ public class PacketApproveView {
             list.setItems(names);
         }
 
-        list.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                PopupView popupView;
-                CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) list.getSelectionModel().getSelectedItem();
-                popupView = new ApprovalPopup(new PacketPopup(creaPacchettoEntity), creaPacchettoEntity);
-                popupView.show();
-            }
+        list.setOnMouseClicked(event -> {
+
+            PopupView popupView;
+            CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) list.getSelectionModel().getSelectedItem();
+            popupView = new ApprovalPopup(new PacketPopup(creaPacchettoEntity), creaPacchettoEntity);
+
+            popupView.show();
         });
 
         return list;

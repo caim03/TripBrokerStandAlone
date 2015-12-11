@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -22,17 +23,23 @@ public class ApproveController implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
+
         pacchettoEntity.setStato(1);
 
-        ((Node)event.getSource()).getScene().getWindow().hide();
-
         DAO dao = CreaPacchettoDaoHibernate.instance();
-        DBManager.initHibernate();
-        System.out.println("stefano mega gay");
-        dao.update(pacchettoEntity);
-        System.out.println("stefano gay");
-        DBManager.shutdown();
 
+        try {
+            DBManager.initHibernate();
+            dao.update(pacchettoEntity);
+            DBManager.shutdown();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Notifications.create().text("Internal Database error").showError();
+            return;
+        }
+
+        ((Node)event.getSource()).getScene().getWindow().hide();
         Notifications.create().title("Approved").text("The packet has been approved").show();
     }
 }

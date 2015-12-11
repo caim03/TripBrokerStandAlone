@@ -24,12 +24,11 @@ public class ApprovalPopup extends PopupView {
     @Override
     protected Parent generatePopup() {
 
-        VBox vBox = new VBox(popupView.generatePopup(), generateButtons());
-
-        return vBox;
+        return new VBox(popupView.generatePopup(), generateButtons());
     }
 
     private Parent generateButtons() {
+
         GridPane pane = new GridPane();
         Button approveButton = new Button("Approva");
         Button modifyButton = new Button("Respingi");

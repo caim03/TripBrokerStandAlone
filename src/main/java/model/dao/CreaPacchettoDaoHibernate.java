@@ -76,6 +76,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         session.beginTransaction();
         session.update(creaPacchettoEntity);
         session.getTransaction().commit();
+
         session.close();
     }
 }
