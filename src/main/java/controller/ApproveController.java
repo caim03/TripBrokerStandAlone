@@ -28,9 +28,7 @@ public class ApproveController implements EventHandler<MouseEvent> {
 
         DAO dao = CreaPacchettoDaoHibernate.instance();
         DBManager.initHibernate();
-        System.out.println("stefano mega gay");
         dao.update(pacchettoEntity);
-        System.out.println("stefano gay");
         DBManager.shutdown();
 
         Notifications.create().title("Approved").text("The packet has been approved").show();
