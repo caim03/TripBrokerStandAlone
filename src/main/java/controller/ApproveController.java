@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.DBManager;
@@ -13,24 +14,25 @@ import org.controlsfx.control.Notifications;
 public class ApproveController implements EventHandler<MouseEvent> {
 
     private CreaPacchettoEntity pacchettoEntity;
-    private Stage stage;
 
-    public ApproveController(CreaPacchettoEntity pacchettoEntity, Stage stage) {
+    public ApproveController(CreaPacchettoEntity pacchettoEntity) {
 
         this.pacchettoEntity = pacchettoEntity;
-        this.stage = stage;
     }
 
     @Override
     public void handle(MouseEvent event) {
         pacchettoEntity.setStato(1);
 
+        ((Node)event.getSource()).getScene().getWindow().hide();
+
         DAO dao = CreaPacchettoDaoHibernate.instance();
         DBManager.initHibernate();
+        System.out.println("stefano mega gay");
         dao.update(pacchettoEntity);
+        System.out.println("stefano gay");
         DBManager.shutdown();
 
         Notifications.create().title("Approved").text("The packet has been approved").show();
-        //this.stage.close();
     }
 }

@@ -1,6 +1,8 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -14,16 +16,13 @@ public class StayPopup extends PopupView{
     PernottamentoEntity pernottamentoEntity;
 
     public StayPopup(PernottamentoEntity prodottoEntity) {
+
         this.pernottamentoEntity = prodottoEntity;
+        this.title = "Pernottamento";
     }
 
     @Override
-    public void generatePopup() {
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(new Stage());
-
-        dialog.setTitle("Evento");
+    protected Parent generatePopup() {
 
         Label nameLbl = new Label("Nome:"),
                 priceLbl = new Label("Prezzo:"),
@@ -65,8 +64,7 @@ public class StayPopup extends PopupView{
         pane.add(new Text(pernottamentoEntity.getLuogo()), 1, 9);
 
         VBox dialogVbox = new VBox(40, pane);
-        Scene dialogScene = new Scene(dialogVbox, 300, 300);
-        dialog.setScene(dialogScene);
-        dialog.show();
+
+        return dialogVbox;
     }
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.DBManager;
@@ -13,22 +14,23 @@ import org.controlsfx.control.Notifications;
 public class DeleteController implements EventHandler<MouseEvent> {
 
     private CreaPacchettoEntity pacchettoEntity;
-    private Stage stage;
 
-    public DeleteController(CreaPacchettoEntity pacchettoEntity, Stage stage) {
+    public DeleteController(CreaPacchettoEntity pacchettoEntity) {
 
         this.pacchettoEntity = pacchettoEntity;
-        this.stage = stage;
     }
 
     @Override
     public void handle(MouseEvent event) {
+
+        ((Node)event.getSource()).getScene().getWindow().hide();
+
         DAO dao = CreaPacchettoDaoHibernate.instance();
         DBManager.initHibernate();
         dao.delete(pacchettoEntity);
         DBManager.shutdown();
 
         Notifications.create().title("Deleted").text("The packet has been deleted").show();
-        //this.stage.close();
+
     }
 }

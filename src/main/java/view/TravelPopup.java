@@ -1,6 +1,8 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -14,16 +16,13 @@ public class TravelPopup extends PopupView{
     private ViaggioEntity viaggioEntity;
 
     public TravelPopup(ViaggioEntity prodottoEntity) {
+
         this.viaggioEntity = prodottoEntity;
+        this.title = "Viaggio";
     }
 
     @Override
-    public void generatePopup() {
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(new Stage());
-
-        dialog.setTitle("Viaggio");
+    protected Parent generatePopup() {
 
         Label nameLbl = new Label("Nome:"),
                 priceLbl = new Label("Prezzo:"),
@@ -78,8 +77,7 @@ public class TravelPopup extends PopupView{
 
 
         VBox dialogVbox = new VBox(40, pane);
-        Scene dialogScene = new Scene(dialogVbox, 300, 375);
-        dialog.setScene(dialogScene);
-        dialog.show();
+
+        return dialogVbox;
     }
 }

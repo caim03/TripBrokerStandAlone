@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -16,12 +17,10 @@ import java.util.Optional;
 public class RejectController implements EventHandler<MouseEvent> {
 
     private CreaPacchettoEntity pacchettoEntity;
-    private Stage stage;
 
-    public RejectController(CreaPacchettoEntity pacchettoEntity, Stage stage) {
+    public RejectController(CreaPacchettoEntity pacchettoEntity) {
 
         this.pacchettoEntity = pacchettoEntity;
-        this.stage = stage;
     }
 
     @Override
@@ -44,13 +43,13 @@ public class RejectController implements EventHandler<MouseEvent> {
             pacchettoEntity.setMotivazione(entered);
             pacchettoEntity.setStato(2);
 
+            ((Node)event.getSource()).getScene().getWindow().hide();
             DAO dao = CreaPacchettoDaoHibernate.instance();
             DBManager.initHibernate();
             dao.update(pacchettoEntity);
             DBManager.shutdown();
-        }
 
-        Notifications.create().title("Rejected").text("The packet has been rejected").show();
-        //this.stage.close();
+            Notifications.create().title("Rejected").text("The packet has been rejected").show();
+        }
     }
 }

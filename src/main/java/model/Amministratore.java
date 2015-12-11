@@ -36,7 +36,7 @@ public class Amministratore extends Ruolo {
         Command refresh;
         container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
                 new RefreshMacroCommand(container, new ShowApproveCommand(container)),
-                null,
+                new RefreshMacroCommand(container, new ModifyPoliticsCommand(container)),
                 new LogoutCommand(stage));
 
         return stage;

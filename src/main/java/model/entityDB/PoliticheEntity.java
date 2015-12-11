@@ -6,11 +6,12 @@ import javax.persistence.*;
  * Created by Christian on 18/11/2015.
  */
 @Entity
-@Table(name = "Politiche", schema = "trip_broker", catalog = "")
+@Table(name = "Politiche", schema = "trip_broker")
 public class PoliticheEntity extends AbstractEntity {
     private int id;
-    private int percentualeMax;
-    private int percentualeMin;
+    private double percentualeMax;
+    private double percentualeMin;
+    private String nome;
 
     @Id
     @Column(name = "id")
@@ -24,23 +25,29 @@ public class PoliticheEntity extends AbstractEntity {
 
     @Basic
     @Column(name = "percentuale_max")
-    public int getPercentualeMax() {
+    public double getPercentualeMax() {
         return percentualeMax;
     }
 
-    public void setPercentualeMax(int percentualeMax) {
+    public void setPercentualeMax(double percentualeMax) {
         this.percentualeMax = percentualeMax;
     }
 
     @Basic
     @Column(name = "percentuale_min")
-    public int getPercentualeMin() {
+    public double getPercentualeMin() {
         return percentualeMin;
     }
 
-    public void setPercentualeMin(int percentualeMin) {
+    public void setPercentualeMin(double percentualeMin) {
         this.percentualeMin = percentualeMin;
     }
+
+    @Basic
+    @Column(name = "nome")
+    public String getNome() { return nome; }
+
+    public void setNome(String name) {this.nome = name; }
 
     @Override
     public boolean equals(Object o) {
@@ -59,8 +66,8 @@ public class PoliticheEntity extends AbstractEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + percentualeMax;
-        result = 31 * result + percentualeMin;
+        result = 31 * result + (int)percentualeMax;
+        result = 31 * result + (int)percentualeMin;
         return result;
     }
 }

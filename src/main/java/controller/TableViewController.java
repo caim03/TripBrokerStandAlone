@@ -38,6 +38,6 @@ public class TableViewController implements EventHandler<MouseEvent> {
             popupView = new PacketPopup((CreaPacchettoEntity) prodottoEntity);
         }
 
-        popupView.generatePopup();
+        popupView.show();
     }
 }
