@@ -33,16 +33,13 @@ public class ProdottoDaoHibernate implements DAO {
 
     @Override
     public synchronized List<ProdottoEntity> getByCriteria(String where) {
+
         Session session = DBManager.getSession();
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity " + where).list();
         session.close();
-        if(prodottoEntities.isEmpty()){
-            return null;
-        }
-        else{
-            return prodottoEntities;
-        }
+        if (prodottoEntities.isEmpty()) return null;
+        else return prodottoEntities;
     }
 
     public synchronized int store(AbstractEntity entity) {
