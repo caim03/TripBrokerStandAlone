@@ -5,8 +5,12 @@ import controller.command.Command;
 import controller.command.TransferRecordCommand;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.input.MouseEvent;
 import model.entityDB.AbstractEntity;
 import view.material.DBListView;
 

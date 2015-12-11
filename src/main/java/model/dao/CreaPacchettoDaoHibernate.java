@@ -41,7 +41,7 @@ public class CreaPacchettoDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;
 
@@ -51,6 +51,8 @@ public class CreaPacchettoDaoHibernate implements DAO {
         session.save(creaPacchettoEntity);
         session.getTransaction().commit();
         session.close();
+
+        return creaPacchettoEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

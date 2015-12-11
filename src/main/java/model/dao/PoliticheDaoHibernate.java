@@ -42,7 +42,7 @@ public class PoliticheDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;
 
@@ -52,6 +52,8 @@ public class PoliticheDaoHibernate implements DAO {
         session.save(politicheEntity);
         session.getTransaction().commit();
         session.close();
+
+        return politicheEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

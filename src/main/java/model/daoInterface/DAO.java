@@ -9,7 +9,7 @@ public interface DAO {
 
     List<? extends AbstractEntity> getAll();
     List<? extends AbstractEntity> getByCriteria(String where);
-    void store(AbstractEntity entity) throws ClassCastException;
+    int store(AbstractEntity entity) throws ClassCastException;
     void delete(AbstractEntity entity) throws ClassCastException;
     void update(AbstractEntity entity) throws ClassCastException;
 }

@@ -45,7 +45,7 @@ public class ProdottoDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
 
@@ -55,6 +55,8 @@ public class ProdottoDaoHibernate implements DAO {
         session.save(prodottoEntity);
         session.getTransaction().commit();
         session.close();
+
+        return prodottoEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

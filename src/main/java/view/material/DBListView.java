@@ -1,6 +1,8 @@
 package view.material;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import model.DBManager;
@@ -19,6 +21,12 @@ public class DBListView extends ListView<AbstractEntity> {
 
         setWhere(where);
         setCellFactory(param -> new DBCell());
+        getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Platform.runLater(() -> DBListView.this.getSelectionModel().select(-1));
+            }
+        });
     }
 
     public void setWhere(String where) {
@@ -55,7 +63,7 @@ public class DBListView extends ListView<AbstractEntity> {
                 if(entities.isEmpty()) return null;
                 else return entities; }
             @Override public List getAll() { return null; }
-            @Override public void store(AbstractEntity entity) throws ClassCastException {}
+            @Override public int store(AbstractEntity entity) throws ClassCastException { return 0; }
             @Override public void delete(AbstractEntity entity) throws ClassCastException {}
             @Override public void update(AbstractEntity entity) throws ClassCastException {}
         };

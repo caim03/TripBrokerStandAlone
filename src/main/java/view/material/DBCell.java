@@ -17,7 +17,7 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
 import model.entityDB.ViaggioEntity;
 
-public class DBCell extends ListCell<AbstractEntity> {
+public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
     @Override
     protected void updateItem(AbstractEntity item, boolean empty) {
@@ -79,7 +79,7 @@ public class DBCell extends ListCell<AbstractEntity> {
         context.fillOval(4, 4, 40, 40);
         context.setFill(Color.WHITE);
 
-        Image image = null;
+        Image image;
 
         if ("Pernottamento".equals(type)) {
             image = new Image("stay.png");
@@ -91,11 +91,12 @@ public class DBCell extends ListCell<AbstractEntity> {
 
             String vehicle = ((ViaggioEntity) item).getMezzo();
 
-            if ("Volo".equals(vehicle)) image = new Image("airplane.png");
+            if ("Aereo".equals(vehicle)) image = new Image("airplane.png");
             else if ("Bus".equals(vehicle)) image = new Image("bus.png");
             else if ("Treno".equals(vehicle)) image = new Image("train.png");
-            else if ("Traghetto".equals(vehicle)) image = new Image("boat.png");
+            else image = new Image("boat.png");
         }
+        else image = new Image("create.png");
 
         context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
 
