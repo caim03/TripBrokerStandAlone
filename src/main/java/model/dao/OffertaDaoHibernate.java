@@ -40,7 +40,7 @@ public class OffertaDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;
 
@@ -50,6 +50,8 @@ public class OffertaDaoHibernate implements DAO {
         session.save(offertaEntity);
         session.getTransaction().commit();
         session.close();
+
+        return offertaEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

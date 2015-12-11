@@ -38,4 +38,11 @@ public class NumericField extends TextField {
             }
         });
     }
+
+    public double getNumber() {
+
+        String string = getText();
+        if ("".equals(string)) return 0;
+        return Double.parseDouble(string);
+    }
 }

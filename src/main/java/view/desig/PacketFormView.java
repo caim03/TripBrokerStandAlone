@@ -1,5 +1,7 @@
 package view.desig;
 
+import controller.PacketAssembleController;
+import controller.PacketOverseer;
 import controller.command.Command;
 import controller.command.TransferRecordCommand;
 import javafx.collections.ListChangeListener;
@@ -12,17 +14,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.entityDB.AbstractEntity;
+import model.entityDB.OffertaEntity;
+import model.entityDB.PacchettoOffertaEntity;
 import model.entityDB.ProdottoEntity;
+import org.controlsfx.control.Notifications;
 import view.material.DBCell;
 import view.material.MaterialField;
+import view.material.NumberLabel;
 import view.material.NumericField;
 
 import java.util.List;
 
 public class PacketFormView extends VBox {
 
-    ListView<AbstractEntity> list;
-    Label basePrice, maxPrice;
+    ListView<? extends AbstractEntity> list;
+    NumberLabel basePrice, maxPrice;
     TextField nameField, priceField;
 
     double base = 0, criteria = 2.0;
@@ -33,9 +39,9 @@ public class PacketFormView extends VBox {
         name.setAlignment(Pos.CENTER_LEFT);
         price.setAlignment(Pos.CENTER_LEFT);
 
-        basePrice = new Label("Base price: " + base);
+        basePrice = new NumberLabel("Base price: ");
         basePrice.setPadding(new Insets(16, 16, 16, 16));
-        maxPrice = new Label("Maximum price: " + base * criteria);
+        maxPrice = new NumberLabel("Maximum price: ", 0, 0, criteria);
         maxPrice.setPadding(new Insets(16, 16, 16, 16));
 
         nameField = new TextField();
@@ -47,7 +53,7 @@ public class PacketFormView extends VBox {
         nameBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
 
-        list = new ListView<>();
+        list = new ListView<>(new PacketList());
         list.setCellFactory(param -> new DBCell());
         list.setPadding(new Insets(16, 16, 16, 16));
 
@@ -58,27 +64,30 @@ public class PacketFormView extends VBox {
 
                 c.next();
 
-                if (c.wasAdded()) {
-
-                    int len = c.getAddedSize();
-                    List added = c.getAddedSubList();
-                    for (int i = 0; i < len; ++i) base += ((ProdottoEntity) added.get(i)).getPrezzo();
-
-                    basePrice.setText("Base price: " + base);
-                    maxPrice.setText("Maximum price: " + base * criteria);
-                }
-
-                else if (c.wasRemoved()) {
+                if (c.wasRemoved()) {
 
                     int len = c.getRemovedSize();
-                    List removed = c.getRemoved();
-                    for (int i = 0; i < len; ++i) base -= ((ProdottoEntity) removed.get(i)).getPrezzo();
+                    List<OffertaEntity> removed = c.getRemoved();
 
-                    basePrice.setText("Base price: " + base);
-                    maxPrice.setText("Maximum price: " + base * criteria);
+                    System.out.println("REM " + len + " SIZE " + c.getList().size());
+                    if (len == c.getList().size()) {
+
+                        basePrice.reset();
+                        maxPrice.reset();
+                    }
+
+                    else {
+
+                        for (int i = 0; i < len; ++i) {
+
+                            basePrice.updateNumber(-removed.get(i).getPrezzo());
+                            maxPrice.updateNumber(-removed.get(i).getPrezzo());
+                        }
+                    }
                 }
             }
         });
+        list.getItems().addListener(new PacketOverseer(basePrice, maxPrice));
 
         getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
 
@@ -87,5 +96,38 @@ public class PacketFormView extends VBox {
 
     public Command getCommand() {
         return new TransferRecordCommand(list);
+    }
+
+    public void harvest() {
+
+        String name = nameField.getText();
+        double price = ((NumericField)priceField).getNumber();
+
+        if ("".equals(name) || "".equals(priceField.getText()))
+            Notifications.create().text("Empty fields detected").showWarning();
+
+        else if (price < basePrice.getNumber() || price > maxPrice.getNumber())
+            Notifications.create().text("Price outside its bounds").showWarning();
+
+        else if (list.getItems().size() == 0)
+            Notifications.create().text("Empty packet").showWarning();
+
+        else {
+
+            int ids[] = new int[list.getItems().size()], i = 0;
+            for (AbstractEntity entity : list.getItems()) {
+                ids[i] = ((ProdottoEntity) entity).getId();
+                ++i;
+            }
+            if (PacketAssembleController.create(name, price, ids))
+                Notifications.create().text("Packet '" + name + "' has been added to catalog").show();
+            else
+                Notifications.create().text("Internal Database error").showError();
+        }
+    }
+
+    public void clear() {
+
+        list.getItems().remove(0, list.getItems().size());
     }
 }

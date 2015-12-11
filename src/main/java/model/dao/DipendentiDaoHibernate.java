@@ -40,7 +40,7 @@ public class DipendentiDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
 
@@ -50,6 +50,8 @@ public class DipendentiDaoHibernate implements DAO {
         session.save(dipendentiEntity);
         session.getTransaction().commit();
         session.close();
+
+        return dipendentiEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

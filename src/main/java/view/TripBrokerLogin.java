@@ -98,7 +98,7 @@ public class TripBrokerLogin extends Application {
 
                 TripBrokerLogin.this.stage.close();
 
-                TripBrokerConsole tripBrokerConsole = new TripBrokerConsole();
+                TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity)entity).getId());
                 try {
                     tripBrokerConsole.start(stage);
                 } catch (Exception e) {

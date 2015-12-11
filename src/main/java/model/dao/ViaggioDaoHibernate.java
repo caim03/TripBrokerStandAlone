@@ -42,7 +42,7 @@ public class ViaggioDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;
 
@@ -52,6 +52,8 @@ public class ViaggioDaoHibernate implements DAO {
         session.save(viaggioEntity);
         session.getTransaction().commit();
         session.close();
+
+        return viaggioEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {

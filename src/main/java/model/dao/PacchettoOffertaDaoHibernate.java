@@ -42,7 +42,7 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity){
+    public synchronized int store(AbstractEntity entity){
 
         PacchettoOffertaEntity pacchettoOffertaEntity = (PacchettoOffertaEntity) entity;
 
@@ -52,6 +52,8 @@ public class PacchettoOffertaDaoHibernate implements DAO {
         session.save(pacchettoOffertaEntity);
         session.getTransaction().commit();
         session.close();
+
+        return pacchettoOffertaEntity.getIdPacchetto();
     }
 
     public synchronized void delete(AbstractEntity entity) {

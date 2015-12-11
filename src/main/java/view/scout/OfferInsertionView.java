@@ -260,7 +260,7 @@ public class OfferInsertionView extends VBox implements Cloneable {
         CalendarTimeTextField arrTimePicker = new CalendarTimeTextField();
 
         Label vehicle = new Label("Vehicol");
-        Spinner<String> vehSpinner = new Spinner<>(FXCollections.observableArrayList("Aeroplane", "Train", "Bus"));
+        Spinner<String> vehSpinner = new Spinner<>(FXCollections.observableArrayList("Aereo", "Treno", "Bus"));
 
         Label classLbl = new Label("Class");
         Spinner<String> clsSpinner = new Spinner<>(FXCollections.observableArrayList("First", "Second"));

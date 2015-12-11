@@ -41,7 +41,7 @@ public class EventoDaoHibernate implements DAO {
         }
     }
 
-    public synchronized void store(AbstractEntity entity) {
+    public synchronized int store(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;
 
@@ -51,6 +51,8 @@ public class EventoDaoHibernate implements DAO {
         session.save(eventoEntity);
         session.getTransaction().commit();
         session.close();
+
+        return eventoEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {
