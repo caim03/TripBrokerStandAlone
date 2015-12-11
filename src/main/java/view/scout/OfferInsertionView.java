@@ -51,6 +51,9 @@ public class OfferInsertionView extends VBox implements Cloneable {
     }
 
     public int getOfferQuantity() {
+        if ("".equals(quField.getText())){
+            return 0;
+        }
         return Integer.parseInt(quField.getText());
     }
 
@@ -64,14 +67,17 @@ public class OfferInsertionView extends VBox implements Cloneable {
 
     public void harvest() {
 
-        if (InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode()));
+        Notifications notifications = Notifications.create();
+        if (!InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode())) {
+            notifications.text("Could not insert offer, please check fields and retry");
+            notifications.title("Insertion error");
+            notifications.showWarning();
+        }
 
-        else {
-
-            Notifications error = Notifications.create();
-            error.text("Could not insert offer, please check fields and retry");
-            error.title("Insertion error");
-            error.showWarning();
+        else{
+            notifications.text("The offer inserted successfully");
+            notifications.title("Insertion success");
+            notifications.showConfirm();
         }
     }
 
