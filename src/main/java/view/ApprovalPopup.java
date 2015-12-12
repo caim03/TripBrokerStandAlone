@@ -7,18 +7,22 @@ import controller.RejectController;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.ProdottoEntity;
 
 public class ApprovalPopup extends PopupView {
     private PopupView popupView;
     private CreaPacchettoEntity pacchetto;
+    private TableView<ProdottoEntity> list;
 
-    public ApprovalPopup(PopupView popupView, CreaPacchettoEntity pacchetto){
+    public ApprovalPopup(PopupView popupView, CreaPacchettoEntity pacchetto, TableView<ProdottoEntity> list){
         this.popupView = popupView;
         this.pacchetto = pacchetto;
         this.title = "Approva Pacchetto";
+        this.list = list;
     }
 
     @Override
@@ -41,9 +45,9 @@ public class ApprovalPopup extends PopupView {
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(4);
 
-        approveButton.setOnMouseClicked(new ApproveController(this.pacchetto));
-        modifyButton.setOnMouseClicked(new RejectController(this.pacchetto));
-        deleteButton.setOnMouseClicked(new DeleteController(this.pacchetto));
+        approveButton.setOnMouseClicked(new ApproveController(this.pacchetto, list));
+        modifyButton.setOnMouseClicked(new RejectController(this.pacchetto, list));
+        deleteButton.setOnMouseClicked(new DeleteController(this.pacchetto, list));
 
         return pane;
     }

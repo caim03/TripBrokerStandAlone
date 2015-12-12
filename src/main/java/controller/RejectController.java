@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -9,6 +10,7 @@ import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 
 import java.util.Optional;
@@ -17,10 +19,11 @@ import java.util.Optional;
 public class RejectController implements EventHandler<MouseEvent> {
 
     private CreaPacchettoEntity pacchettoEntity;
+    private TableView<ProdottoEntity> list;
 
-    public RejectController(CreaPacchettoEntity pacchettoEntity) {
-
+    public RejectController(CreaPacchettoEntity pacchettoEntity, TableView<ProdottoEntity> list) {
         this.pacchettoEntity = pacchettoEntity;
+        this.list = list;
     }
 
     @Override
@@ -50,6 +53,8 @@ public class RejectController implements EventHandler<MouseEvent> {
             DBManager.shutdown();
 
             Notifications.create().title("Rejected").text("The packet has been rejected").show();
+            list.getItems().remove(this.pacchettoEntity);
+            list.refresh();
         }
     }
 }

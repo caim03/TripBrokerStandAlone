@@ -60,7 +60,7 @@ public class PacketApproveView {
 
             PopupView popupView;
             CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) list.getSelectionModel().getSelectedItem();
-            popupView = new ApprovalPopup(new PacketPopup(creaPacchettoEntity), creaPacchettoEntity);
+            popupView = new ApprovalPopup(new PacketPopup(creaPacchettoEntity), creaPacchettoEntity, list);
 
             popupView.show();
         });

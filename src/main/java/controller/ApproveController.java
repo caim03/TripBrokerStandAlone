@@ -3,22 +3,25 @@ package controller;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 
 
 public class ApproveController implements EventHandler<MouseEvent> {
 
     private CreaPacchettoEntity pacchettoEntity;
+    private TableView<ProdottoEntity> list;
 
-    public ApproveController(CreaPacchettoEntity pacchettoEntity) {
-
+    public ApproveController(CreaPacchettoEntity pacchettoEntity, TableView<ProdottoEntity> list) {
         this.pacchettoEntity = pacchettoEntity;
+        this.list = list;
     }
 
     @Override
@@ -41,5 +44,7 @@ public class ApproveController implements EventHandler<MouseEvent> {
 
         ((Node)event.getSource()).getScene().getWindow().hide();
         Notifications.create().title("Approved").text("The packet has been approved").show();
+        list.getItems().remove(this.pacchettoEntity);
+        list.refresh();
     }
 }
