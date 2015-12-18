@@ -7,9 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import view.agent.GroupTripAssembleView;
 import view.material.ConsolePane;
 
-public class Amministratore extends Ruolo {
+public class Agente extends Ruolo {
 
     @Override
     public Stage generateView() {
@@ -20,7 +21,7 @@ public class Amministratore extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Administrator");
+        ConsolePane container = new ConsolePane("Agency");
         container.setCenter(welcome);
 
         Scene scene = new Scene(container);
@@ -29,10 +30,9 @@ public class Amministratore extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
-        Command refresh;
         container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
-                new RefreshMacroCommand(container, new ShowApproveCommand(container)),
-                new RefreshMacroCommand(container, new ModifyPoliticsCommand(container)),
+                new RefreshMacroCommand(container, new ShowGroupTripFormCommand(container)),
+                new RefreshMacroCommand(container),
                 new LogoutCommand(stage));
 
         return stage;
@@ -40,6 +40,6 @@ public class Amministratore extends Ruolo {
 
     @Override
     public String getRole() {
-        return "Amministratore";
+        return "Agente";
     }
 }

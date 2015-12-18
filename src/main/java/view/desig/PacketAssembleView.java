@@ -6,15 +6,17 @@ import controller.command.Command;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
+import view.PacketFormView;
 import view.material.NavigationDrawer;
 
 public class PacketAssembleView extends AnchorPane {
 
-    PacketFormView form;
+    private PacketFormView form;
 
-    public PacketAssembleView() {
+    public PacketAssembleView(PacketFormView form) {
 
-        form = new PacketFormView();
+        this.form = form;
+        this.form.addListener();
 
         OffersTabPane lists = new OffersTabPane(form.getCommand());
 
@@ -43,6 +45,11 @@ public class PacketAssembleView extends AnchorPane {
         form.setMaxWidth(Double.MAX_VALUE);
 
         getChildren().addAll(hbox, button);
+    }
+
+    public PacketAssembleView() {
+
+        this(new PacketFormView());
     }
 
     public void harvest() {

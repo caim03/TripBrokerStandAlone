@@ -20,7 +20,8 @@ public class NavigationDrawer extends VBox {
 
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
                           admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "Approva pacchetto",  "Modifica Politiche", "Logout"),
-                          desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout");
+                          desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout"),
+                          agent = FXCollections.<String>observableArrayList("Visualizza catalogo", "Organizza viaggio",  "Prenota viaggio", "Logout");
 
     ListView<String> options;
     DrawerHandler handler;
@@ -51,6 +52,7 @@ public class NavigationDrawer extends VBox {
         if ("Scout".equals(title)) setOptions(NavigationDrawer.scout);
         else if ("Administrator".equals(title)) setOptions(NavigationDrawer.admin);
         else if ("Designer".equals(title)) setOptions(NavigationDrawer.desig);
+        else if ("Agency".equals(title)) setOptions(NavigationDrawer.agent);
     }
 
     public void setOptions(ObservableList<String> opts) {

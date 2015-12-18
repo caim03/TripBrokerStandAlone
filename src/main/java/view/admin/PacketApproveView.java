@@ -1,14 +1,11 @@
 package view.admin;
 
-import controller.TableViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
 import model.daoInterface.DAO;

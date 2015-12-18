@@ -1,4 +1,4 @@
-package view.desig;
+package view;
 
 import controller.PacketAssembleController;
 import controller.PacketOverseer;
@@ -15,9 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
-import model.entityDB.PacchettoOffertaEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
+import view.desig.PacketList;
 import view.material.DBCell;
 import view.material.MaterialField;
 import view.material.NumberLabel;
@@ -31,7 +31,7 @@ public class PacketFormView extends VBox {
     NumberLabel basePrice, maxPrice;
     TextField nameField, priceField;
 
-    double base = 0, criteria = 2.0;
+    double criteria = 2.0;
 
     public PacketFormView() {
 
@@ -56,6 +56,14 @@ public class PacketFormView extends VBox {
         list = new ListView<>(new PacketList());
         list.setCellFactory(param -> new DBCell());
         list.setPadding(new Insets(16, 16, 16, 16));
+        addListener();
+
+        getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
+
+        setStyle("-fx-vgap: 8px; -fx-fill-height: true");
+    }
+
+    public void addListener() {
 
         list.getItems().addListener(new ListChangeListener() {
 
@@ -87,11 +95,8 @@ public class PacketFormView extends VBox {
                 }
             }
         });
+
         list.getItems().addListener(new PacketOverseer(basePrice, maxPrice));
-
-        getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
-
-        setStyle("-fx-vgap: 8px; -fx-fill-height: true");
     }
 
     public Command getCommand() {

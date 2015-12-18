@@ -13,6 +13,8 @@ import model.daoInterface.DAO;
 import model.entityDB.EventoEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
+import view.material.NumericField;
+
 import java.sql.Date;
 import java.time.ZoneId;
 
@@ -34,7 +36,7 @@ public class InsertOfferController {
         if ("Evento".equals(spinner)){
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
-            int seatField = Integer.parseInt(((TextField) list[2]).getText());
+            int seatField = (int) ((NumericField) list[2]).getNumber();
             Date date = new Date(Date.from((((DatePicker) list[3]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int timePicker = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours();
             int endPicker = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
