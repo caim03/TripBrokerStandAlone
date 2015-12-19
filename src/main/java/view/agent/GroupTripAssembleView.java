@@ -9,9 +9,4 @@ public class GroupTripAssembleView extends PacketAssembleView {
 
         super(new GroupTripFormView());
     }
-
-    @Override
-    public void harvest() {
-
-    }
 }

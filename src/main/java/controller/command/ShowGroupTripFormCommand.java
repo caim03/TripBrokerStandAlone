@@ -23,11 +23,11 @@ public class ShowGroupTripFormCommand extends Command {
         PacketAssembleView view = new GroupTripAssembleView();
         container.setCenter(view);
 
-        /*
+
         Button done = new FlatButton();
         Command command = new CreatePacketCommand(view);
         done.addEventFilter(MouseEvent.MOUSE_CLICKED, new ButtonInvoker(command));
-        pane.addToolbarButton(done);
-        */
+        container.addToolbarButton(done);
+
     }
 }

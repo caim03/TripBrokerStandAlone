@@ -3,9 +3,6 @@ package model.entityDB;
 import javax.persistence.*;
 import java.sql.Date;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Viaggio", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")

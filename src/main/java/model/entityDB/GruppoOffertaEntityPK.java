@@ -4,17 +4,20 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-public class PacchettoOffertaEntityPK extends AbstractEntity implements Serializable {
-    private int idPacchetto;
+class GruppoOffertaEntityPK extends AbstractEntity implements Serializable {
+
+    private int idGruppo;
     private int idOfferta;
 
-    @Column(name = "id_pacchetto")
+    public GruppoOffertaEntityPK() {}
+
+    @Column(name = "id_gruppo")
     @Id
-    public int getIdPacchetto() {
-        return idPacchetto;
+    public int getIdGruppo() {
+        return idGruppo;
     }
-    public void setIdPacchetto(int idPacchetto) {
-        this.idPacchetto = idPacchetto;
+    public void setIdGruppo(int idGruppo) {
+        this.idGruppo = idGruppo;
     }
 
     @Column(name = "id_offerta")
@@ -28,20 +31,18 @@ public class PacchettoOffertaEntityPK extends AbstractEntity implements Serializ
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PacchettoOffertaEntityPK that = (PacchettoOffertaEntityPK) o;
+        GruppoOffertaEntityPK that = (GruppoOffertaEntityPK) o;
 
-        if (idPacchetto != that.idPacchetto) return false;
-        if (idOfferta != that.idOfferta) return false;
-
-        return true;
+        return super.equals(o) && idGruppo == that.idGruppo && idOfferta == that.idOfferta;
     }
 
     @Override
     public int hashCode() {
-        int result = idPacchetto;
+        int result = idGruppo;
         result = 31 * result + idOfferta;
         return result;
     }
