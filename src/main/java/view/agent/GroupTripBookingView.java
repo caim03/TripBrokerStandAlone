@@ -1,8 +1,9 @@
 package view.agent;
 
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import model.entityDB.AbstractEntity;
+import model.entityDB.ViaggioGruppoEntity;
+import view.BookingPopup;
+import view.GroupTripPopup;
 import view.material.DBListView;
 
 public class GroupTripBookingView extends VBox {
@@ -11,8 +12,13 @@ public class GroupTripBookingView extends VBox {
 
     public GroupTripBookingView() {
 
-        list = new DBListView("from ViaggioGruppoEntity where prenotazioni < max");
+        list = new DBListView("from ViaggioGruppoEntity entity where entity.prenotazioni < entity.max");
         list.fill();
+        list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue == null) return;
+            new BookingPopup(new GroupTripPopup((ViaggioGruppoEntity) newValue), (ViaggioGruppoEntity) newValue).show();
+        });
 
         getChildren().add(list);
     }

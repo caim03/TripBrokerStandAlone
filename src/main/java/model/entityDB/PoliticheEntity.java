@@ -2,9 +2,6 @@ package model.entityDB;
 
 import javax.persistence.*;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 @Entity
 @Table(name = "Politiche", schema = "trip_broker")
 public class PoliticheEntity extends AbstractEntity {

@@ -39,6 +39,11 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
     public void setPrenotazioni(int prenotazioni) {
         this.prenotazioni = prenotazioni;
     }
+    public void addPrenotazione(int add) {
+
+        if (prenotazioni + add > max) return;
+        this.prenotazioni += add;
+    }
 
     @Basic
     @Column(name = "creatore")

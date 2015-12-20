@@ -10,6 +10,7 @@ import model.entityDB.CreaPacchettoEntity;
 
 
 public class PacketPopup extends PopupView {
+
     private CreaPacchettoEntity pacchettoEntity;
 
     public PacketPopup(CreaPacchettoEntity prodottoEntity) {

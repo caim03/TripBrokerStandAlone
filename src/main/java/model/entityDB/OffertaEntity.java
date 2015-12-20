@@ -12,7 +12,7 @@ public class OffertaEntity extends ProdottoEntity {
     private String città;
     private double prezzoFabbrica;
     private int quantità;
-    private byte stato;
+    private int stato;
     private Date dataInizio;
 
     @Basic
@@ -47,12 +47,15 @@ public class OffertaEntity extends ProdottoEntity {
 
     @Basic
     @Column(name = "prenotazioni")
-    public byte getStato() {
+    public int getStato() {
         return stato;
     }
-
-    public void setStato(byte stato) {
+    public void setStato(int stato) {
         this.stato = stato;
+    }
+    public void addPrenotazioni(int add) {
+        if (quantità < stato + add) return;
+        stato += add;
     }
 
     @Basic

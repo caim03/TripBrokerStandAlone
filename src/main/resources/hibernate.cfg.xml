@@ -9,7 +9,7 @@
     <property name="hibernate.connection.username">caim03</property>
     <property name="hibernate.connection.password">asroma93</property>
     <!-- DB schema will be updated if needed -->
-    <!--<property name="hbm2ddl.auto">update</property>-->
+    <property name="hbm2ddl.auto">update</property>
     <mapping class="model.entityDB.CreaPacchettoEntity"/>
     <mapping class="model.entityDB.DipendentiEntity"/>
     <mapping class="model.entityDB.EventoEntity"/>
@@ -23,5 +23,6 @@
     <mapping class="model.entityDB.ViaggioEntity"/>
     <mapping class="model.entityDB.ViaggioGruppoEntity"/>
     <mapping class="model.entityDB.GruppoOffertaEntity"/>
+    <mapping class="model.entityDB.PrenotazioneEntity"/>
   </session-factory>
 </hibernate-configuration>

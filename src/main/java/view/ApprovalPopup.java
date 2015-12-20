@@ -14,6 +14,7 @@ import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 
 public class ApprovalPopup extends PopupView {
+
     private PopupView popupView;
     private CreaPacchettoEntity pacchetto;
     private TableView<ProdottoEntity> list;
@@ -51,5 +52,4 @@ public class ApprovalPopup extends PopupView {
 
         return pane;
     }
-
 }
