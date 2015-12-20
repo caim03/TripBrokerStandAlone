@@ -11,7 +11,7 @@ public class GroupTripBookingView extends VBox {
 
     public GroupTripBookingView() {
 
-        list = new DBListView("WHERE prenotazioni < max");
+        list = new DBListView("from ViaggioGruppoEntity where prenotazioni < max");
         list.fill();
 
         getChildren().add(list);

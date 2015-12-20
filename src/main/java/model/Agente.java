@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import view.CatalogView;
+import view.agent.DeleteGroupTripView;
 import view.agent.GroupTripAssembleView;
 import view.agent.GroupTripBookingView;
 import view.material.ConsolePane;
@@ -34,7 +35,8 @@ public class Agente extends Ruolo {
 
         container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
                 new RefreshMacroCommand(container, new ShowGroupTripFormCommand(container)),
-                new RefreshMacroCommand(container, new ShowCommand(container, new GroupTripBookingView())),
+                new RefreshMacroCommand(container, new ShowBookingCommand(container)),
+                new RefreshMacroCommand(container, new ShowDeleteTripCommand(container)),
                 new LogoutCommand(stage));
 
         return stage;
