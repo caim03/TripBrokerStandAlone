@@ -10,6 +10,7 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
 
     private int min;
     private int max;
+    private int prenotazioni;
     private int creatore;
 
     @Basic
@@ -17,7 +18,6 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
     public int getMin() {
         return min;
     }
-
     public void setMin(int min) {
         this.min = min;
     }
@@ -27,9 +27,17 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
     public int getMax() {
         return this.max;
     }
-
     public void setMax(int max) {
         this.max = max;
+    }
+
+    @Basic
+    @Column(name = "prenotazioni")
+    public int getPrenotazioni() {
+        return this.prenotazioni;
+    }
+    public void setPrenotazioni(int prenotazioni) {
+        this.prenotazioni = prenotazioni;
     }
 
     @Basic

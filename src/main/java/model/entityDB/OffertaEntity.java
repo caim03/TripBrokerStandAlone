@@ -46,7 +46,7 @@ public class OffertaEntity extends ProdottoEntity {
     }
 
     @Basic
-    @Column(name = "stato")
+    @Column(name = "prenotazioni")
     public byte getStato() {
         return stato;
     }

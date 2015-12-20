@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import model.entityDB.OffertaEntity;
 import java.util.List;
 
-public class OffertaDaoHibernate implements DAO {
+public class OffertaDaoHibernate extends ProdottoDaoHibernate {
 
     private static DAO singleton;
 
@@ -19,7 +19,8 @@ public class OffertaDaoHibernate implements DAO {
         return singleton;
     }
 
-    public synchronized List<OffertaEntity> getAll() {
+    @Override
+    public synchronized List<? extends OffertaEntity> getAll() {
         Session session = DBManager.getSession();
 
         List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity").list();
@@ -27,10 +28,12 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntities;
     }
 
-    public synchronized List<OffertaEntity> getByCriteria(String where) {
+    @Override
+    public synchronized List<? extends OffertaEntity> getByCriteria(String where) {
+
         Session session = DBManager.getSession();
 
-        List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity "+where).list();
+        List<OffertaEntity> offertaEntities = session.createQuery("from OffertaEntity "+ where).list();
         session.close();
         if(offertaEntities.isEmpty()){
             return null;
@@ -40,6 +43,7 @@ public class OffertaDaoHibernate implements DAO {
         }
     }
 
+    @Override
     public synchronized int store(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;
@@ -54,18 +58,7 @@ public class OffertaDaoHibernate implements DAO {
         return offertaEntity.getId();
     }
 
-    public synchronized void delete(AbstractEntity entity) {
-
-        OffertaEntity offertaEntity = (OffertaEntity) entity;
-
-        Session session = DBManager.getSession();
-
-        session.beginTransaction();
-        session.delete(offertaEntity);
-        session.getTransaction().commit();
-        session.close();
-    }
-
+    @Override
     public synchronized void update(AbstractEntity entity) {
 
         OffertaEntity offertaEntity = (OffertaEntity) entity;

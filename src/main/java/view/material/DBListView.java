@@ -85,8 +85,6 @@ public class DBListView extends ListView<AbstractEntity> {
                 }
             });
 
-            System.out.println("RESULT " + result.size());
-
             for (ProdottoEntity entity : result)
                 Platform.runLater(new Runnable() {
                     @Override

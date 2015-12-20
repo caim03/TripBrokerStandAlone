@@ -8,7 +8,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class ViaggioDaoHibernate implements DAO {
+public class ViaggioDaoHibernate extends OffertaDaoHibernate {
 
     private static DAO singleton;
 

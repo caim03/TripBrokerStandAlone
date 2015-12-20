@@ -10,7 +10,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class ViaggioGruppoDaoHibernate implements DAO {
+public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
 
     private static DAO singleton;
 
@@ -22,7 +22,7 @@ public class ViaggioGruppoDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized List<? extends AbstractEntity> getAll() {
+    public synchronized List<ViaggioGruppoEntity> getAll() {
 
         Session session = DBManager.getSession();
 
@@ -32,7 +32,7 @@ public class ViaggioGruppoDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized List<? extends AbstractEntity> getByCriteria(String where) {
+    public synchronized List<ViaggioGruppoEntity> getByCriteria(String where) {
 
         Session session = DBManager.getSession();
         List<ViaggioGruppoEntity> entities = session.createQuery("from ViaggioGruppoEntity " + where).list();
@@ -53,16 +53,6 @@ public class ViaggioGruppoDaoHibernate implements DAO {
         session.close();
 
         return ((ProdottoEntity) entity).getId();
-    }
-
-    @Override
-    public void delete(AbstractEntity entity) throws ClassCastException {
-
-        Session session = DBManager.getSession();
-        session.beginTransaction();
-        session.delete(entity);
-        session.getTransaction().commit();
-        session.close();
     }
 
     @Override

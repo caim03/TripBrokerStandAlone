@@ -1,6 +1,5 @@
 package view.material;
 
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,9 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
-import model.entityDB.ViaggioEntity;
+import javafx.scene.paint.Paint;
+import model.entityDB.*;
 
 public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
@@ -33,7 +31,8 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
         Node node;
         if (!item.isValid()) node = buildProgress();
-        else if (item instanceof ProdottoEntity) node = buildProduct((ProdottoEntity) item);
+        else if (item instanceof OffertaEntity) node = buildOffer((OffertaEntity) item);
+        else if (item instanceof ViaggioGruppoEntity) node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
         else node = new Label("NOT IMPLEMENTED");
 
         setGraphic(node);
@@ -46,64 +45,109 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
         return bar;
     }
 
-    private Node buildProduct(ProdottoEntity item) {
+    private Node buildOffer(OffertaEntity item) {
 
         String type = item.getTipo();
 
-        HBox cell = new HBox();
-        cell.setAlignment(Pos.CENTER_LEFT);
-        cell.setPrefHeight(48);
-        cell.setPadding(new Insets(10, 8, 10, 8));
-
-        Label lbl = new Label(item.getNome());
-        lbl.setTextFill(Color.CRIMSON);
-
-        ChangeListener listener = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (isSelected()) return;
-                if (newValue) lbl.setTextFill(Color.WHITE);
-                else lbl.setTextFill(Color.CRIMSON);
-            }
-        };
-
-        hoverProperty().addListener(listener);
-        selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) lbl.setTextFill(Color.WHITE);
-            else lbl.setTextFill(Color.CRIMSON);
-        });
-
-        Canvas round = new Canvas(48, 48);
-        GraphicsContext context = round.getGraphicsContext2D();
-        context.setFill(Color.web("#FF5252"));
-        context.fillOval(4, 4, 40, 40);
-        context.setFill(Color.WHITE);
-
-        Image image;
+        String image;
 
         if ("Pernottamento".equals(type)) {
-            image = new Image("stay.png");
+            image = "stay.png";
         }
         else if ("Evento".equals(type)) {
-            image = new Image("event.png");
+            image = "event.png";
         }
         else if ("Viaggio".equals(type)) {
 
             String vehicle = ((ViaggioEntity) item).getMezzo();
 
-            if ("Aereo".equals(vehicle)) image = new Image("airplane.png");
-            else if ("Bus".equals(vehicle)) image = new Image("bus.png");
-            else if ("Treno".equals(vehicle)) image = new Image("train.png");
-            else image = new Image("boat.png");
+            if ("Aereo".equals(vehicle)) image = "airplane.png";
+            else if ("Bus".equals(vehicle)) image = "bus.png";
+            else if ("Treno".equals(vehicle)) image = "train.png";
+            else image = "boat.png";
         }
-        else image = new Image("create.png");
+        else image = "create.png";
 
-        context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
-
-        cell.getChildren().addAll(round, lbl);
-        cell.setStyle("-fx-hgap: 2px");
-
-        return cell;
+        return new EmptyCell(item.getNome(), image);
     }
 
+    class EmptyCell extends HBox {
+
+        private Label lbl;
+        private Canvas thumbnail;
+
+        Label getLbl() { return lbl; }
+        Canvas getThumbnail() { return thumbnail; }
+
+        EmptyCell() {
+
+            setAlignment(Pos.CENTER_LEFT);
+            setPrefHeight(48);
+            setPadding(new Insets(10, 8, 10, 8));
+            setStyle("-fx-hgap: 2px");
+
+            lbl = new Label();
+            thumbnail = new Canvas(48, 48);
+
+            setListeners();
+
+            getChildren().addAll(thumbnail, lbl);
+        }
+
+        EmptyCell(String text, String location) {
+
+            this();
+            setLabel(text);
+            setThumbnail(location);
+        }
+
+        void setLabel(String text) {
+
+            lbl.setText(text);
+            lbl.setTextFill(Color.CRIMSON);
+        }
+
+        void setThumbnail(String location) {
+
+            setThumbnail(new Image(location));
+        }
+
+        void setThumbnail(Image image) {
+
+            fillThumbnail(Color.web("#FF5252"));
+            fillImage(image);
+        }
+
+        void fillThumbnail(Paint paint) {
+
+            GraphicsContext context = thumbnail.getGraphicsContext2D();
+            context.setFill(paint);
+            context.fillOval(4, 4, 40, 40);
+        }
+
+        void fillImage(Image image) {
+
+            GraphicsContext context = thumbnail.getGraphicsContext2D();
+            context.setFill(Color.WHITE);
+            context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
+        }
+
+        void setListeners() {
+
+            ChangeListener listener = new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if (isSelected()) return;
+                    if (newValue) lbl.setTextFill(Color.WHITE);
+                    else lbl.setTextFill(Color.CRIMSON);
+                }
+            };
+
+            DBCell.this.hoverProperty().addListener(listener);
+            DBCell.this.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) lbl.setTextFill(Color.WHITE);
+                else lbl.setTextFill(Color.CRIMSON);
+            });
+        }
+    }
 }

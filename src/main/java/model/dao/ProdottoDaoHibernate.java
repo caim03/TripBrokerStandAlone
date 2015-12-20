@@ -20,7 +20,8 @@ public class ProdottoDaoHibernate implements DAO {
         return singleton;
     }
 
-    public synchronized List<ProdottoEntity> getAll(){
+    @Override
+    public synchronized List<? extends ProdottoEntity> getAll() {
         Session session = DBManager.getSession();
 
         List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
@@ -32,7 +33,7 @@ public class ProdottoDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized List<ProdottoEntity> getByCriteria(String where) {
+    public synchronized List<? extends ProdottoEntity> getByCriteria(String where) {
 
         Session session = DBManager.getSession();
 
@@ -42,6 +43,7 @@ public class ProdottoDaoHibernate implements DAO {
         else return prodottoEntities;
     }
 
+    @Override
     public synchronized int store(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
@@ -56,6 +58,7 @@ public class ProdottoDaoHibernate implements DAO {
         return prodottoEntity.getId();
     }
 
+    @Override
     public synchronized void delete(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;
@@ -68,6 +71,7 @@ public class ProdottoDaoHibernate implements DAO {
         session.close();
     }
 
+    @Override
     public synchronized void update(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;

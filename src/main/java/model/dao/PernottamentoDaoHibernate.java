@@ -3,12 +3,13 @@ package model.dao;
 import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
+import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class PernottamentoDaoHibernate implements DAO {
+public class PernottamentoDaoHibernate extends OffertaDaoHibernate {
 
     private static DAO singleton;
 
@@ -20,6 +21,7 @@ public class PernottamentoDaoHibernate implements DAO {
         return singleton;
     }
 
+    @Override
     public synchronized List<PernottamentoEntity> getAll(){
         Session session = DBManager.getSession();
 
@@ -28,7 +30,7 @@ public class PernottamentoDaoHibernate implements DAO {
         return pernottamentoEntities;
     }
 
-
+    @Override
     public synchronized List<PernottamentoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
@@ -42,6 +44,7 @@ public class PernottamentoDaoHibernate implements DAO {
         }
     }
 
+    @Override
     public synchronized int store(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
@@ -56,18 +59,7 @@ public class PernottamentoDaoHibernate implements DAO {
         return pernottamentoEntity.getId();
     }
 
-    public synchronized void delete(AbstractEntity entity){
-
-        PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;
-
-        Session session = DBManager.getSession();
-
-        session.beginTransaction();
-        session.delete(pernottamentoEntity);
-        session.getTransaction().commit();
-        session.close();
-    }
-
+    @Override
     public synchronized void update(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;

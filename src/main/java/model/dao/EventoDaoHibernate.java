@@ -7,7 +7,7 @@ import model.entityDB.EventoEntity;
 import org.hibernate.Session;
 import java.util.List;
 
-public class EventoDaoHibernate implements DAO {
+public class EventoDaoHibernate extends ProdottoDaoHibernate {
 
     private static DAO singleton;
 
@@ -31,7 +31,7 @@ public class EventoDaoHibernate implements DAO {
     public synchronized List<EventoEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
-        List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity "+where).list();
+        List<EventoEntity> eventoEntities = session.createQuery("from EventoEntity " + where).list();
         session.close();
         if (eventoEntities.isEmpty()){
             return null;
