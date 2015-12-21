@@ -1,16 +1,21 @@
 package view;
 
 import controller.TableViewController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
@@ -23,11 +28,20 @@ import org.controlsfx.control.Notifications;
 import java.util.List;
 
 
-public class CatalogView extends TableView<ProdottoEntity> {
+public class CatalogView extends GridPane {
+    protected GridPane pane;
+    protected ProgressBar progressBar;
+    protected TableView<ProdottoEntity> list;
+    protected ObservableList<ProdottoEntity> names;
 
     public CatalogView() {
+        this.pane = this;
 
-        ObservableList<ProdottoEntity> names = FXCollections.observableArrayList();
+        this.names = FXCollections.observableArrayList();
+        this.list = new TableView<ProdottoEntity>();
+        this.progressBar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
+        this.getChildren().add(progressBar);
+        this.setAlignment(Pos.CENTER);
 
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(20);
@@ -42,21 +56,13 @@ public class CatalogView extends TableView<ProdottoEntity> {
         typeColumn.setMinWidth(350);
         typeColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, String>("tipo"));
 
-        getColumns().addAll(idColumn, nameColumn, priceColumn, typeColumn);
+        list.getColumns().addAll(idColumn, nameColumn, priceColumn, typeColumn);
 
-        List<ProdottoEntity> entities = fill();
+        new Thread(()-> {
+            fill();
+        }).start();
 
-        if (entities == null) {
-            Notifications.create().title("Empty catalog").text("No products in catalog").show();
-        }
-        else{
-            for (ProdottoEntity p : entities){
-                names.add(p);
-            }
-            setItems(names);
-        }
-
-        setOnMouseClicked(new TableViewController(this));
+        list.setOnMouseClicked(new TableViewController(list,this));
     }
 
     /*public static Parent buildScene(){
@@ -100,13 +106,27 @@ public class CatalogView extends TableView<ProdottoEntity> {
         return list;
     }*/
 
-    protected List<ProdottoEntity> fill() {
+    protected void fill() {
 
         DAO dao = ProdottoDaoHibernate.instance();
         DBManager.initHibernate();
         List<ProdottoEntity> entities = (List<ProdottoEntity>) dao.getAll();
         DBManager.shutdown();
 
-        return entities;
+        Platform.runLater(() -> {
+
+            if (entities == null) {
+                Notifications.create().title("Empty catalog").text("No products in catalog").show();
+            }
+            else{
+                for (ProdottoEntity p : entities){
+                    names.add(p);
+                }
+                list.setItems(names);
+            }
+
+            pane.getChildren().remove(0);
+            pane.getChildren().add(list);
+        });
     }
 }

@@ -3,15 +3,18 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import model.entityDB.*;
 import view.admin.PacketApproveView;
 import view.popup.*;
 
 public class TableViewController implements EventHandler<MouseEvent> {
     TableView<ProdottoEntity> tableView;
+    Pane pane;
 
-    public TableViewController(TableView<ProdottoEntity> list) {
+    public TableViewController(TableView<ProdottoEntity> list, Pane pane) {
         this.tableView = list;
+        this.pane = pane;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class TableViewController implements EventHandler<MouseEvent> {
         else {
 
             popupView = new PacketPopup((CreaPacchettoEntity) entity);
-            if (tableView instanceof PacketApproveView)
+            if (pane instanceof PacketApproveView)
                 popupView = new ApprovalPopup(popupView, (CreaPacchettoEntity) entity, tableView);
         }
 
