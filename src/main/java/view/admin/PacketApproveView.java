@@ -1,6 +1,7 @@
 package view.admin;
 
 import javafx.application.Platform;
+import javafx.scene.control.TableView;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
 import model.daoInterface.DAO;
@@ -18,27 +19,13 @@ public class PacketApproveView extends CatalogView {
     }
 
     @Override
-    protected void fill() {
+    protected List<ProdottoEntity> query() {
 
         DAO dao = ProdottoDaoHibernate.instance();
         DBManager.initHibernate();
         List<ProdottoEntity> entities = (List<ProdottoEntity>) dao.getByCriteria("where tipo = 'Pacchetto' and stato != 1");
         DBManager.shutdown();
 
-        Platform.runLater(() -> {
-
-            if (entities == null) {
-                Notifications.create().title("Empty catalog").text("No products in catalog").show();
-            }
-            else{
-                for (ProdottoEntity p : entities){
-                    this.names.add(p);
-                }
-                this.list.setItems(this.names);
-            }
-
-            this.pane.getChildren().remove(0);
-            this.pane.getChildren().add(this.list);
-        });
+        return entities;
     }
 }

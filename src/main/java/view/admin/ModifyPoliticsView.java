@@ -11,23 +11,34 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.PoliticheEntity;
+import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
+import view.CatalogView;
+import view.DBTablePane;
 
 import java.util.List;
 
-public class ModifyPoliticsView extends GridPane {
+public class ModifyPoliticsView extends DBTablePane {
 
     public ModifyPoliticsView() {
 
-        ObservableList<PoliticheEntity> names = FXCollections.observableArrayList();
+        getChildren().add(new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS));
+        setAlignment(Pos.TOP_CENTER);
+        setMaxWidth(Double.MAX_VALUE);
+        setMaxHeight(Double.MAX_VALUE);
+
+        fill();
+    }
+
+    @Override
+    protected TableView generateTable() {
+
         TableView<PoliticheEntity> list = new TableView<PoliticheEntity>();
-        ProgressBar progressBar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
-        this.getChildren().add(progressBar);
-        this.setAlignment(Pos.CENTER);
 
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(50);
@@ -43,31 +54,53 @@ public class ModifyPoliticsView extends GridPane {
         maxColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("percentuale_max"));
 
         list.getColumns().addAll(idColumn, nameColumn, minColumn, maxColumn);
+        list.setOnMouseClicked(new ModifyPoliticsController(list));
+
+        list.setMaxHeight(Double.MAX_VALUE);
+        list.setMaxWidth(Double.MAX_VALUE);
+
+        return list;
+    }
+
+    @Override
+    protected void fill() {
 
         new Thread(() -> {
 
-            List<PoliticheEntity> politicheEntities;
-            DAO dao = PoliticheDaoHibernate.instance();
-            DBManager.initHibernate();
-            politicheEntities = (List<PoliticheEntity>)dao.getAll();
-            DBManager.shutdown();
+            List<PoliticheEntity> entities = query();
 
             Platform.runLater(() -> {
-                if (politicheEntities == null)
+
+                getChildren().remove(0);
+
+                if (entities == null)
                     Notifications.create().title("Empty politics").text("No politics in database").show();
 
                 else {
-                    for (PoliticheEntity e : politicheEntities) {
-                        names.add(e);
-                    }
-                    list.setItems(names);
-                }
 
-                this.getChildren().remove(0);
-                this.getChildren().add(list);
+                    ObservableList<PoliticheEntity> names = FXCollections.observableArrayList();
+                    for (PoliticheEntity e : entities) names.add(e);
+
+                    TableView<PoliticheEntity> list = new TableView<>();
+                    list.setItems(names);
+
+                    getChildren().add(list);
+                    setHgrow(list, Priority.ALWAYS);
+                    setVgrow(list, Priority.ALWAYS);
+                }
             });
         }).start();
+    }
 
-        list.setOnMouseClicked(new ModifyPoliticsController(list));
+    @Override
+    protected List<PoliticheEntity> query() {
+
+        List<PoliticheEntity> entities;
+        DAO dao = PoliticheDaoHibernate.instance();
+        DBManager.initHibernate();
+        entities = (List<PoliticheEntity>)dao.getAll();
+        DBManager.shutdown();
+
+        return entities;
     }
 }
