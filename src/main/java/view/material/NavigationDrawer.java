@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -34,12 +36,15 @@ public class NavigationDrawer extends VBox {
         setAlignment(Pos.TOP_CENTER);
         setStyle("-fx-background-color: white; -fx-border-color: null");
 
-        Canvas canvas = new Canvas(width, width * ratio);
+        /*Canvas canvas = new Canvas(width, width * ratio);
         GraphicsContext context = canvas.getGraphicsContext2D();
         context.setFill(Color.ORANGE);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        getChildren().add(canvas);
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());*/
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(width * ratio);
+        imageView.setImage(new Image("gandalf.png"));
+        getChildren().add(imageView);
     }
 
     public NavigationDrawer(String title) {
