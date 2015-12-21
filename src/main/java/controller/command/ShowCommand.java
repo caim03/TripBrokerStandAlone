@@ -1,22 +1,29 @@
 package controller.command;
 
 import javafx.scene.Node;
-import javafx.scene.layout.BorderPane;
+import view.Collector;
+import view.material.ConsolePane;
 
 public class ShowCommand extends Command {
 
-    private BorderPane container;
-    private Node view;
+    protected ConsolePane container;
+    protected Class c;
+    protected Node view;
 
-    public ShowCommand(BorderPane container, Node view) {
+    public ShowCommand(ConsolePane container, Class c) {
 
         this.container = container;
-        this.view = view;
+        this.c = c;
     }
 
     @Override
     public void execute() {
 
-        container.setCenter(view);
+        try {
+
+            view = (Node) c.newInstance();
+            container.setCenter(view);
+        }
+        catch (InstantiationException | IllegalAccessException | ClassCastException e) { e.printStackTrace(); }
     }
 }

@@ -1,5 +1,6 @@
-package model;
+package model.role;
 
+import controller.Constants;
 import controller.command.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import view.TripBrokerConsole;
 import view.material.ConsolePane;
 
 public class Scout extends Ruolo {
@@ -21,7 +21,7 @@ public class Scout extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Scout");
+        ConsolePane container = new ConsolePane(getRole());
         container.setCenter(welcome);
 
         Scene scene = new Scene(container);
@@ -31,14 +31,20 @@ public class Scout extends Ruolo {
         stage.setScene(scene);
 
         Command refresh;
-        container.addCommands(new RefreshMacroCommand(container, new FormCommand(container)),
-                refresh = new RefreshCommand(container), refresh, new LogoutCommand(stage));
+        try {
+            container.addCommands(
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.scout.OfferInsertionView"))),
+                    refresh = new RefreshCommand(container),
+                    refresh,
+                    new LogoutCommand(stage));
+        }
+        catch (ClassNotFoundException e) { e.printStackTrace(); }
 
         return stage;
     }
 
     @Override
     public String getRole() {
-        return "Scout";
+        return Constants.scout;
     }
 }

@@ -4,10 +4,7 @@ import model.entityDB.EventoEntity;
 
 public class EventBuilder extends EntityBuilder {
 
-    public EventBuilder() {
-
-        entity = new EventoEntity();
-    }
+    public EventBuilder() { entity = new EventoEntity(); }
 
     @Override
     public void buildEntity(Object...objects) {

@@ -2,14 +2,12 @@ package view;
 
 import controller.LoginController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -79,34 +77,6 @@ public class TripBrokerLogin extends Application {
         login.setStyle("-fx-pref-height: 300");
         login.minWidth(120);
 
-        EventHandler<MouseEvent> handler = event -> {
-
-            AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
-                    surnameField.getText(), passField.getText()));
-
-            System.out.println("HANDLED");
-
-            if (entity == null)
-                Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
-
-            else if (!entity.isValid())
-                Notifications.create().title("Not Found").text("This user is not registered").show();
-
-            else {
-
-                Stage stage =  ((DipendentiEntity)entity).generateView();
-
-                TripBrokerLogin.this.stage.close();
-
-                TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity)entity).getId());
-                try {
-                    tripBrokerConsole.start(stage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
         EventHandler<KeyEvent> enter = event -> {
 
             if (event.getCode().equals(KeyCode.ENTER)) {
@@ -114,11 +84,56 @@ public class TripBrokerLogin extends Application {
             }
         };
 
-        button.addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
         nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
         surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
         passField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
 
+        EventHandler<MouseEvent> handler = event -> {
+
+            button.setDisable(true);
+            nameField.removeEventFilter(KeyEvent.KEY_PRESSED, enter);
+            surnameField.removeEventFilter(KeyEvent.KEY_PRESSED, enter);
+            passField.removeEventFilter(KeyEvent.KEY_PRESSED, enter);
+
+            ProgressBar progressBar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
+            pane.add(progressBar, 1, 5);
+
+            new Thread(() -> {
+
+                AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
+                        surnameField.getText(), passField.getText()));
+
+                Platform.runLater(() -> {
+
+                    if (entity != null && entity.isValid()) {
+
+                        Stage stage = ((DipendentiEntity) entity).generateView();
+
+                        TripBrokerLogin.this.stage.close();
+
+                        TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity) entity).getId());
+                        try { tripBrokerConsole.start(stage); } catch (Exception e) { e.printStackTrace(); }
+                    }
+
+                    else {
+
+                        if (entity == null)
+                            Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
+                        else if (!entity.isValid())
+                            Notifications.create().title("Not Found").text("This user is not registered").show();
+
+                        pane.getChildren().remove(progressBar);
+                        button.setDisable(false);
+                        nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                        surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                        passField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                        //RESTORE LISTENERS
+                    }
+                });
+            }).start();
+        };
+
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
 
         Scene scene = new Scene(login);
         scene.getStylesheets().add("material.css");

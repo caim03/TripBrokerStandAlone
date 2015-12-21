@@ -15,11 +15,11 @@ import org.controlsfx.control.Notifications;
 
 import java.util.List;
 
-public class ModifyPoliticsView {
+public class ModifyPoliticsView extends TableView<PoliticheEntity> {
 
-    public static Parent BuildScene(){
+    public ModifyPoliticsView() {
+
         ObservableList<PoliticheEntity> names = FXCollections.observableArrayList();
-        TableView<PoliticheEntity> list = new TableView<PoliticheEntity>();
 
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(40);
@@ -34,7 +34,7 @@ public class ModifyPoliticsView {
         maxColumn.setMinWidth(100);
         maxColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("percentuale_max"));
 
-        list.getColumns().addAll(idColumn, nameColumn, minColumn, maxColumn);
+        getColumns().addAll(idColumn, nameColumn, minColumn, maxColumn);
 
         List<PoliticheEntity> politicheEntities;
         DAO dao = PoliticheDaoHibernate.instance();
@@ -42,18 +42,14 @@ public class ModifyPoliticsView {
         politicheEntities = (List<PoliticheEntity>)dao.getAll();
         DBManager.shutdown();
 
-        if (politicheEntities == null){
+        if (politicheEntities == null)
             Notifications.create().title("Empty politics").text("No politics in database").show();
-        }
-        else{
-            for (PoliticheEntity e : politicheEntities){
-                names.add(e);
-            }
-            list.setItems(names);
+
+        else {
+            for (PoliticheEntity e : politicheEntities) names.add(e);
+            setItems(names);
         }
 
-        list.setOnMouseClicked(new ModifyPoliticsController(list));
-
-        return list;
+        setOnMouseClicked(new ModifyPoliticsController(this));
     }
 }

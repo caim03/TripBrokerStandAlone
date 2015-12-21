@@ -1,6 +1,7 @@
 package view.desig;
 
 import com.jfoenix.controls.JFXTabPane;
+import controller.Constants;
 import controller.command.Command;
 import controller.command.TransferRecordCommand;
 import javafx.beans.value.ChangeListener;
@@ -16,7 +17,7 @@ import view.material.DBListView;
 
 public class OffersTabPane extends JFXTabPane {
 
-    private static String[] tabs = {"Viaggio", "Pernottamento", "Evento"};
+    private static String[] tabs = {Constants.travel, Constants.stay, Constants.event};
 
     public OffersTabPane(Command command) {
 

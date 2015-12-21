@@ -21,19 +21,20 @@ import java.time.ZoneId;
 public class InsertOfferController {
 
     public static boolean handle(String name, String price, int quantity, String spinner, Node[] list) {
-        if (name == null || "".equals(name)){
+
+        if (name == null || "".equals(name)) {
+            System.out.println("INVALID NAME: " + name);
             return false;
         }
-
-        if (price == null || "".equals(price)){
+        if (price == null || "".equals(price)) {
+            System.out.println("INVALID PRICE");
             return false;
         }
+        if (quantity == 0) {
+            System.out.println("INVALID QUANTITY");
+            return false; }
 
-        if (quantity == 0){
-            return false;
-        }
-
-        if ("Evento".equals(spinner)){
+        if (Constants.event.equals(spinner)) {
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
             int seatField = (int) ((NumericField) list[2]).getNumber();
@@ -41,19 +42,20 @@ public class InsertOfferController {
             int timePicker = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours();
             int endPicker = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
 
-            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))){
+            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))) {
+                System.out.println("INVALID LOCATIONS");
                 return false;
             }
 
             EventBuilder eventBuilder = new EventBuilder();
-            eventBuilder.buildProduct(name, Double.parseDouble(price), "Evento");
+            eventBuilder.buildProduct(name, Double.parseDouble(price), Constants.event);
             eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, date);
             eventBuilder.buildEntity(seatField, timePicker, endPicker, locField);
 
             insertOfferEvent((EventoEntity) eventBuilder.getEntity());
         }
 
-        else if ("Viaggio".equals(spinner)){
+        else if (Constants.travel.equals(spinner)){
             String depField = ((TextField) list[0]).getText();
             String arrField = ((TextField) list[1]).getText();
             String vehSpinner = ((Spinner<String>) list[2]).getValue();
@@ -63,12 +65,13 @@ public class InsertOfferController {
             Date arrDate = new Date(Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int arrTime = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getHours();
 
-            if ((depField == null || "".equals(depField)) || (arrField == null || "".equals(arrField))){
+            if ((depField == null || "".equals(depField)) || (arrField == null || "".equals(arrField))) {
+                System.out.println("INVALID STATIONS");
                 return false;
             }
 
             TravelBuilder travelBuilder = new TravelBuilder();
-            travelBuilder.buildProduct(name, Double.parseDouble(price), "Viaggio");
+            travelBuilder.buildProduct(name, Double.parseDouble(price), Constants.travel);
             travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, depDate);
             travelBuilder.buildEntity(arrField, depTime, arrTime, vehSpinner, clsSpinner, depField, arrField, arrDate);
 
@@ -83,12 +86,13 @@ public class InsertOfferController {
             Date startDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             Date endDate = new Date(Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
 
-            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))){
+            if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))) {
+                System.out.println("INVALID LOCATIONS");
                 return false;
             }
 
             StayBuilder stayBuilder = new StayBuilder();
-            stayBuilder.buildProduct(name, Double.parseDouble(price), "Pernottamento");
+            stayBuilder.buildProduct(name, Double.parseDouble(price), Constants.stay);
             stayBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, startDate);
             stayBuilder.buildEntity(endDate, srvSpinner, starSpinner, locField);
 

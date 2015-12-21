@@ -1,15 +1,10 @@
-package view;
+package view.popup;
 
-import controller.ApproveController;
-import controller.DeleteController;
-import controller.RejectController;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -22,7 +17,6 @@ import model.dao.OffertaDaoHibernate;
 import model.dao.PrenotazioneDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
-import view.material.FlatButton;
 import view.material.MaterialField;
 
 public class BookingPopup extends PopupView {

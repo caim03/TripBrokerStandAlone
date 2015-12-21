@@ -1,6 +1,7 @@
 package view.material;
 
 import com.jfoenix.controls.JFXProgressBar;
+import controller.Constants;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -51,20 +52,17 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
         String image;
 
-        if ("Pernottamento".equals(type)) {
-            image = "stay.png";
-        }
-        else if ("Evento".equals(type)) {
-            image = "event.png";
-        }
-        else if ("Viaggio".equals(type)) {
+        if (Constants.stay.equals(type)) image = "stay.png";
+        else if (Constants.event.equals(type)) image = "event.png";
+        else if (Constants.travel.equals(type)) {
 
             String vehicle = ((ViaggioEntity) item).getMezzo();
 
-            if ("Aereo".equals(vehicle)) image = "airplane.png";
-            else if ("Bus".equals(vehicle)) image = "bus.png";
-            else if ("Treno".equals(vehicle)) image = "train.png";
-            else image = "boat.png";
+            if (Constants.plane.equals(vehicle)) image = "airplane.png";
+            else if (Constants.bus.equals(vehicle)) image = "bus.png";
+            else if (Constants.train.equals(vehicle)) image = "train.png";
+            else if (Constants.boat.equals(vehicle)) image = "boat.png";
+            else image = "create.png";
         }
         else image = "create.png";
 

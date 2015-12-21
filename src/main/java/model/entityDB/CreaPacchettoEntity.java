@@ -11,16 +11,6 @@ public class CreaPacchettoEntity extends ProdottoEntity {
     private String motivazione;
     private int creatore;
 
-    /*@Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }*/
-
     @Basic
     @Column(name = "stato")
     public int getStato() {

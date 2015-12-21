@@ -9,6 +9,7 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.ProdottoEntity;
+import model.entityDB.ViaggioEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -55,13 +56,26 @@ public class DBListView extends ListView<AbstractEntity> {
         DBListView view;
         DAO retriever = new DAO() {
             @Override public synchronized List<ProdottoEntity> getByCriteria(String where) {
-                DBManager.initHibernate();
-                Session session = DBManager.getSession();
-                List<ProdottoEntity> entities = session.createQuery(where).list();
-                session.close();
-                DBManager.shutdown();
-                if(entities.isEmpty()) return null;
-                else return entities; }
+
+                Session session = null;
+
+                try {
+                    DBManager.initHibernate();
+                    session = DBManager.getSession();
+                    List<ProdottoEntity> entities = session.createQuery(where).list();
+                    if (entities.isEmpty()) return null;
+                    else return entities;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+                finally {
+                    try { if (session != null) session.close(); } catch (Exception ignore) {}
+                    DBManager.shutdown();
+                }
+            }
+
             @Override public List getAll() { return null; }
             @Override public int store(AbstractEntity entity) throws ClassCastException { return 0; }
             @Override public void delete(AbstractEntity entity) throws ClassCastException {}
@@ -78,18 +92,10 @@ public class DBListView extends ListView<AbstractEntity> {
         protected Void call() throws Exception {
 
             List<ProdottoEntity> result = (List<ProdottoEntity>) retriever.getByCriteria(where);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    view.getItems().remove(0);
-                }
-            });
+            Platform.runLater(() -> view.getItems().remove(0));
 
             for (ProdottoEntity entity : result)
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() { view.getItems().add(entity); }
-                });
+                Platform.runLater(() -> view.getItems().add(entity));
 
             return null;
         }

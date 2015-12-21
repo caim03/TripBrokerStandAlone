@@ -23,9 +23,43 @@ import org.controlsfx.control.Notifications;
 import java.util.List;
 
 
-public class CatalogView {
+public class CatalogView extends TableView<ProdottoEntity> {
 
-    public static Parent buildScene(){
+    public CatalogView() {
+
+        ObservableList<ProdottoEntity> names = FXCollections.observableArrayList();
+
+        TableColumn idColumn = new TableColumn("Id");
+        idColumn.setMinWidth(20);
+        idColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, Integer>("id"));
+        TableColumn nameColumn = new TableColumn("Name");
+        nameColumn.setMinWidth(350);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, String>("nome"));
+        TableColumn priceColumn = new TableColumn("Price");
+        priceColumn.setMinWidth(300);
+        priceColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, Double>("prezzo"));
+        TableColumn typeColumn = new TableColumn("Type");
+        typeColumn.setMinWidth(350);
+        typeColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, String>("tipo"));
+
+        getColumns().addAll(idColumn, nameColumn, priceColumn, typeColumn);
+
+        List<ProdottoEntity> entities = fill();
+
+        if (entities == null) {
+            Notifications.create().title("Empty catalog").text("No products in catalog").show();
+        }
+        else{
+            for (ProdottoEntity p : entities){
+                names.add(p);
+            }
+            setItems(names);
+        }
+
+        setOnMouseClicked(new TableViewController(this));
+    }
+
+    /*public static Parent buildScene(){
 
         ObservableList<ProdottoEntity> names = FXCollections.observableArrayList();
         TableView<ProdottoEntity> list = new TableView<ProdottoEntity>();
@@ -64,5 +98,15 @@ public class CatalogView {
         list.setOnMouseClicked(new TableViewController(list));
 
         return list;
+    }*/
+
+    protected List<ProdottoEntity> fill() {
+
+        DAO dao = ProdottoDaoHibernate.instance();
+        DBManager.initHibernate();
+        List<ProdottoEntity> entities = (List<ProdottoEntity>) dao.getAll();
+        DBManager.shutdown();
+
+        return entities;
     }
 }

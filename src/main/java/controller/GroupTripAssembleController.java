@@ -16,7 +16,7 @@ public class GroupTripAssembleController {
             entity.setNome(name);
             entity.setPrezzo(price);
             entity.setCreatore(TripBrokerConsole.getGuest());
-            entity.setTipo("Viaggio di gruppo");
+            entity.setTipo(Constants.group);
             entity.setMin(min);
             entity.setMax(max);
 

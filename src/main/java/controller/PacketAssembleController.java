@@ -18,7 +18,7 @@ public class PacketAssembleController {
             entity.setNome(name);
             entity.setPrezzo(price);
             entity.setCreatore(TripBrokerConsole.getGuest());
-            entity.setTipo("Pacchetto");
+            entity.setTipo(Constants.packet);
             DBManager.initHibernate();
             CreaPacchettoDaoHibernate.instance().store(entity);
             for (int id : ids) {

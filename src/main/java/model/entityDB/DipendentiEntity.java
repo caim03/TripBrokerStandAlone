@@ -1,8 +1,8 @@
 package model.entityDB;
 
-import javafx.scene.Scene;
+import controller.Constants;
 import javafx.stage.Stage;
-import model.*;
+import model.role.*;
 
 import javax.persistence.*;
 
@@ -55,11 +55,11 @@ public class DipendentiEntity extends AbstractEntity {
 
     public void setRuolo(String ruolo) {
 
-        if ("Amministratore".equals(ruolo)) job = new Amministratore();
-        else if ("Designer".equals(ruolo)) job = new Designer();
-        else if ("Scout".equals(ruolo)) job = new Scout();
-        else if ("Agente".equals(ruolo)) job = new Agente();
-        else {}
+        if (Constants.admin.equals(ruolo)) job = new Amministratore();
+        else if (Constants.desig.equals(ruolo)) job = new Designer();
+        else if (Constants.scout.equals(ruolo)) job = new Scout();
+        else if (Constants.agent.equals(ruolo)) job = new Agente();
+        else job = null;
     }
 
     @Basic

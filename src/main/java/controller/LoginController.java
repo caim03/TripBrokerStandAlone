@@ -33,11 +33,7 @@ public class LoginController {
 
     public static AbstractEntity handle(Credentials credentials) {
 
-        System.out.println("HANDLING");
-
         if (!credentials.areValid()) return null;
-
-        System.out.println("VALID");
 
         List<DipendentiEntity> dipendentiEntity;
         DAO dao = DipendentiDaoHibernate.instance();

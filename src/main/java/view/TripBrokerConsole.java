@@ -4,8 +4,6 @@ import controller.command.Command;
 import controller.command.LogoutCommand;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Scout;
-import model.entityDB.DipendentiEntity;
 
 public class TripBrokerConsole extends Application {
 

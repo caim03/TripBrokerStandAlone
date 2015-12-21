@@ -32,8 +32,6 @@ public class PacketList extends SimpleListProperty<OffertaEntity> {
             track();
         }
 
-        System.out.println("LAST " + last);
-
         return bool;
     }
 

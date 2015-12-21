@@ -15,9 +15,5 @@ public class ButtonInvoker implements EventHandler<MouseEvent> {
     }
 
     @Override
-    public void handle(MouseEvent event) {
-
-        System.out.println("INVOKED");
-        command.execute();
-    }
+    public void handle(MouseEvent event) { command.execute(); }
 }

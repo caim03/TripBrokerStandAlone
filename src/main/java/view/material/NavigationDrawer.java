@@ -1,5 +1,6 @@
 package view.material;
 
+import controller.Constants;
 import controller.DrawerHandler;
 import controller.command.Command;
 import javafx.collections.FXCollections;
@@ -49,10 +50,10 @@ public class NavigationDrawer extends VBox {
 
     public void setOptions(String title) {
 
-        if ("Scout".equals(title)) setOptions(NavigationDrawer.scout);
-        else if ("Administrator".equals(title)) setOptions(NavigationDrawer.admin);
-        else if ("Designer".equals(title)) setOptions(NavigationDrawer.desig);
-        else if ("Agency".equals(title)) setOptions(NavigationDrawer.agent);
+        if (Constants.scout.equals(title)) setOptions(NavigationDrawer.scout);
+        else if (Constants.admin.equals(title)) setOptions(NavigationDrawer.admin);
+        else if (Constants.desig.equals(title)) setOptions(NavigationDrawer.desig);
+        else if (Constants.agent.equals(title)) setOptions(NavigationDrawer.agent);
     }
 
     public void setOptions(ObservableList<String> opts) {

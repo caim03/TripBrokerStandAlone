@@ -1,19 +1,18 @@
-package model;
+package model.role;
 
+import com.jfoenix.controls.JFXTabPane;
+import controller.Constants;
 import controller.command.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import view.CatalogView;
-import view.agent.DeleteGroupTripView;
-import view.agent.GroupTripAssembleView;
-import view.agent.GroupTripBookingView;
 import view.material.ConsolePane;
 
-public class Agente extends Ruolo {
+public class Designer extends Ruolo {
 
     @Override
     public Stage generateView() {
@@ -24,7 +23,7 @@ public class Agente extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Agency");
+        ConsolePane container = new ConsolePane(getRole());
         container.setCenter(welcome);
 
         Scene scene = new Scene(container);
@@ -33,17 +32,19 @@ public class Agente extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
-        container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
-                new RefreshMacroCommand(container, new ShowGroupTripFormCommand(container)),
-                new RefreshMacroCommand(container, new ShowBookingCommand(container)),
-                new RefreshMacroCommand(container, new ShowDeleteTripCommand(container)),
-                new LogoutCommand(stage));
+        try {
+            container.addCommands(new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.desig.PacketAssembleView"))),
+                    new RefreshCommand(container),
+                    new LogoutCommand(stage));
+        }
+        catch (ClassNotFoundException e) { e.printStackTrace(); }
 
         return stage;
     }
 
     @Override
     public String getRole() {
-        return "Agente";
+        return Constants.desig;
     }
 }

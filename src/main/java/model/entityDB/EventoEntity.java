@@ -7,21 +7,11 @@ import javax.persistence.Entity;
 @Table(name = "Evento", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class EventoEntity extends OffertaEntity {
-    //private int id;
+
     private int numeroPosto;
     private int oraInizio;
     private int oraFine;
     private String luogo;
-
-    /*@Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }*/
 
     @Basic
     @Column(name = "numero_posto")
@@ -65,18 +55,14 @@ public class EventoEntity extends OffertaEntity {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         EventoEntity that = (EventoEntity) o;
 
-        //if (id != that.id) return false;
-        if (numeroPosto != that.numeroPosto) return false;
-        if (oraInizio != that.oraInizio) return false;
-        if (oraFine != that.oraFine) return false;
-        if (luogo != null ? !luogo.equals(that.luogo) : that.luogo != null) return false;
-
-        return true;
+        return super.equals(o) && numeroPosto == that.numeroPosto && oraInizio == that.oraInizio && oraFine == that.oraFine
+                && ((luogo != null && luogo.equals(that.luogo)) || (luogo == null && that.luogo == null));
     }
 
     @Override

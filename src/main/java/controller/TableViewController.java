@@ -4,7 +4,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import model.entityDB.*;
-import view.*;
+import view.admin.PacketApproveView;
+import view.popup.*;
 
 public class TableViewController implements EventHandler<MouseEvent> {
     TableView<ProdottoEntity> tableView;
@@ -15,27 +16,32 @@ public class TableViewController implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        ProdottoEntity prodottoEntity = tableView.getSelectionModel().getSelectedItem();
+
+        ProdottoEntity entity = tableView.getSelectionModel().getSelectedItem();
         PopupView popupView;
 
-        if (prodottoEntity == null){
+        if (entity == null)
             return;
-        }
 
-        if ("Evento".equals(prodottoEntity.getTipo())){
-            popupView = new EventPopup((EventoEntity) prodottoEntity);
-        }
+        String type = entity.getTipo();
 
-        else if ("Viaggio".equals(prodottoEntity.getTipo())){
-            popupView = new TravelPopup((ViaggioEntity) prodottoEntity);
-        }
+        if (Constants.event.equals(type))
+            popupView = new EventPopup((EventoEntity) entity);
 
-        else if ("Pernottamento".equals(prodottoEntity.getTipo())){
-            popupView = new StayPopup((PernottamentoEntity) prodottoEntity);
-        }
+        else if (Constants.travel.equals(type))
+            popupView = new TravelPopup((ViaggioEntity) entity);
+
+        else if (Constants.stay.equals(type))
+            popupView = new StayPopup((PernottamentoEntity) entity);
+
+        else if (Constants.group.equals(type))
+            popupView = new GroupTripPopup((ViaggioGruppoEntity) entity);
 
         else {
-            popupView = new PacketPopup((CreaPacchettoEntity) prodottoEntity);
+
+            popupView = new PacketPopup((CreaPacchettoEntity) entity);
+            if (tableView instanceof PacketApproveView)
+                popupView = new ApprovalPopup(popupView, (CreaPacchettoEntity) entity, tableView);
         }
 
         popupView.show();

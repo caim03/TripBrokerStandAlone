@@ -6,10 +6,11 @@ import controller.command.Command;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
+import view.Collector;
 import view.PacketFormView;
 import view.material.NavigationDrawer;
 
-public class PacketAssembleView extends AnchorPane {
+public class PacketAssembleView extends AnchorPane implements Collector {
 
     private PacketFormView form;
 

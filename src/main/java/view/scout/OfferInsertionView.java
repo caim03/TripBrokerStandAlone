@@ -1,5 +1,6 @@
 package view.scout;
 
+import controller.Constants;
 import controller.InsertOfferController;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -13,47 +14,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import jfxtras.scene.control.CalendarTimeTextField;
 import org.controlsfx.control.Notifications;
+import view.Collector;
 import view.material.MaterialField;
 import view.material.NumericField;
 
 import java.time.LocalDate;
 
-public class OfferInsertionView extends VBox implements Cloneable {
+public class OfferInsertionView extends VBox implements Collector {
 
     private TextField nameField, priceField, quField;
     private Node[] offerNode;
     private Spinner<String> spinner;
 
-    private static OfferInsertionView basicGUI;
-
-    @Override
-    public OfferInsertionView clone() throws CloneNotSupportedException {
-
-        return (OfferInsertionView) super.clone();
-    }
-
-    public static OfferInsertionView getInstance() {
-        if (basicGUI == null) {
-
-            basicGUI = new OfferInsertionView();
-            basicGUI.buildGUI();
-        }
-
-        return basicGUI;
-    }
-
-    public String getOfferName() {
-        return nameField.getText();
-    }
-
+    public String getOfferName() { return nameField.getText(); }
     public String getPriceoffer() {
         return priceField.getText();
     }
 
     public int getOfferQuantity() {
-        if ("".equals(quField.getText())){
-            return 0;
-        }
+
+        if ("".equals(quField.getText())) return 0;
         return Integer.parseInt(quField.getText());
     }
 
@@ -65,23 +45,7 @@ public class OfferInsertionView extends VBox implements Cloneable {
         return offerNode;
     }
 
-    public void harvest() {
-
-        Notifications notifications = Notifications.create();
-        if (!InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode())) {
-            notifications.text("Could not insert offer, please check fields and retry");
-            notifications.title("Insertion error");
-            notifications.showWarning();
-        }
-
-        else{
-            notifications.text("The offer inserted successfully");
-            notifications.title("Insertion success");
-            notifications.showConfirm();
-        }
-    }
-
-    private void buildGUI() {
+    public OfferInsertionView() {
 
         Label name = new Label("Name");
         nameField = new TextField();
@@ -95,7 +59,7 @@ public class OfferInsertionView extends VBox implements Cloneable {
         quField = new NumericField(false);
         quField.setPromptText("Insert offer quantity");
 
-        spinner = new Spinner<>(FXCollections.observableArrayList("Viaggio", "Evento", "Pernottamento"));
+        spinner = new Spinner<>(FXCollections.observableArrayList(Constants.travel, Constants.event, Constants.stay));
         spinner.getEditor().setPromptText(null);
 
         GridPane pane = new GridPane();
@@ -115,25 +79,25 @@ public class OfferInsertionView extends VBox implements Cloneable {
 
         spinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 
-            try { basicGUI.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
+            try { OfferInsertionView.this.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
 
-            basicGUI.getChildren().add(fromOffer(newValue));
+            OfferInsertionView.this.getChildren().add(fromOffer(newValue));
         });
 
-        basicGUI.getChildren().addAll(pane, fromOffer(spinner.getValue()));
+        getChildren().addAll(pane, fromOffer(spinner.getValue()));
     }
 
     private Node fromOffer(String type) {
 
         Node attachment = null;
 
-        if ("Viaggio".equals(type))
+        if (Constants.travel.equals(type))
             attachment = travelAttachment();
 
-        else if ("Evento".equals(type))
+        else if (Constants.event.equals(type))
             attachment = eventAttachment();
 
-        else if ("Pernottamento".equals(type))
+        else if (Constants.stay.equals(type))
             attachment = stayAttachment();
 
         return attachment;
@@ -297,5 +261,15 @@ public class OfferInsertionView extends VBox implements Cloneable {
         offerNode[7] = arrTimePicker;
 
         return pane;
+    }
+
+    public void harvest() {
+
+        Notifications notifications = Notifications.create();
+
+        if (!InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode()))
+            notifications.text("Could not insert offer, please check fields and retry").title("Insertion error").showWarning();
+
+        else notifications.text("The offer inserted successfully").title("Insertion success").showConfirm();
     }
 }

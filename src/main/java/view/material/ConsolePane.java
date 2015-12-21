@@ -35,23 +35,7 @@ public class ConsolePane extends BorderPane {
         });
     }
 
-    public void addToolbarButton(Button button) {
-
-        toolbar.addToolbarButton(button);
-    }
-
-    public void hideToolbarButtons() {
-
-        toolbar.removeButtons();
-    }
-
-    public void setDrawer(ObservableList<String> opts) {
-
-        drawer.setOptions(opts);
-    }
-
-    public void addCommands(Command... commands) {
-
-        drawer.addCommands(commands);
-    }
+    public void addToolbarButton(Button button) { toolbar.addToolbarButton(button); }
+    public void hideToolbarButtons() { toolbar.removeButtons(); }
+    public void addCommands(Command... commands) { drawer.addCommands(commands); }
 }

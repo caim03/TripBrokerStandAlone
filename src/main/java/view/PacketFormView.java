@@ -23,9 +23,10 @@ import view.material.MaterialField;
 import view.material.NumberLabel;
 import view.material.NumericField;
 
+import java.util.Collection;
 import java.util.List;
 
-public class PacketFormView extends VBox {
+public class PacketFormView extends VBox implements Collector {
 
     ListView<? extends AbstractEntity> list;
     NumberLabel basePrice, maxPrice;
@@ -102,6 +103,7 @@ public class PacketFormView extends VBox {
     public Command getCommand() {
         return new TransferRecordCommand(list);
     }
+    public void clear() { list.getItems().remove(0, list.getItems().size()); }
 
     public void harvest() {
 
@@ -129,10 +131,5 @@ public class PacketFormView extends VBox {
             else
                 Notifications.create().text("Internal Database error").showError();
         }
-    }
-
-    public void clear() {
-
-        list.getItems().remove(0, list.getItems().size());
     }
 }

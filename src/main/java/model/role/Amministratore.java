@@ -1,5 +1,6 @@
-package model;
+package model.role;
 
+import controller.Constants;
 import controller.command.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,7 +21,7 @@ public class Amministratore extends Ruolo {
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
 
-        ConsolePane container = new ConsolePane("Administrator");
+        ConsolePane container = new ConsolePane(getRole());
         container.setCenter(welcome);
 
         Scene scene = new Scene(container);
@@ -29,17 +30,18 @@ public class Amministratore extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
-        Command refresh;
-        container.addCommands(new RefreshMacroCommand(container, new ShowCatalogCommand(container)),
-                new RefreshMacroCommand(container, new ShowApproveCommand(container)),
-                new RefreshMacroCommand(container, new ModifyPoliticsCommand(container)),
-                new LogoutCommand(stage));
+        try {
+            container.addCommands(
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.PacketApproveView"))),
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))),
+                    new LogoutCommand(stage));
+        }
+        catch (ClassNotFoundException e) { e.printStackTrace(); }
 
         return stage;
     }
 
     @Override
-    public String getRole() {
-        return "Amministratore";
-    }
+    public String getRole() { return Constants.admin; }
 }

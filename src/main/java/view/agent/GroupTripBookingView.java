@@ -2,8 +2,8 @@ package view.agent;
 
 import javafx.scene.layout.VBox;
 import model.entityDB.ViaggioGruppoEntity;
-import view.BookingPopup;
-import view.GroupTripPopup;
+import view.popup.BookingPopup;
+import view.popup.GroupTripPopup;
 import view.material.DBListView;
 
 public class GroupTripBookingView extends VBox {

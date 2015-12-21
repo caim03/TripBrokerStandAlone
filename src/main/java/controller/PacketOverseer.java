@@ -29,7 +29,7 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
         if (c.wasAdded()) {
 
             int len = c.getAddedSize(), size = c.getList().size();
-            System.out.println("SIZE " + size);
+
             List added = c.getAddedSubList();
             for (int i = 0; i < len; ++i) {
 

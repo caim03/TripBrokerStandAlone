@@ -4,8 +4,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import model.entityDB.PoliticheEntity;
-import view.PoliticsPopup;
-import view.PopupView;
+import view.popup.PoliticsPopup;
+import view.popup.PopupView;
 
 
 public class ModifyPoliticsController implements EventHandler<MouseEvent> {

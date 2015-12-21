@@ -7,7 +7,7 @@ import java.sql.Date;
 @Table(name = "Viaggio", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class ViaggioEntity extends OffertaEntity {
-    //private int id;
+
     private String destinazione;
     private int oraPartenza;
     private int oraArrivo;
@@ -16,16 +16,6 @@ public class ViaggioEntity extends OffertaEntity {
     private String stazionePartenza;
     private String stazioneArrivo;
     private Date dataArrivo;
-
-    /*@Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }*/
-
-    /*public void setId() {
-        this.id = super.getId();
-    }*/
 
     @Basic
     @Column(name = "destinazione")
