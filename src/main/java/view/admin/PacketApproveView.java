@@ -1,12 +1,9 @@
 package view.admin;
 
-import javafx.application.Platform;
-import javafx.scene.control.TableView;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.ProdottoEntity;
-import org.controlsfx.control.Notifications;
 import view.CatalogView;
 
 import java.util.List;

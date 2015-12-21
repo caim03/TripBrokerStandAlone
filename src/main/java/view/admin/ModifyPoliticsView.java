@@ -25,16 +25,6 @@ import java.util.List;
 
 public class ModifyPoliticsView extends DBTablePane {
 
-    public ModifyPoliticsView() {
-
-        getChildren().add(new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS));
-        setAlignment(Pos.TOP_CENTER);
-        setMaxWidth(Double.MAX_VALUE);
-        setMaxHeight(Double.MAX_VALUE);
-
-        fill();
-    }
-
     @Override
     protected TableView generateTable() {
 

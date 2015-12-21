@@ -32,16 +32,6 @@ import java.util.List;
 
 public class CatalogView extends DBTablePane {
 
-    public CatalogView() {
-
-        getChildren().add(new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS));
-        setAlignment(Pos.CENTER);
-        setMaxWidth(Double.MAX_VALUE);
-        setMaxHeight(Double.MAX_VALUE);
-
-        fill();
-    }
-
     @Override
     protected void fill() {
 
