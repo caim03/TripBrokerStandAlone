@@ -4,21 +4,15 @@ import controller.ModifyPoliticsController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.PoliticheEntity;
-import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
-import view.CatalogView;
 import view.DBTablePane;
 
 import java.util.List;
@@ -61,7 +55,7 @@ public class ModifyPoliticsView extends DBTablePane {
 
             Platform.runLater(() -> {
 
-                getChildren().remove(0);
+                detach(0);
 
                 if (entities == null)
                     Notifications.create().title("Empty politics").text("No politics in database").show();
@@ -71,10 +65,10 @@ public class ModifyPoliticsView extends DBTablePane {
                     ObservableList<PoliticheEntity> names = FXCollections.observableArrayList();
                     for (PoliticheEntity e : entities) names.add(e);
 
-                    TableView<PoliticheEntity> list = new TableView<>();
+                    TableView list = generateTable();
                     list.setItems(names);
 
-                    getChildren().add(list);
+                    attach(list);
                     setHgrow(list, Priority.ALWAYS);
                     setVgrow(list, Priority.ALWAYS);
                 }
