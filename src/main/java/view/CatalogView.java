@@ -41,7 +41,7 @@ public class CatalogView extends DBTablePane {
 
             Platform.runLater(() -> {
 
-                detach(0);
+                detach(bar);
 
                 if (entities == null)
                     Notifications.create().title("Empty catalog").text("No products in catalog").show();

@@ -1,6 +1,7 @@
 package controller.command;
 
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import view.Collector;
 import view.material.ConsolePane;
 

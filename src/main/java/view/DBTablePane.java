@@ -16,14 +16,20 @@ import java.util.List;
 
 public abstract class DBTablePane extends GridPane implements PopupAttachable {
 
+    protected ProgressBar bar;
+
     protected DBTablePane() {
+
+        int size = layer.getChildren().size();
+        if (size > 0) layer.getChildren().remove(0, size);
 
         getChildren().add(layer);
         setHgrow(layer, Priority.ALWAYS);
         setVgrow(layer, Priority.ALWAYS);
         layer.setAlignment(Pos.CENTER);
 
-        attach(new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS));
+        bar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
+        attach(bar);
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
         setMaxHeight(Double.MAX_VALUE);
