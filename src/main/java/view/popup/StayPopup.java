@@ -8,13 +8,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.entityDB.PernottamentoEntity;
 
-public class StayPopup extends PopupView{
+public class StayPopup extends PopupView {
     PernottamentoEntity pernottamentoEntity;
 
     public StayPopup(PernottamentoEntity prodottoEntity) {
 
         this.pernottamentoEntity = prodottoEntity;
         this.title = "Pernottamento";
+
+        getChildren().add(generatePopup());
     }
 
     @Override

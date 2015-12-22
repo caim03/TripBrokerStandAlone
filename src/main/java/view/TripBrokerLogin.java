@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
+import org.hibernate.exception.JDBCConnectionException;
 import view.material.MaterialField;
 import view.material.Toolbar;
 
@@ -100,36 +101,54 @@ public class TripBrokerLogin extends Application {
 
             new Thread(() -> {
 
-                AbstractEntity entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
-                        surnameField.getText(), passField.getText()));
+                AbstractEntity entity;
+                try {
+                    entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
+                            surnameField.getText(), passField.getText()));
 
-                Platform.runLater(() -> {
+                    Platform.runLater(() -> {
 
-                    if (entity != null && entity.isValid()) {
+                        if (entity != null && entity.isValid()) {
 
-                        Stage stage = ((DipendentiEntity) entity).generateView();
+                            Stage stage = ((DipendentiEntity) entity).generateView();
 
-                        TripBrokerLogin.this.stage.close();
+                            TripBrokerLogin.this.stage.close();
 
-                        TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity) entity).getId());
-                        try { tripBrokerConsole.start(stage); } catch (Exception e) { e.printStackTrace(); }
-                    }
+                            TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity) entity).getId());
+                            try {
+                                tripBrokerConsole.start(stage);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
 
-                    else {
+                            if (entity == null)
+                                Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
+                            else if (!entity.isValid())
+                                Notifications.create().title("Not Found").text("This user is not registered").show();
 
-                        if (entity == null)
-                            Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
-                        else if (!entity.isValid())
-                            Notifications.create().title("Not Found").text("This user is not registered").show();
+                            pane.getChildren().remove(progressBar);
+                            button.setDisable(false);
+                            nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                            surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                            passField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
+                            //RESTORE LISTENERS
+                        }
+                    });
+                }
+                catch (JDBCConnectionException e) {
+                    e.printStackTrace();
 
+                    Platform.runLater(() -> {
+                        Notifications.create().title("Connection refused").text("DB service not available").showWarning();
                         pane.getChildren().remove(progressBar);
                         button.setDisable(false);
                         nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
                         surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
                         passField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
                         //RESTORE LISTENERS
-                    }
-                });
+                    });
+                }
             }).start();
         };
 

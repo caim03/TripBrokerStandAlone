@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
@@ -27,15 +28,17 @@ public class DeleteController implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
 
-        ((Node)event.getSource()).getScene().getWindow().hide();
+        new Thread(() -> {
+            DAO dao = ProdottoDaoHibernate.instance();  // Primary key is set on Prodotto Table (ON DELETE CASCADE)
+            DBManager.initHibernate();
+            dao.delete(pacchettoEntity);
+            DBManager.shutdown();
 
-        DAO dao = ProdottoDaoHibernate.instance();  // Primary key is set on Prodotto Table (ON DELETE CASCADE)
-        DBManager.initHibernate();
-        dao.delete(pacchettoEntity);
-        DBManager.shutdown();
-
-        Notifications.create().title("Deleted").text("The packet has been deleted").show();
-        list.getItems().remove(this.pacchettoEntity);
-        list.refresh();
+            Platform.runLater(() -> {
+                Notifications.create().title("Deleted").text("The packet has been deleted").show();
+                list.getItems().remove(this.pacchettoEntity);
+                list.refresh();
+            });
+        }).start();
     }
 }

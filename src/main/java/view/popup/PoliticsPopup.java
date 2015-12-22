@@ -1,17 +1,24 @@
 package view.popup;
 
-import controller.ModifyController;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import model.DBManager;
+import model.dao.PoliticheDaoHibernate;
+import model.daoInterface.DAO;
 import model.entityDB.PoliticheEntity;
+import org.controlsfx.control.Notifications;
+import view.material.MaterialPopup;
 
 
 public class PoliticsPopup extends PopupView {
+
     private PoliticheEntity politicheEntity;
     private TextField nameTxt, minTxt, maxTxt;
     private Button modButton;
@@ -20,6 +27,8 @@ public class PoliticsPopup extends PopupView {
 
         this.politicheEntity = politicheEntity;
         this.title = "Politiche";
+
+        getChildren().add(generatePopup());
     }
 
     @Override
@@ -50,14 +59,46 @@ public class PoliticsPopup extends PopupView {
         pane.add(minTxt, 1, 1);
         pane.add(maxTxt, 1, 2);
 
-        VBox dialogVbox = new VBox(40, pane);
+        modButton.setOnMouseClicked(parent.getListener(new ModifyController(), true));
 
-        return dialogVbox;
+        return new VBox(40, pane);
     }
 
     @Override
-    public void show(){
-        super.show();
-        modButton.setOnMouseClicked(new ModifyController(politicheEntity, nameTxt, minTxt, maxTxt));
+    public void setParent(MaterialPopup parent) {
+        super.setParent(parent);
+
+        modButton.setOnMouseClicked(parent.getListener(new ModifyController(), true));
+    }
+
+    class ModifyController implements EventHandler<MouseEvent>{
+
+        @Override
+        public void handle(MouseEvent event) {
+            String namePolitic, minPerc, maxPerc;
+
+            namePolitic = nameTxt.getText();
+            minPerc = minTxt.getText();
+            maxPerc = maxTxt.getText();
+
+            if ("".equals(namePolitic)){
+                politicheEntity.setNome(namePolitic);
+            }
+
+            if ("".equals(minPerc)){
+                politicheEntity.setPercentualeMin(Double.parseDouble(minPerc));
+            }
+
+            if ("".equals(maxPerc)){
+                politicheEntity.setPercentualeMax(Double.parseDouble(maxPerc));
+            }
+
+            DAO dao = PoliticheDaoHibernate.instance();
+            DBManager.initHibernate();
+            dao.update(politicheEntity);
+            DBManager.shutdown();
+
+            Notifications.create().title("Modified").text("The politic has been modified").show();
+        }
     }
 }

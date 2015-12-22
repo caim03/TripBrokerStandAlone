@@ -41,7 +41,7 @@ public class CatalogView extends DBTablePane {
 
             Platform.runLater(() -> {
 
-                getChildren().remove(0);
+                detach(0);
 
                 if (entities == null)
                     Notifications.create().title("Empty catalog").text("No products in catalog").show();
@@ -53,7 +53,7 @@ public class CatalogView extends DBTablePane {
 
                     TableView list = generateTable();
                     list.setItems(names);
-                    getChildren().add(list);
+                    attach(list);
                     setHgrow(list, Priority.ALWAYS);
                     setVgrow(list, Priority.ALWAYS);
                 }

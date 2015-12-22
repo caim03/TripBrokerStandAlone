@@ -5,6 +5,7 @@ import model.dao.DipendentiDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
+import org.hibernate.exception.JDBCConnectionException;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class LoginController {
         }
     }
 
-    public static AbstractEntity handle(Credentials credentials) {
+    public static AbstractEntity handle(Credentials credentials) throws JDBCConnectionException {
 
         if (!credentials.areValid()) return null;
 

@@ -15,6 +15,8 @@ public class TravelPopup extends PopupView{
 
         this.viaggioEntity = prodottoEntity;
         this.title = "Viaggio";
+
+        getChildren().add(generatePopup());
     }
 
     @Override

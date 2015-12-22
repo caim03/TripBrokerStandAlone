@@ -27,24 +27,28 @@ public class ApproveController implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
 
-        pacchettoEntity.setStato(1);
+        new Thread(() -> {
 
-        DAO dao = CreaPacchettoDaoHibernate.instance();
+            pacchettoEntity.setStato(1);
 
-        try {
-            DBManager.initHibernate();
-            dao.update(pacchettoEntity);
-            DBManager.shutdown();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            Notifications.create().text("Internal Database error").showError();
-            return;
-        }
+            DAO dao = CreaPacchettoDaoHibernate.instance();
 
-        ((Node)event.getSource()).getScene().getWindow().hide();
-        Notifications.create().title("Approved").text("The packet has been approved").show();
-        list.getItems().remove(this.pacchettoEntity);
-        list.refresh();
+            try {
+                DBManager.initHibernate();
+                dao.update(pacchettoEntity);
+                DBManager.shutdown();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> Notifications.create().text("Internal Database error").showError());
+                return;
+            }
+
+            Platform.runLater(() -> {
+                Notifications.create().title("Approved").text("The packet has been approved").show();
+                list.getItems().remove(this.pacchettoEntity);
+                list.refresh();
+            });
+        }).start();
     }
 }

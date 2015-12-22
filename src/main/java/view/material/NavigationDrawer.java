@@ -24,7 +24,7 @@ public class NavigationDrawer extends VBox {
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
                           admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "Approva pacchetto",  "Modifica Politiche", "Logout"),
                           desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout"),
-                          agent = FXCollections.<String>observableArrayList("Visualizza catalogo", "Organizza viaggio",  "Prenota viaggio", "Elimina viaggi", "Logout");
+                          agent = FXCollections.<String>observableArrayList("Visualizza catalogo", "Organizza viaggio",  "Prenota viaggio", "Gestisci prenotazioni", "Logout");
 
     ListView<String> options;
     DrawerHandler handler;
@@ -36,10 +36,6 @@ public class NavigationDrawer extends VBox {
         setAlignment(Pos.TOP_CENTER);
         setStyle("-fx-background-color: white; -fx-border-color: null");
 
-        /*Canvas canvas = new Canvas(width, width * ratio);
-        GraphicsContext context = canvas.getGraphicsContext2D();
-        context.setFill(Color.ORANGE);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());*/
         ImageView imageView = new ImageView();
         imageView.setFitWidth(width);
         imageView.setFitHeight(width * ratio);

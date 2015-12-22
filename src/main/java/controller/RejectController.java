@@ -28,6 +28,7 @@ public class RejectController implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
+
         TextInputDialog dialog;
 
         dialog = new TextInputDialog();
@@ -46,7 +47,6 @@ public class RejectController implements EventHandler<MouseEvent> {
             pacchettoEntity.setMotivazione(entered);
             pacchettoEntity.setStato(2);
 
-            ((Node)event.getSource()).getScene().getWindow().hide();
             DAO dao = CreaPacchettoDaoHibernate.instance();
             DBManager.initHibernate();
             dao.update(pacchettoEntity);

@@ -1,7 +1,7 @@
 package view.popup;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
@@ -18,18 +18,24 @@ import model.dao.PrenotazioneDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
 import view.material.MaterialField;
+import view.material.MaterialPopup;
 
 public class BookingPopup extends PopupView {
 
 
     private PopupView popupView;
     private ViaggioGruppoEntity entity;
+    private Button bookBtn;
+    private TextField nameField, surnameField;
+    private Spinner<Integer> bookingSpinner;
 
     public BookingPopup(PopupView popupView, ViaggioGruppoEntity entity) {
 
         this.popupView = popupView;
         this.entity = entity;
         this.title = "Prenota viaggio";
+
+        getChildren().add(generatePopup());
     }
 
     @Override
@@ -40,40 +46,15 @@ public class BookingPopup extends PopupView {
 
     private Parent generateFields() {
 
-        TextField nameField = new TextField();
+        nameField = new TextField();
         nameField.setPromptText("Inserisci nome");
 
-        TextField surnameField = new TextField();
+        surnameField = new TextField();
         surnameField.setPromptText("Inserisci cognome");
 
-        Spinner<Integer> bookingSpinner = new Spinner<>(1, entity.getMax() - entity.getPrenotazioni(), 1);
+        bookingSpinner = new Spinner<>(1, entity.getMax() - entity.getPrenotazioni(), 1);
 
-        Button bookBtn = new Button("Prenota");
-        bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-
-            DBManager.initHibernate();
-            PrenotazioneEntity booking = new PrenotazioneEntity();
-            booking.setViaggioId(entity.getId());
-            booking.setNome(nameField.getText());
-            booking.setCognome(surnameField.getText());
-            booking.setQuantità(bookingSpinner.getValue());
-            PrenotazioneDaoHibernate.instance().store(booking);
-
-            int bookings = bookingSpinner.getValue();
-            entity.addPrenotazione(bookings);
-            ViaggioGruppoDaoHibernate.instance().update(entity);
-
-            for (AbstractEntity gruppoOfferta : GruppoOffertaDaoHibernate.instance().getByCriteria("where id_gruppo = " + entity.getId())) {
-
-                OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getByCriteria("where id = " + ((GruppoOffertaEntity)gruppoOfferta).getIdOfferta()).get(0);
-                offer.addPrenotazioni(bookings);
-                OffertaDaoHibernate.instance().update(offer);
-            }
-
-            DBManager.shutdown();
-
-            ((Node)event.getSource()).getScene().getWindow().hide();
-        });
+        bookBtn = new Button("Prenota");
 
         GridPane pane = new GridPane();
 
@@ -89,8 +70,36 @@ public class BookingPopup extends PopupView {
 
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(4);
+        pane.setPadding(new Insets(25, 25,  25, 25));
 
         return pane;
     }
 
+    @Override
+    public void setParent(MaterialPopup parent) {
+        super.setParent(parent);
+
+        bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, this.parent.getListener(event -> {
+            DBManager.initHibernate();
+            PrenotazioneEntity booking = new PrenotazioneEntity();
+            booking.setViaggioId(entity.getId());
+            booking.setNome(nameField.getText());
+            booking.setCognome(surnameField.getText());
+            booking.setQuantità(bookingSpinner.getValue());
+            PrenotazioneDaoHibernate.instance().store(booking);
+
+            int bookings = bookingSpinner.getValue();
+            entity.addPrenotazione(bookings);
+            ViaggioGruppoDaoHibernate.instance().update(entity);
+
+            for (AbstractEntity gruppoOfferta : GruppoOffertaDaoHibernate.instance().getByCriteria("where id_gruppo = " + entity.getId())) {
+
+                OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getByCriteria("where id = " + ((GruppoOffertaEntity) gruppoOfferta).getIdOfferta()).get(0);
+                offer.addPrenotazioni(bookings);
+                OffertaDaoHibernate.instance().update(offer);
+            }
+
+            DBManager.shutdown();
+        }));
+    }
 }

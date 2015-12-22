@@ -17,6 +17,8 @@ public class PacketPopup extends PopupView {
 
         this.pacchettoEntity = prodottoEntity;
         this.title = "Pacchetto";
+
+        getChildren().add(generatePopup());
     }
 
     @Override
