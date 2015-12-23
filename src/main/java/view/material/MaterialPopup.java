@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.Notifications;
 import view.popup.PopupView;

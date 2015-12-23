@@ -55,14 +55,14 @@ public class DBListView extends ListView<AbstractEntity> {
         String where;
         DBListView view;
         DAO retriever = new DAO() {
-            @Override public synchronized List<ProdottoEntity> getByCriteria(String where) {
+            @Override public synchronized List<? extends AbstractEntity> getByCriteria(String where) {
 
                 Session session = null;
 
                 try {
                     DBManager.initHibernate();
                     session = DBManager.getSession();
-                    List<ProdottoEntity> entities = session.createQuery(where).list();
+                    List<? extends AbstractEntity> entities = session.createQuery(where).list();
                     if (entities.isEmpty()) return null;
                     else return entities;
                 }
@@ -91,10 +91,10 @@ public class DBListView extends ListView<AbstractEntity> {
         @Override
         protected Void call() throws Exception {
 
-            List<ProdottoEntity> result = (List<ProdottoEntity>) retriever.getByCriteria(where);
+            List<? extends AbstractEntity> result = retriever.getByCriteria(where);
             Platform.runLater(() -> view.getItems().remove(0));
 
-            for (ProdottoEntity entity : result)
+            for (AbstractEntity entity : result)
                 Platform.runLater(() -> view.getItems().add(entity));
 
             return null;

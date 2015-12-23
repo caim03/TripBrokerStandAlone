@@ -37,7 +37,7 @@ public class Agente extends Ruolo {
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
                     new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.agent.GroupTripAssembleView"))),
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.GroupTripBookingView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.DeleteGroupTripView"))),
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.ManageBookingView"))),
                     new LogoutCommand(stage));
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }

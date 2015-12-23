@@ -2,9 +2,6 @@ package view.material;
 
 import com.sun.javafx.scene.control.skin.ButtonSkin;
 import javafx.animation.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Skin;
@@ -61,6 +58,7 @@ public class FlatButton extends Button {
         return buttonSkin;
     }
     private void createRippleEffect() {
+
         circleRipple = new Circle(0.1, rippleColor);
         circleRipple.setOpacity(0.0);
         // Optional box blur on ripple - smoother ripple effect

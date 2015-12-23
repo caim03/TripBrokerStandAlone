@@ -1,9 +1,9 @@
 package view.material;
 
-import com.jfoenix.controls.JFXProgressBar;
 import controller.Constants;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,10 +11,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import model.entityDB.*;
+import org.controlsfx.control.Notifications;
 
 public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
@@ -32,19 +36,15 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
         Node node;
         if (!item.isValid()) node = buildProgress();
-        else if (item instanceof OffertaEntity) node = buildOffer((OffertaEntity) item);
+        else if (item instanceof OffertaEntity)       node = buildOffer((OffertaEntity) item);
         else if (item instanceof ViaggioGruppoEntity) node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
+        else if (item instanceof PrenotazioneEntity)  node = buildBooking((PrenotazioneEntity) item);
         else node = new Label("NOT IMPLEMENTED");
 
         setGraphic(node);
     }
 
-    private Node buildProgress() {
-
-        JFXProgressBar bar = new JFXProgressBar(JFXProgressBar.INDETERMINATE_PROGRESS);
-
-        return bar;
-    }
+    private Node buildProgress() { return new ProgressBar(ProgressIndicator.INDETERMINATE_PROGRESS); }
 
     private Node buildOffer(OffertaEntity item) {
 
@@ -69,13 +69,67 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
         return new EmptyCell(item.getNome(), image);
     }
 
+    private Node buildBooking(PrenotazioneEntity entity) {
+
+        VBox cell = new VBox();
+        cell.setAlignment(Pos.CENTER_LEFT);
+        cell.setPrefHeight(48);
+        cell.setPadding(new Insets(10, 8, 10, 8));
+        cell.setStyle("-fx-vgap: 2px");
+
+        Label name = new Label(entity.getNome() + " " + entity.getCognome());
+        name.setFont(new Font(16));
+        name.setTextFill(Color.BLACK);
+
+        Label qu = new Label("Posti prenotati: " + entity.getQuantità());
+        qu.setFont(new Font(14));
+        qu.setTextFill(Color.DARKGRAY);
+
+        cell.getChildren().addAll(name, qu);
+
+        Button confirm = new FlatButton("Conferma"), cancel = new FlatButton("Elimina");
+        confirm.setOnMouseClicked(event -> {
+            Notifications.create().text("Prenotazione confermata").show();
+        });
+        cancel.setOnMouseClicked(event -> {
+            Notifications.create().text("Prenotazione cancellata").show();
+            getListView().getItems().remove(entity);
+        });
+
+        HBox actualCell = new HBox(cell, confirm, cancel);
+
+        actualCell.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                double w = getListView().getWidth();
+
+                if (oldValue != null) {
+                    if (newValue != null && oldValue.doubleValue() < newValue.doubleValue() && newValue.doubleValue() > w) {
+                        getListView().minWidthProperty().setValue(newValue.doubleValue() + 24);
+                        getListView().prefWidthProperty().setValue(newValue.doubleValue() + 24);
+                        getListView().prefWidthProperty().get();
+                    }
+                }
+
+                else if (newValue != null && w < newValue.doubleValue()) {
+                    getListView().minWidthProperty().setValue(newValue.doubleValue() + 24);
+                    getListView().prefWidthProperty().setValue(newValue.doubleValue() + 24);
+                    getListView().prefWidthProperty().get();
+                }
+            }
+        });
+
+        actualCell.setPadding(new Insets(16, 16, 16, 16));
+        actualCell.setAlignment(Pos.CENTER_LEFT);
+
+        return actualCell;
+    }
+
     class EmptyCell extends HBox {
 
         private Label lbl;
         private Canvas thumbnail;
-
-        Label getLbl() { return lbl; }
-        Canvas getThumbnail() { return thumbnail; }
 
         EmptyCell() {
 
