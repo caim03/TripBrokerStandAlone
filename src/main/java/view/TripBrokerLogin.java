@@ -19,6 +19,8 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import org.hibernate.exception.JDBCConnectionException;
+import view.material.ElevatedButton;
+import view.material.FlatButton;
 import view.material.MaterialField;
 import view.material.Toolbar;
 
@@ -49,7 +51,7 @@ public class TripBrokerLogin extends Application {
               surLbl = new Label("Cognome:"),
               passLbl = new Label("Password:");
 
-        Button button = new Button("Accedi");
+        Button button = new FlatButton("Accedi");
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");

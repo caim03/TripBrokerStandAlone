@@ -39,7 +39,7 @@ public abstract class DBTablePane extends LayerPane {
 
             Platform.runLater(() -> {
 
-                getChildren().remove(bar);
+                pop();
 
                 if (entities == null)
                     Notifications.create().title("Empty catalog").text("No products in catalog").show();

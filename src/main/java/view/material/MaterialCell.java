@@ -32,9 +32,8 @@ public class MaterialCell<T> extends ListCell<T> {
 
         if (e == null || !isFocusTraversable()) return;
 
-        System.out.println("LOADING RIPPLE");
         getChildren().remove(ripple);
-        removeEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+        removeEventHandler(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
 
         Rectangle clip = new Rectangle();
 
@@ -51,9 +50,8 @@ public class MaterialCell<T> extends ListCell<T> {
         } catch (NullPointerException ignore) {}
 
         ripple.setClip(clip);
-        System.out.println("CLIPPED");
 
         getChildren().add(ripple);
-        addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+        addEventHandler(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
     }
 }

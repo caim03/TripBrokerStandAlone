@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class MaterialButton extends Button {
 
@@ -13,7 +14,24 @@ public class MaterialButton extends Button {
 
         super(text);
 
+        clipRipple();
         addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+    }
+
+    public MaterialButton() {
+
+        clipRipple();
+        addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+    }
+
+    public MaterialButton(Shape shape) {
+
+        setShape(shape);
+        clipRipple();
+        addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+    }
+
+    protected void clipRipple() {
 
         Rectangle clip = new Rectangle();
 
@@ -31,12 +49,8 @@ public class MaterialButton extends Button {
             clip.setArcHeight(arc);
             clip.setArcWidth(arc);
         } catch (NullPointerException ignore) {}
+
         ripple.setClip(clip);
-    }
-
-    public MaterialButton() {
-
-        super(null);
     }
 
     @Override

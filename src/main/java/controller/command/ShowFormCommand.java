@@ -24,6 +24,8 @@ public class ShowFormCommand extends ShowCommand {
 
             if (view == null) return;
 
+            System.out.println("FORM");
+
             Collector collector = (Collector) view;
             Button done = new FlatButton(new Image("create.png"));
             Command command = new CollectCommand(collector);

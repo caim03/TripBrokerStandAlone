@@ -67,8 +67,12 @@ public class NavigationDrawer extends VBox {
         options = new ListView<>(opts);
         options.setCellFactory(param -> new DrawerCell());
         options.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            options.getSelectionModel().select(newValue.intValue());
-            options.getSelectionModel().select(-1);
+
+            int index = newValue.intValue();
+            if (index >= 0 && index < options.getItems().size()) {
+                options.getSelectionModel().select(newValue.intValue());
+                options.getSelectionModel().clearSelection();
+            }
         });
 
         getChildren().add(options);

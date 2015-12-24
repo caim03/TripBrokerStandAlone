@@ -24,6 +24,8 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         super.updateItem(item, empty);
 
+        setFocusTraversable(true);
+
         if (empty) {
 
             setText(null);
@@ -33,22 +35,13 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         Region node;
         if (!item.isValid()) node = buildProgress();
-        else if (item instanceof OffertaEntity) {
-            setFocusTraversable(true);
-            node = buildOffer((OffertaEntity) item);
-        }
-        else if (item instanceof ViaggioGruppoEntity) {
-            setFocusTraversable(true);
-            node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
-        }
+        else if (item instanceof OffertaEntity) node = buildOffer((OffertaEntity) item);
+        else if (item instanceof ViaggioGruppoEntity) node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
         else if (item instanceof PrenotazioneEntity) {
             setFocusTraversable(false);
             node = buildBooking((PrenotazioneEntity) item);
         }
-        else {
-            setFocusTraversable(true);
-            node = new Label("NOT IMPLEMENTED");
-        }
+        else node = new Label("NOT IMPLEMENTED");
 
         setGraphic(node);
     }

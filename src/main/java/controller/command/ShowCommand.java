@@ -22,6 +22,8 @@ public class ShowCommand extends Command {
 
         try {
 
+            System.out.println("SHOW");
+
             view = (Node) c.newInstance();
             container.setCenter(view);
         }

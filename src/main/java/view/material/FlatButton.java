@@ -19,7 +19,7 @@ public class FlatButton extends MaterialButton {
         Canvas canvas = new Canvas(48, 48);
         canvas.getGraphicsContext2D().drawImage(image, 0, 0);
 
-        getChildren().add(canvas);
+        setGraphic(canvas);
     }
 
     public FlatButton(String text) {

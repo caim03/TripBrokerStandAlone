@@ -13,8 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
 import view.Collector;
 import view.PacketFormView;
-import view.material.MaterialButton;
-import view.material.NavigationDrawer;
+import view.material.*;
 
 public class PacketAssembleView extends GridPane implements Collector {
 
@@ -25,16 +24,12 @@ public class PacketAssembleView extends GridPane implements Collector {
         this.form = form;
         this.form.addListener();
 
+        setStyle("-fx-fill-width: true");
+
         OffersTabPane lists = new OffersTabPane(form.getCommand());
 
-        /*JFXButton button = new JFXButton();
-        button.setButtonType(JFXButton.ButtonType.RAISED);
-        button.setStyle("-fx-background-radius: 32px; -fx-pref-width: 64px; -fx-pref-height: 64px");
-        button.setOnMouseClicked(new ButtonInvoker(new Command() { @Override public void execute() { form.clear(); } }));*/
-
-        Button button = new MaterialButton();
-
-        setStyle("-fx-fill-width: true");
+        Button button = new FloatingActionButton();
+        button.setOnMouseClicked(new ButtonInvoker(new Command() { @Override public void execute() { form.clear(); } }));
 
         AnchorPane base = new AnchorPane(lists, form, button);
         setHgrow(base, Priority.ALWAYS);

@@ -23,7 +23,7 @@ public class DBListView extends ListView<AbstractEntity> {
         setWhere(where);
         setCellFactory(param -> new DBCell());
         getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater(() -> DBListView.this.getSelectionModel().select(-1));
+            Platform.runLater(() -> DBListView.this.getSelectionModel().clearSelection());
         });
     }
 

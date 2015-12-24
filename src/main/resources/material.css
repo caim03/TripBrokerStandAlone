@@ -15,14 +15,12 @@
 .button {
     -fx-background-color: #FF5252;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, lightgrey, 1, 0.3, 1, 1);
 }
 
 .button:pressed {
     -fx-border-color: null;
     -fx-background-color: #FF5252;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, lightgrey, 1, 1, 1, 1);
 }
 
 .list-view {
