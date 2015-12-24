@@ -1,65 +1,18 @@
 package view;
 
 import controller.TableViewController;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Popup;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
 import model.daoInterface.DAO;
-import model.entityDB.AbstractEntity;
-import model.entityDB.EventoEntity;
 import model.entityDB.ProdottoEntity;
-import model.entityDB.ViaggioEntity;
-import org.controlsfx.control.Notifications;
 
 import java.util.List;
 
 
 public class CatalogView extends DBTablePane {
-
-    @Override
-    protected void fill() {
-
-        new Thread(() -> {
-
-            List<ProdottoEntity> entities = query();
-
-            Platform.runLater(() -> {
-
-                detach(bar);
-
-                if (entities == null)
-                    Notifications.create().title("Empty catalog").text("No products in catalog").show();
-
-                else {
-
-                    ObservableList<ProdottoEntity> names = FXCollections.observableArrayList();
-                    for (ProdottoEntity p : entities) names.add(p);
-
-                    TableView list = generateTable();
-                    list.setItems(names);
-                    attach(list);
-                    setHgrow(list, Priority.ALWAYS);
-                    setVgrow(list, Priority.ALWAYS);
-                }
-            });
-        }).start();
-    }
 
     @Override
     protected List<ProdottoEntity> query() {

@@ -3,6 +3,7 @@ package view.material;
 import controller.Constants;
 import controller.DrawerHandler;
 import controller.command.Command;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -12,6 +13,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -64,8 +66,10 @@ public class NavigationDrawer extends VBox {
 
         options = new ListView<>(opts);
         options.setCellFactory(param -> new DrawerCell());
-        options.minHeight(Double.MAX_VALUE);
-        options.setPadding(new Insets(16, 16, 16, 16));
+        options.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            options.getSelectionModel().select(newValue.intValue());
+            options.getSelectionModel().select(-1);
+        });
 
         getChildren().add(options);
     }
@@ -73,6 +77,6 @@ public class NavigationDrawer extends VBox {
     public void addCommands(Command... commands) {
 
         handler = new DrawerHandler(commands);
-        options.setOnMouseClicked(handler);
+        options.addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
     }
 }

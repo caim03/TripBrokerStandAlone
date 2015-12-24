@@ -44,13 +44,8 @@ public class OffersTabPane extends JFXTabPane {
             this.getTabs().add(tab);
         }
 
-        widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-                tabMinWidthProperty().setValue(newValue.intValue() / 3);
-            }
-        });
+        tabMinWidthProperty().bind(widthProperty().divide(3));
+        tabMaxWidthProperty().bind(widthProperty().divide(3));
 
         getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
 

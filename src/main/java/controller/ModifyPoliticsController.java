@@ -5,7 +5,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import model.entityDB.PoliticheEntity;
 import view.material.MaterialPopup;
-import view.material.PopupAttachable;
+import view.material.LayerPane;
 import view.popup.PoliticsPopup;
 import view.popup.PopupView;
 
@@ -27,6 +27,6 @@ public class ModifyPoliticsController implements EventHandler<MouseEvent> {
         if (entity == null) return;
 
         popupView = new PoliticsPopup(entity);
-        new MaterialPopup((PopupAttachable) list.getParent(), popupView).show();
+        new MaterialPopup((LayerPane) list.getParent(), popupView).show();
     }
 }

@@ -22,11 +22,8 @@ public class DBListView extends ListView<AbstractEntity> {
 
         setWhere(where);
         setCellFactory(param -> new DBCell());
-        getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                Platform.runLater(() -> DBListView.this.getSelectionModel().select(-1));
-            }
+        getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> DBListView.this.getSelectionModel().select(-1));
         });
     }
 

@@ -28,13 +28,11 @@ public class ConsolePane extends BorderPane {
         setRight(null);
         setBottom(null);
 
-        centerProperty().addListener(new ChangeListener<Node>() {
-            @Override
-            public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
-                if (!(newValue instanceof PacketAssembleView)) {
-                    setTop(null);
-                    setTop(toolbar);
-                }
+        centerProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (!(newValue instanceof PacketAssembleView)) {
+                setTop(null);
+                setTop(toolbar);
             }
         });
     }

@@ -1,18 +1,15 @@
 package view.material;
 
 import controller.Constants;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,10 +17,10 @@ import javafx.scene.text.Font;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 
-public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
+public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
     @Override
-    protected void updateItem(AbstractEntity item, boolean empty) {
+    protected void updateItem(T item, boolean empty) {
 
         super.updateItem(item, empty);
 
@@ -34,19 +31,31 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
             return;
         }
 
-        Node node;
+        Region node;
         if (!item.isValid()) node = buildProgress();
-        else if (item instanceof OffertaEntity)       node = buildOffer((OffertaEntity) item);
-        else if (item instanceof ViaggioGruppoEntity) node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
-        else if (item instanceof PrenotazioneEntity)  node = buildBooking((PrenotazioneEntity) item);
-        else node = new Label("NOT IMPLEMENTED");
+        else if (item instanceof OffertaEntity) {
+            setFocusTraversable(true);
+            node = buildOffer((OffertaEntity) item);
+        }
+        else if (item instanceof ViaggioGruppoEntity) {
+            setFocusTraversable(true);
+            node = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
+        }
+        else if (item instanceof PrenotazioneEntity) {
+            setFocusTraversable(false);
+            node = buildBooking((PrenotazioneEntity) item);
+        }
+        else {
+            setFocusTraversable(true);
+            node = new Label("NOT IMPLEMENTED");
+        }
 
         setGraphic(node);
     }
 
-    private Node buildProgress() { return new ProgressBar(ProgressIndicator.INDETERMINATE_PROGRESS); }
+    private Control buildProgress() { return new ProgressBar(ProgressIndicator.INDETERMINATE_PROGRESS); }
 
-    private Node buildOffer(OffertaEntity item) {
+    private Pane buildOffer(OffertaEntity item) {
 
         String type = item.getTipo();
 
@@ -69,7 +78,7 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
         return new EmptyCell(item.getNome(), image);
     }
 
-    private Node buildBooking(PrenotazioneEntity entity) {
+    private Pane buildBooking(PrenotazioneEntity entity) {
 
         VBox cell = new VBox();
         cell.setAlignment(Pos.CENTER_LEFT);
@@ -98,25 +107,22 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
         HBox actualCell = new HBox(cell, confirm, cancel);
 
-        actualCell.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        actualCell.widthProperty().addListener((observable, oldValue, newValue) -> {
 
-                double w = getListView().getWidth();
+            double w = getListView().getWidth();
 
-                if (oldValue != null) {
-                    if (newValue != null && oldValue.doubleValue() < newValue.doubleValue() && newValue.doubleValue() > w) {
-                        getListView().minWidthProperty().setValue(newValue.doubleValue() + 24);
-                        getListView().prefWidthProperty().setValue(newValue.doubleValue() + 24);
-                        getListView().prefWidthProperty().get();
-                    }
-                }
-
-                else if (newValue != null && w < newValue.doubleValue()) {
+            if (oldValue != null) {
+                if (newValue != null && oldValue.doubleValue() < newValue.doubleValue() && newValue.doubleValue() > w) {
                     getListView().minWidthProperty().setValue(newValue.doubleValue() + 24);
                     getListView().prefWidthProperty().setValue(newValue.doubleValue() + 24);
                     getListView().prefWidthProperty().get();
                 }
+            }
+
+            else if (newValue != null && w < newValue.doubleValue()) {
+                getListView().minWidthProperty().setValue(newValue.doubleValue() + 24);
+                getListView().prefWidthProperty().setValue(newValue.doubleValue() + 24);
+                getListView().prefWidthProperty().get();
             }
         });
 
@@ -140,8 +146,6 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
 
             lbl = new Label();
             thumbnail = new Canvas(48, 48);
-
-            setListeners();
 
             getChildren().addAll(thumbnail, lbl);
         }
@@ -182,24 +186,6 @@ public class DBCell<T extends AbstractEntity> extends ListCell<AbstractEntity> {
             GraphicsContext context = thumbnail.getGraphicsContext2D();
             context.setFill(Color.WHITE);
             context.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), 8, 8, 32, 32);
-        }
-
-        void setListeners() {
-
-            ChangeListener listener = new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if (isSelected()) return;
-                    if (newValue) lbl.setTextFill(Color.WHITE);
-                    else lbl.setTextFill(Color.CRIMSON);
-                }
-            };
-
-            DBCell.this.hoverProperty().addListener(listener);
-            DBCell.this.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue) lbl.setTextFill(Color.WHITE);
-                else lbl.setTextFill(Color.CRIMSON);
-            });
         }
     }
 }

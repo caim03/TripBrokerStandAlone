@@ -1,16 +1,14 @@
 package view.agent;
 
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
 import model.entityDB.ViaggioGruppoEntity;
+import view.material.DBListView;
+import view.material.LayerPane;
 import view.material.MaterialPopup;
-import view.material.PopupAttachable;
 import view.popup.BookingPopup;
 import view.popup.GroupTripPopup;
-import view.material.DBListView;
 import view.popup.PopupView;
 
-public class GroupTripBookingView extends VBox implements PopupAttachable {
+public class GroupTripBookingView extends LayerPane {
 
     DBListView list;
 
@@ -26,11 +24,6 @@ public class GroupTripBookingView extends VBox implements PopupAttachable {
             new MaterialPopup(this, popupView).show();
         });
 
-        getChildren().add(layer);
         attach(list);
     }
-
-    @Override public void attach(Node e) { layer.getChildren().add(e); }
-    @Override public void detach(Node e) { layer.getChildren().remove(e); }
-    public void detach(int p) { layer.getChildren().remove(layer.getChildren().get(p)); }
 }

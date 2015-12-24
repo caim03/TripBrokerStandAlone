@@ -1,18 +1,13 @@
 package view.admin;
 
 import controller.ModifyPoliticsController;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Priority;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.PoliticheEntity;
-import org.controlsfx.control.Notifications;
 import view.DBTablePane;
 
 import java.util.List;
@@ -44,36 +39,6 @@ public class ModifyPoliticsView extends DBTablePane {
         list.setMaxWidth(Double.MAX_VALUE);
 
         return list;
-    }
-
-    @Override
-    protected void fill() {
-
-        new Thread(() -> {
-
-            List<PoliticheEntity> entities = query();
-
-            Platform.runLater(() -> {
-
-                detach(0);
-
-                if (entities == null)
-                    Notifications.create().title("Empty politics").text("No politics in database").show();
-
-                else {
-
-                    ObservableList<PoliticheEntity> names = FXCollections.observableArrayList();
-                    for (PoliticheEntity e : entities) names.add(e);
-
-                    TableView list = generateTable();
-                    list.setItems(names);
-
-                    attach(list);
-                    setHgrow(list, Priority.ALWAYS);
-                    setVgrow(list, Priority.ALWAYS);
-                }
-            });
-        }).start();
     }
 
     @Override

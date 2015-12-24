@@ -2,24 +2,20 @@ package view.material;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.WeakEventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import org.controlsfx.control.Notifications;
 import view.popup.PopupView;
 
 public class MaterialPopup extends GridPane {
 
-    PopupAttachable parent;
+    LayerPane parent;
     PopupView popup;
     EventHandler defaultEventHandler;
 
-    public MaterialPopup(PopupAttachable parent, PopupView popup) {
+    public MaterialPopup(LayerPane parent, PopupView popup) {
 
         this.parent = parent;
         this.popup = popup;
@@ -48,7 +44,7 @@ public class MaterialPopup extends GridPane {
     }
 
     public void show() { parent.attach(this); }
-    public void hide() { parent.detach(this); }
+    public void hide() { parent.pop(); }
 
     public PopupEventHandler getListener(EventHandler handler) { return new PopupEventHandler(handler); }
     public PopupEventHandler getListener(EventHandler handler, boolean dismiss) { return new PopupEventHandler(handler, dismiss); }
