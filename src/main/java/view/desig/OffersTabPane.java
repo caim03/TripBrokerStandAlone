@@ -1,24 +1,12 @@
 package view.desig;
 
 import com.jfoenix.controls.JFXTabPane;
-import com.sun.javafx.scene.control.skin.TabPaneSkin;
 import controller.Constants;
 import controller.command.Command;
 import controller.command.TransferRecordCommand;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import model.entityDB.AbstractEntity;
 import view.material.DBListView;
 import view.material.JFXTabPaneSkin;

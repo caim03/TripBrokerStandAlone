@@ -1,14 +1,20 @@
 package view.material;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class MaterialCell<T> extends ListCell<T> {
 
     Ripple ripple = new Ripple();
+    Rectangle divider = new Rectangle(0.1, 1, Color.GREY.deriveColor(0, 1, 1, 0.1));
 
     MaterialCell() {
 
@@ -28,9 +34,26 @@ public class MaterialCell<T> extends ListCell<T> {
 
     protected void setGraphic(Region e) {
 
-        super.setGraphic(e);
+        if (e == null) {
+            super.setGraphic(null);
+            return;
+        }
 
-        if (e == null || !isFocusTraversable()) return;
+        StackPane stack = new StackPane();
+        stack.maxHeightProperty().bind(e.heightProperty());
+        stack.setAlignment(Pos.BOTTOM_CENTER);
+        stack.setPadding(new Insets(-4, -4, -4, -4));
+        stack.getChildren().add(e);
+
+        if ((e instanceof Pane) && getListView().getItems().indexOf(getItem()) < getListView().getItems().size() - 1) {
+
+            divider.widthProperty().bind(e.widthProperty());
+            stack.getChildren().add(divider);
+        }
+
+        super.setGraphic(stack);
+
+        if (!isFocusTraversable()) return;
 
         getChildren().remove(ripple);
         removeEventHandler(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());

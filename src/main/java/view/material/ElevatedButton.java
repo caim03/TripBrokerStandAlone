@@ -1,9 +1,8 @@
 package view.material;
 
 import javafx.animation.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -14,16 +13,10 @@ public class ElevatedButton extends MaterialButton {
 
     protected Animation elevation;
     protected DropShadow ds;
-    protected static double expansion = 1.3;
+    protected static double expansion = 1.5;
     private EventHandler<MouseEvent> shadowHandler = event -> {
 
         elevation.stop();
-        elevation.setOnFinished(action -> {
-
-            ds.setOffsetY(3.0);
-            ds.setOffsetX(3.0);
-        });
-
         elevation.playFromStart();
     };
 
@@ -47,9 +40,10 @@ public class ElevatedButton extends MaterialButton {
     protected void bindShadow() {
 
         ds = new DropShadow();
-        ds.setOffsetY(3.0);
-        ds.setOffsetX(3.0);
+        ds.setOffsetY(2.0);
+        ds.setOffsetX(2.0);
         ds.setColor(Color.web("#464646"));
+        ds.setBlurType(BlurType.ONE_PASS_BOX);
 
         setEffect(ds);
 
@@ -65,14 +59,14 @@ public class ElevatedButton extends MaterialButton {
         Timeline expand = new Timeline();
         KeyValue keyValue00 = new KeyValue(ds.widthProperty(), restShadowWidth * expansion, Interpolator.EASE_OUT);
         KeyValue keyValue01 = new KeyValue(ds.heightProperty(), restShadowHeight * expansion, Interpolator.EASE_OUT);
-        KeyFrame keyFrame0 = new KeyFrame(new Duration(125), keyValue00, keyValue01);
+        KeyFrame keyFrame0 = new KeyFrame(new Duration(250), keyValue00, keyValue01);
         expand.getKeyFrames().clear();
         expand.getKeyFrames().add(keyFrame0);
 
         Timeline shrink = new Timeline();
         KeyValue keyValue10 = new KeyValue(ds.widthProperty(), restShadowWidth, Interpolator.EASE_OUT);
         KeyValue keyValue11 = new KeyValue(ds.heightProperty(), restShadowHeight, Interpolator.EASE_OUT);
-        KeyFrame keyFrame1 = new KeyFrame(new Duration(125), keyValue10, keyValue11);
+        KeyFrame keyFrame1 = new KeyFrame(new Duration(100), keyValue10, keyValue11);
         shrink.getKeyFrames().clear();
         shrink.getKeyFrames().add(keyFrame1);
 

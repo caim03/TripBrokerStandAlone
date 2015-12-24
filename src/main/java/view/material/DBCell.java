@@ -133,7 +133,8 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         EmptyCell() {
 
             setAlignment(Pos.CENTER_LEFT);
-            setPrefHeight(48);
+            setPrefHeight(32);
+            setMaxHeight(32);
             setPadding(new Insets(10, 8, 10, 8));
             setStyle("-fx-hgap: 2px");
 
