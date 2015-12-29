@@ -22,8 +22,8 @@ public class ModifyButtonController implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         DipendentiEntity entity = list.getSelectionModel().getSelectedItem();
-        PopupView popupView = new EmployeePopup(list);
+        //PopupView popupView = new EmployeePopup(list);
 
-        new MaterialPopup(pane, popupView).show();
+        //new MaterialPopup(pane, popupView).show();
     }
 }

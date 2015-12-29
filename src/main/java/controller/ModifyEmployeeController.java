@@ -16,7 +16,7 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
     private TableView<DipendentiEntity> list;
     private DipendentiEntity entity;
 
-    public ModifyEmployeeController(String nameTxt, String surnameTxt, String roleTxt, String passTxt, String mailTxt, TableView<DipendentiEntity> list) {
+    public ModifyEmployeeController(String nameTxt, String surnameTxt, String roleTxt, String passTxt, String mailTxt, TableView<DipendentiEntity> list, DipendentiEntity entity) {
         this.nameTxt = nameTxt;
         this.surnameTxt = surnameTxt;
         this.roleTxt = roleTxt;
@@ -24,11 +24,12 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
         this.mailTxt = mailTxt;
         this.list = list;
 
-        this.entity = list.getSelectionModel().getSelectedItem();
+        this.entity = entity;
     }
 
     @Override
     public void handle(MouseEvent event) {
+
         if (!"".equals(nameTxt)){
             entity.setNome(nameTxt);
         }
@@ -53,7 +54,6 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
 
             Platform.runLater(() -> {
                 Notifications.create().title("Updated").text("The employee has been updated").show();
-                list.getItems().remove(list.getSelectionModel().getSelectedItem());
                 list.refresh();
             });
         }).start();

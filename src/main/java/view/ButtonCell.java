@@ -3,12 +3,20 @@ package view;
 
 import controller.DeleteButtonController;
 import controller.ModifyButtonController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
+import model.DBManager;
+import model.dao.DipendentiDaoHibernate;
+import model.daoInterface.DAO;
 import model.entityDB.DipendentiEntity;
+import org.controlsfx.control.Notifications;
+import view.material.MaterialPopup;
+import view.popup.EmployeePopup;
+import view.popup.PopupView;
 
 public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
     final Button cellButton;
@@ -20,13 +28,15 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
         this.list = list;
         this.pane = pane;
 
-        if (type.equals("modify")){
-            cellButton.setOnMouseClicked(new ModifyButtonController(list, pane));
-        }
+        if (type.equals("modify"))
+            cellButton.setOnMouseClicked(event -> {
 
-        else{
-            cellButton.setOnMouseClicked(new DeleteButtonController(list));
-        }
+                DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
+                PopupView popupView = new EmployeePopup(this.list, entity);
+                new MaterialPopup(pane, popupView).show();
+            });
+
+        else cellButton.setOnMouseClicked(event -> delete((DipendentiEntity) getTableRow().getItem()));
     }
 
     //Display button if the row is not empty
@@ -36,5 +46,22 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
         if(!empty){
             setGraphic(cellButton);
         }
+    }
+
+    void delete(DipendentiEntity entity) {
+
+        new Thread(() -> {
+
+            DAO dao = DipendentiDaoHibernate.instance();
+            DBManager.initHibernate();
+            dao.delete(entity);
+            DBManager.shutdown();
+
+            Platform.runLater(() -> {
+                Notifications.create().title("Deleted").text("The employee has been deleted").show();
+                getTableView().getItems().remove(entity);
+                getTableView().refresh();
+            });
+        }).start();
     }
 }

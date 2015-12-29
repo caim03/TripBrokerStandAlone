@@ -1,12 +1,6 @@
 package view.material;
 
 import javafx.animation.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
@@ -55,6 +49,6 @@ public class FloatingActionButton extends ElevatedButton {
         shrink.getKeyFrames().clear();
         shrink.getKeyFrames().add(keyFrame1);
 
-        elevation = new SequentialTransition(this, expand, shrink);
+        this.expand = new SequentialTransition(this, expand, shrink);
     }
 }

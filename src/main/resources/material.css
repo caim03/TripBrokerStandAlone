@@ -5,22 +5,11 @@
     -fx-background-color: null;
 }
 
-.text-field{
+.text-field {
     -fx-border-color: null;
     -fx-border-radius: 0;
     -fx-background-color: null;
     -fx-select-on-focus:false;
-}
-
-.button {
-    -fx-background-color: #FF5252;
-    -fx-text-fill: white;
-}
-
-.button:pressed {
-    -fx-border-color: null;
-    -fx-background-color: #FF5252;
-    -fx-text-fill: white;
 }
 
 .list-view {

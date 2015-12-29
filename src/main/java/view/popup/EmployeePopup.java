@@ -11,10 +11,11 @@ import model.entityDB.DipendentiEntity;
 
 public class EmployeePopup extends PopupView{
 
-    private TableView<DipendentiEntity> list;
+    private TableView list;
+    private DipendentiEntity entity;
 
-    public EmployeePopup(TableView<DipendentiEntity> list){
-        this.list = list;
+    public EmployeePopup(TableView list, DipendentiEntity entity) {
+        this.entity = entity;
         getChildren().add(generatePopup());
     }
 
@@ -33,9 +34,15 @@ public class EmployeePopup extends PopupView{
                 passTxt = new PasswordField(),
                 mailTxt = new TextField();
 
+        nameTxt.setText(entity.getNome());
+        surnameTxt.setText(entity.getCognome());
+        roleTxt.setText(entity.getRuolo());
+        passTxt.setText(entity.getPasswordLogin());
+        mailTxt.setText(entity.getMail());
+
         Button modButton = new Button("modify");
         modButton.setOnMouseClicked(new ModifyEmployeeController(nameTxt.getText(), surnameTxt.getText(),
-                roleTxt.getText(), passTxt.getText(), mailTxt.getText(), list));
+                roleTxt.getText(), passTxt.getText(), mailTxt.getText(), list, entity));
 
         nameTxt.setPromptText("Nuovo Nome");
         surnameTxt.setPromptText("Nuovo Cognome");
