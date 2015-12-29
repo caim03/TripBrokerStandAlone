@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -46,7 +47,7 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         setGraphic(node);
     }
 
-    private Control buildProgress() { return new ProgressBar(ProgressIndicator.INDETERMINATE_PROGRESS); }
+    private Region buildProgress() { return new Pane(new ProgressCircle()); }
 
     private Pane buildOffer(OffertaEntity item) {
 

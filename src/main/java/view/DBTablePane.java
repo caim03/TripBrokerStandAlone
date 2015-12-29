@@ -11,18 +11,19 @@ import javafx.scene.layout.Priority;
 import model.entityDB.AbstractEntity;
 import org.controlsfx.control.Notifications;
 import view.material.LayerPane;
+import view.material.ProgressCircle;
 
 import java.util.List;
 
 public abstract class DBTablePane extends LayerPane {
 
-    protected ProgressBar bar;
+    protected ProgressCircle bar;
 
     protected DBTablePane() {
 
         super();
 
-        bar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
+        bar = ProgressCircle.circleElevated();
         getChildren().add(bar);
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);

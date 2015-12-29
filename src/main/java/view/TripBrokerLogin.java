@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,10 +20,7 @@ import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import org.hibernate.exception.JDBCConnectionException;
-import view.material.ElevatedButton;
-import view.material.FlatButton;
-import view.material.MaterialField;
-import view.material.Toolbar;
+import view.material.*;
 
 public class TripBrokerLogin extends Application {
 
@@ -35,6 +33,7 @@ public class TripBrokerLogin extends Application {
 
         primaryStage.setScene(buildScene());
         primaryStage.setResizable(false);
+        primaryStage.setScene(buildScene());
         primaryStage.show();
     }
 
@@ -98,8 +97,9 @@ public class TripBrokerLogin extends Application {
             surnameField.removeEventFilter(KeyEvent.KEY_PRESSED, enter);
             passField.removeEventFilter(KeyEvent.KEY_PRESSED, enter);
 
-            ProgressBar progressBar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
-            pane.add(progressBar, 1, 5);
+            ProgressCircle progressCircle = new ProgressCircle();
+            pane.add(progressCircle, 1, 5);
+            progressCircle.start();
 
             new Thread(() -> {
 
@@ -129,7 +129,7 @@ public class TripBrokerLogin extends Application {
                             else if (!entity.isValid())
                                 Notifications.create().title("Not Found").text("This user is not registered").show();
 
-                            pane.getChildren().remove(progressBar);
+                            pane.getChildren().remove(progressCircle);
                             button.setDisable(false);
                             nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
                             surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
@@ -143,7 +143,7 @@ public class TripBrokerLogin extends Application {
 
                     Platform.runLater(() -> {
                         Notifications.create().title("Connection refused").text("DB service not available").showWarning();
-                        pane.getChildren().remove(progressBar);
+                        pane.getChildren().remove(progressCircle);
                         button.setDisable(false);
                         nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
                         surnameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);
