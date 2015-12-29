@@ -20,19 +20,17 @@ import view.popup.PopupView;
 
 public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
     final Button cellButton;
-    private TableView<DipendentiEntity> list;
     private DBTablePane pane;
 
-    public ButtonCell(String type, TableView<DipendentiEntity> list, DBTablePane pane){
+    public ButtonCell(String type, DBTablePane pane){
         cellButton = new Button(type);
-        this.list = list;
         this.pane = pane;
 
         if (type.equals("modify"))
             cellButton.setOnMouseClicked(event -> {
 
                 DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
-                PopupView popupView = new EmployeePopup(this.list, entity);
+                PopupView popupView = new EmployeePopup(getTableView(), entity, getTableRow().getIndex());
                 new MaterialPopup(pane, popupView).show();
             });
 

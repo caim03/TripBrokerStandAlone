@@ -65,7 +65,7 @@ public class ManageRolesView extends DBTablePane{
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });
-        modBtnColumn.setCellFactory(param -> new ButtonCell("modify", list, this));
+        modBtnColumn.setCellFactory(param -> new ButtonCell("modify", this));
 
         TableColumn delBtnColumn = new TableColumn("Delete");
         delBtnColumn.setMinWidth(200);
@@ -76,7 +76,7 @@ public class ManageRolesView extends DBTablePane{
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });
-        delBtnColumn.setCellFactory(param -> new ButtonCell("delete", list, this));
+        delBtnColumn.setCellFactory(param -> new ButtonCell("delete", this));
 
         list.getColumns().addAll(idColumn, nameColumn, surnameColumn, roleColumn, mailColumn, modBtnColumn, delBtnColumn);
         list.setOnMouseClicked(new ManageRolesController(list, this));
