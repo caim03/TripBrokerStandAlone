@@ -17,8 +17,9 @@ public class Shadow extends DropShadow implements Cloneable {
         super();
 
         setOffsetY(2.0);
-        setColor(Color.web("#464646"));
+        setColor(Color.web("#212121"));
         setBlurType(BlurType.ONE_PASS_BOX);
+        setSpread(0);
 
         setAnimation();
     }
@@ -39,16 +40,17 @@ public class Shadow extends DropShadow implements Cloneable {
         expand = new Timeline();
         KeyValue keyValue00 = new KeyValue(widthProperty(), restShadowWidth * expansion, Interpolator.EASE_OUT);
         KeyValue keyValue01 = new KeyValue(heightProperty(), restShadowHeight * expansion, Interpolator.EASE_OUT);
-        KeyFrame keyFrame0 = new KeyFrame(Duration.millis(500), keyValue00, keyValue01);
+        KeyFrame keyFrame0 = new KeyFrame(Duration.millis(250), keyValue00, keyValue01);
         expand.getKeyFrames().clear();
         expand.getKeyFrames().add(keyFrame0);
 
         Timeline shrink = new Timeline();
         KeyValue keyValue10 = new KeyValue(widthProperty(), restShadowWidth, Interpolator.EASE_OUT);
         KeyValue keyValue11 = new KeyValue(heightProperty(), restShadowHeight, Interpolator.EASE_OUT);
-        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(100), keyValue10, keyValue11);
+        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(200), keyValue10, keyValue11);
         shrink.getKeyFrames().clear();
         shrink.getKeyFrames().add(keyFrame1);
+        shrink.setDelay(Duration.millis(250));
 
         expand.setOnFinished(event -> shrink.playFromStart());
     }
