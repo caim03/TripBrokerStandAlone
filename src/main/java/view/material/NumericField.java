@@ -1,10 +1,12 @@
 package view.material;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Material;
 
-public class NumericField extends TextField {
+public class NumericField extends MaterialTextField {
 
     private String discriminator = "0123456789";
 

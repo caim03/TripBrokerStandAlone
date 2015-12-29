@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.DBManager;
 import model.dao.GruppoOffertaDaoHibernate;
@@ -17,8 +16,8 @@ import model.dao.OffertaDaoHibernate;
 import model.dao.PrenotazioneDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
-import view.material.MaterialField;
 import view.material.MaterialPopup;
+import view.material.MaterialTextField;
 
 public class BookingPopup extends PopupView {
 
@@ -46,10 +45,10 @@ public class BookingPopup extends PopupView {
 
     private Parent generateFields() {
 
-        nameField = new TextField();
+        nameField = new MaterialTextField();
         nameField.setPromptText("Inserisci nome");
 
-        surnameField = new TextField();
+        surnameField = new MaterialTextField();
         surnameField.setPromptText("Inserisci cognome");
 
         bookingSpinner = new Spinner<>(1, entity.getMax() - entity.getPrenotazioni(), 1);
@@ -62,8 +61,8 @@ public class BookingPopup extends PopupView {
         pane.add(new Text("Cognome"), 0, 1);
         pane.add(new Text("Quantità"), 0, 2);
 
-        pane.add(new MaterialField(nameField, Color.GOLD), 1, 0);
-        pane.add(new MaterialField(surnameField, Color.GOLD), 1, 1);
+        pane.add(nameField, 1, 0);
+        pane.add(surnameField, 1, 1);
         pane.add(bookingSpinner, 1, 2);
 
         pane.add(bookBtn, 0, 3);

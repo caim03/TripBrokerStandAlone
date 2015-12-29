@@ -52,12 +52,7 @@ public class ProgressCircle extends Group {
 
             getChildren().add(1, background);
 
-            DropShadow ds = new DropShadow();
-            ds.setOffsetY(2.0);
-            ds.setOffsetX(2.0);
-            ds.setColor(Color.web("#464646"));
-            ds.setBlurType(BlurType.ONE_PASS_BOX);
-            setEffect(ds);
+            setEffect(Shadow.getStaticInstance());
         }
     }
 

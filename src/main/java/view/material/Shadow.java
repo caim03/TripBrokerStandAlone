@@ -20,17 +20,23 @@ public class Shadow extends DropShadow implements Cloneable {
         setColor(Color.web("#212121"));
         setBlurType(BlurType.ONE_PASS_BOX);
         setSpread(0);
-
-        setAnimation();
     }
 
-    public static Shadow getInstance() {
+    public static Shadow getStaticInstance() {
 
         try { return (Shadow) instance.clone(); }
         catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Shadow getInstance() {
+
+        Shadow shadow = getStaticInstance();
+        assert shadow != null;
+        shadow.setAnimation();
+        return shadow;
     }
 
     void setAnimation() {

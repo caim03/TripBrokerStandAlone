@@ -30,8 +30,6 @@ public class TripBrokerLogin extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         stage = primaryStage;
-
-        primaryStage.setScene(buildScene());
         primaryStage.setResizable(false);
         primaryStage.setScene(buildScene());
         primaryStage.show();
@@ -39,9 +37,9 @@ public class TripBrokerLogin extends Application {
 
     private Scene buildScene() {
 
-        TextField nameField = new TextField(),
-                  surnameField = new TextField(),
-                  passField = new PasswordField();
+        TextField nameField = new MaterialTextField(),
+                  surnameField = new MaterialTextField(),
+                  passField = MaterialTextField.passwordFieldInstance();
         nameField.setPromptText("Inserisci nome");
         surnameField.setPromptText("Inserisci cognome");
         passField.setPromptText("Inserisci password");
@@ -62,9 +60,9 @@ public class TripBrokerLogin extends Application {
         pane.add(surLbl, 0, 2);
         pane.add(passLbl, 0, 3);
 
-        pane.add(new MaterialField(nameField, Color.web("#B6B6B6")), 1, 1, 2, 1);
-        pane.add(new MaterialField(surnameField, Color.web("#B6B6B6")), 1, 2, 2, 1);
-        pane.add(new MaterialField(passField, Color.web("#B6B6B6")), 1, 3, 2, 1);
+        pane.add(nameField, 1, 1, 2, 1);
+        pane.add(surnameField, 1, 2, 2, 1);
+        pane.add(passField, 1, 3, 2, 1);
 
         pane.add(button, 1, 4);
 

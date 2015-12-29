@@ -18,10 +18,7 @@ import model.entityDB.OffertaEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
-import view.material.DBCell;
-import view.material.MaterialField;
-import view.material.NumberLabel;
-import view.material.NumericField;
+import view.material.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,11 +42,11 @@ public class PacketFormView extends VBox implements Collector {
         maxPrice = new NumberLabel("Maximum price: ", 0, 0, criteria);
         maxPrice.setPadding(new Insets(16, 16, 16, 16));
 
-        nameField = new TextField();
+        nameField = new MaterialTextField();
         priceField = new NumericField();
 
-        HBox nameBox = new HBox(name, new MaterialField(nameField, Color.GREY)),
-                priceBox = new HBox(price, new MaterialField(priceField, Color.GREY));
+        HBox nameBox = new HBox(name, nameField),
+                priceBox = new HBox(price, priceField);
 
         nameBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
