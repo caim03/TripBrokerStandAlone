@@ -13,9 +13,12 @@ public class EmployeePopup extends PopupView{
 
     private TableView list;
     private DipendentiEntity entity;
+    private int index;
 
-    public EmployeePopup(TableView list, DipendentiEntity entity) {
+    public EmployeePopup(TableView list, DipendentiEntity entity, int index) {
         this.entity = entity;
+        this.index = index;
+        this.list = list;
         getChildren().add(generatePopup());
     }
 
@@ -41,8 +44,8 @@ public class EmployeePopup extends PopupView{
         mailTxt.setText(entity.getMail());
 
         Button modButton = new Button("modify");
-        modButton.setOnMouseClicked(new ModifyEmployeeController(nameTxt.getText(), surnameTxt.getText(),
-                roleTxt.getText(), passTxt.getText(), mailTxt.getText(), list, entity));
+        modButton.setOnMouseClicked(new ModifyEmployeeController(nameTxt, surnameTxt,
+                roleTxt, passTxt, mailTxt, list, entity, index));
 
         nameTxt.setPromptText("Nuovo Nome");
         surnameTxt.setPromptText("Nuovo Cognome");

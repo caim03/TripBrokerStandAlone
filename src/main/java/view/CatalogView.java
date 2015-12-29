@@ -31,10 +31,10 @@ public class CatalogView extends DBTablePane {
         TableView<ProdottoEntity> list = new TableView<>();
 
         TableColumn idColumn = new TableColumn("Id");
-        idColumn.setMinWidth(20);
+        idColumn.setMinWidth(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, Integer>("id"));
         TableColumn nameColumn = new TableColumn("Name");
-        nameColumn.setMinWidth(350);
+        nameColumn.setMinWidth(400);
         nameColumn.setCellValueFactory(new PropertyValueFactory<ProdottoEntity, String>("nome"));
         TableColumn priceColumn = new TableColumn("Price");
         priceColumn.setMinWidth(300);
