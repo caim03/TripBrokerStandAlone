@@ -8,14 +8,19 @@ import javafx.scene.shape.Shape;
 
 public class MaterialButton extends Button {
 
-    Ripple ripple = new Ripple();
+    /*
+     * Basic Material Design Button class. It does not define new behaviours, which are handled by the superclass.
+     * It basically sets the Button style and adds a Ripple object on its skin.
+     */
+
+    Ripple ripple = new Ripple(); //Personal Ripple object
 
     public MaterialButton(String text) {
 
         super(text);
 
-        clipRipple();
-        addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer());
+        clipRipple(); //Bind Ripple clip
+        addEventFilter(MouseEvent.MOUSE_CLICKED, ripple.getPlayer()); //Play Ripple effect on mouse click
     }
 
     public MaterialButton() {

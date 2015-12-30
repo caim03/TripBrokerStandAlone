@@ -2,7 +2,6 @@ package controller;
 
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import jfxtras.scene.control.CalendarTimeTextField;
 import model.DBManager;
@@ -13,6 +12,7 @@ import model.daoInterface.DAO;
 import model.entityDB.EventoEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
+import view.material.MaterialSpinner;
 import view.material.NumericField;
 
 import java.sql.Date;
@@ -58,8 +58,8 @@ public class InsertOfferController {
         else if (Constants.travel.equals(spinner)){
             String depField = ((TextField) list[0]).getText();
             String arrField = ((TextField) list[1]).getText();
-            String vehSpinner = ((Spinner<String>) list[2]).getValue();
-            String clsSpinner = ((Spinner<String>) list[3]).getValue();
+            String vehSpinner = ((MaterialSpinner) list[2]).getValue();
+            String clsSpinner = ((MaterialSpinner) list[3]).getValue();
             Date depDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             int depTime = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
             Date arrDate = new Date(Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
@@ -81,8 +81,8 @@ public class InsertOfferController {
         else {
             String ctyField = ((TextField) list[0]).getText();
             String locField = ((TextField) list[1]).getText();
-            String starSpinner = ((Spinner<String>) list[2]).getValue();
-            String srvSpinner = ((Spinner<String>) list[3]).getValue();
+            String starSpinner = ((MaterialSpinner) list[2]).getValue();
+            String srvSpinner = ((MaterialSpinner) list[3]).getValue();
             Date startDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
             Date endDate = new Date(Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
 

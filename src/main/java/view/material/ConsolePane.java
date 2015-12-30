@@ -1,30 +1,30 @@
 package view.material;
 
 import controller.command.Command;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import jfxtras.scene.control.ImageViewButton;
 import view.desig.PacketAssembleView;
 
 public class ConsolePane extends BorderPane {
 
-    Toolbar toolbar;
-    NavigationDrawer drawer;
+    /*
+     * Custom Pane class already equipped with a Toolbar and a Navigation Drawer.
+     * It delegates Command attachment to the Toolbar and NavigationDrawer objects.
+     */
+
+    Toolbar toolbar; //GUI Toolbar
+    NavigationDrawer drawer; //GUI Navigation Drawer, always visible and to the left
 
     public ConsolePane(String title) {
 
-        toolbar = new Toolbar("Trip Broker " + title);
-        drawer = new NavigationDrawer(title);
+        toolbar = new Toolbar("Trip Broker " + title); //Toolbar init
+        drawer = new NavigationDrawer(title); //Nav init
         toolbar.setAlignment(Pos.TOP_CENTER);
 
         setLeft(drawer);
         setTop(toolbar);
+        //GUI elements attached
         setRight(null);
         setBottom(null);
 
@@ -32,6 +32,9 @@ public class ConsolePane extends BorderPane {
 
             if (!(newValue instanceof PacketAssembleView)) {
                 setTop(null);
+                //DropShadows are covered by fullscreen views attached at center; forcing Toolbar re-attachment
+                //allows DropShadows to be properly cast upon center views, unless they contain another Toolbar-like
+                //GUI element
                 setTop(toolbar);
             }
         });

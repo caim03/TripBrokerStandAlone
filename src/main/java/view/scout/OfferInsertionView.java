@@ -10,20 +10,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jfxtras.scene.control.CalendarTimeTextField;
 import org.controlsfx.control.Notifications;
 import view.Collector;
+import view.material.LayerPane;
+import view.material.MaterialSpinner;
 import view.material.MaterialTextField;
 import view.material.NumericField;
 
 import java.time.LocalDate;
 
-public class OfferInsertionView extends VBox implements Collector {
+public class OfferInsertionView extends LayerPane implements Collector {
 
     private TextField nameField, priceField, quField;
     private Node[] offerNode;
-    private Spinner<String> spinner;
+    private MaterialSpinner spinner;
+    private VBox vBox;
 
     public String getOfferName() { return nameField.getText(); }
     public String getPriceoffer() {
@@ -58,8 +63,7 @@ public class OfferInsertionView extends VBox implements Collector {
         quField = new NumericField(false);
         quField.setPromptText("Insert offer quantity");
 
-        spinner = new Spinner<>(FXCollections.observableArrayList(Constants.travel, Constants.event, Constants.stay));
-        spinner.getEditor().setPromptText(null);
+        spinner = new MaterialSpinner(this, FXCollections.<String>observableArrayList(Constants.travel, Constants.event, Constants.stay));
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -76,19 +80,21 @@ public class OfferInsertionView extends VBox implements Collector {
         pane.add(quField, 1, 3, 2, 1);
         pane.add(spinner, 1, 4, 2, 1);
 
-        spinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+        spinner.textProperty().addListener((observable, oldValue, newValue) -> {
 
-            try { OfferInsertionView.this.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
+            try { vBox.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
 
-            OfferInsertionView.this.getChildren().add(fromOffer(newValue));
+            vBox.getChildren().add(fromOffer(newValue));
         });
 
-        getChildren().addAll(pane, fromOffer(spinner.getValue()));
+        vBox = new VBox(pane, fromOffer(spinner.getValue()));
+
+        attach(vBox);
     }
 
     private Node fromOffer(String type) {
 
-        Node attachment = null;
+        Node attachment;
 
         if (Constants.travel.equals(type))
             attachment = travelAttachment();
@@ -98,6 +104,8 @@ public class OfferInsertionView extends VBox implements Collector {
 
         else if (Constants.stay.equals(type))
             attachment = stayAttachment();
+
+        else attachment = new Pane();
 
         return attachment;
     }
@@ -119,10 +127,10 @@ public class OfferInsertionView extends VBox implements Collector {
         DatePicker endPicker = new DatePicker(LocalDate.now());
 
         Label service = new Label("Service");
-        Spinner<String> srvSpinner = new Spinner<>(FXCollections.observableArrayList("Pensione completa", "Mezza pensione"));
+        MaterialSpinner srvSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("Pensione completa", "Mezza pensione"));
 
         Label stars = new Label("Stars");
-        Spinner<String> strSpinner = new Spinner<>(FXCollections.observableArrayList("1", "2", "3", "4", "5"));
+        MaterialSpinner strSpinner = new MaterialSpinner(this, FXCollections.<String>observableArrayList("1", "2", "3", "4", "5"));
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -223,10 +231,10 @@ public class OfferInsertionView extends VBox implements Collector {
         CalendarTimeTextField arrTimePicker = new CalendarTimeTextField();
 
         Label vehicle = new Label("Vehicol");
-        Spinner<String> vehSpinner = new Spinner<>(FXCollections.observableArrayList("Aereo", "Treno", "Bus"));
+        MaterialSpinner vehSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("Aereo", "Treno", "Bus"));
 
         Label classLbl = new Label("Class");
-        Spinner<String> clsSpinner = new Spinner<>(FXCollections.observableArrayList("First", "Second"));
+        MaterialSpinner clsSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("First", "Second"));
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
