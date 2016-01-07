@@ -104,25 +104,31 @@ public class InsertOfferController {
 
     public static void insertOfferEvent(EventoEntity entity) {
 
-        DAO dao = EventoDaoHibernate.instance();
-        DBManager.initHibernate();
-        dao.store(entity);
-        DBManager.shutdown();
+        new Thread(() -> {
+            DAO dao = EventoDaoHibernate.instance();
+            DBManager.initHibernate();
+            dao.store(entity);
+            DBManager.shutdown();
+        }).start();
     }
 
     public static void insertOfferStay(PernottamentoEntity entity) {
 
-        DAO dao = PernottamentoDaoHibernate.instance();
-        DBManager.initHibernate();
-        dao.store(entity);
-        DBManager.shutdown();
+        new Thread(() -> {
+            DAO dao = PernottamentoDaoHibernate.instance();
+            DBManager.initHibernate();
+            dao.store(entity);
+            DBManager.shutdown();
+        }).start();
     }
 
     public static void insertOfferTravel(ViaggioEntity entity) {
 
-        DAO dao = ViaggioDaoHibernate.instance();
-        DBManager.initHibernate();
-        dao.store(entity);
-        DBManager.shutdown();
+        new Thread(() -> {
+            DAO dao = ViaggioDaoHibernate.instance();
+            DBManager.initHibernate();
+            dao.store(entity);
+            DBManager.shutdown();
+        }).start();
     }
 }
