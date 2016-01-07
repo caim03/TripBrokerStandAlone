@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -15,6 +17,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -124,8 +127,8 @@ public class MaterialSpinner extends FlatButton {
         pane.prefWidthProperty().bind(parent.widthProperty());
         pane.prefHeightProperty().bind(parent.heightProperty());
 
-        AnchorPane.setTopAnchor(listView, getParent() instanceof LayerPane ? getLayoutY() : getLayoutY() + getParent().getLayoutY());
-        AnchorPane.setLeftAnchor(listView, getParent() instanceof LayerPane ? getLayoutX() : getLayoutX() + getParent().getLayoutX());
+        AnchorPane.setTopAnchor(listView, recursiveTrackingY(this));
+        AnchorPane.setLeftAnchor(listView, recursiveTrackingX(this));
 
         String first = getText();
         ObservableList<String> items = listView.getItems();
@@ -146,8 +149,8 @@ public class MaterialSpinner extends FlatButton {
 
         listView.getSelectionModel().clearSelection();
 
-        AnchorPane.setTopAnchor(shape, getParent() instanceof LayerPane ? getLayoutY() : getLayoutY() + getParent().getLayoutY());
-        AnchorPane.setLeftAnchor(shape, getParent() instanceof LayerPane ? getLayoutX() : getLayoutX() + getParent().getLayoutX());
+        AnchorPane.setTopAnchor(shape, recursiveTrackingY(this));
+        AnchorPane.setLeftAnchor(shape, recursiveTrackingX(this));
         pane.getChildren().add(shape);
 
         parent.attach(listView);
@@ -184,13 +187,27 @@ public class MaterialSpinner extends FlatButton {
         new ParallelTransition(timeline, ft).playFromStart();
     }
 
+    double recursiveTrackingX(Region e) {
+
+        if (e.getParent() != null && !(e.getParent() instanceof LayerPane))
+            return recursiveTrackingX((Region) e.getParent()) + e.getLayoutX();
+        else return e.getLayoutX();
+    }
+
+    double recursiveTrackingY(Region e) {
+
+        if (e.getParent() != null && !(e.getParent() instanceof LayerPane))
+            return recursiveTrackingY((Region) e.getParent()) + e.getLayoutY();
+        else return e.getLayoutY();
+    }
+
     void playExitAnimation() {
 
         shown = false;
         
         Rectangle rectangle = new Rectangle(listView.getWidth(), listView.getHeight(), Color.WHITE);
-        AnchorPane.setTopAnchor(rectangle, getParent() instanceof LayerPane ? getLayoutY() : getLayoutY() + getParent().getLayoutY());
-        AnchorPane.setLeftAnchor(rectangle, getParent() instanceof LayerPane ? getLayoutX() : getLayoutX() + getParent().getLayoutX());
+        AnchorPane.setTopAnchor(rectangle, recursiveTrackingY(this));
+        AnchorPane.setLeftAnchor(rectangle, recursiveTrackingX(this));
         rectangle.setEffect(Shadow.getStaticInstance());
 
         FadeTransition ft = new FadeTransition(Duration.millis(50), rectangle);
@@ -220,6 +237,8 @@ public class MaterialSpinner extends FlatButton {
     public String getValue() {
         return getText();
     }
+
+    public void setValue(String item) { setText(item); }
 
     class SpinnerCell extends ListCell<String> {
 

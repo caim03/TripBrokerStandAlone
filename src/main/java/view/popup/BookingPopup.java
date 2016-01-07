@@ -16,6 +16,7 @@ import model.dao.OffertaDaoHibernate;
 import model.dao.PrenotazioneDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
+import view.material.FlatButton;
 import view.material.MaterialPopup;
 import view.material.MaterialTextField;
 
@@ -53,7 +54,7 @@ public class BookingPopup extends PopupView {
 
         bookingSpinner = new Spinner<>(1, entity.getMax() - entity.getPrenotazioni(), 1);
 
-        bookBtn = new Button("Prenota");
+        bookBtn = new FlatButton("Prenota");
 
         GridPane pane = new GridPane();
 
@@ -76,9 +77,11 @@ public class BookingPopup extends PopupView {
 
     @Override
     public void setParent(MaterialPopup parent) {
+
         super.setParent(parent);
 
         bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, this.parent.getListener(event -> {
+
             DBManager.initHibernate();
             PrenotazioneEntity booking = new PrenotazioneEntity();
             booking.setViaggioId(entity.getId());

@@ -2,18 +2,30 @@ package view.popup;
 
 
 import controller.ModifyEmployeeController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import model.entityDB.DipendentiEntity;
+import view.material.*;
 
 public class EmployeePopup extends PopupView{
+
+    private static final ObservableList<String> ROLES = FXCollections.observableArrayList("Agente", "Amministratore", "Designer", "Scout");
 
     private TableView list;
     private DipendentiEntity entity;
     private int index;
+    private Button modButton;
+    private TextField nameTxt, surnameTxt, passTxt, mailTxt;
+    private MaterialSpinner roleSpinner;
+    private GridPane pane;
 
     public EmployeePopup(TableView list, DipendentiEntity entity, int index) {
         this.entity = entity;
@@ -31,31 +43,24 @@ public class EmployeePopup extends PopupView{
                 passLbl = new Label("Password:"),
                 mailLbl = new Label("Mail");
 
-        TextField nameTxt = new TextField(),
-                surnameTxt = new TextField(),
-                roleTxt = new TextField(),
-                passTxt = new PasswordField(),
-                mailTxt = new TextField();
+        nameTxt = new MaterialTextField();
+        surnameTxt = new MaterialTextField();
+        passTxt = new MaterialTextField();
+        mailTxt = new MaterialTextField();
 
         nameTxt.setText(entity.getNome());
         surnameTxt.setText(entity.getCognome());
-        roleTxt.setText(entity.getRuolo());
         passTxt.setText(entity.getPasswordLogin());
         mailTxt.setText(entity.getMail());
 
-        Button modButton = new Button("modify");
-        modButton.setOnMouseClicked(new ModifyEmployeeController(nameTxt, surnameTxt,
-                roleTxt, passTxt, mailTxt, list, entity, index));
+        modButton = new FlatButton("modify");
 
         nameTxt.setPromptText("Nuovo Nome");
         surnameTxt.setPromptText("Nuovo Cognome");
-        roleTxt.setPromptText("Nuovo Ruolo");
         passTxt.setPromptText("Nuova Password");
         mailTxt.setPromptText("Nuova Mail");
 
-
-
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -69,13 +74,29 @@ public class EmployeePopup extends PopupView{
 
         pane.add(nameTxt, 1, 0);
         pane.add(surnameTxt, 1, 1);
-        pane.add(roleTxt, 1, 2);
         pane.add(passTxt, 1, 3);
         pane.add(mailTxt, 1, 4);
 
         pane.add(modButton, 0, 5);
 
-        VBox vBox = new VBox(40, pane);
-        return vBox;
+        return new VBox(40, pane);
+    }
+
+    @Override
+    public void setParent(MaterialPopup parent) {
+        super.setParent(parent);
+
+        this.parent.parentProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                roleSpinner = new MaterialSpinner((LayerPane) newValue, ROLES);
+                roleSpinner.setValue(entity.getRuolo());
+                pane.add(roleSpinner, 1, 2);
+
+                modButton.setOnMouseClicked(this.parent.getListener(
+                        new ModifyEmployeeController(nameTxt, surnameTxt, roleSpinner, passTxt,
+                                mailTxt, list, entity, index),
+                        true));
+            }
+        });
     }
 }

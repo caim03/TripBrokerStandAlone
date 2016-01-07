@@ -1,11 +1,19 @@
 package view;
 
+import com.sun.glass.ui.EventLoop;
+import com.sun.javaws.progress.Progress;
 import controller.DeleteButtonController;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import model.entityDB.DipendentiEntity;
+import org.controlsfx.control.Notifications;
+import view.material.FlatButton;
 import view.material.MaterialPopup;
+import view.material.ProgressCircle;
 import view.popup.EmployeePopup;
 import view.popup.PopupView;
 
@@ -14,9 +22,10 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
     final private Button cellButton;
     private DBTablePane pane;
     private String type;
+    private HBox cell;
 
     public ButtonCell(String type, DBTablePane pane){
-        cellButton = new Button(type);
+        cellButton = new FlatButton(type);
         this.pane = pane;
         this.type = type;
     }
@@ -25,8 +34,10 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
     @Override
     protected void updateItem(Boolean t, boolean empty) {
         super.updateItem(t, empty);
-        if(!empty){
-            setGraphic(cellButton);
+        if(!empty) {
+
+            cell = new HBox(cellButton);
+            setGraphic(cell);
 
             if (type.equals("modify"))
                 cellButton.setOnMouseClicked(event -> {
@@ -37,12 +48,29 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
                 });
 
             else {
+
                 DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
-                cellButton.addEventFilter(MouseEvent.MOUSE_CLICKED, new DeleteButtonController(getTableView(), entity));
+                cellButton.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                        event -> {
+
+                            ProgressCircle mini = ProgressCircle.miniCircle();
+                            cell.getChildren().add(mini);
+
+                            new Thread(() -> {
+
+                                DeleteButtonController.handle(getTableView(), entity);
+
+                                Platform.runLater(() -> {
+                                    Notifications.create().title("Deleted").text("The employee has been deleted").show();
+                                    getTableView().getItems().remove(entity);
+                                    getTableView().refresh();
+                                    cell.getChildren().remove(mini);
+                                });
+                            }).start();
+                        });
             }
         }
-        else{
-            setGraphic(null);
-        }
+
+        else setGraphic(null);
     }
 }

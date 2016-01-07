@@ -11,11 +11,12 @@ import model.dao.DipendentiDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
+import view.material.MaterialSpinner;
 
 public class ModifyEmployeeController implements EventHandler<MouseEvent>{
     private TextField nameTxt;
     private TextField surnameTxt;
-    private TextField roleTxt;
+    private MaterialSpinner roleTxt;
     private TextField passTxt;
     private TextField mailTxt;
     private TableView<DipendentiEntity> list;
@@ -23,7 +24,7 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
     private int index;
 
     public ModifyEmployeeController(TextField nameTxt, TextField surnameTxt,
-                                    TextField roleTxt, TextField passTxt, TextField mailTxt,
+                                    MaterialSpinner roleTxt, TextField passTxt, TextField mailTxt,
                                     TableView<DipendentiEntity> list, DipendentiEntity entity, int index) {
         this.nameTxt = nameTxt;
         this.surnameTxt = surnameTxt;
@@ -44,8 +45,8 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
         if (!"".equals(surnameTxt.getText())){
             entity.setCognome(surnameTxt.getText());
         }
-        if (!"".equals(roleTxt.getText())){
-            entity.setRuolo(roleTxt.getText());
+        if (!"".equals(roleTxt.getValue())){
+            entity.setRuolo(roleTxt.getValue());
         }
         if (!"".equals(passTxt.getText())){
             entity.setPasswordLogin(passTxt.getText());

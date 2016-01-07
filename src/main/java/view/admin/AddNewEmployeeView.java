@@ -50,6 +50,7 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         pane.add(role, 1, 4);
 
         pane.setPadding(new Insets(25));
+        pane.setHgap(4);
 
         attach(pane);
     }
