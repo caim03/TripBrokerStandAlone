@@ -6,7 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.DBManager;
+import model.dao.DipendentiDaoHibernate;
+import model.daoInterface.DAO;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.DipendentiEntity;
+
+import java.util.List;
 
 
 public class PacketPopup extends PopupView {
@@ -58,7 +64,7 @@ public class PacketPopup extends PopupView {
         }
         pane.add(new Text(state), 1, 2);
         pane.add(new Text((pacchettoEntity.getMotivazione())), 1, 3);
-        pane.add(new Text("Creatore"), 1, 4);
+        pane.add(new Text(getEmployee(pacchettoEntity.getCreatore())), 1, 4);
 
         VBox dialogVbox = new VBox(40, pane);
 

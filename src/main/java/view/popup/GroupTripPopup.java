@@ -46,7 +46,7 @@ public class GroupTripPopup extends PopupView {
         else state = "chiuse";
 
         pane.add(new Text(state), 1, 2);
-        pane.add(new Text("Creatore"), 1, 3);
+        pane.add(new Text(getEmployee(entity.getCreatore())), 1, 3);
 
         VBox dialogVbox = new VBox(40, pane);
 

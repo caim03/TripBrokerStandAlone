@@ -5,6 +5,8 @@ import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import org.hibernate.Session;
 import model.entityDB.OffertaEntity;
+import view.desig.OffersTabPane;
+
 import java.util.List;
 
 public class OffertaDaoHibernate extends ProdottoDaoHibernate {
@@ -40,6 +42,19 @@ public class OffertaDaoHibernate extends ProdottoDaoHibernate {
         }
         else{
             return offertaEntities;
+        }
+    }
+
+    @Override
+    public  synchronized OffertaEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        OffertaEntity offertaEntity = (OffertaEntity) session.createQuery("from OffertaEntity where id = " + id).list().get(0);
+        if (offertaEntity == null){
+            return null;
+        }
+        else {
+            return offertaEntity;
         }
     }
 

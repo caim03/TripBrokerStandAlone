@@ -42,6 +42,20 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         }
     }
 
+    @Override
+    public synchronized CreaPacchettoEntity getById(int id) {
+
+        Session session = DBManager.getSession();
+
+        CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) session.createQuery("from CreaPacchettoEntity where id = " + id).list().get(0);
+        session.close();
+        if (creaPacchettoEntity == null){
+            return null;
+        } else {
+            return creaPacchettoEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) entity;

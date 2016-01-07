@@ -43,6 +43,19 @@ public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
     }
 
     @Override
+    public synchronized ViaggioGruppoEntity getById(int id){
+        Session session = DBManager.getSession();
+
+        ViaggioGruppoEntity viaggioGruppoEntity = (ViaggioGruppoEntity) session.createQuery("from ViaggioGruppoEntity where id = " + id).list().get(0);
+        session.close();
+        if (viaggioGruppoEntity == null){
+            return null;
+        } else {
+            return viaggioGruppoEntity;
+        }
+    }
+
+    @Override
     public int store(AbstractEntity entity) throws ClassCastException {
 
         Session session = DBManager.getSession();

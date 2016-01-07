@@ -42,6 +42,19 @@ public class PoliticheDaoHibernate implements DAO {
         }
     }
 
+    @Override
+    public synchronized PoliticheEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        PoliticheEntity politicheEntity = (PoliticheEntity) session.createQuery("from PoliticheEntity Entity where id = " + id).list().get(0);
+        session.close();
+        if (politicheEntity == null){
+            return null;
+        } else {
+            return politicheEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         PoliticheEntity politicheEntity = (PoliticheEntity) entity;

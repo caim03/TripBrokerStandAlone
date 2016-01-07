@@ -45,6 +45,19 @@ public class PernottamentoDaoHibernate extends OffertaDaoHibernate {
     }
 
     @Override
+    public synchronized PernottamentoEntity getById(int id){
+        Session session = DBManager.getSession();
+
+        PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) session.createQuery("from PernottamentoEntity where id = " + id).list().get(0);
+        session.close();
+        if (pernottamentoEntity == null){
+            return null;
+        } else {
+            return pernottamentoEntity;
+        }
+    }
+
+    @Override
     public synchronized int store(AbstractEntity entity) {
 
         PernottamentoEntity pernottamentoEntity = (PernottamentoEntity) entity;

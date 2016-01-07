@@ -21,18 +21,31 @@ public class PrenotazioneDaoHibernate implements DAO {
     }
 
     @Override
-    public List<? extends AbstractEntity> getAll() {
+    public synchronized List<? extends AbstractEntity> getAll() {
 
         return null;
     }
 
     @Override
-    public List<? extends AbstractEntity> getByCriteria(String where) {
+    public synchronized List<? extends AbstractEntity> getByCriteria(String where) {
         return null;
     }
 
     @Override
-    public int store(AbstractEntity entity) throws ClassCastException {
+    public synchronized PrenotazioneEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        PrenotazioneEntity prenotazioneEntity = (PrenotazioneEntity) session.createQuery("from PrenotazioneEntity where id = " + id).list().get(0);
+        session.close();
+        if (prenotazioneEntity == null){
+            return null;
+        } else {
+            return prenotazioneEntity;
+        }
+    }
+
+    @Override
+    public synchronized int store(AbstractEntity entity) throws ClassCastException {
 
         Session session = DBManager.getSession();
 
@@ -45,12 +58,12 @@ public class PrenotazioneDaoHibernate implements DAO {
     }
 
     @Override
-    public void delete(AbstractEntity entity) throws ClassCastException {
+    public synchronized void delete(AbstractEntity entity) throws ClassCastException {
 
     }
 
     @Override
-    public void update(AbstractEntity entity) throws ClassCastException {
+    public synchronized void update(AbstractEntity entity) throws ClassCastException {
 
     }
 }

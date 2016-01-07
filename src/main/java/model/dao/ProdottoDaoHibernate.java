@@ -44,6 +44,19 @@ public class ProdottoDaoHibernate implements DAO {
     }
 
     @Override
+    public synchronized ProdottoEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        ProdottoEntity prodottoEntity = (ProdottoEntity) session.createQuery("from ProdottoEntity where id = " + id).list().get(0);
+        session.close();
+        if (prodottoEntity == null){
+            return null;
+        } else {
+            return prodottoEntity;
+        }
+    }
+
+    @Override
     public synchronized int store(AbstractEntity entity) {
 
         ProdottoEntity prodottoEntity = (ProdottoEntity) entity;

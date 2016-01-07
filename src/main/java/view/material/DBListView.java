@@ -75,6 +75,11 @@ public class DBListView extends ListView<AbstractEntity> {
                 }
             }
 
+            @Override
+            public AbstractEntity getById(int id) {
+                return null;
+            }
+
             @Override public List getAll() { return null; }
             @Override public int store(AbstractEntity entity) throws ClassCastException { return 0; }
             @Override public void delete(AbstractEntity entity) throws ClassCastException {}

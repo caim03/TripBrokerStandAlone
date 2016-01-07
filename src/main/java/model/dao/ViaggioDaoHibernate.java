@@ -42,6 +42,19 @@ public class ViaggioDaoHibernate extends OffertaDaoHibernate {
         }
     }
 
+    @Override
+    public synchronized ViaggioEntity getById(int id){
+        Session session = DBManager.getSession();
+
+        ViaggioEntity viaggioEntity = (ViaggioEntity) session.createQuery("from ViaggioEntity where id = " + id).list().get(0);
+        session.close();
+        if (viaggioEntity == null){
+            return null;
+        } else {
+            return viaggioEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         ViaggioEntity viaggioEntity = (ViaggioEntity) entity;

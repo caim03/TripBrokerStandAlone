@@ -41,6 +41,19 @@ public class EventoDaoHibernate extends ProdottoDaoHibernate {
         }
     }
 
+    @Override
+    public synchronized EventoEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        EventoEntity eventoEntity = (EventoEntity) session.createQuery("from EventoEntity where id = " + id).list().get(0);
+        session.close();
+        if (eventoEntity == null){
+            return null;
+        } else {
+            return eventoEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         EventoEntity eventoEntity = (EventoEntity) entity;

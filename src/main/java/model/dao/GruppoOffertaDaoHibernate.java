@@ -38,6 +38,20 @@ public class GruppoOffertaDaoHibernate implements DAO {
         else return entities;
     }
 
+    @Override
+    public synchronized GruppoOffertaEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        GruppoOffertaEntity gruppoOffertaEntity = (GruppoOffertaEntity) session.createQuery("from GruppoOffertaEntity where id = " + id).list().get(0);
+        session.close();
+        if (gruppoOffertaEntity == null){
+            return null;
+        }
+        else {
+            return gruppoOffertaEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         GruppoOffertaEntity toBeStored = (GruppoOffertaEntity) entity;

@@ -40,6 +40,19 @@ public class DipendentiDaoHibernate implements DAO {
         }
     }
 
+    @Override
+    public synchronized DipendentiEntity getById(int id) {
+        Session session = DBManager.getSession();
+
+        DipendentiEntity dipendentiEntity = (DipendentiEntity) session.createQuery("from DipendentiEntity where id = " + id).list().get(0);
+        session.close();
+        if (dipendentiEntity == null){
+            return null;
+        } else {
+            return dipendentiEntity;
+        }
+    }
+
     public synchronized int store(AbstractEntity entity) {
 
         DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
