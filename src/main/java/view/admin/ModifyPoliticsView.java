@@ -1,9 +1,11 @@
 package view.admin;
 
 import controller.ModifyPoliticsController;
+import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
 import model.daoInterface.DAO;
@@ -33,7 +35,7 @@ public class ModifyPoliticsView extends DBTablePane {
         maxColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("percentuale_max"));
 
         list.getColumns().addAll(idColumn, nameColumn, minColumn, maxColumn);
-        list.setOnMouseClicked(new ModifyPoliticsController(list));
+        list.setOnMouseClicked(event -> ModifyPoliticsController.handle(list));
 
         list.setMaxHeight(Double.MAX_VALUE);
         list.setMaxWidth(Double.MAX_VALUE);
