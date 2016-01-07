@@ -69,17 +69,14 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         }
 
         else Notifications.create().text("Check for empty fields").showWarning();
-
-        System.out.println(
-                "NAME " + name.getText() +
-                "\nSURNAME " + surname.getText() +
-                "\nPASSWORD " + password.getText() +
-                "\nEMAIL " + email.getText() +
-                "\nROLE " + role.getValue());
     }
 
     private boolean check() {
 
-        return false;
+        return (name.getText() != null && !"".equals(name.getText())) &&
+               (surname.getText() != null && !"".equals(surname.getText())) &&
+               (password.getText() != null && !"".equals(password.getText())) &&
+               (email.getText() != null && !"".equals(email.getText())) &&
+               (role.getValue() != null && !"".equals(role.getValue()));
     }
 }
