@@ -36,6 +36,7 @@ public class Amministratore extends Ruolo {
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.PacketApproveView"))),
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))),
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ManageRolesView"))),
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.admin.AddNewEmployeeView"))),
                     new LogoutCommand(stage));
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }
