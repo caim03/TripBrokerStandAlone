@@ -10,26 +10,31 @@ import model.dao.DipendentiDaoHibernate;
 import model.daoInterface.DAO;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
+import view.material.ProgressCircle;
 
 public class DeleteButtonController implements EventHandler<MouseEvent>{
     TableView<DipendentiEntity> list;
+    DipendentiEntity entity;
 
-    public DeleteButtonController(TableView<DipendentiEntity> list){
+    public DeleteButtonController(TableView<DipendentiEntity> list, DipendentiEntity entity){
         this.list = list;
+        this.entity = entity;
     }
 
     @Override
     public void handle(MouseEvent event) {
+
         new Thread(() -> {
             DAO dao = DipendentiDaoHibernate.instance();
             DBManager.initHibernate();
-            dao.delete(list.getSelectionModel().getSelectedItem());
+            dao.delete(entity);
             DBManager.shutdown();
 
             Platform.runLater(() -> {
                 Notifications.create().title("Deleted").text("The employee has been deleted").show();
-                list.getItems().remove(list.getSelectionModel().getSelectedItem());
+                list.getItems().remove(entity);
                 list.refresh();
+
             });
         }).start();
     }

@@ -17,6 +17,8 @@ import model.entityDB.DipendentiEntity;
 import model.entityDB.PoliticheEntity;
 import view.ButtonCell;
 import view.DBTablePane;
+import view.ProgressCell;
+import view.material.ProgressCircle;
 
 import java.util.List;
 
@@ -56,8 +58,8 @@ public class ManageRolesView extends DBTablePane{
         mailColumn.setMinWidth(200);
         mailColumn.setCellValueFactory(new PropertyValueFactory<DipendentiEntity, String>("mail"));
 
-        TableColumn modBtnColumn = new TableColumn("Modify");
-        modBtnColumn.setMinWidth(200);
+        TableColumn modBtnColumn = new TableColumn("");
+        modBtnColumn.setMinWidth(100);
         modBtnColumn.setSortable(false);
         modBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendentiEntity, Boolean>, ObservableValue<Boolean>>() {
             @Override
@@ -67,8 +69,8 @@ public class ManageRolesView extends DBTablePane{
         });
         modBtnColumn.setCellFactory(param -> new ButtonCell("modify", this));
 
-        TableColumn delBtnColumn = new TableColumn("Delete");
-        delBtnColumn.setMinWidth(200);
+        TableColumn delBtnColumn = new TableColumn("");
+        delBtnColumn.setMinWidth(100);
         delBtnColumn.setSortable(false);
         delBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendentiEntity, Boolean>, ObservableValue<Boolean>>() {
             @Override
@@ -78,7 +80,18 @@ public class ManageRolesView extends DBTablePane{
         });
         delBtnColumn.setCellFactory(param -> new ButtonCell("delete", this));
 
-        list.getColumns().addAll(idColumn, nameColumn, surnameColumn, roleColumn, mailColumn, modBtnColumn, delBtnColumn);
+        TableColumn progressColumn = new TableColumn("");
+        progressColumn.setMinWidth(20);
+        progressColumn.setSortable(false);
+        progressColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendentiEntity, Boolean>, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue call(TableColumn.CellDataFeatures<DipendentiEntity, Boolean> param) {
+                return new SimpleBooleanProperty(param.getValue() != null);
+            }
+        });
+        progressColumn.setCellFactory(param -> new ProgressCell());
+
+        list.getColumns().addAll(idColumn, nameColumn, surnameColumn, roleColumn, mailColumn, modBtnColumn, delBtnColumn, progressColumn);
         list.setOnMouseClicked(new ManageRolesController(list, this));
 
         list.setMaxHeight(Double.MAX_VALUE);
