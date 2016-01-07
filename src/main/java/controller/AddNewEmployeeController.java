@@ -23,6 +23,4 @@ public class AddNewEmployeeController {
         dao.store(entity);
         DBManager.shutdown();
     }
-
-
 }
