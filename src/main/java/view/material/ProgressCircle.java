@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -16,6 +17,18 @@ import javafx.util.Duration;
 
 public class ProgressCircle extends Group {
 
+    private final static double NORMAL_RADIUS = 16;
+    private final static double NORMAL_MASK = 12;
+    private final static double NORMAL_BASE = 56;
+    private final static double NORMAL_SHADOW = 24;
+    private final static double MINI_RADIUS = 8;
+    private final static double MINI_MASK = 6;
+    private final static double MINI_BASE = 20;
+    private final static double MINI_SHADOW = 12;
+
+    private final static String MINI = "mini";
+    private final static String NORMAL = "normal";
+
     ProgressBarArc arc;
 
     public static ProgressCircle circleElevated() {
@@ -23,22 +36,12 @@ public class ProgressCircle extends Group {
         return new ProgressCircle(true);
     }
 
-    public ProgressCircle() {
+    public static ProgressCircle miniCircle() {
 
-        super();
-
-        Rectangle rectangle = new Rectangle(56, 56, Color.TRANSPARENT);
-
-        Circle mask = new Circle(12, Color.WHITE);
-        arc = new ProgressBarArc();
-
-        mask.setCenterX(28);
-        mask.setCenterY(28);
-        arc.setCenterX(28);
-        arc.setCenterY(28);
-
-        getChildren().addAll(rectangle, arc, mask);
+        return new ProgressCircle(MINI);
     }
+
+    public ProgressCircle() { this(NORMAL); }
 
     public ProgressCircle(boolean elevated) {
 
@@ -46,14 +49,50 @@ public class ProgressCircle extends Group {
 
         if (elevated) {
 
-            Circle background = new Circle(24, Color.WHITE);
-            background.setCenterX(28);
-            background.setCenterY(28);
+            Circle background = new Circle(NORMAL_SHADOW, Color.WHITE);
+            background.setCenterX(NORMAL_BASE / 2);
+            background.setCenterY(NORMAL_BASE / 2);
 
             getChildren().add(1, background);
 
             setEffect(Shadow.getStaticInstance());
         }
+    }
+
+    public ProgressCircle(String size) {
+
+        super();
+
+        Rectangle rectangle;
+        Circle mask;
+
+        if (MINI.equals(size)) {
+
+            rectangle = new Rectangle(MINI_BASE, MINI_BASE, Color.TRANSPARENT);
+            mask = new Circle(MINI_MASK, Color.WHITE);
+            arc = ProgressBarArc.mini();
+
+            mask.setCenterX(MINI_BASE / 2);
+            mask.setCenterY(MINI_BASE / 2);
+            arc.setCenterX(MINI_BASE / 2);
+            arc.setCenterY(MINI_BASE / 2);
+        }
+
+        else {
+
+            rectangle = new Rectangle(NORMAL_BASE, NORMAL_BASE, Color.TRANSPARENT);
+            mask = new Circle(NORMAL_MASK, Color.WHITE);
+            arc = ProgressBarArc.normal();
+
+            mask.setCenterX(NORMAL_BASE / 2);
+            mask.setCenterY(NORMAL_BASE / 2);
+            arc.setCenterX(NORMAL_BASE / 2);
+            arc.setCenterY(NORMAL_BASE / 2);
+        }
+
+        getChildren().addAll(rectangle, arc, mask);
+
+        start();
     }
 
     public void start() { arc.start(); }
@@ -64,13 +103,15 @@ public class ProgressCircle extends Group {
 
         Timeline rotation, expand, shrink;
 
-        public ProgressBarArc() {
+        ProgressBarArc(boolean normal) {
 
-            super(0, 0, 16, 16, 0, 20);
+            super(0, 0, normal ? NORMAL_RADIUS : MINI_RADIUS, normal ? NORMAL_RADIUS : MINI_RADIUS, 0, 20);
             setFill(Color.RED);
-            setCenterX(64);
-            setCenterY(64);
             setType(ArcType.ROUND);
+            setAnimations();
+        }
+
+        void setAnimations() {
 
             rotation = new Timeline();
             rotation.getKeyFrames().clear();
@@ -126,10 +167,11 @@ public class ProgressCircle extends Group {
 
                 rotation.playFromStart();
             });
-
-            rotation.playFromStart();
         }
 
         void start() { rotation.playFromStart(); }
+
+        static ProgressBarArc mini() { return new ProgressBarArc(false); }
+        static ProgressBarArc normal() { return new ProgressBarArc(true); }
     }
 }

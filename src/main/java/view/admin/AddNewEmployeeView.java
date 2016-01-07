@@ -4,6 +4,7 @@ import controller.AddNewEmployeeController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -23,8 +24,11 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
     public AddNewEmployeeView() {
 
         name = new MaterialTextField();
+        name.setPromptText("Inserisci nome");
         surname = new MaterialTextField();
+        surname.setPromptText("Inserisci cognome");
         password = new MaterialTextField();
+        password.setPromptText("Inserisci password");
         email = new MaterialTextField();
 
         role = new MaterialSpinner(this, ROLES);
@@ -45,7 +49,19 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         pane.add(new Label("Occupazione"), 0, 4);
         pane.add(role, 1, 4);
 
+        pane.setPadding(new Insets(25));
+
         attach(pane);
+    }
+
+    private void reset() {
+
+        name.setText(null);
+        surname.setText(null);
+        password.setText(null);
+        email.setText(null);
+        role = null;
+        role = new MaterialSpinner(this, ROLES);
     }
 
 
@@ -61,10 +77,14 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
                         password.getText(),
                         role.getValue(),
                         email.getText());
-                Platform.runLater(() -> Notifications.create()
-                        .text("Employee " + name.getText() + " " + surname + " was added correctly")
-                        .title("Operation completed successfully")
-                        .show());
+                Platform.runLater(() -> {
+                    Notifications.create()
+                            .text("Employee " + name.getText() + " " + surname.getText() + " was added correctly")
+                            .title("Operation completed successfully")
+                            .show();
+
+                    reset();
+                });
             }).start();
         }
 
