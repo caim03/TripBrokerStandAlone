@@ -1,10 +1,8 @@
 package view.admin;
 
 
-import controller.ManageRolesController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,7 +16,6 @@ import model.entityDB.PoliticheEntity;
 import view.ButtonCell;
 import view.DBTablePane;
 import view.ProgressCell;
-import view.material.ProgressCircle;
 
 import java.util.List;
 
@@ -91,8 +88,14 @@ public class ManageRolesView extends DBTablePane{
         });
         progressColumn.setCellFactory(param -> new ProgressCell());
 
-        list.getColumns().addAll(idColumn, nameColumn, surnameColumn, roleColumn, mailColumn, modBtnColumn, delBtnColumn, progressColumn);
-        list.setOnMouseClicked(new ManageRolesController(list, this));
+        list.getColumns().addAll(idColumn,
+                nameColumn,
+                surnameColumn,
+                roleColumn,
+                mailColumn,
+                modBtnColumn,
+                delBtnColumn,
+                progressColumn);
 
         list.setMaxHeight(Double.MAX_VALUE);
         list.setMaxWidth(Double.MAX_VALUE);
