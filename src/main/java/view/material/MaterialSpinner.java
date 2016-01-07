@@ -32,6 +32,7 @@ public class MaterialSpinner extends FlatButton {
 
     @Override
     protected Skin<?> createDefaultSkin() {
+        ;
 
         Skin skin = super.createDefaultSkin();
 
