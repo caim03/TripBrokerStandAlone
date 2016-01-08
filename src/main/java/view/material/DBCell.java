@@ -1,5 +1,7 @@
 package view.material;
 
+import controller.CancelBookingController;
+import controller.ConfirmBookingController;
 import controller.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -115,11 +117,15 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         Button confirm = new FlatButton("Conferma"),
                 cancel = new FlatButton("Elimina");
 
-        confirm.setOnMouseClicked(event -> Notifications.create().text("Prenotazione confermata").show()); //TODO actual confirmation
+        confirm.setOnMouseClicked(event -> {
+            ConfirmBookingController.handle(entity);
+            Notifications.create().text("Prenotazione confermata").show();
+            getListView().getItems().remove(entity);
+        });
         cancel.setOnMouseClicked(event -> {
+            CancelBookingController.handle(entity);
             Notifications.create().text("Prenotazione cancellata").show();
             getListView().getItems().remove(entity);
-            //TODO actual elimination
         });
 
         HBox actualCell = new HBox(cell, confirm, cancel); //Assemble actual cell

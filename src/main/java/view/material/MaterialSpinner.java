@@ -1,6 +1,7 @@
 package view.material;
 
 import javafx.animation.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -27,6 +28,18 @@ public class MaterialSpinner extends FlatButton {
     private Rectangle shape = new Rectangle(0.1, 0.1);
     private AnchorPane pane;
     private static Color details = Color.GRAY;
+
+    public MaterialSpinner(LayerPane parent, int from, int to) {
+        this(parent, generateNumberList(from, to));
+    }
+
+    private static ObservableList<String> generateNumberList(int from, int to) {
+        ObservableList<String> obs = FXCollections.observableArrayList();
+        int i;
+        for (i = from; i <= to; ++i) obs.add(Integer.toString(i));
+
+        return obs;
+    }
 
     @Override
     protected Skin<?> createDefaultSkin() {

@@ -4,6 +4,7 @@ import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.PrenotazioneEntity;
+import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -58,8 +59,16 @@ public class PrenotazioneDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized void delete(AbstractEntity entity) throws ClassCastException {
+    public synchronized void delete(AbstractEntity absEntity) throws ClassCastException {
 
+        PrenotazioneEntity entity = (PrenotazioneEntity) absEntity;
+
+        Session session = DBManager.getSession();
+
+        session.beginTransaction();
+        session.delete(entity);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

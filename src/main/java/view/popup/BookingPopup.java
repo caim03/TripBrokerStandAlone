@@ -1,5 +1,8 @@
 package view.popup;
 
+import controller.BookingController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -9,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Material;
 import javafx.scene.text.Text;
 import model.DBManager;
 import model.dao.GruppoOffertaDaoHibernate;
@@ -16,9 +20,8 @@ import model.dao.OffertaDaoHibernate;
 import model.dao.PrenotazioneDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
-import view.material.FlatButton;
-import view.material.MaterialPopup;
-import view.material.MaterialTextField;
+import org.controlsfx.control.Notifications;
+import view.material.*;
 
 public class BookingPopup extends PopupView {
 
@@ -27,7 +30,8 @@ public class BookingPopup extends PopupView {
     private ViaggioGruppoEntity entity;
     private Button bookBtn;
     private TextField nameField, surnameField;
-    private Spinner<Integer> bookingSpinner;
+    private MaterialSpinner bookingSpinner;
+    private GridPane pane;
 
     public BookingPopup(PopupView popupView, ViaggioGruppoEntity entity) {
 
@@ -52,11 +56,9 @@ public class BookingPopup extends PopupView {
         surnameField = new MaterialTextField();
         surnameField.setPromptText("Inserisci cognome");
 
-        bookingSpinner = new Spinner<>(1, entity.getMax() - entity.getPrenotazioni(), 1);
-
         bookBtn = new FlatButton("Prenota");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
 
         pane.add(new Text("Nome"), 0, 0);
         pane.add(new Text("Cognome"), 0, 1);
@@ -64,13 +66,13 @@ public class BookingPopup extends PopupView {
 
         pane.add(nameField, 1, 0);
         pane.add(surnameField, 1, 1);
-        pane.add(bookingSpinner, 1, 2);
 
         pane.add(bookBtn, 0, 3);
 
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(4);
         pane.setPadding(new Insets(25, 25,  25, 25));
+        pane.setStyle("-fx-background-color: white");
 
         return pane;
     }
@@ -80,28 +82,29 @@ public class BookingPopup extends PopupView {
 
         super.setParent(parent);
 
-        bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, this.parent.getListener(event -> {
+        parent.parentProperty().addListener((observable, oldValue, newValue) -> {
 
-            DBManager.initHibernate();
-            PrenotazioneEntity booking = new PrenotazioneEntity();
-            booking.setViaggioId(entity.getId());
-            booking.setNome(nameField.getText());
-            booking.setCognome(surnameField.getText());
-            booking.setQuantità(bookingSpinner.getValue());
-            PrenotazioneDaoHibernate.instance().store(booking);
-
-            int bookings = bookingSpinner.getValue();
-            entity.addPrenotazione(bookings);
-            ViaggioGruppoDaoHibernate.instance().update(entity);
-
-            for (AbstractEntity gruppoOfferta : GruppoOffertaDaoHibernate.instance().getByCriteria("where id_gruppo = " + entity.getId())) {
-
-                OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getByCriteria("where id = " + ((GruppoOffertaEntity) gruppoOfferta).getIdOfferta()).get(0);
-                offer.addPrenotazioni(bookings);
-                OffertaDaoHibernate.instance().update(offer);
+            if (newValue != null && (newValue instanceof LayerPane)) {
+                bookingSpinner = new MaterialSpinner((LayerPane) newValue, 1, entity.getMax() - entity.getPrenotazioni());
+                pane.add(bookingSpinner, 1, 2);
             }
+        });
 
-            DBManager.shutdown();
-        }));
+        bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+
+            String name = nameField.getText(),
+                   surname = surnameField.getText(),
+                   qu = bookingSpinner.getValue();
+
+            if ("".equals(name) || "".equals(surname) || "".equals(qu))
+                Notifications.create().text("Campi vuoti rilevati").showWarning();
+
+            else {
+
+                BookingController.handle(entity, nameField.getText(), surnameField.getText(),
+                        Integer.parseInt(bookingSpinner.getValue()));
+                this.parent.hide();
+            }
+        });
     }
 }
