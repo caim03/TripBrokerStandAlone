@@ -7,12 +7,17 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.service.ServiceRegistry;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class DBManager {
     private static Configuration configuration;
     private static SessionFactory sessionFactory;
     private static ServiceRegistry serviceRegistry;
+    private static ReentrantLock lock = new ReentrantLock();
 
     public static void initHibernate() throws JDBCConnectionException {
+
+        lock.lock();
 
         configuration = new Configuration();
         configuration.configure();
@@ -28,6 +33,8 @@ public class DBManager {
     }
 
     public static void shutdown() {
+
         sessionFactory.close();
+        lock.unlock();
     }
 }

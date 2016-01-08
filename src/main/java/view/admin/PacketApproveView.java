@@ -10,11 +10,6 @@ import java.util.List;
 
 public class PacketApproveView extends CatalogView {
 
-    public PacketApproveView() {
-
-        super();
-    }
-
     @Override
     protected List<ProdottoEntity> query() {
 

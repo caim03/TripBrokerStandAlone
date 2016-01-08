@@ -13,9 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.entityDB.AbstractEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.ProdottoEntity;
+import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.*;
@@ -51,14 +49,34 @@ public class PacketFormView extends VBox implements Collector {
         nameBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
 
-        list = new ListView<>(new PacketList());
-        list.setCellFactory(param -> new DBCell());
+        list = new DBListView(new PacketList());
+        //list.setCellFactory(param -> new DBCell());
         list.setPadding(new Insets(16, 16, 16, 16));
         addListener();
 
         getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
 
         setStyle("-fx-vgap: 8px; -fx-fill-height: true");
+    }
+
+    public PacketFormView(CreaPacchettoEntity entity) {
+
+        this();
+
+        nameField.setText(entity.getNome());
+        priceField.setText(Double.toString(entity.getPrezzo()));
+
+        ((DBListView)list).setWhere("from OffertaEntity where id in (select idOfferta from PacchettoOffertaEntity where idPacchetto = " + entity.getId() + " order by posizione)");
+        ((DBListView)list).fill();
+
+        if (entity.getStato() == 2) {
+
+            Label motivation = new Label("Respinto poiché: " + entity.getMotivazione());
+            motivation.setPadding(new Insets(16, 16, 0, 16));
+            getChildren().add(0, motivation);
+        }
+
+        setStyle("-fx-background-color: white");
     }
 
     public void addListener() {
@@ -73,9 +91,8 @@ public class PacketFormView extends VBox implements Collector {
                 if (c.wasRemoved()) {
 
                     int len = c.getRemovedSize();
-                    List<OffertaEntity> removed = c.getRemoved();
+                    List<AbstractEntity> removed = c.getRemoved();
 
-                    System.out.println("REM " + len + " SIZE " + c.getList().size());
                     if (len == c.getList().size()) {
 
                         basePrice.reset();
@@ -86,8 +103,11 @@ public class PacketFormView extends VBox implements Collector {
 
                         for (int i = 0; i < len; ++i) {
 
-                            basePrice.updateNumber(-removed.get(i).getPrezzo());
-                            maxPrice.updateNumber(-removed.get(i).getPrezzo());
+                            if (removed.get(i) instanceof OffertaEntity) {
+                                OffertaEntity item = (OffertaEntity) removed.get(i);
+                                basePrice.updateNumber(-item.getPrezzo());
+                                maxPrice.updateNumber(-item.getPrezzo());
+                            }
                         }
                     }
                 }
@@ -119,14 +139,24 @@ public class PacketFormView extends VBox implements Collector {
         else {
 
             int ids[] = new int[list.getItems().size()], i = 0;
-            for (AbstractEntity entity : list.getItems()) {
-                ids[i] = ((ProdottoEntity) entity).getId();
-                ++i;
+
+            List<AbstractEntity> offers = (List<AbstractEntity>) list.getItems();
+            AbstractEntity beginning = offers.get(0), end = offers.get(offers.size() - 1);
+
+            if (!(beginning instanceof ViaggioEntity) || !(end instanceof ViaggioEntity) ||
+                !((ViaggioEntity) beginning).getCittà().equals(((ViaggioEntity) end).getDestinazione()))
+                Notifications.create().text("Packets should begin and end with a travel, leaving and arriving at the same location").showWarning();
+
+            else {
+                for (AbstractEntity entity : list.getItems()) {
+                    ids[i] = ((ProdottoEntity) entity).getId();
+                    ++i;
+                }
+                if (PacketAssembleController.create(name, price, ids))
+                    Notifications.create().text("Packet '" + name + "' has been added to catalog").show();
+                else
+                    Notifications.create().text("Internal Database error").showError();
             }
-            if (PacketAssembleController.create(name, price, ids))
-                Notifications.create().text("Packet '" + name + "' has been added to catalog").show();
-            else
-                Notifications.create().text("Internal Database error").showError();
         }
     }
 }

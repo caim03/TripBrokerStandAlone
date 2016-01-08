@@ -14,6 +14,7 @@ public class PacketAssembleController {
     public static boolean create(String name, double price, int... ids) {
 
         try {
+
             CreaPacchettoEntity entity = new CreaPacchettoEntity();
             entity.setNome(name);
             entity.setPrezzo(price);
@@ -21,11 +22,17 @@ public class PacketAssembleController {
             entity.setTipo(Constants.packet);
             DBManager.initHibernate();
             CreaPacchettoDaoHibernate.instance().store(entity);
+
+            int pos = 0;
             for (int id : ids) {
+
                 PacchettoOffertaEntity link = new PacchettoOffertaEntity();
                 link.setIdOfferta(id);
                 link.setIdPacchetto(entity.getId());
+                link.setPosizione(pos);
                 PacchettoOffertaDaoHibernate.instance().store(link);
+
+                ++pos;
             }
         }
         catch (Exception e) {

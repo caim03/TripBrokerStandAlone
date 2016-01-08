@@ -25,7 +25,7 @@ public class NavigationDrawer extends VBox {
 
     static ObservableList scout = FXCollections.<String>observableArrayList("Inserisci offerta", "OPERATION 2",  "OPERATION 3", "Logout"),
                           admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "Approva pacchetto",  "Modifica politiche", "Gestione ruoli", "Aggiungi dipendente", "Logout"),
-                          desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "OPERATION 3", "Logout"),
+                          desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "Modifica pacchetto", "Logout"),
                           agent = FXCollections.<String>observableArrayList("Visualizza catalogo", "Organizza viaggio",  "Prenota viaggio", "Gestisci prenotazioni", "Logout");
 
     ListView<String> options;

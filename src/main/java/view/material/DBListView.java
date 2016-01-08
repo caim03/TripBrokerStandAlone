@@ -1,12 +1,14 @@
 package view.material;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import model.DBManager;
 import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import org.hibernate.Session;
+import view.desig.PacketList;
 
 import java.util.List;
 
@@ -25,6 +27,15 @@ public class DBListView extends ListView<AbstractEntity> {
         setCellFactory(param -> new DBCell()); //DBListView uses DBCells to represent items
         getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) ->
             Platform.runLater(() -> DBListView.this.getSelectionModel().clearSelection()));
+        //On item selected, clear selection to avoid persistent selection behaviour
+    }
+
+    public DBListView(ObservableList list) {
+
+        super(list);
+        setCellFactory(param -> new DBCell()); //DBListView uses DBCells to represent items
+        getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) ->
+                Platform.runLater(() -> DBListView.this.getSelectionModel().clearSelection()));
         //On item selected, clear selection to avoid persistent selection behaviour
     }
 
@@ -67,6 +78,7 @@ public class DBListView extends ListView<AbstractEntity> {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println("WHERE " + where);
                     return null;
                 }
                 finally {

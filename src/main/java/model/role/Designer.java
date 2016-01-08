@@ -35,7 +35,7 @@ public class Designer extends Ruolo {
         try {
             container.addCommands(new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
                     new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.desig.PacketAssembleView"))),
-                    new RefreshCommand(container),
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketEditView"))),
                     new LogoutCommand(stage));
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }

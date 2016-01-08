@@ -2,12 +2,13 @@ package view.desig;
 
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
 
 import java.util.Date;
 
-public class PacketList extends SimpleListProperty<OffertaEntity> {
+public class PacketList<T extends AbstractEntity> extends SimpleListProperty<AbstractEntity> {
 
     int last = -1;
 
@@ -17,8 +18,13 @@ public class PacketList extends SimpleListProperty<OffertaEntity> {
     }
 
     @Override
-    public boolean add(OffertaEntity element) {
+    public boolean add(AbstractEntity entity) {
 
+        if (!entity.isValid()) return super.add(entity);
+        else if (!(entity instanceof OffertaEntity)) return false;
+
+        OffertaEntity element = (OffertaEntity) entity;
+        System.out.println("OFFER " + element.getNome());
         boolean bool = super.add(element);
 
         if (last != -1) {
@@ -39,8 +45,8 @@ public class PacketList extends SimpleListProperty<OffertaEntity> {
 
         if (size() < 2) return null;
 
-        if (last != -1) return get(last);
-        else return get(size() - 2);
+        if (last != -1) return (OffertaEntity) get(last);
+        else return (OffertaEntity) get(size() - 2);
     }
 
     void track() {

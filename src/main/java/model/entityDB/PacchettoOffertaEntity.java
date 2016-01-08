@@ -9,13 +9,13 @@ public class PacchettoOffertaEntity extends AbstractEntity {
 
     private int idPacchetto;
     private int idOfferta;
+    private int posizione;
 
     @Id
     @Column(name = "id_pacchetto")
     public int getIdPacchetto() {
         return idPacchetto;
     }
-
     public void setIdPacchetto(int idPacchetto) {
         this.idPacchetto = idPacchetto;
     }
@@ -25,10 +25,13 @@ public class PacchettoOffertaEntity extends AbstractEntity {
     public int getIdOfferta() {
         return idOfferta;
     }
-
     public void setIdOfferta(int idOfferta) {
         this.idOfferta = idOfferta;
     }
+
+    @Column(name = "posizione")
+    public int getPosizione() {return posizione; }
+    public void setPosizione(int posizione) { this.posizione = posizione; }
 
     @Override
     public boolean equals(Object o) {
@@ -37,10 +40,7 @@ public class PacchettoOffertaEntity extends AbstractEntity {
 
         PacchettoOffertaEntity that = (PacchettoOffertaEntity) o;
 
-        if (idPacchetto != that.idPacchetto) return false;
-        if (idOfferta != that.idOfferta) return false;
-
-        return true;
+        return idPacchetto == that.idPacchetto && idOfferta == that.idOfferta && posizione == that.posizione;
     }
 
     @Override

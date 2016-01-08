@@ -1,14 +1,9 @@
 package view.material;
 
 import javafx.animation.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -112,11 +107,6 @@ public class MaterialSpinner extends FlatButton {
         });
 
         listView.setEffect(Shadow.getStaticInstance());
-    }
-
-    public MaterialSpinner(LayerPane parent) {
-
-        this(parent, FXCollections.<String>observableArrayList("1", "2", "3"));
     }
 
     private void showList() {
@@ -272,12 +262,6 @@ public class MaterialSpinner extends FlatButton {
             });
 
             cell.getChildren().add(txt);
-            cell.heightProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    System.out.println("H " + newValue.doubleValue());
-                }
-            });
 
             if ("".equals(item)) setFocusTraversable(false);
 

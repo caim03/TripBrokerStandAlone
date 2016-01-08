@@ -33,6 +33,8 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
             List added = c.getAddedSubList();
             for (int i = 0; i < len; ++i) {
 
+                if (!(added.get(i) instanceof OffertaEntity)) continue;
+
                 OffertaEntity newEntity = (OffertaEntity) added.get(i);
 
                 int pos = size - len + i;
