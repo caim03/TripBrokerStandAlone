@@ -43,6 +43,21 @@ public class ViaggioDaoHibernate extends OffertaDaoHibernate {
     }
 
     @Override
+    public synchronized List<ViaggioEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<ViaggioEntity> viaggioEntities = session.createQuery(query).list();
+        session.close();
+        if(viaggioEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return viaggioEntities;
+        }
+
+    }
+
+    @Override
     public synchronized ViaggioEntity getById(int id){
         Session session = DBManager.getSession();
 

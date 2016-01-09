@@ -38,7 +38,20 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         if (entities.isEmpty()) {
             return null;
         } else {
-            return entities;  // return first
+            return entities;
+        }
+    }
+
+    @Override
+    public List<CreaPacchettoEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<CreaPacchettoEntity> entities = session.createQuery(query).list();
+        session.close();
+        if (entities.isEmpty()) {
+            return null;
+        } else {
+            return entities;
         }
     }
 

@@ -33,6 +33,11 @@ public class PrenotazioneDaoHibernate implements DAO {
     }
 
     @Override
+    public List<PrenotazioneEntity> getByQuery(String query) {
+        return null;
+    }
+
+    @Override
     public synchronized PrenotazioneEntity getById(int id) {
         Session session = DBManager.getSession();
 

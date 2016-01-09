@@ -88,6 +88,11 @@ public class DBListView extends ListView<AbstractEntity> {
             }
 
             @Override
+            public List<? extends AbstractEntity> getByQuery(String query) {
+                return null;
+            }
+
+            @Override
             public AbstractEntity getById(int id) {
                 return null;
             }

@@ -7,7 +7,7 @@ import model.entityDB.EventoEntity;
 import org.hibernate.Session;
 import java.util.List;
 
-public class EventoDaoHibernate extends ProdottoDaoHibernate {
+public class EventoDaoHibernate extends OffertaDaoHibernate {
 
     private static DAO singleton;
 
@@ -37,6 +37,20 @@ public class EventoDaoHibernate extends ProdottoDaoHibernate {
             return null;
         }
         else{
+            return eventoEntities;
+        }
+    }
+
+    @Override
+    public synchronized List<EventoEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<EventoEntity> eventoEntities = session.createQuery(query).list();
+        session.close();
+        if (eventoEntities.isEmpty()){
+            return null;
+        }
+        else {
             return eventoEntities;
         }
     }

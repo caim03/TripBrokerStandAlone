@@ -43,6 +43,20 @@ public class PacchettoOffertaDaoHibernate implements DAO {
     }
 
     @Override
+    public List<PacchettoOffertaEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<PacchettoOffertaEntity> pacchettoOffertaEntities = session.createQuery(query).list();
+        session.close();
+        if(pacchettoOffertaEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return pacchettoOffertaEntities;
+        }
+    }
+
+    @Override
     public synchronized PacchettoOffertaEntity getById(int id) {
         Session session = DBManager.getSession();
 

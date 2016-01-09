@@ -46,7 +46,21 @@ public class OffertaDaoHibernate extends ProdottoDaoHibernate {
     }
 
     @Override
-    public  synchronized OffertaEntity getById(int id) {
+    public synchronized List<? extends OffertaEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<OffertaEntity> offertaEntities = session.createQuery(query).list();
+        session.close();
+        if(offertaEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return offertaEntities;
+        }
+    }
+
+    @Override
+    public synchronized OffertaEntity getById(int id) {
         Session session = DBManager.getSession();
 
         OffertaEntity offertaEntity = (OffertaEntity) session.createQuery("from OffertaEntity where id = " + id).list().get(0);

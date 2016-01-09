@@ -5,6 +5,7 @@ import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
+import model.entityDB.PrenotazioneEntity;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -42,6 +43,21 @@ public class PernottamentoDaoHibernate extends OffertaDaoHibernate {
         else {
             return pernottamentoEntities;
         }
+    }
+
+    @Override
+    public synchronized List<PernottamentoEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+
+        List<PernottamentoEntity> pernottamentoEntities = session.createQuery(query).list();
+        session.close();
+        if(pernottamentoEntities.isEmpty()){
+            return null;
+        }
+        else{
+            return pernottamentoEntities;
+        }
+
     }
 
     @Override

@@ -39,6 +39,16 @@ public class GruppoOffertaDaoHibernate implements DAO {
     }
 
     @Override
+    public synchronized List<GruppoOffertaEntity> getByQuery(String query) {
+        Session session = DBManager.getSession();
+        List<GruppoOffertaEntity> entities = session.createQuery(query).list();
+        session.close();
+
+        if (entities.isEmpty()) return null;
+        else return entities;
+    }
+
+    @Override
     public synchronized GruppoOffertaEntity getById(int id) {
         Session session = DBManager.getSession();
 
