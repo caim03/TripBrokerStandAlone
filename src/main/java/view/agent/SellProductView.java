@@ -209,6 +209,6 @@ public class SellProductView extends LayerPane implements Collector {
 
     @Override
     public void harvest() {
-        listView = SearchProductController.handle(spinner.getValue(), offerNode);
+        listView = SearchProductController.handle(spinner.getValue(), offerNode, this);
     }
 }

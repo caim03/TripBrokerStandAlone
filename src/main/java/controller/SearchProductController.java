@@ -5,15 +5,25 @@ import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import model.DBManager;
+import model.entityDB.EventoEntity;
+import model.entityDB.PernottamentoEntity;
+import model.entityDB.ViaggioEntity;
+import model.entityDB.ViaggioGruppoEntity;
+import view.agent.SellProductView;
 import view.material.DBListView;
+import view.material.MaterialPopup;
 import view.material.MaterialSpinner;
+import view.popup.BookingListPopup;
+import view.popup.EventPopup;
+import view.popup.StayPopup;
+import view.popup.TravelPopup;
 
 import java.sql.Date;
 import java.time.ZoneId;
 
 public class SearchProductController {
 
-    public static DBListView handle(String spinner, Node[] list) {
+    public static DBListView handle(String spinner, Node[] list, SellProductView sellProductView) {
 
         DBListView listView;
 
@@ -26,7 +36,14 @@ public class SearchProductController {
             }
 
             listView = retrieveEvents(city, date);
-            // TODO SET LISTENER : POPUP WITH DETAILS AND BUTTON SELL WITH QUANTITY
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == null || newValue.equals(oldValue)) return;
+                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
+                new MaterialPopup(
+                        sellProductView,
+                        new EventPopup((EventoEntity)newValue))
+                        .show();
+            });
         }
 
         else if (Constants.travel.equals(spinner)) {
@@ -43,7 +60,14 @@ public class SearchProductController {
             }
 
             listView = retrieveTravels(departure, arrival, vehicle, vehClass, depDate, arrDate);
-            // TODO SET LISTENER : POPUP WITH DETAILS AND BUTTON SELL WITH QUANTITY
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == null || newValue.equals(oldValue)) return;
+                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
+                new MaterialPopup(
+                        sellProductView,
+                        new TravelPopup((ViaggioEntity)newValue))
+                        .show();
+            });
         }
 
         else if (Constants.stay.equals(spinner)) {
@@ -56,7 +80,14 @@ public class SearchProductController {
             }
 
             listView = retrieveStay(city, checkIn, checkOut);
-            // TODO SET LISTENER : POPUP WITH DETAILS AND BUTTON SELL WITH QUANTITY
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == null || newValue.equals(oldValue)) return;
+                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
+                new MaterialPopup(
+                        sellProductView,
+                        new StayPopup((PernottamentoEntity)newValue))
+                        .show();
+            });
         }
 
         else {
