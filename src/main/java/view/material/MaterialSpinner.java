@@ -90,7 +90,8 @@ public class MaterialSpinner extends FlatButton {
             showList();
         });
 
-        setTextFill(Color.BLACK);
+        setStyle("-fx-text-fill: black");
+        setText("...");
         double max = 0;
         for (String str : obs) max = str.length() > max ? str.length() : max;
         max = max < 4 ? 4 : max;
