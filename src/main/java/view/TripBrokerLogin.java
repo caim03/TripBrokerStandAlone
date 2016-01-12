@@ -36,6 +36,7 @@ public class TripBrokerLogin extends Application {
     }
 
     private Scene buildScene() {
+        /** @result Scene; return the built scene **/
 
         TextField nameField = new MaterialTextField(),
                   surnameField = new MaterialTextField(),

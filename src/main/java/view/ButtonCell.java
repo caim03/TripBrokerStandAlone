@@ -1,10 +1,7 @@
 package view;
 
-import com.sun.glass.ui.EventLoop;
-import com.sun.javaws.progress.Progress;
 import controller.DeleteButtonController;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +22,11 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
     private HBox cell;
 
     public ButtonCell(String type, DBTablePane pane){
+        /** @param String; string that appears in the button
+         *  @param DBTablePane; table that contains this button cell
+         *  @return ButtonCell; return the button cell **/
+
+        // instantiate the button as FlatButton
         cellButton = new FlatButton(type);
         this.pane = pane;
         this.type = type;
@@ -39,6 +41,7 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             cell = new HBox(cellButton);
             setGraphic(cell);
 
+            // if modify button
             if (type.equals("modify"))
                 cellButton.setOnMouseClicked(event -> {
 
@@ -47,6 +50,7 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
                     new MaterialPopup(pane, popupView).show();
                 });
 
+            // if delete button
             else {
 
                 DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();

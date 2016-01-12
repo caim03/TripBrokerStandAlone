@@ -30,22 +30,28 @@ public class LayerPane extends StackPane {
     }
 
     public void attach(Node e) {
+        /** @param Node; node that must be attached to pane **/
 
+        // if node is an instance of MaterialPopup
         if (e instanceof MaterialPopup) {
             FadeTransition ft = generateTransition(e, 0, 1);
             ft.play();
             ft.setOnFinished(event -> getChildren().add(e));
         }
+        // add node to list of children of pane
         else getChildren().add(e);
     }
 
     private void detach(Node e) {
+        /** @param Node; node that must be detached to pane **/
 
+        // if node is an instance of MaterialPopup
         if (e instanceof MaterialPopup) {
             FadeTransition ft = generateTransition(e, 1, 0);
             ft.play();
             ft.setOnFinished(event -> getChildren().remove(e));
         }
+        // remove node from list of children of pane
         else getChildren().remove(e);
     }
 
