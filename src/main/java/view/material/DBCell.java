@@ -1,30 +1,20 @@
 package view.material;
 
-import controller.CancelBookingController;
-import controller.ConfirmBookingController;
-import controller.Constants;
-import javafx.geometry.Insets;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import model.entityDB.*;
-import org.controlsfx.control.Notifications;
-import view.material.cellfactory.*;
+import view.material.cellcreator.*;
 
 public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
     /*
-     * Custom ListCell, used in combination with CellFactory and Entities from Hibernate DB to
+     * Custom ListCell, used in combination with CellCreators and Entities from Hibernate DB to
      * properly display record information. It extends MaterialCell in order to display ripple animations
      * on mouse click.
-     * Can currentlly represent: OffertaEntities and subclasses, ViaggioGruppoEntities, PrenotazioneEntities.
+     * Can currently represent: OffertaEntities and subclasses, ViaggioGruppoEntities, PrenotazioneEntities.
      * An InvalidEntity is used to display an IndeterminateProgressCircle during data loading processes.
      */
 
@@ -48,11 +38,11 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         else if (item instanceof OffertaEntity) {
 
             if (item instanceof ViaggioEntity)
-                node = TravelCellFactory.instance().createCell((ViaggioEntity) item);
+                node = TravelCellCreator.instance().createCell((ViaggioEntity) item);
             else if (item instanceof EventoEntity)
-                node = EventCellFactory.instance().createCell((EventoEntity) item);
+                node = EventCellCreator.instance().createCell((EventoEntity) item);
             else
-                node = StayCellFactory.instance().createCell((PernottamentoEntity) item);
+                node = StayCellCreator.instance().createCell((PernottamentoEntity) item);
         }
 
         else if (item instanceof ViaggioGruppoEntity) {
@@ -61,12 +51,18 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         else if (item instanceof PrenotazioneEntity) {
             setFocusTraversable(false); //disable cell ripple
-            node = BookingCellFactory.instance().createForListView(getListView(), (PrenotazioneEntity) item);
+            node = BookingCellCreator.instance().createForListView(getListView(), (PrenotazioneEntity) item);
         }
 
         else node = new Label("NOT IMPLEMENTED"); //T not supported
 
         setGraphic(node); //Region is ultimately attached to DBCell via overloaded setGraphic method
+
+        node.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && newValue.doubleValue() > getListView().getPrefWidth()) {
+                getListView().prefWidthProperty().setValue(newValue.doubleValue() + 25);
+            }
+        });
     }
 
     private Region buildProgress() {

@@ -3,6 +3,7 @@ package view.material;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import model.DBManager;
 import model.daoInterface.DAO;

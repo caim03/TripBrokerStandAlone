@@ -1,4 +1,4 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import controller.Constants;
 import model.entityDB.AbstractEntity;
@@ -6,17 +6,17 @@ import model.entityDB.OffertaEntity;
 import model.entityDB.ViaggioEntity;
 import view.material.EmptyCell;
 
-public abstract class AbstractCellFactory<T extends AbstractEntity> {
+public abstract class AbstractCellCreator<T extends AbstractEntity> {
 
     abstract EmptyCell createCell(T entity);
 
-    protected static class OfferCellFactory extends AbstractCellFactory<OffertaEntity> {
+    protected static class OfferCellCreator extends AbstractCellCreator<OffertaEntity> {
 
-        private static OfferCellFactory me;
+        private static OfferCellCreator me;
 
-        public static OfferCellFactory instance() {
+        public static OfferCellCreator instance() {
 
-            if (me == null) me = new OfferCellFactory();
+            if (me == null) me = new OfferCellCreator();
             return me;
         }
 

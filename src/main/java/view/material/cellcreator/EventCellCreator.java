@@ -1,19 +1,19 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import model.entityDB.EventoEntity;
 import view.material.EmptyCell;
 
 import java.text.SimpleDateFormat;
 
-public class EventCellFactory extends SubOfferCellFactory<EventoEntity> {
+public class EventCellCreator extends SubOfferCellCreator<EventoEntity> {
 
-    private static EventCellFactory me;
-    public static EventCellFactory instance() {
+    private static EventCellCreator me;
+    public static EventCellCreator instance() {
 
-        if (me == null) me = new EventCellFactory();
+        if (me == null) me = new EventCellCreator();
         return me;
     }
-    protected EventCellFactory() { super(); }
+    protected EventCellCreator() { super(); }
 
     @Override
     EmptyCell decorate(EmptyCell cell, EventoEntity entity) {

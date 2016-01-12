@@ -12,6 +12,11 @@
     -fx-select-on-focus:false;
 }
 
+.button {
+    -fx-background-color: null;
+    -fx-border-color: null;
+}
+
 .list-view {
     -fx-border-color: null;
     -fx-border-radius: 0;

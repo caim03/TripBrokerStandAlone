@@ -1,4 +1,4 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import controller.CancelBookingController;
 import controller.ConfirmBookingController;
@@ -9,15 +9,15 @@ import org.controlsfx.control.Notifications;
 import view.material.EmptyCell;
 import view.material.FlatButton;
 
-public class BookingCellFactory extends AbstractCellFactory<PrenotazioneEntity> {
+public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> {
 
-    private static BookingCellFactory me;
-    public static BookingCellFactory instance() {
+    private static BookingCellCreator me;
+    public static BookingCellCreator instance() {
 
-        if (me == null) me = new BookingCellFactory();
+        if (me == null) me = new BookingCellCreator();
         return me;
     }
-    protected BookingCellFactory() { super(); }
+    protected BookingCellCreator() { super(); }
 
     public EmptyCell createForListView(ListView listView, PrenotazioneEntity entity) {
 

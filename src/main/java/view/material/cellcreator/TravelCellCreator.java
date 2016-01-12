@@ -1,4 +1,4 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import controller.Constants;
 import model.entityDB.ViaggioEntity;
@@ -6,15 +6,15 @@ import view.material.EmptyCell;
 
 import java.text.SimpleDateFormat;
 
-public class TravelCellFactory extends SubOfferCellFactory<ViaggioEntity> {
+public class TravelCellCreator extends SubOfferCellCreator<ViaggioEntity> {
 
-    private static TravelCellFactory me;
-    public static TravelCellFactory instance() {
+    private static TravelCellCreator me;
+    public static TravelCellCreator instance() {
 
-        if (me == null) me = new TravelCellFactory();
+        if (me == null) me = new TravelCellCreator();
         return me;
     }
-    protected TravelCellFactory() { super(); }
+    protected TravelCellCreator() { super(); }
 
     @Override
     EmptyCell decorate(EmptyCell cell, ViaggioEntity entity) {

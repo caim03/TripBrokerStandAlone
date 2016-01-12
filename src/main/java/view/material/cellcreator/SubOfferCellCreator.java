@@ -1,12 +1,12 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import model.entityDB.OffertaEntity;
 import view.material.EmptyCell;
 
-    abstract class SubOfferCellFactory<T extends OffertaEntity> extends AbstractCellFactory<T> {
+    abstract class SubOfferCellCreator<T extends OffertaEntity> extends AbstractCellCreator<T> {
 
-    private OfferCellFactory superFactory;
-    SubOfferCellFactory() { superFactory = OfferCellFactory.instance(); }
+    private OfferCellCreator superFactory;
+    SubOfferCellCreator() { superFactory = OfferCellCreator.instance(); }
 
     @Override public EmptyCell createCell(T entity) { return decorate(superFactory.createCell(entity), entity); }
     abstract EmptyCell decorate(EmptyCell cell, T entity) ;

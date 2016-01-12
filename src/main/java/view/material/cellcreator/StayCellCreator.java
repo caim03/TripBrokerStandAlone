@@ -1,19 +1,19 @@
-package view.material.cellfactory;
+package view.material.cellcreator;
 
 import model.entityDB.PernottamentoEntity;
 import view.material.EmptyCell;
 
 import java.text.SimpleDateFormat;
 
-public class StayCellFactory extends SubOfferCellFactory<PernottamentoEntity> {
+public class StayCellCreator extends SubOfferCellCreator<PernottamentoEntity> {
 
-    private static StayCellFactory me;
-    public static StayCellFactory instance() {
+    private static StayCellCreator me;
+    public static StayCellCreator instance() {
 
-        if (me == null) me = new StayCellFactory();
+        if (me == null) me = new StayCellCreator();
         return me;
     }
-    protected StayCellFactory() { super(); }
+    protected StayCellCreator() { super(); }
 
     @Override
     EmptyCell decorate(EmptyCell cell, PernottamentoEntity entity) {

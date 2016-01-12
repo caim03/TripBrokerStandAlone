@@ -3,25 +3,21 @@ package view.popup;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
 import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.DipendentiEntity;
-
-import java.util.List;
+import view.material.DBListView;
 
 
 public class PacketPopup extends PopupView {
 
-    private CreaPacchettoEntity pacchettoEntity;
+    private CreaPacchettoEntity entity;
 
     public PacketPopup(CreaPacchettoEntity prodottoEntity) {
 
-        this.pacchettoEntity = prodottoEntity;
+        this.entity = prodottoEntity;
         this.title = "Pacchetto";
 
         getChildren().add(generatePopup());
@@ -29,6 +25,7 @@ public class PacketPopup extends PopupView {
 
     @Override
     protected Parent generatePopup() {
+
         String state;
 
         Label nameLbl = new Label("Nome:"),
@@ -41,7 +38,7 @@ public class PacketPopup extends PopupView {
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
-        pane.setPadding(new Insets(25, 25, 25, 25));
+        pane.setPadding(new Insets(25));
 
         pane.add(nameLbl, 0, 0);
         pane.add(priceLbl, 0, 1);
@@ -49,13 +46,13 @@ public class PacketPopup extends PopupView {
         pane.add(motivLbl, 0, 3);
         pane.add(creatLbl, 0, 4);
 
-        pane.add(new Text(pacchettoEntity.getNome()), 1, 0);
-        pane.add(new Text(Double.toString(pacchettoEntity.getPrezzo())), 1, 1);
-        if (pacchettoEntity.getStato() == 0){
+        pane.add(new Text(entity.getNome()), 1, 0);
+        pane.add(new Text(Double.toString(entity.getPrezzo())), 1, 1);
+        if (entity.getStato() == 0){
             state = "In attesa di approvazione";
         }
 
-        else if (pacchettoEntity.getStato() == 1){
+        else if (entity.getStato() == 1){
             state = "Approvato";
         }
 
@@ -63,11 +60,36 @@ public class PacketPopup extends PopupView {
             state = "Rifiutato";
         }
         pane.add(new Text(state), 1, 2);
-        pane.add(new Text((pacchettoEntity.getMotivazione())), 1, 3);
-        pane.add(new Text(getEmployee(pacchettoEntity.getCreatore())), 1, 4);
+        pane.add(new Text((entity.getMotivazione())), 1, 3);
+        pane.add(new Text(getEmployee(entity.getCreatore())), 1, 4);
 
-        VBox dialogVbox = new VBox(40, pane);
+        ListView list = generateList();
+
+        VBox dialogVbox = new VBox(pane, list);
+
+        list.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && newValue.doubleValue() > dialogVbox.getPrefWidth()) {
+                dialogVbox.prefWidthProperty().setValue(newValue);
+            }
+        });
+
+        list.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (oldValue != null)
+                    dialogVbox.prefHeightProperty().subtract(oldValue.doubleValue());
+                dialogVbox.prefHeightProperty().add(newValue.doubleValue());
+            }
+        });
+
+        dialogVbox.setStyle("-fx-background-color: white");
 
         return dialogVbox;
+    }
+
+    private ListView generateList() {
+
+        ListView list = new DBListView("from OffertaEntity where id in (select idOfferta from PacchettoOffertaEntity where idPacchetto = " + entity.getId() + " order by posizione)");
+        list.refresh();
+        return list;
     }
 }
