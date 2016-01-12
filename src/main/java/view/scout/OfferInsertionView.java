@@ -30,22 +30,33 @@ public class OfferInsertionView extends LayerPane implements Collector {
     private MaterialSpinner spinner;
     private VBox vBox;
 
-    public String getOfferName() { return nameField.getText(); }
+    public String getOfferName() {
+        /** @result String; return the name of the offer **/
+
+        return nameField.getText();
+    }
     public String getPriceoffer() {
+        /** @result String; return the price of the offer as string **/
+
         return priceField.getText();
     }
 
     public int getOfferQuantity() {
+        /** @result int; return the current quantity of the offer **/
 
         if ("".equals(quField.getText())) return 0;
         return Integer.parseInt(quField.getText());
     }
 
     public String getSpinner() {
+        /** @result String; return the spinner value selected **/
+
         return spinner.getValue();
     }
 
     public Node[] getOfferNode() {
+        /** @result Node[]; return the list of nodes attached to pane **/
+
         return offerNode;
     }
 
@@ -93,6 +104,8 @@ public class OfferInsertionView extends LayerPane implements Collector {
     }
 
     private Node fromOffer(String type) {
+        /** @param String; type of offer that must be inserted
+         *  @result Node; return the node (pane) that contains new graphic elements **/
 
         Node attachment;
 
@@ -111,6 +124,7 @@ public class OfferInsertionView extends LayerPane implements Collector {
     }
 
     private Node stayAttachment() {
+        /** @return Node; return the pane with stay graphic elements **/
 
         offerNode = new Node[6];
 
@@ -164,6 +178,7 @@ public class OfferInsertionView extends LayerPane implements Collector {
     }
 
     private Node eventAttachment() {
+        /** @result Node; return the pane with event graphic elements  **/
 
         offerNode = new Node[6];
         Label city = new Label("City");
@@ -214,6 +229,8 @@ public class OfferInsertionView extends LayerPane implements Collector {
     }
 
     private Node travelAttachment() {
+        /** @result Node; return the pane with stay graphic elements **/
+
 
         offerNode = new Node[8];
         Label departure = new Label("Departure");

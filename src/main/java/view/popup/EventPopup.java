@@ -34,7 +34,7 @@ public class EventPopup extends PopupView{
                 endLbl = new Label("Ora Fine:"),
                 placeLbl = new Label("Luogo:");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -61,6 +61,8 @@ public class EventPopup extends PopupView{
         pane.add(new Text(Integer.toString(eventoEntity.getOraInizio())), 1, 7);
         pane.add(new Text(Integer.toString(eventoEntity.getOraFine())), 1, 8);
         pane.add(new Text(eventoEntity.getLuogo()), 1, 9);
+
+        setRow(9);
 
         VBox dialogVbox = new VBox(40, pane);
 

@@ -42,6 +42,7 @@ public class GroupTripFormView extends PacketFormView {
     }
 
     public void refreshSpinners(int max) {
+        /** @param int; integer used to refresh spinner values **/
 
         int minPtr, maxPtr;
         try { minPtr = minimum.getValue(); } catch (NullPointerException e) { minPtr = 10; }

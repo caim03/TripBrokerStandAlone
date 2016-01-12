@@ -34,7 +34,7 @@ public class PacketPopup extends PopupView {
                 motivLbl = new Label("Motivazione:"),
                 creatLbl = new Label("Creatore:");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -62,6 +62,8 @@ public class PacketPopup extends PopupView {
         pane.add(new Text(state), 1, 2);
         pane.add(new Text((entity.getMotivazione())), 1, 3);
         pane.add(new Text(getEmployee(entity.getCreatore())), 1, 4);
+
+        setRow(4);
 
         ListView list = generateList();
 

@@ -33,7 +33,7 @@ public class StayPopup extends PopupView {
                 serviceLbl = new Label("Servizio:"),
                 placeLbl = new Label("Luogo:");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -60,6 +60,8 @@ public class StayPopup extends PopupView {
         pane.add(new Text(pernottamentoEntity.getQualità()),1, 7);
         pane.add(new Text(pernottamentoEntity.getServizio()),1, 8);
         pane.add(new Text(pernottamentoEntity.getLuogo()), 1, 9);
+
+        setRow(9);
 
         VBox dialogVbox = new VBox(40, pane);
 

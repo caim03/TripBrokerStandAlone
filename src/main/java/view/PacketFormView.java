@@ -60,6 +60,7 @@ public class PacketFormView extends VBox implements Collector {
     }
 
     public PacketFormView(CreaPacchettoEntity entity) {
+        /** @param CreaPacchettoEntity; new packet that must be added in database **/
 
         this();
 
@@ -118,6 +119,9 @@ public class PacketFormView extends VBox implements Collector {
     }
 
     public Command getCommand() {
+        /** @return Command; return the command use to complete the operation (Pattern Command). In this case a transfer
+         *  command **/
+
         return new TransferRecordCommand(list);
     }
     public void clear() { list.getItems().remove(0, list.getItems().size()); }

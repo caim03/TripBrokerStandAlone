@@ -16,6 +16,7 @@ public class CatalogView extends DBTablePane {
 
     @Override
     protected List<ProdottoEntity> query() {
+        /** @return List; return a list of products retrieved by query **/
 
         DAO dao = ProdottoDaoHibernate.instance();
         DBManager.initHibernate();
@@ -27,6 +28,7 @@ public class CatalogView extends DBTablePane {
 
     @Override
     protected TableView generateTable() {
+        /** @return TableView; return a table that contains all the offers **/
 
         TableView<ProdottoEntity> list = new TableView<>();
 

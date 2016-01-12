@@ -11,11 +11,16 @@ public class TripBrokerConsole extends Application {
     private static int guest;
 
     public TripBrokerConsole(int id) {
+        /** @param int; this integer represents the employee's identifier (logged in employee) **/
 
         TripBrokerConsole.guest = id;
     }
 
-    public static int getGuest() { return guest; }
+    public static int getGuest() {
+        /** @return int; return the id attribute **/
+
+        return guest;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
