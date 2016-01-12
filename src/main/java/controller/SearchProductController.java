@@ -21,9 +21,14 @@ import java.time.ZoneId;
 public class SearchProductController {
 
     public static DBListView handle(String spinner, Node[] list, SellProductView sellProductView) {
+        /** @param String sp; product selected in spinner as string
+         *  @param Node[]; list of node that draw right graphic
+         *  @param SellProductView; reference to view
+         *  @result DBListView; the list of offers **/
 
-        DBListView listView;
+        DBListView listView; // list of offers
 
+        // if offer is an event
         if (Constants.event.equals(spinner)) {
             String city = ((TextField) list[0]).getText();
             Date date = new Date(Date.from((((DatePicker) list[1]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
@@ -42,6 +47,7 @@ public class SearchProductController {
             });
         }
 
+        // if offer is a travel
         else if (Constants.travel.equals(spinner)) {
             String departure = ((TextField) list[0]).getText();
             String arrival = ((TextField) list[1]).getText();
@@ -65,6 +71,7 @@ public class SearchProductController {
             });
         }
 
+        // if offer is a stay
         else if (Constants.stay.equals(spinner)) {
             String city = ((TextField) list[0]).getText();
             Date checkIn = new Date(Date.from((((DatePicker) list[1]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
@@ -84,6 +91,7 @@ public class SearchProductController {
             });
         }
 
+        // if offer is a packet
         else {
             return null;
         }
@@ -92,6 +100,10 @@ public class SearchProductController {
     }
 
     private static DBListView retrieveEvents(String city, Date date) {
+        /** @param String; the city of offer to search
+         *  @param Date; the date of offer to search
+         *  @result DBListView; list of offer retrieved by the query **/
+
         DBListView listView;
         listView = new DBListView("from EventoEntity where città like '" + city + "' and data_inizio >= '" +
                 date + "' and quantità > 0");
@@ -100,6 +112,14 @@ public class SearchProductController {
     }
 
     private static DBListView retrieveTravels(String deparure, String arrival, String vehicle, String vehClass, Date depDate, Date arrDate) {
+        /** @param String; departure place of the offer
+         *  @param String; arrival place of the offer
+         *  @param String; vehicle used for the travel
+         *  @param String; vehicle class
+         *  @param Date; departure date of the offer
+         *  @param Date; arrival date of the offer
+         *  @return DBListView; list of the offer retrieved by the query **/
+
         DBListView listView;
         listView = new DBListView("from ViaggioEntity where stazione_partenza like '" + deparure
                 + "' and stazione_arrivo like '" + arrival +
@@ -113,6 +133,11 @@ public class SearchProductController {
     }
 
     private static DBListView retrieveStay(String city, Date checkIn, Date checkOut) {
+        /** @param String; the city of offer to search
+         *  @param Date; check-in date (start of stay)
+         *  @param Date; check-out date (end of stay)
+         *  @result DBListView; list of the offer retrieved by the query **/
+
         DBListView listView;
         listView = new DBListView("from PernottamentoEntity where città like '" + city
                 + "' and data_inizio >= '" + checkIn +

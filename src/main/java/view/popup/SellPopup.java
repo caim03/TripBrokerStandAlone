@@ -21,8 +21,8 @@ public class SellPopup extends PopupView {
     private MaterialSpinner quantity;
 
     public SellPopup(PopupView popupView, OffertaEntity entity) {
-        /** @param: PopupView; the popup to which must be applied pattern decorator
-         *  @param: OffertaEntity; the offer that must be purchased and displayed in popup **/
+        /** @param PopupView; the popup to which must be applied pattern decorator
+         *  @param OffertaEntity; the offer that must be purchased and displayed in popup **/
 
         this.popupView = popupView;
         this.entity = entity;
@@ -32,7 +32,7 @@ public class SellPopup extends PopupView {
 
     @Override
     protected Parent generatePopup() {
-        /** @result: Parent; the base class for all nodes that have children in the scene graph. **/
+        /** @result Parent; the base class for all nodes that have children in the scene graph. **/
 
         popupView.generatePopup();
         return generateItems();
@@ -56,7 +56,7 @@ public class SellPopup extends PopupView {
 
     @Override
     public void setParent(MaterialPopup parent) {
-        /** @param: MaterialPopup; set a material popup as a parent of popup **/
+        /** @param MaterialPopup; set a material popup as a parent of popup **/
 
         super.setParent(parent);
 

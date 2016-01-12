@@ -10,7 +10,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -73,6 +72,12 @@ public class SellProductView extends LayerPane implements Collector {
     }
 
     private Node fromOffer(String type) {
+        /** @param String; string that represents the type of the offer:
+         *               - Event
+         *               - Travel
+         *               - Stay
+         *               - Packet
+         *  @return Node; return a node to attach at the main pane **/
 
         Node attachment;
 
@@ -94,6 +99,7 @@ public class SellProductView extends LayerPane implements Collector {
     }
 
     private Node stayAttachment() {
+        /** @return Node; return a node to attach at the main pane **/
 
         offerNode = new Node[3];
 
@@ -130,6 +136,7 @@ public class SellProductView extends LayerPane implements Collector {
     }
 
     private Node eventAttachment() {
+        /** @return Node; return a node to attach at the main pane **/
 
         offerNode = new Node[2];
         Label city = new Label("City");
@@ -159,6 +166,7 @@ public class SellProductView extends LayerPane implements Collector {
     }
 
     private Node travelAttachment() {
+        /** @return Node; return a node to attach at the main pane **/
 
         offerNode = new Node[6];
         Label departure = new Label("Departure");
@@ -210,6 +218,8 @@ public class SellProductView extends LayerPane implements Collector {
     }
 
     private Node packetAttachment() {
+        /** @return Node; return a node to attach at the main pane **/
+
         return null;
     }
 
