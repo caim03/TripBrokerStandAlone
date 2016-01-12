@@ -37,7 +37,7 @@ public class TravelPopup extends PopupView{
                 stzParLbl = new Label("Stazione Partenza:"),
                 stzArrLbl = new Label("Stazione Arrivo:");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -73,6 +73,7 @@ public class TravelPopup extends PopupView{
         pane.add(new Text(viaggioEntity.getStazionePartenza()), 1, 12);
         pane.add(new Text(viaggioEntity.getStazioneArrivo()), 1, 13);
 
+        setRow(13);
 
         VBox dialogVbox = new VBox(40, pane);
 

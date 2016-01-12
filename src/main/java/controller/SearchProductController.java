@@ -13,10 +13,7 @@ import view.agent.SellProductView;
 import view.material.DBListView;
 import view.material.MaterialPopup;
 import view.material.MaterialSpinner;
-import view.popup.BookingListPopup;
-import view.popup.EventPopup;
-import view.popup.StayPopup;
-import view.popup.TravelPopup;
+import view.popup.*;
 
 import java.sql.Date;
 import java.time.ZoneId;
@@ -38,10 +35,9 @@ public class SearchProductController {
             listView = retrieveEvents(city, date);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
                 new MaterialPopup(
                         sellProductView,
-                        new EventPopup((EventoEntity)newValue))
+                        new SellPopup(new EventPopup((EventoEntity)newValue), (EventoEntity)newValue))
                         .show();
             });
         }
@@ -62,10 +58,9 @@ public class SearchProductController {
             listView = retrieveTravels(departure, arrival, vehicle, vehClass, depDate, arrDate);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
                 new MaterialPopup(
                         sellProductView,
-                        new TravelPopup((ViaggioEntity)newValue))
+                        new SellPopup(new TravelPopup((ViaggioEntity)newValue), (ViaggioEntity)newValue))
                         .show();
             });
         }
@@ -82,10 +77,9 @@ public class SearchProductController {
             listView = retrieveStay(city, checkIn, checkOut);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                // TODO DECORATOR TO ADD QUANTITY AND SELL BUTTON
                 new MaterialPopup(
                         sellProductView,
-                        new StayPopup((PernottamentoEntity)newValue))
+                        new SellPopup(new StayPopup((PernottamentoEntity)newValue), (PernottamentoEntity)newValue))
                         .show();
             });
         }

@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.Notifications;
 import view.Collector;
 import view.material.*;
 
@@ -33,7 +34,7 @@ public class SellProductView extends LayerPane implements Collector {
         spinner = new MaterialSpinner(this, FXCollections.<String>observableArrayList(Constants.travel,
                 Constants.event, Constants.stay, Constants.packet));
 
-        button = new MaterialButton("Cerca");
+        button = new ElevatedButton("Cerca");
 
         pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -48,7 +49,12 @@ public class SellProductView extends LayerPane implements Collector {
             @Override
             public void handle(MouseEvent event) {
                 harvest();
+                try {
                 listView.refresh();
+                } catch (NullPointerException nullPointer) {
+                    Notifications.create().title("Campi vuoti").text("Si prega di riempire tutti i campi").show();
+                    return;
+                }
                 vBox.getChildren().clear();
                 vBox.getChildren().add(listView);
             }
@@ -209,6 +215,7 @@ public class SellProductView extends LayerPane implements Collector {
 
     @Override
     public void harvest() {
+
         listView = SearchProductController.handle(spinner.getValue(), offerNode, this);
     }
 }
