@@ -30,14 +30,15 @@ public class Amministratore extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
+        // try to add the command operation to navigation drawer
         try {
             container.addCommands(
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.PacketApproveView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ManageRolesView"))),
-                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.admin.AddNewEmployeeView"))),
-                    new LogoutCommand(stage));
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.PacketApproveView"))), // approve packets command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))), // modify politics command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ManageRolesView"))), // menage roles command
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.admin.AddNewEmployeeView"))), // add employee command
+                    new LogoutCommand(stage)); // logout command
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }
 

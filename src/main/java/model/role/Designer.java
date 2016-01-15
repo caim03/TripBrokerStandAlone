@@ -32,12 +32,13 @@ public class Designer extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
+        // try to add the command operation to navigation drawer
         try {
             container.addCommands(
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
-                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.desig.PacketAssembleView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketEditView"))),
-                    new LogoutCommand(stage));
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.desig.PacketAssembleView"))), // packet assemble command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketEditView"))), // packet edit command
+                    new LogoutCommand(stage)); // logout command
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }
 

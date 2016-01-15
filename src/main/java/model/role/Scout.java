@@ -31,11 +31,13 @@ public class Scout extends Ruolo {
         stage.setScene(scene);
 
         Command refresh;
+
+        // try to add the command operation to navigation drawer
         try {
             container.addCommands(
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
-                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.scout.OfferInsertionView"))),
-                    new LogoutCommand(stage));
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.scout.OfferInsertionView"))), // offer insertion command
+                    new LogoutCommand(stage)); // logout command
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }
 

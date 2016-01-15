@@ -124,9 +124,9 @@ public class TripBrokerLogin extends Application {
                         } else {
 
                             if (entity == null)
-                                Notifications.create().title("Empty field").text("Empty field detected, please fill all fields").show();
+                                Notifications.create().title("Campi vuoti").text("Riempire tutti i campi obbligatori").show();
                             else if (!entity.isValid())
-                                Notifications.create().title("Not Found").text("This user is not registered").show();
+                                Notifications.create().title("Dipendente non trovato").text("Questo dipendente non è registrato").show();
 
                             pane.getChildren().remove(progressCircle);
                             button.setDisable(false);
@@ -141,7 +141,7 @@ public class TripBrokerLogin extends Application {
                     e.printStackTrace();
 
                     Platform.runLater(() -> {
-                        Notifications.create().title("Connection refused").text("DB service not available").showWarning();
+                        Notifications.create().title("Connessione rifiutata").text("Errore interno al database").showWarning();
                         pane.getChildren().remove(progressCircle);
                         button.setDisable(false);
                         nameField.addEventFilter(KeyEvent.KEY_PRESSED, enter);

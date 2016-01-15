@@ -35,7 +35,7 @@ public class DeleteController implements EventHandler<MouseEvent> {
             DBManager.shutdown();
 
             Platform.runLater(() -> {
-                Notifications.create().title("Deleted").text("The packet has been deleted").show();
+                Notifications.create().title("Cancellato").text("Il pacchetto è stato cancellato con successo").show();
                 list.getItems().remove(this.pacchettoEntity);
                 list.refresh();
             });

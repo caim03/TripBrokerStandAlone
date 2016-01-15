@@ -51,7 +51,7 @@ public class SellProductView extends LayerPane implements Collector {
                 try {
                 listView.refresh();
                 } catch (NullPointerException nullPointer) {
-                    Notifications.create().title("Campi vuoti").text("Si prega di riempire tutti i campi").show();
+                    Notifications.create().title("Campi vuoti").text("Riempire tutti i campi obbligatori").show();
                     return;
                 }
                 vBox.getChildren().clear();

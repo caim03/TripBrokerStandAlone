@@ -44,7 +44,7 @@ public class GroupTripOverseer implements ListChangeListener<AbstractEntity> {
 
                     c.getList().remove(pos, size);
 
-                    Notifications.create().text("Insufficient number of tickets to assemble a group trip!").showWarning();
+                    Notifications.create().text("Il numero di biglietti disponibili è insufficiente per formare un viaggio di gruppo").showWarning();
                     return;
                 } else if (max < qu) max = qu;
             }

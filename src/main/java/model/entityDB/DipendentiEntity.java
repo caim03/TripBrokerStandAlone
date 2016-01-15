@@ -6,6 +6,30 @@ import model.role.*;
 
 import javax.persistence.*;
 
+/*** This class represents the table of dependents in DataBase, and it is used to retrieve,
+ *   save, delete or update dependents.
+ *   It contains five private attributes that represent the columns of table in DataBase:
+ *      1. 'id'
+ *      2. 'nome'
+ *      3. 'cognome'
+ *      4. 'passwordLogin'
+ *      5. 'mail'
+ *
+ *   The attribute 'id' indicates the identifier of a dependent;
+ *   each dependent has him distinct identifier
+ *
+ *   The attribute 'nome' indicates the name of a dependent
+ *
+ *   The attribute 'cognome' indicates the surname of a dependent
+ *
+ *   The attribute 'passwordLogin' indicates the password of a dependent;
+ *   each dependent has him password and he use it to access on TripBroker StandAlone application
+ *
+ *   The attribute 'mail' indicates the mail address of a dependent
+ *
+ *   There is another private attribute Ruolo, but this is not included in DataBase,
+ *   because it is used for generating the right view in application after login ***/
+
 @Entity
 @Table(name = "Dipendenti", schema = "trip_broker")
 public class DipendentiEntity extends AbstractEntity {
@@ -14,6 +38,7 @@ public class DipendentiEntity extends AbstractEntity {
     private String cognome;
     private String passwordLogin;
     private String mail;
+
     private Ruolo job;
 
     @Id

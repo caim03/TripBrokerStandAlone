@@ -65,7 +65,7 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
                                 DeleteButtonController.handle(getTableView(), entity);
 
                                 Platform.runLater(() -> {
-                                    Notifications.create().title("Deleted").text("The employee has been deleted").show();
+                                    Notifications.create().title("Cancellato").text("Il dipendente è stato cancellato con successo").show();
                                     getTableView().getItems().remove(entity);
                                     getTableView().refresh();
                                     cell.getChildren().remove(mini);

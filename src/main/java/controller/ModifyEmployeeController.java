@@ -62,7 +62,7 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
             DBManager.shutdown();
 
             Platform.runLater(() -> {
-                Notifications.create().title("Updated").text("The employee has been updated").show();
+                Notifications.create().title("Modificato").text("Il dipendente è stato modificato con successo").show();
                 list.getItems().set(index, entity);
                 list.refresh();
             });

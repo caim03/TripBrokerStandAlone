@@ -43,7 +43,7 @@ public abstract class DBTablePane extends LayerPane {
                 pop();
 
                 if (entities == null)
-                    Notifications.create().title("Empty catalog").text("No products in catalog").show();
+                    Notifications.create().title("Catalogo vuoto").text("Non esistono prodotti da mostrare nel catalogo").show();
 
                 else {
 

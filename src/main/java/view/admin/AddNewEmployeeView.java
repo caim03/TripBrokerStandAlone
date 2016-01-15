@@ -80,8 +80,8 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
                         email.getText());
                 Platform.runLater(() -> {
                     Notifications.create()
-                            .text("Employee " + name.getText() + " " + surname.getText() + " was added correctly")
-                            .title("Operation completed successfully")
+                            .text("Il dipendente " + name.getText() + " " + surname.getText() + " è stato aggiunto con successo")
+                            .title("Operazione completata")
                             .show();
 
                     reset();
@@ -89,7 +89,7 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
             }).start();
         }
 
-        else Notifications.create().text("Check for empty fields").showWarning();
+        else Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
     }
 
     private boolean check() {
