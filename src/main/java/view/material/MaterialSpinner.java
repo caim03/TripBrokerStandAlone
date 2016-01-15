@@ -95,6 +95,7 @@ public class MaterialSpinner extends FlatButton {
         for (String str : obs) max = str.length() > max ? str.length() : max;
         max = max < 4 ? 4 : max;
         setMaxWidth(getFont().getSize() * max);
+        setPrefWidth(getFont().getSize() * max * 0.75);
 
         listView = new ListView<>(obs);
         listView.maxWidthProperty().bind(widthProperty());

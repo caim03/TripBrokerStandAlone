@@ -33,7 +33,8 @@ public class Designer extends Ruolo {
         stage.setScene(scene);
 
         try {
-            container.addCommands(new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
+            container.addCommands(
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
                     new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.desig.PacketAssembleView"))),
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketEditView"))),
                     new LogoutCommand(stage));

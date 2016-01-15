@@ -1,19 +1,14 @@
 package view.desig;
 
-import com.jfoenix.controls.JFXButton;
 import controller.ButtonInvoker;
 import controller.command.Command;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.stage.Screen;
 import view.Collector;
 import view.PacketFormView;
-import view.material.*;
+import view.material.FloatingActionButton;
 
 public class PacketAssembleView extends GridPane implements Collector {
 
