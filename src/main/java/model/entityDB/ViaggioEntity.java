@@ -9,8 +9,6 @@ import java.sql.Date;
 public class ViaggioEntity extends OffertaEntity {
 
     private String destinazione;
-    private int oraPartenza;
-    private int oraArrivo;
     private String mezzo;
     private String classe;
     private String stazionePartenza;
@@ -25,26 +23,6 @@ public class ViaggioEntity extends OffertaEntity {
 
     public void setDestinazione(String destinazione) {
         this.destinazione = destinazione;
-    }
-
-    @Basic
-    @Column(name = "ora_partenza")
-    public int getOraPartenza() {
-        return oraPartenza;
-    }
-
-    public void setOraPartenza(int oraPartenza) {
-        this.oraPartenza = oraPartenza;
-    }
-
-    @Basic
-    @Column(name = "ora_arrivo")
-    public int getOraArrivo() {
-        return oraArrivo;
-    }
-
-    public void setOraArrivo(int oraArrivo) {
-        this.oraArrivo = oraArrivo;
     }
 
     @Basic
@@ -87,6 +65,17 @@ public class ViaggioEntity extends OffertaEntity {
         this.stazioneArrivo = stazioneArrivo;
     }
 
+
+    @Basic
+    @Column (name = "data_arrivo")
+    public Date getDataArrivo() {
+        return dataArrivo;
+    }
+
+    public void setDataArrivo(Date dataArrivo) {
+        this.dataArrivo = dataArrivo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,8 +84,6 @@ public class ViaggioEntity extends OffertaEntity {
         ViaggioEntity that = (ViaggioEntity) o;
 
         //if (super.getId() != that.id) return false;
-        if (oraPartenza != that.oraPartenza) return false;
-        if (oraArrivo != that.oraArrivo) return false;
         if (destinazione != null ? !destinazione.equals(that.destinazione) : that.destinazione != null) return false;
         if (mezzo != null ? !mezzo.equals(that.mezzo) : that.mezzo != null) return false;
         if (classe != null ? !classe.equals(that.classe) : that.classe != null) return false;
@@ -112,8 +99,7 @@ public class ViaggioEntity extends OffertaEntity {
     public int hashCode() {
         int result = super.getId();
         result = 31 * result + (destinazione != null ? destinazione.hashCode() : 0);
-        result = 31 * result + oraPartenza;
-        result = 31 * result + oraArrivo;
+        result = 31 * result + (dataArrivo != null ? dataArrivo.hashCode() : 0);
         result = 31 * result + (mezzo != null ? mezzo.hashCode() : 0);
         result = 31 * result + (classe != null ? classe.hashCode() : 0);
         result = 31 * result + (stazionePartenza != null ? stazionePartenza.hashCode() : 0);
@@ -121,13 +107,4 @@ public class ViaggioEntity extends OffertaEntity {
         return result;
     }
 
-    @Basic
-    @Column (name = "data_arrivo")
-    public Date getDataArrivo() {
-        return dataArrivo;
-    }
-
-    public void setDataArrivo(Date dataArrivo) {
-        this.dataArrivo = dataArrivo;
-    }
 }

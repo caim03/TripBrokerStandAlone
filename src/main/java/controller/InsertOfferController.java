@@ -39,8 +39,12 @@ public class InsertOfferController {
             String locField = ((TextField) list[1]).getText();
             int seatField = (int) ((NumericField) list[2]).getNumber();
             Date date = new Date(Date.from((((DatePicker) list[3]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
-            int timePicker = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours();
-            int endPicker = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
+            long day = date.getTime();
+
+            long startHour = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getHours() * 3600000;
+            long endHour = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours() * 3600000;
+            long startMinute = ((CalendarTimeTextField) list[4]).getCalendar().getTime().getMinutes() * 60000;
+            long endMinute = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getMinutes() * 60000;
 
             if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))) {
                 System.out.println("INVALID LOCATIONS");
@@ -49,8 +53,8 @@ public class InsertOfferController {
 
             EventBuilder eventBuilder = new EventBuilder();
             eventBuilder.buildProduct(name, Double.parseDouble(price), Constants.event);
-            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, date);
-            eventBuilder.buildEntity(seatField, timePicker, endPicker, locField);
+            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, new Date(day + startHour + startMinute));
+            eventBuilder.buildEntity(seatField, new Date(day + endHour + endMinute), locField);
 
             insertOfferEvent((EventoEntity) eventBuilder.getEntity());
         }
@@ -61,9 +65,14 @@ public class InsertOfferController {
             String vehSpinner = ((MaterialSpinner) list[2]).getValue();
             String clsSpinner = ((MaterialSpinner) list[3]).getValue();
             Date depDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
-            int depTime = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours();
             Date arrDate = new Date(Date.from((((DatePicker) list[6]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
-            int arrTime = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getHours();
+            long depDay = depDate.getTime();
+            long arrDay = arrDate.getTime();
+
+            long depHour = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getHours() * 3600000;
+            long depMinute = ((CalendarTimeTextField) list[5]).getCalendar().getTime().getMinutes() * 60000;
+            long arrHour = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getHours() * 3600000;
+            long arrMinute = ((CalendarTimeTextField) list[7]).getCalendar().getTime().getMinutes() * 60000;
 
             if ((depField == null || "".equals(depField)) || (arrField == null || "".equals(arrField))) {
                 System.out.println("INVALID STATIONS");
@@ -72,8 +81,8 @@ public class InsertOfferController {
 
             TravelBuilder travelBuilder = new TravelBuilder();
             travelBuilder.buildProduct(name, Double.parseDouble(price), Constants.travel);
-            travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, depDate);
-            travelBuilder.buildEntity(arrField, depTime, arrTime, vehSpinner, clsSpinner, depField, arrField, arrDate);
+            travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, new Date(depDay + depHour + depMinute));
+            travelBuilder.buildEntity(arrField, new Date(arrDay + arrHour + arrMinute), vehSpinner, clsSpinner, depField, arrField);
 
             insertOfferTravel((ViaggioEntity) travelBuilder.getEntity());
         }

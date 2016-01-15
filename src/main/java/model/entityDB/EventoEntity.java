@@ -2,6 +2,7 @@ package model.entityDB;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.sql.Date;
 
 @Entity
 @Table(name = "Evento", schema = "trip_broker")
@@ -9,9 +10,8 @@ import javax.persistence.Entity;
 public class EventoEntity extends OffertaEntity {
 
     private int numeroPosto;
-    private int oraInizio;
-    private int oraFine;
     private String luogo;
+    private Date dataFine;
 
     @Basic
     @Column(name = "numero_posto")
@@ -24,26 +24,6 @@ public class EventoEntity extends OffertaEntity {
     }
 
     @Basic
-    @Column(name = "ora_inizio")
-    public int getOraInizio() {
-        return oraInizio;
-    }
-
-    public void setOraInizio(int oraInizio) {
-        this.oraInizio = oraInizio;
-    }
-
-    @Basic
-    @Column(name = "ora_fine")
-    public int getOraFine() {
-        return oraFine;
-    }
-
-    public void setOraFine(int oraFine) {
-        this.oraFine = oraFine;
-    }
-
-    @Basic
     @Column(name = "luogo")
     public String getLuogo() {
         return luogo;
@@ -51,6 +31,17 @@ public class EventoEntity extends OffertaEntity {
 
     public void setLuogo(String luogo) {
         this.luogo = luogo;
+    }
+
+
+    @Basic
+    @Column(name = "data_fine")
+    public Date getDataFine() {
+        return this.dataFine;
+    }
+
+    public void setDataFine(Date dataFine) {
+        this.dataFine = dataFine;
     }
 
     @Override
@@ -61,7 +52,8 @@ public class EventoEntity extends OffertaEntity {
 
         EventoEntity that = (EventoEntity) o;
 
-        return super.equals(o) && numeroPosto == that.numeroPosto && oraInizio == that.oraInizio && oraFine == that.oraFine
+        return super.equals(o) && numeroPosto == that.numeroPosto
+                && ((dataFine == null && that.dataFine == null) || (dataFine != null && dataFine.equals(that.dataFine)))
                 && ((luogo != null && luogo.equals(that.luogo)) || (luogo == null && that.luogo == null));
     }
 
@@ -69,8 +61,7 @@ public class EventoEntity extends OffertaEntity {
     public int hashCode() {
         int result = super.getId();
         result = 31 * result + numeroPosto;
-        result = 31 * result + oraInizio;
-        result = 31 * result + oraFine;
+        result = 31 * result + (dataFine != null ? dataFine.hashCode() : 0);
         result = 31 * result + (luogo != null ? luogo.hashCode() : 0);
         return result;
     }

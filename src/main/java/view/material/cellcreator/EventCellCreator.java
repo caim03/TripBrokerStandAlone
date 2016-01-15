@@ -21,9 +21,9 @@ public class EventCellCreator extends SubOfferCellCreator<EventoEntity> {
         cell.setThumbnail("event.png");
 
         String info1 = "presso " + entity.getLuogo() + ", " + entity.getCittà(),
-               info2 = "dalle " + entity.getOraInizio() + ":00 alle " + entity.getOraFine() + ":00 del "
-                       + new SimpleDateFormat("dd MMM yyyy").format(entity.getDataInizio())
-                       ;
+               info2 = "dalle " + new SimpleDateFormat("HH:mm").format(entity.getDataInizio()) +
+                       " alle " + new SimpleDateFormat("HH:mm").format(entity.getDataFine()) + " del "
+                       + new SimpleDateFormat("dd MMM yyyy").format(entity.getDataInizio());
 
         cell.addSubHeaders(info1, info2);
         return cell;

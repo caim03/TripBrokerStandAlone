@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.entityDB.ViaggioEntity;
 
+import java.text.SimpleDateFormat;
+
 public class TravelPopup extends PopupView{
     private ViaggioEntity viaggioEntity;
 
@@ -63,11 +65,11 @@ public class TravelPopup extends PopupView{
         pane.add(new Text(viaggioEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(viaggioEntity.getQuantità())), 1, 3);
         pane.add(new Text(Integer.toString(viaggioEntity.getStato())), 1, 4);
-        pane.add(new Text(viaggioEntity.getDataInizio().toString()), 1, 5);
-        pane.add(new Text(viaggioEntity.getDataArrivo().toString()), 1, 6);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(viaggioEntity.getDataInizio())), 1, 5);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(viaggioEntity.getDataArrivo())), 1, 6);
         pane.add(new Text(viaggioEntity.getDestinazione()), 1, 7);
-        pane.add(new Text(Integer.toString(viaggioEntity.getOraPartenza())), 1, 8);
-        pane.add(new Text(Integer.toString(viaggioEntity.getOraArrivo())), 1, 9);
+        pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataInizio())), 1, 8);
+        pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataInizio())), 1, 9);
         pane.add(new Text(viaggioEntity.getMezzo()), 1, 10);
         pane.add(new Text(viaggioEntity.getClasse()), 1, 11);
         pane.add(new Text(viaggioEntity.getStazionePartenza()), 1, 12);

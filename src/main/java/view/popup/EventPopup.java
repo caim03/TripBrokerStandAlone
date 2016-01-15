@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.entityDB.EventoEntity;
 
+import java.text.SimpleDateFormat;
+
 
 public class EventPopup extends PopupView{
     private EventoEntity eventoEntity;
@@ -56,10 +58,10 @@ public class EventPopup extends PopupView{
         pane.add(new Text(eventoEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(eventoEntity.getQuantità())), 1, 3);
         pane.add(new Text(Integer.toString(eventoEntity.getStato())), 1, 4);
-        pane.add(new Text(eventoEntity.getDataInizio().toString()), 1, 5);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(eventoEntity.getDataInizio())), 1, 5);
         pane.add(new Text(Integer.toString(eventoEntity.getNumeroPosto())), 1, 6);
-        pane.add(new Text(Integer.toString(eventoEntity.getOraInizio())), 1, 7);
-        pane.add(new Text(Integer.toString(eventoEntity.getOraFine())), 1, 8);
+        pane.add(new Text(new SimpleDateFormat("HH:mm").format(eventoEntity.getDataInizio())), 1, 7);
+        pane.add(new Text(new SimpleDateFormat("HH:mm").format(eventoEntity.getDataFine())), 1, 8);
         pane.add(new Text(eventoEntity.getLuogo()), 1, 9);
 
         setRow(9);

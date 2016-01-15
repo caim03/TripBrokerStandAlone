@@ -2,6 +2,8 @@ package controller;
 
 import model.entityDB.EventoEntity;
 
+import java.sql.Date;
+
 public class EventBuilder extends EntityBuilder {
 
     public EventBuilder() { entity = new EventoEntity(); }
@@ -10,8 +12,7 @@ public class EventBuilder extends EntityBuilder {
     public void buildEntity(Object...objects) {
 
         ((EventoEntity)entity).setNumeroPosto((int) objects[0]);
-        ((EventoEntity)entity).setOraInizio((int) objects[1]);
-        ((EventoEntity)entity).setOraFine((int) objects[2]);
-        ((EventoEntity)entity).setLuogo((String) objects[3]);
+        ((EventoEntity)entity).setDataFine((Date) objects[1]);
+        ((EventoEntity)entity).setLuogo((String) objects[2]);
     }
 }

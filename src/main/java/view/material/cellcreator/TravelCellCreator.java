@@ -30,11 +30,11 @@ public class TravelCellCreator extends SubOfferCellCreator<ViaggioEntity> {
         cell.setThumbnail(image);
 
         String departure = "partenza da " + entity.getCittà()
-                + " alle " + entity.getOraPartenza() + ":" + "00"
+                + " alle " + new SimpleDateFormat("HH:mm").format(entity.getDataInizio())
                 + " del " + new SimpleDateFormat("dd MMM yyyy").format(entity.getDataInizio());
 
         String arrival = "arrivo a " + entity.getDestinazione()
-                + " alle " + entity.getOraArrivo() + ":" + "00"
+                + " alle " + new SimpleDateFormat("HH:mm").format(entity.getDataArrivo())
                 + " del " + new SimpleDateFormat("dd MMM yyyy").format(entity.getDataArrivo());
 
         cell.addSubHeaders(departure, arrival);
