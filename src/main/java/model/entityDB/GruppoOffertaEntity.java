@@ -2,8 +2,12 @@ package model.entityDB;
 
 import javax.persistence.*;
 
+/*** This class represents the table of relations between
+ *   'OffertaEntity' and 'ViaggioGruppoEntity' in DataBase.
+ *   It contains two private attributes which reference the primary key of tables ***/
+
 @Entity
-@Table(name = "Gruppo_Offerta", schema = "trip_broker", catalog = "")
+@Table(name = "Gruppo_Offerta", schema = "trip_broker")
 @IdClass(GruppoOffertaEntityPK.class)
 public class GruppoOffertaEntity extends AbstractEntity {
 

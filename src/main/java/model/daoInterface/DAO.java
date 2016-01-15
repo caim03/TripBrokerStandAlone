@@ -1,9 +1,18 @@
 package model.daoInterface;
 
 import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
-
 import java.util.List;
+
+/*** The all classes that implements DAO Interface must override all methods.
+ *   This Interface is used for using polymorphism and factory method to create the right Dao object;
+ *   in fact exists a Dao object for each entity in DataBase, and each class override this methods to:
+ *      1. Retrieve all entities from DataBase
+ *      2. Retrieve entities from DataBase with a specific where clause
+ *      3. Retrieve entities from DataBase with a new query
+ *      4. Retrieve a single entity from DataBase using identifier
+ *      5. Save a new entity to DataBase
+ *      6. Delete an existing entity from DataBase
+ *      7. Update an existing entity from DataBase ***/
 
 public interface DAO {
 

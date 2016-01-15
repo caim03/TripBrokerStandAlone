@@ -2,6 +2,23 @@ package model.entityDB;
 
 import javax.persistence.*;
 
+/*** This class represents the table of packets in DataBase, and it is used to retrieve, save, delete or update
+ *   packets.
+ *   It contains three private attributes that represent the columns of table in DataBase:
+ *      1. 'stato'
+ *      2. 'motivazione'
+ *      3. 'creatore'
+ *
+ *   The attribute 'stato' indicates the state of a packet; in particular exist three type of state:
+ *      - Packet to be approved (0)
+ *      - Approved packet (1)
+ *      - Rejected packet (2)
+ *
+ *   The attribute 'motivazione' indicates the reasons for the rejected;
+ *   in this way the designer can make the necessary changes to the packet
+ *
+ *   The attribute 'creatore' indicates the dependent (a designer) which has created the packet ***/
+
 @Entity
 @Table(name = "Crea_Pacchetto", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
@@ -14,30 +31,36 @@ public class CreaPacchettoEntity extends ProdottoEntity {
     @Basic
     @Column(name = "stato")
     public int getStato() {
+        /** @result int; return the state of packet **/
         return stato;
     }
 
     public void setStato(int stato) {
+        /** @param int; set the state of packet **/
         this.stato = stato;
     }
 
     @Basic
     @Column(name = "motivazione")
     public String getMotivazione() {
+        /** @result String; return the motivation of rejected packet **/
         return motivazione;
     }
 
     public void setMotivazione(String motivazione) {
+        /** @param String; set the motivation of rejected packet **/
         this.motivazione = motivazione;
     }
 
     @Basic
     @Column(name = "creatore")
     public int getCreatore() {
+        /** @result int; return the identifier of dependent **/
         return creatore;
     }
 
     public void setCreatore(int creatore) {
+        /** @param int; set the identifier of dependent **/
         this.creatore = creatore;
     }
 

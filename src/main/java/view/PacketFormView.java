@@ -132,13 +132,13 @@ public class PacketFormView extends VBox implements Collector {
         double price = ((NumericField)priceField).getNumber();
 
         if ("".equals(name) || "".equals(priceField.getText()))
-            Notifications.create().text("Empty fields detected").showWarning();
+            Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
 
         else if (price < basePrice.getNumber() || price > maxPrice.getNumber())
-            Notifications.create().text("Price outside its bounds").showWarning();
+            Notifications.create().text("Il prezzo deve essere compreso tra i suoi limiti").showWarning();
 
         else if (list.getItems().size() == 0)
-            Notifications.create().text("Empty packet").showWarning();
+            Notifications.create().text("Pacchetto vuoto").showWarning();
 
         else {
 
@@ -149,7 +149,7 @@ public class PacketFormView extends VBox implements Collector {
 
             if (!(beginning instanceof ViaggioEntity) || !(end instanceof ViaggioEntity) ||
                 !((ViaggioEntity) beginning).getCittà().equals(((ViaggioEntity) end).getDestinazione()))
-                Notifications.create().text("Packets should begin and end with a travel, leaving and arriving at the same location").showWarning();
+                Notifications.create().text("I pacchetti dovrebbero iniziare e terminare con un viaggio, check-in e check-out nella stessa location").showWarning();
 
             else {
                 for (AbstractEntity entity : list.getItems()) {
@@ -157,9 +157,9 @@ public class PacketFormView extends VBox implements Collector {
                     ++i;
                 }
                 if (PacketAssembleController.create(name, price, ids))
-                    Notifications.create().text("Packet '" + name + "' has been added to catalog").show();
+                    Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
                 else
-                    Notifications.create().text("Internal Database error").showError();
+                    Notifications.create().text("Errore interno al database").showError();
             }
         }
     }

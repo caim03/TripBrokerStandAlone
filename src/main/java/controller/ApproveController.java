@@ -40,12 +40,12 @@ public class ApproveController implements EventHandler<MouseEvent> {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                Platform.runLater(() -> Notifications.create().text("Internal Database error").showError());
+                Platform.runLater(() -> Notifications.create().text("Errore interno al database").showError());
                 return;
             }
 
             Platform.runLater(() -> {
-                Notifications.create().title("Approved").text("The packet has been approved").show();
+                Notifications.create().title("Approvato").text("Il pacchetto è stato approvato con successo").show();
                 list.getItems().remove(this.pacchettoEntity);
                 list.refresh();
             });

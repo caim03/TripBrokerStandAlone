@@ -5,6 +5,19 @@ import javax.persistence.Entity;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+/*** This class represents the table of events in DataBase, and it is used to retrieve,
+ *   save, delete or update events.
+ *   It contains three private attributes that represent the columns of table in DataBase:
+ *      1. 'numeroPosto'
+ *      2. 'luogo'
+ *      3. 'dataFine'
+ *
+ *   The attribute 'numeroPosto' indicates the sit number in the event
+ *
+ *   the attribute 'luogo' indicates the place where the event occurs (stadium, theatre, ecc.)
+ *
+ *   The attribute 'dataFine' indicates the TimeStamp of the end of event ***/
+
 @Entity
 @Table(name = "Evento", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")

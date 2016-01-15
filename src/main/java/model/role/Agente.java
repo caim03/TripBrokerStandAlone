@@ -31,15 +31,15 @@ public class Agente extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
+        // try to add the command operation to navigation drawer
         try {
-
             container.addCommands(
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))),
-                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.agent.GroupTripAssembleView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.GroupTripBookingView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.ManageBookingView"))),
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.SellProductView"))),
-                    new LogoutCommand(stage));
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
+                    new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.agent.GroupTripAssembleView"))), // group trip assemble command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.GroupTripBookingView"))), // visualize bookings command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.ManageBookingView"))), // manage bookings command
+                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.SellProductView"))), // sell products command
+                    new LogoutCommand(stage)); // logout command
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }
 

@@ -29,7 +29,7 @@ public class EventPopup extends PopupView{
                 priceLbl = new Label("Prezzo:"),
                 cityLbl = new Label("Città:"),
                 quanitityLbl = new Label("Quantità:"),
-                stateLbl = new Label("Stato:"),
+                stateLbl = new Label("Prenotazioni:"),
                 dateLbl = new Label("Data:"),
                 stayLbl = new Label("Numero Posto:"),
                 startLbl = new Label("Ora inizio:"),
@@ -57,7 +57,7 @@ public class EventPopup extends PopupView{
         pane.add(new Text(Double.toString(eventoEntity.getPrezzo())), 1, 1);
         pane.add(new Text(eventoEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(eventoEntity.getQuantità())), 1, 3);
-        pane.add(new Text(Integer.toString(eventoEntity.getStato())), 1, 4);
+        pane.add(new Text(Integer.toString(eventoEntity.getPrenotazioni())), 1, 4);
         pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(eventoEntity.getDataInizio())), 1, 5);
         pane.add(new Text(Integer.toString(eventoEntity.getNumeroPosto())), 1, 6);
         pane.add(new Text(new SimpleDateFormat("HH:mm").format(eventoEntity.getDataInizio())), 1, 7);

@@ -98,7 +98,7 @@ public class PoliticsPopup extends PopupView {
             dao.update(politicheEntity);
             DBManager.shutdown();
 
-            Notifications.create().title("Modified").text("The politic has been modified").show();
+            Notifications.create().title("Modificata").text("La politica è stata modificata con successo").show();
         }
     }
 }

@@ -97,7 +97,7 @@ public class BookingPopup extends PopupView {
                    qu = bookingSpinner.getValue();
 
             if ("".equals(name) || "".equals(surname) || "".equals(qu))
-                Notifications.create().text("Campi vuoti rilevati").showWarning();
+                Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
 
             else {
 

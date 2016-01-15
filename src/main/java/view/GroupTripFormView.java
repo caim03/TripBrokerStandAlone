@@ -68,19 +68,19 @@ public class GroupTripFormView extends PacketFormView {
         Integer min = minimum.getValue(), max = maximum.getValue();
 
         if ("".equals(name) || "".equals(priceField.getText()))
-            Notifications.create().text("Empty fields detected").showWarning();
+            Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
 
         else if (price < basePrice.getNumber() || price > maxPrice.getNumber())
-            Notifications.create().text("Price outside its bounds").showWarning();
+            Notifications.create().text("Il prezzo deve essere compreso tra i suoi limiti").showWarning();
 
         else if (min == null || max == null)
-            Notifications.create().text("Minimum/maximum booking number not specified").showWarning();
+            Notifications.create().text("Specificare il minimo e/o il massimo di prenotazioni disponibili").showWarning();
 
         else if (min.compareTo(max) > 0)
-            Notifications.create().text("Minimum bookable tickets higher than maximum bookable tickets!").showWarning();
+            Notifications.create().text("Attenzione, il numero minimo di biglietti prenotabili è maggiore del numero massimo di biglietti prenotabili").showWarning();
 
         else if (list.getItems().size() == 0)
-            Notifications.create().text("Empty packet").showWarning();
+            Notifications.create().text("Pacchetto vuoto").showWarning();
 
         else {
 
@@ -90,9 +90,9 @@ public class GroupTripFormView extends PacketFormView {
                 ++i;
             }
             if (GroupTripAssembleController.create(name, price, min, max, ids))
-                Notifications.create().text("Packet '" + name + "' has been added to catalog").show();
+                Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
             else
-                Notifications.create().text("Internal Database error").showError();
+                Notifications.create().text("Errore interno al database").showError();
         }
     }
 }

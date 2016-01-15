@@ -292,8 +292,8 @@ public class OfferInsertionView extends LayerPane implements Collector {
         Notifications notifications = Notifications.create();
 
         if (!InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode()))
-            notifications.text("Could not insert offer, please check fields and retry").title("Insertion error").showWarning();
+            notifications.text("Non è stato possibile inserire l'offerta, per favore ricontrolla tutti i campi").title("Errore nell'inserimento").showWarning();
 
-        else notifications.text("The offer inserted successfully").title("Insertion success").showConfirm();
+        else notifications.text("L'offerta è stata inserita con successo").title("Inserimento avvenuto con successo").showConfirm();
     }
 }

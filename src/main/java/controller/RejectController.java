@@ -52,7 +52,7 @@ public class RejectController implements EventHandler<MouseEvent> {
             dao.update(pacchettoEntity);
             DBManager.shutdown();
 
-            Notifications.create().title("Rejected").text("The packet has been rejected").show();
+            Notifications.create().title("Rifiutato").text("Il pacchetto è stato rifiutato con successo").show();
             list.getItems().remove(this.pacchettoEntity);
             list.refresh();
         }

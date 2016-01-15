@@ -25,7 +25,7 @@ public abstract class EntityBuilder {
         ((OffertaEntity)entity).setCittà(city);
         ((OffertaEntity)entity).setPrezzoFabbrica(price);
         ((OffertaEntity)entity).setQuantità(amount);
-        ((OffertaEntity)entity).setStato(state);
+        ((OffertaEntity)entity).setPrenotazioni(state);
         ((OffertaEntity)entity).setDataInizio(date);
     }
 

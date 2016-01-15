@@ -28,7 +28,7 @@ public class TravelPopup extends PopupView{
                 priceLbl = new Label("Prezzo:"),
                 cityLbl = new Label("Città:"),
                 quanitityLbl = new Label("Quantità:"),
-                stateLbl = new Label("Stato:"),
+                stateLbl = new Label("Prenotazioni:"),
                 dateParLbl = new Label("Data Partenza:"),
                 dateArrLbl = new Label("Data Arrivo:"),
                 destLbl = new Label("Destinazione:"),
@@ -64,7 +64,7 @@ public class TravelPopup extends PopupView{
         pane.add(new Text(Double.toString(viaggioEntity.getPrezzo())), 1, 1);
         pane.add(new Text(viaggioEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(viaggioEntity.getQuantità())), 1, 3);
-        pane.add(new Text(Integer.toString(viaggioEntity.getStato())), 1, 4);
+        pane.add(new Text(Integer.toString(viaggioEntity.getPrenotazioni())), 1, 4);
         pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(viaggioEntity.getDataInizio())), 1, 5);
         pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(viaggioEntity.getDataArrivo())), 1, 6);
         pane.add(new Text(viaggioEntity.getDestinazione()), 1, 7);
