@@ -16,6 +16,8 @@ import view.material.MaterialSpinner;
 import view.material.NumericField;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 
 public class InsertOfferController {
@@ -53,7 +55,7 @@ public class InsertOfferController {
 
             EventBuilder eventBuilder = new EventBuilder();
             eventBuilder.buildProduct(name, Double.parseDouble(price), Constants.event);
-            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, new Date(day + startHour + startMinute));
+            eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, new Timestamp(day + startHour + startMinute));
             eventBuilder.buildEntity(seatField, new Date(day + endHour + endMinute), locField);
 
             insertOfferEvent((EventoEntity) eventBuilder.getEntity());
@@ -79,10 +81,14 @@ public class InsertOfferController {
                 return false;
             }
 
+            Timestamp date1 = new Timestamp(depDay + depHour + depMinute);
+
+            Timestamp date2 = new Timestamp(arrDay + arrHour + arrMinute);
+
             TravelBuilder travelBuilder = new TravelBuilder();
             travelBuilder.buildProduct(name, Double.parseDouble(price), Constants.travel);
-            travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, new Date(depDay + depHour + depMinute));
-            travelBuilder.buildEntity(arrField, new Date(arrDay + arrHour + arrMinute), vehSpinner, clsSpinner, depField, arrField);
+            travelBuilder.buildOffer(depField, Double.parseDouble(price), quantity, (byte) 0, date1);
+            travelBuilder.buildEntity(arrField, date2, vehSpinner, clsSpinner, depField, arrField);
 
             insertOfferTravel((ViaggioEntity) travelBuilder.getEntity());
         }
@@ -92,8 +98,8 @@ public class InsertOfferController {
             String locField = ((TextField) list[1]).getText();
             String starSpinner = ((MaterialSpinner) list[2]).getValue();
             String srvSpinner = ((MaterialSpinner) list[3]).getValue();
-            Date startDate = new Date(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
-            Date endDate = new Date(Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
+            Timestamp startDate = new Timestamp(Date.from((((DatePicker) list[4]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
+            Timestamp endDate = new Timestamp(Date.from((((DatePicker) list[5]).getValue()).atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
 
             if ((ctyField == null || "".equals(ctyField)) || (locField == null || "".equals(locField))) {
                 System.out.println("INVALID LOCATIONS");

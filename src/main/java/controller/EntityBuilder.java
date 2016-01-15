@@ -2,7 +2,8 @@ package controller;
 
 import model.entityDB.OffertaEntity;
 import model.entityDB.ProdottoEntity;
-import java.sql.Date;
+
+import java.sql.Timestamp;
 
 public abstract class EntityBuilder {
 
@@ -19,7 +20,7 @@ public abstract class EntityBuilder {
         entity.setTipo(type);
     }
 
-    public void buildOffer(String city, double price, int amount, byte state, Date date) {
+    public void buildOffer(String city, double price, int amount, byte state, Timestamp date) {
 
         ((OffertaEntity)entity).setCittà(city);
         ((OffertaEntity)entity).setPrezzoFabbrica(price);

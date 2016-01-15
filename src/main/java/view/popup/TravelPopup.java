@@ -69,7 +69,7 @@ public class TravelPopup extends PopupView{
         pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(viaggioEntity.getDataArrivo())), 1, 6);
         pane.add(new Text(viaggioEntity.getDestinazione()), 1, 7);
         pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataInizio())), 1, 8);
-        pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataInizio())), 1, 9);
+        pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataArrivo())), 1, 9);
         pane.add(new Text(viaggioEntity.getMezzo()), 1, 10);
         pane.add(new Text(viaggioEntity.getClasse()), 1, 11);
         pane.add(new Text(viaggioEntity.getStazionePartenza()), 1, 12);

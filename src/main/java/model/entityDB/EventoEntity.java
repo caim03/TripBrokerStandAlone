@@ -3,6 +3,7 @@ package model.entityDB;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Evento", schema = "trip_broker")
@@ -11,7 +12,7 @@ public class EventoEntity extends OffertaEntity {
 
     private int numeroPosto;
     private String luogo;
-    private Date dataFine;
+    private Timestamp dataFine;
 
     @Basic
     @Column(name = "numero_posto")
@@ -36,11 +37,11 @@ public class EventoEntity extends OffertaEntity {
 
     @Basic
     @Column(name = "data_fine")
-    public Date getDataFine() {
+    public Timestamp getDataFine() {
         return this.dataFine;
     }
 
-    public void setDataFine(Date dataFine) {
+    public void setDataFine(Timestamp dataFine) {
         this.dataFine = dataFine;
     }
 

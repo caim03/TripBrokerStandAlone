@@ -2,6 +2,7 @@ package model.entityDB;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Viaggio", schema = "trip_broker")
@@ -13,7 +14,7 @@ public class ViaggioEntity extends OffertaEntity {
     private String classe;
     private String stazionePartenza;
     private String stazioneArrivo;
-    private Date dataArrivo;
+    private Timestamp dataArrivo;
 
     @Basic
     @Column(name = "destinazione")
@@ -68,11 +69,11 @@ public class ViaggioEntity extends OffertaEntity {
 
     @Basic
     @Column (name = "data_arrivo")
-    public Date getDataArrivo() {
+    public Timestamp getDataArrivo() {
         return dataArrivo;
     }
 
-    public void setDataArrivo(Date dataArrivo) {
+    public void setDataArrivo(Timestamp dataArrivo) {
         this.dataArrivo = dataArrivo;
     }
 
