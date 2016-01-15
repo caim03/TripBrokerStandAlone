@@ -31,6 +31,7 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
             int len = c.getAddedSize(), size = c.getList().size();
 
             List added = c.getAddedSubList();
+
             for (int i = 0; i < len; ++i) {
 
                 if (!(added.get(i) instanceof OffertaEntity)) continue;
@@ -41,7 +42,7 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
 
                 if (pos > 0) {
 
-                    OffertaEntity prevEntity = ((PacketList)c.getList()).getPrevious();
+                    OffertaEntity prevEntity = ((PacketList) c.getList()).getPrevious(pos);
 
                     if (!checkLocation(prevEntity, newEntity)) {
 
