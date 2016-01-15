@@ -72,8 +72,8 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
             firstDate = ((ViaggioEntity) previous).getDataArrivo();
 
             if (next instanceof PernottamentoEntity)
-                result = firstDate.getTime() - firstDate.getHours() * 3600000 - firstDate.getMinutes() * 60000 == secondDate.getTime();
-
+                result = firstDate.getTime() - firstDate.getHours() * 3600000
+                       - firstDate.getMinutes() * 60000 - firstDate.getSeconds() * 1000 == secondDate.getTime();
             else
                 result = firstDate.before(secondDate) && new Date(firstDate.getTime() + acceptableDelay).after(secondDate);
         }
