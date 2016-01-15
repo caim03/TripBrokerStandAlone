@@ -99,7 +99,7 @@ public class ProgressCircle extends Group {
 
     private static class ProgressBarArc extends Arc {
 
-        static Duration duration = Duration.millis(500);
+        static Duration duration = Duration.millis(450);
 
         Timeline rotation, expand, shrink;
 

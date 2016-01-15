@@ -29,8 +29,14 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
                 finale = ((EventoEntity) realPrev).getDataFine();
             else finale = ((PernottamentoEntity) realPrev).getDataFinale();
 
-            if (entity != null && entity.getDataFinale().after(finale)) return entity;
-            else return realPrev;
+            if (entity != null && entity.getDataFinale().after(finale)) {
+                System.out.println("PERNOTTAMENTO " + entity.getNome() + " " + entity.getDataFinale().toString());
+                return entity;
+            }
+            else {
+                System.out.println("OFFERTA " + realPrev.getNome().toString());
+                return realPrev;
+            }
         }
     }
 }

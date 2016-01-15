@@ -56,7 +56,7 @@ public class InsertOfferController {
             EventBuilder eventBuilder = new EventBuilder();
             eventBuilder.buildProduct(name, Double.parseDouble(price), Constants.event);
             eventBuilder.buildOffer(ctyField, Double.parseDouble(price), quantity, (byte) 0, new Timestamp(day + startHour + startMinute));
-            eventBuilder.buildEntity(seatField, new Date(day + endHour + endMinute), locField);
+            eventBuilder.buildEntity(seatField, new Timestamp(day + endHour + endMinute), locField);
 
             insertOfferEvent((EventoEntity) eventBuilder.getEntity());
         }

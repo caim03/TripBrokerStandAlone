@@ -1,10 +1,7 @@
 package controller;
 
 import javafx.collections.ListChangeListener;
-import model.entityDB.AbstractEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.PernottamentoEntity;
-import model.entityDB.ViaggioEntity;
+import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.NumberLabel;
@@ -15,6 +12,7 @@ import java.util.List;
 public class PacketOverseer implements ListChangeListener<AbstractEntity> {
 
     NumberLabel labels[];
+    private static long acceptableDelay = 12 * 3600000;
 
     public PacketOverseer(NumberLabel... labels) {
 
@@ -51,7 +49,7 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
                         return;
                     }
 
-                    if (checkDate(prevEntity, newEntity)) {
+                    if (!checkDate(prevEntity, newEntity)) {
 
                         Notifications.create().text("Ops! Dates do not match!").showWarning();
                         c.getList().remove(pos, size);
@@ -66,19 +64,43 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
 
     private boolean checkDate(OffertaEntity previous, OffertaEntity next) {
 
-        Date firstDate, secondDate;
+        Date firstDate, secondDate = next.getDataInizio();
+        boolean result;
 
         if (previous instanceof ViaggioEntity) {
+
             firstDate = ((ViaggioEntity) previous).getDataArrivo();
+
+            if (next instanceof PernottamentoEntity)
+                result = firstDate.getTime() - firstDate.getHours() * 3600000 - firstDate.getMinutes() * 60000 == secondDate.getTime();
+
+            else
+                result = firstDate.before(secondDate) && new Date(firstDate.getTime() + acceptableDelay).after(secondDate);
         }
+
         else if (previous instanceof PernottamentoEntity) {
+
             firstDate = ((PernottamentoEntity)previous).getDataFinale();
+            Date firstDateEnd = new Date(firstDate.getTime() + 3600000 * 23 + 60000 * 59);
+
+            if (next instanceof EventoEntity) {
+                Date zeroDate = previous.getDataInizio();
+                Date thirdDate = ((EventoEntity) next).getDataFine();
+                result = secondDate.after(zeroDate) && thirdDate.before(firstDateEnd);
+            }
+            else if (next instanceof ViaggioEntity)
+                result = secondDate.after(firstDate) && firstDateEnd.after(secondDate);
+            else
+                result = firstDate.equals(secondDate);
         }
-        else firstDate = previous.getDataInizio();
 
-        secondDate = next.getDataInizio();
+        else {
+            firstDate = previous.getDataInizio();
+            result = firstDate.before(secondDate) && new Date(firstDate.getTime() + acceptableDelay).after(secondDate);
+        }
 
-        return secondDate.after(firstDate);
+        System.out.println("RESULT " + result);
+        return result;
     }
 
     boolean checkLocation(OffertaEntity previous, OffertaEntity next) {

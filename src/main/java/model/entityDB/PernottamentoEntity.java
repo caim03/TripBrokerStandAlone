@@ -2,13 +2,14 @@ package model.entityDB;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Pernottamento", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class PernottamentoEntity extends OffertaEntity {
     //private int id;
-    private Date dataFinale;
+    private Timestamp dataFinale;
     private String servizio;
     private String qualità;
     private String luogo;
@@ -25,11 +26,10 @@ public class PernottamentoEntity extends OffertaEntity {
 
     @Basic
     @Column(name = "data_finale")
-    public Date getDataFinale() {
+    public Timestamp getDataFinale() {
         return dataFinale;
     }
-
-    public void setDataFinale(Date dataFinale) {
+    public void setDataFinale(Timestamp dataFinale) {
         this.dataFinale = dataFinale;
     }
 
