@@ -26,7 +26,7 @@ public class StayPopup extends PopupView {
                 priceLbl = new Label("Prezzo:"),
                 cityLbl = new Label("Città:"),
                 quanitityLbl = new Label("Quantità:"),
-                stateLbl = new Label("Stato:"),
+                stateLbl = new Label("Prenotazioni:"),
                 dateInLbl = new Label("Data Iniziale:"),
                 dateFinLbl = new Label("Data Finale:"),
                 qualityLbl = new Label("Qualità:"),
@@ -54,7 +54,7 @@ public class StayPopup extends PopupView {
         pane.add(new Text(Double.toString(pernottamentoEntity.getPrezzo())), 1, 1);
         pane.add(new Text(pernottamentoEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(pernottamentoEntity.getQuantità())), 1, 3);
-        pane.add(new Text(Integer.toString(pernottamentoEntity.getStato())), 1, 4);
+        pane.add(new Text(Integer.toString(pernottamentoEntity.getPrenotazioni())), 1, 4);
         pane.add(new Text(pernottamentoEntity.getDataInizio().toString()), 1, 5);
         pane.add(new Text(pernottamentoEntity.getDataFinale().toString()), 1, 6);
         pane.add(new Text(pernottamentoEntity.getQualità()),1, 7);

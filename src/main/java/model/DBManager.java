@@ -37,19 +37,22 @@ public class DBManager {
     public static void initHibernate() throws JDBCConnectionException {
         /* This method is used to initialize and configure Hibernate variables;
          * considering that Configuration and SessionFactory are heavyweight object,
-         * they are initialized only the first time, and they are used for the
+         * they are initialized only the first time (Singleton), and they are used for the
          * entire duration of the application */
 
         lock.lock();
 
-        // configuration and sessionFactory are heavyweight objects
-        if (configuration == null && sessionFactory == null) {
+        // configuration is an heavyweight object
+        if (configuration == null) {
             configuration = new Configuration();
             configuration.configure();
+        }
 
-            serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
-                    configuration.getProperties()).build();
+        serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
+                configuration.getProperties()).build();
 
+        // sessionFactory is an heavyweight object
+        if (sessionFactory == null) {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
     }
@@ -59,8 +62,7 @@ public class DBManager {
     }
 
     public static void shutdown() {
-
-        sessionFactory.close();
+        //sessionFactory.close();
         lock.unlock();
     }
 }
