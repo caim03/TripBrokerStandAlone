@@ -39,7 +39,6 @@ public class TravelPopup extends PopupView{
                 stzParLbl = new Label("Stazione Partenza:"),
                 stzArrLbl = new Label("Stazione Arrivo:");
 
-
         pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
