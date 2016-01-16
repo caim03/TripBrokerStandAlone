@@ -1,6 +1,6 @@
 package view.desig;
 
-import controller.ButtonInvoker;
+import controller.command.ButtonInvoker;
 import controller.command.Command;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;

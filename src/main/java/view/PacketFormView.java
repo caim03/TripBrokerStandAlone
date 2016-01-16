@@ -122,7 +122,7 @@ public class PacketFormView extends VBox implements Collector {
         list.getItems().addListener(new PacketOverseer(basePrice, maxPrice));
     }
 
-    public Command getCommand() {
+    public TransferRecordCommand getCommand() {
         /** @return Command; return the command use to complete the operation (Pattern Command). In this case a transfer
          *  command **/
 

@@ -15,15 +15,14 @@ public class OffersTabPane extends JFXTabPane {
 
     private static String[] tabs = {Constants.travel, Constants.stay, Constants.event};
 
-    public OffersTabPane(Command command) {
+    public OffersTabPane(TransferRecordCommand command) {
 
         for (int i = 0; i < 3; ++i) {
 
             ListView list = new DBListView("from ProdottoEntity where tipo like '" + tabs[i] + "'");
 
             list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                TransferRecordCommand.loadEntity((AbstractEntity) newValue);
-                command.execute(); });
+                command.execute((AbstractEntity) newValue); });
 
             if (i == 0) list.refresh();
             Tab tab = new Tab(tabs[i]);
