@@ -15,6 +15,10 @@ public class DipendentiDaoHibernate implements DAO {
     protected DipendentiDaoHibernate() {}
 
     public static DAO instance() {
+        /** @result DAO; return the DAO **/
+
+        /* This method is used to implement the Singleton Pattern;
+         * in fact the constructor is protected and the object DAO is instantiate only one time */
 
         if (singleton == null) singleton = new DipendentiDaoHibernate();
         return singleton;

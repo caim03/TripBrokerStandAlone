@@ -12,7 +12,10 @@ import java.util.List;
  *      4. Retrieve a single entity from DataBase using identifier
  *      5. Save a new entity to DataBase
  *      6. Delete an existing entity from DataBase
- *      7. Update an existing entity from DataBase ***/
+ *      7. Update an existing entity from DataBase
+ *
+ *   Every Dao that implement this interface also implement the Singleton Pattern,
+ *   then there is only one instance in the system ***/
 
 public interface DAO {
 

@@ -2,11 +2,12 @@ package model.entityDB;
 
 import javax.persistence.*;
 
-/**
- * Created by Christian on 18/11/2015.
- */
+/*** This class represents the table of relations between
+ *   'ProdottoEntity' and 'UtenteEntity' in DataBase.
+ *   It contains two private attributes which reference the primary key of tables ***/
+
 @Entity
-@Table(name = "Prodotto_Utente", schema = "trip_broker", catalog = "")
+@Table(name = "Prodotto_Utente", schema = "trip_broker")
 @IdClass(ProdottoUtenteEntityPK.class)
 public class ProdottoUtenteEntity extends AbstractEntity {
     private int idProdotto;
@@ -15,20 +16,24 @@ public class ProdottoUtenteEntity extends AbstractEntity {
     @Id
     @Column(name = "id_prodotto")
     public int getIdProdotto() {
+        /** @result int; return the identifier of the product **/
         return idProdotto;
     }
 
     public void setIdProdotto(int idProdotto) {
+        /** @param int; set the identifier of the product **/
         this.idProdotto = idProdotto;
     }
 
     @Id
     @Column(name = "id_utente")
     public int getIdUtente() {
+        /** @result int; return the identifier of the user **/
         return idUtente;
     }
 
     public void setIdUtente(int idUtente) {
+        /** @param int; set the identifier of the user **/
         this.idUtente = idUtente;
     }
 

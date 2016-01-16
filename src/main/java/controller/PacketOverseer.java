@@ -66,15 +66,15 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
                      */
 
                     if (!checkLocation(prevEntity, newEntity)) {
-                        //Spatial check
-                        Notifications.create().text("Ops! Last location does not match new starting location!").showWarning();
+
+                        Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").showWarning();
                         c.getList().remove(pos, size);
                         return;
                     }
 
                     if (!checkDate(prevEntity, newEntity)) {
-                        //Temporal check
-                        Notifications.create().text("Ops! Dates do not match!").showWarning();
+
+                        Notifications.create().text("Le date non sono tra loro coerenti").showWarning();
                         c.getList().remove(pos, size);
                         return;
                     }
