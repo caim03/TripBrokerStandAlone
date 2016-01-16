@@ -10,8 +10,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import view.material.ConsolePane;
 
+/***
+ * This implementation of Ruolo represents the set of responsibilities and jobs a
+ * TripBroker Scout has.
+ ***/
+
 public class Scout extends Ruolo {
 
+    /***
+     * Implementation of generateView() abstract method;
+     * @return Stage: the Stage object the application will show to the user
+     ***/
     @Override
     public Stage generateView() {
 
@@ -29,8 +38,6 @@ public class Scout extends Ruolo {
 
         Stage stage = new Stage();
         stage.setScene(scene);
-
-        Command refresh;
 
         // try to add the command operation to navigation drawer
         try {

@@ -2,13 +2,16 @@ package model.role;
 
 import javafx.stage.Stage;
 
-/*** The all classes that extend Ruolo class, must override two method:
+/***
+ * Abstract class that represents an Employee job as part of TripBroker staff.
+ * All extending classes must override two methods:
  *      - generateView()
  *      - getRole()
- *   This class represents the dependent's role in general way,
- *   and with polymorphism the subclasses use generateView() for generating the right view,
- *   associated to current role;
- *   instead, with getRole() the subclasses obtain the right role that represent them ***/
+ * According to their implementation, these methods build different GUI interfaces,
+ * aimed at offering a particular set of features mirroring the employee responsibilities.
+ * This class both realize dynamic association between Employee and its role and Factory Method
+ * pattern implementation for GUI construction.
+ ***/
 
 public abstract class Ruolo {
 

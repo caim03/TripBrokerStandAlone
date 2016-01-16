@@ -4,15 +4,19 @@ import controller.PacketAssembleController;
 import controller.PacketOverseer;
 import controller.command.Command;
 import controller.command.TransferRecordCommand;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -152,14 +156,22 @@ public class PacketFormView extends VBox implements Collector {
                 Notifications.create().text("I pacchetti dovrebbero iniziare e terminare con un viaggio, check-in e check-out nella stessa location").showWarning();
 
             else {
+
                 for (AbstractEntity entity : list.getItems()) {
                     ids[i] = ((ProdottoEntity) entity).getId();
                     ++i;
                 }
-                if (PacketAssembleController.create(name, price, ids))
-                    Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
-                else
-                    Notifications.create().text("Errore interno al database").showError();
+
+                new Thread(() -> {
+                    boolean result = PacketAssembleController.create(name, price, ids);
+                    Platform.runLater(()-> {
+
+                        if (result)
+                            Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
+                        else
+                            Notifications.create().text("Errore interno al database").showError();
+                    });
+                }).start();
             }
         }
     }

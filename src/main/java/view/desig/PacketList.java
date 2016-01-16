@@ -6,20 +6,37 @@ import model.entityDB.*;
 
 import java.util.Date;
 
+/***
+ * Peculiar ObservableList implementation, used in conjunction with PacketOverseer objects,
+ * aimed at supervise offer additions to a Packet under construction. This class
+ * wisely selects the previous-in-line offer to be compared with the addition.
+ * @param <T> extends OffertaEntity: any OffertaEntity subclass instance
+ */
 public class PacketList<T extends OffertaEntity> extends SimpleListProperty<AbstractEntity> {
 
-    public PacketList() {
+    public PacketList() { super(FXCollections.observableArrayList()); }
 
-        super(FXCollections.observableArrayList());
-    }
-
+    /**
+     * Main research method provided by the class. It recursively checks for any
+     * PernottamentoEntity instances, which often have a wide temporal range that
+     * includes other timelines.
+     * @param pos int: the position from which this class should begin introspection
+     * @return OffertaEntity: the ultimately selected OffertaEntity instance, or null if
+     *                        inconsistencies were detected
+     */
     public OffertaEntity getPrevious(int pos) {
 
-        if (pos > size() || pos < 1) return null;
+        if (pos > size() || pos < 1) return null; //Invalid position; also, recursion base
 
-        if (get(pos - 1) instanceof PernottamentoEntity) return (OffertaEntity) get(pos - 1);
+        if (get(pos - 1) instanceof PernottamentoEntity)
+            return (OffertaEntity) get(pos - 1); //PernottamentoEntity found
+
         else {
-
+            /**
+             * Must check for PernottamentoEntity instances; after that, it is
+             * important to check if the actual previous instance takes place after
+             * the PernottamentoEntity. One of them is then returned.
+             */
             PernottamentoEntity entity = (PernottamentoEntity) getPrevious(pos - 1);
             OffertaEntity realPrev = (OffertaEntity) get(pos - 1);
             Date finale;
@@ -29,14 +46,10 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
                 finale = ((EventoEntity) realPrev).getDataFine();
             else finale = ((PernottamentoEntity) realPrev).getDataFinale();
 
-            if (entity != null && entity.getDataFinale().after(finale)) {
-                System.out.println("PERNOTTAMENTO " + entity.getNome() + " " + entity.getDataFinale().toString());
+            if (entity != null && entity.getDataFinale().after(finale))
                 return entity;
-            }
-            else {
-                System.out.println("OFFERTA " + realPrev.getNome().toString());
+            else
                 return realPrev;
-            }
         }
     }
 }

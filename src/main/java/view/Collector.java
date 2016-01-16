@@ -1,7 +1,8 @@
 package view;
 
-/** All the classes that implement Collector interface must be override the method harvest;
- *  in this method they are attempting to retrieve all the data from graphic elements **/
+/** All implementing classes must override the harvest() method; this method is
+ *  normally implemented to retrieve data from GUI components into the implementing
+ *  class. It is used primarily for polymorphism purposes**/
 
 public interface Collector {
 

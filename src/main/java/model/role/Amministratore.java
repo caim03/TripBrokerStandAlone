@@ -10,8 +10,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import view.material.ConsolePane;
 
+/***
+ * This implementation of Ruolo represents the set of responsibilities and jobs a
+ * TripBroker Administrator has.
+ ***/
+
 public class Amministratore extends Ruolo {
 
+    /***
+     * Implementation of generateView() abstract method;
+     * @return Stage: the Stage object the application will show to the user
+     ***/
     @Override
     public Stage generateView() {
 
@@ -20,6 +29,7 @@ public class Amministratore extends Ruolo {
         welcome.setTextFill(Color.CRIMSON);
         welcome.setStyle("-fx-font-size: 128px");
         welcome.setAlignment(Pos.CENTER);
+        //Welcome message
 
         ConsolePane container = new ConsolePane(getRole());
         container.setCenter(welcome);
@@ -30,7 +40,7 @@ public class Amministratore extends Ruolo {
         Stage stage = new Stage();
         stage.setScene(scene);
 
-        // try to add the command operation to navigation drawer
+        //Linking options to GUI interfaces
         try {
             container.addCommands(
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
