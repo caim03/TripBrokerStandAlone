@@ -3,27 +3,30 @@ package controller.strategy;
 import model.entityDB.AbstractEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class SearchStrategy<T extends Object> {
 
-    protected abstract List<? extends AbstractEntity> search(T factor);
+    public abstract List<? extends Object> search(T factor);
 
-    protected abstract class Node<T extends Object> {
+    public abstract class Node<T extends Object, N extends Number> {
 
         protected T acorn;
-        private Node parent;
-        private List<Node> subTree = new ArrayList<>();
+        protected Node parent;
+        protected Map<Node, N> subTree = new HashMap<>();
 
         protected Node(T acorn) { this.acorn = acorn; }
 
         protected void setParent(Node parent) { this.parent = parent; }
         protected Node getParent() { return this.parent; }
 
-        private void attach(Node son) {
-            subTree.add(son);
-            son.setParent(this);
-        }
+        protected abstract void attach(Node son);
+
+        abstract N getWeight() ;
+        public String weightToString() { return getWeight().toString(); }
+
         protected void attach(Node... sons) { for (Node n : sons) attach(n); }
 
         public abstract List climbUp();

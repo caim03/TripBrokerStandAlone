@@ -1,20 +1,20 @@
 package controller.strategy;
 
-import javafx.scene.layout.StackPane;
 import model.DBManager;
 import model.dao.ViaggioDaoHibernate;
-import model.entityDB.AbstractEntity;
 import model.entityDB.ViaggioEntity;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]> {
+public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]> {
 
     @Override
-    public List<ViaggioEntity> search(Arrival[] factor) {
+    public List<Station> search(Arrival[] factor) {
 
         if (factor.length != 2) return null;
 
@@ -23,7 +23,7 @@ public class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]>
 
         DBManager.initHibernate();
 
-        List<ViaggioEntity> aggregate = bfsearch(0, new Station(from), to.city);
+        List<Station> aggregate = bfsearch(0, makeNode(from), to.city);
 
         DBManager.shutdown();
 
@@ -34,47 +34,66 @@ public class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]>
         return aggregate;
     }
 
-    private List<ViaggioEntity> bfsearch(int i, Station from, String to) {
+    private List<Station> bfsearch(int i, Station from, String to) {
 
-        List<ViaggioEntity> results = new ArrayList<>(), partial = new ArrayList<>();
+        List<Station> results = new ArrayList<>();
+        List<ViaggioEntity> result = new ArrayList<>(), partial = new ArrayList<>();
         List<Station> stations = new ArrayList<>();
         stations.add(from);
 
+        Number found = -1;
+
         while (stations.size() > 0) {
 
-            results.clear();
+            result.clear();
 
             Station current = stations.remove(0);
             System.out.println("CURRENTLY IN " + current.acorn.city);
+
+            if (found.doubleValue() != -1 && found.doubleValue() <= current.getWeight().doubleValue()) continue;
 
             partial = (List<ViaggioEntity>) ViaggioDaoHibernate.instance().
                     getByCriteria(query(current.getAcorn()));
 
             if (partial == null) continue;
 
-            results.addAll(partial);
+            result.addAll(partial);
 
-            for (ViaggioEntity e : results) {
+            for (ViaggioEntity e : result) {
 
-                Station newStation = new Station(new Arrival(e.getDestinazione(), e.getDataArrivo()));
+                Station newStation =
+                        makeNode((
+                                new Arrival(
+                                        e.getDestinazione(),
+                                        e.getDataArrivo())));
+
+                current.attach(newStation, e);
 
                 if (e.getDestinazione().equals(to)) {
-                    //TODO sth
-                    System.out.println("FOUND YA!!!");
-                    current.attach(newStation);
-                    stations.clear();
-                    results = newStation.climbUp();
-                    break;
-                } else {
-                    System.out.println(e.getDestinazione() + " WAS NOT " + to);
+                    found = newStation.getWeight();
+                    System.out.println("FOUND YA!!! VALUE: " + newStation.getWeight());
+                    addToResults(results, newStation);
+                }
+                else {
                     stations.add(newStation);
-                    current.attach(newStation);
+                    System.out.println(e.getDestinazione() + " WAS NOT " + to);
                 }
             }
         }
 
         return results.size() > 0 ? results : null;
     }
+
+    protected void addToResults(List<Station> list, Station station) {
+
+        int i;
+        for (i = 0; i < list.size(); ++i)
+            if (list.get(i).getWeight().doubleValue() > station.getWeight().doubleValue()) break;
+
+        list.add(i, station);
+    }
+
+    protected abstract Station makeNode(Arrival arrival) ;
 
     private String query(Arrival arrival) {
 
@@ -96,9 +115,22 @@ public class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]>
         return query;
     }
 
-    private class Station extends Node<Arrival> {
+    protected abstract class Station extends Node<Arrival, Number> {
+
+        protected Map<Arrival, ViaggioEntity> cache = new HashMap<>();
 
         protected Station(Arrival city) { super(city); }
+
+        protected void attach(Node son, ViaggioEntity entity) {
+            ((Station) son).cache.put(acorn, entity);
+            attach(son);
+        }
+
+        @Override
+        protected void attach(Node son) {
+            son.setParent(this);
+            subTree.put(son, son.getWeight());
+        }
 
         @Override
         public List<ViaggioEntity> climbUp() {
@@ -108,8 +140,7 @@ public class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]>
             if (getParent() == null) return entities;
 
             entities.addAll(getParent().climbUp());
-            entities.addAll((List<ViaggioEntity>) ViaggioDaoHibernate.instance().
-                    getByCriteria(recreate()));
+            entities.add(cache.get(parent.acorn));
 
             return entities;
         }
