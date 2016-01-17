@@ -47,7 +47,7 @@ public class ViaggioDaoHibernate extends OffertaDaoHibernate {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity "+where).list();
+        List<ViaggioEntity> viaggioEntities = session.createQuery("from ViaggioEntity "+ where).list();
 
         // close connection
         session.close();

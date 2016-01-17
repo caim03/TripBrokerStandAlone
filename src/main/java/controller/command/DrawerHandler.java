@@ -33,19 +33,13 @@ public class DrawerHandler implements EventHandler<MouseEvent> {
 
     public void addCommand(int position, Command command) {
 
-        if (commands.containsKey(position)) commands.put(position, command);
+        if (position >= 0) commands.put(position, command);
     }
 
     @Override
     public void handle(MouseEvent event) {
 
         int index = ((ListView)event.getSource()).getSelectionModel().getSelectedIndex();
-
-        if (index < 0 || index >= commands.size()) return;
-
-        if (commands.containsKey(index)) {
-
-            commands.get(index).execute();
-        }
+        if (commands.containsKey(index)) { commands.get(index).execute(); }
     }
 }
