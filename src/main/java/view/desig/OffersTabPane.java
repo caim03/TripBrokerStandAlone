@@ -5,14 +5,13 @@ import controller.Constants;
 import controller.command.Command;
 import controller.command.DeamonThread;
 import controller.command.TransferRecordCommand;
-import controller.strategy.BFSearchStrategy;
-import controller.strategy.FewerStopsSearchStrategy;
-import controller.strategy.SearchStrategy;
+import controller.strategy.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import jfxtras.scene.control.CalendarTimeTextField;
@@ -72,6 +71,21 @@ public class OffersTabPane extends JFXTabPane {
         DatePicker datePicker = new DatePicker(LocalDate.now());
         CalendarTimeTextField timePicker = new CalendarTimeTextField();
 
+        RadioButton stopsRadio = new RadioButton("Con meno scali"),
+                    fastestRadio = new RadioButton("Più veloci"),
+                    cheapestRadio = new RadioButton("Più economici");
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        stopsRadio.setToggleGroup(toggleGroup);
+        fastestRadio.setToggleGroup(toggleGroup);
+        cheapestRadio.setToggleGroup(toggleGroup);
+
+        stopsRadio.setSelected(true);
+
+        stopsRadio.setId("0");
+        fastestRadio.setId("1");
+        cheapestRadio.setId("2");
+
         Button searchBtn = new FlatButton("Cerca");
 
         GridPane pane = new GridPane();
@@ -79,9 +93,15 @@ public class OffersTabPane extends JFXTabPane {
         pane.add(datePicker, 1, 0);
         pane.add(timePicker, 2, 0);
         pane.add(to, 0, 1);
-        pane.add(searchBtn, 0, 2);
+        pane.add(stopsRadio, 0, 2);
+        pane.add(fastestRadio, 0, 3);
+        pane.add(cheapestRadio, 0, 4);
+        pane.add(searchBtn, 0, 5);
 
-        VBox box = new VBox(pane);
+        pane.setVgap(2);
+
+        GridPane secondPane = new GridPane();
+        VBox box = new VBox(pane, secondPane);
         box.setPadding(new Insets(8));
 
         searchBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -99,16 +119,16 @@ public class OffersTabPane extends JFXTabPane {
                 }
 
                 String fromText = from.getText();
-                BFSearchStrategy.Arrival start = new BFSearchStrategy.Arrival(fromText, timestamp);
+                BFSearchStrategy.Arrival start = new BFSearchStrategy.Arrival(fromText, timestamp),
+                                         end = new BFSearchStrategy.Arrival(to.getText(), null);
 
-                if (box.getChildren().size() > 1) box.getChildren().remove(1);
+                if (secondPane.getChildren().size() > 0) secondPane.getChildren().remove(0);
                 ProgressCircle progressCircle = new ProgressCircle();
-                box.getChildren().add(progressCircle);
+                secondPane.getChildren().add(progressCircle);
 
                 new DeamonThread(() -> {
-                    List<BFSearchStrategy.Station> stations = new FewerStopsSearchStrategy().search(new BFSearchStrategy.Arrival[] {
-                            start,
-                            new BFSearchStrategy.Arrival(to.getText(), null) } );
+                    List<BFSearchStrategy.Station> stations = getSearchStrategy((RadioButton) toggleGroup.getSelectedToggle()).
+                            search(new BFSearchStrategy.Arrival[] { start, end } );
                     Platform.runLater(() -> {
                         ListView listView;
                         boolean empty = stations == null;
@@ -125,9 +145,10 @@ public class OffersTabPane extends JFXTabPane {
                                         command.execute(entity);
                                 }
                             });
-                            box.getChildren().add(listView);
+                            GridPane.setHgrow(listView, Priority.ALWAYS);
+                            secondPane.getChildren().add(listView);
                         }
-                        box.getChildren().remove(progressCircle);
+                        secondPane.getChildren().remove(progressCircle);
                     });
                 }).start();
             }
@@ -137,6 +158,15 @@ public class OffersTabPane extends JFXTabPane {
         tab.setContent(box);
 
         return tab;
+    }
+
+    private SearchStrategy getSearchStrategy(RadioButton selectedToggle) {
+
+        int pos = Integer.parseInt(selectedToggle.getId());
+
+        if (pos == 0) return new FewerStopsSearchStrategy();
+        else if (pos == 1) return new FasterSearchStrategy();
+        else return new CheaperSearchStrategy();
     }
 
     @Override
