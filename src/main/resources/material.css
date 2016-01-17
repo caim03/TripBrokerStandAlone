@@ -18,16 +18,16 @@
 }
 
 .list-view {
-    -fx-border-color: null;
     -fx-border-radius: 0;
-    -fx-select-on-focus:false;
+    -fx-border-color: white;
+    -fx-background-color: white;
 }
 
 .list-view:focused {
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 1;
-    -fx-border-color: null;
-    -fx-background-color: null;
+    -fx-border-color: white;
+    -fx-background-color: white;
 }
 
 .list-cell:odd {

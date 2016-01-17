@@ -1,29 +1,21 @@
 package view.material;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+import controller.strategy.BFSearchStrategy;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import model.entityDB.*;
-import view.material.cellcreator.*;
+import view.material.cellcreator.BookingCellCreator;
+import view.material.cellcreator.EventCellCreator;
+import view.material.cellcreator.StayCellCreator;
+import view.material.cellcreator.TravelCellCreator;
 
-import java.util.List;
-
-public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
-
-    /*
-     * Custom ListCell, used in combination with CellCreators and Entities from Hibernate DB to
-     * properly display record information. It extends MaterialCell in order to display ripple animations
-     * on mouse click.
-     * Can currently represent: OffertaEntities and subclasses, ViaggioGruppoEntities, PrenotazioneEntities.
-     * An InvalidEntity is used to display an IndeterminateProgressCircle during data loading processes.
-     */
+public class MultiDBCell<T extends BFSearchStrategy.Station> extends MaterialCell<T> {
 
     @Override
     protected void updateItem(T item, boolean empty) {
-
         super.updateItem(item, empty);
 
         setFocusTraversable(true); //Enable ripple effect (dismissed later if required)
@@ -35,7 +27,13 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
             return;
         }
 
-        Region node = getNode(item); //Region superclass grants access to width and height properties
+        Label lbl = new Label(item.weightToString());
+        lbl.setPadding(new Insets(16));
+
+        VBox node = new VBox(lbl);
+
+        for (AbstractEntity entity : item.climbUp())
+            node.getChildren().add(getNode(entity)); //Region superclass grants access to width and height properties
         //node is then properly initialized
 
         setGraphic(node); //Region is ultimately attached to DBCell via overloaded setGraphic method
@@ -47,12 +45,11 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         });
     }
 
-    private Region getNode(T item) {
+    private Region getNode(AbstractEntity item) {
 
         Region region; //Region superclass grants access to width and height properties
         //node is then properly initialized
-        if (!item.isValid()) region = buildProgress(); //ProgressCircle
-        else if (item instanceof OffertaEntity) {
+        if (item instanceof OffertaEntity) {
 
             if (item instanceof ViaggioEntity)
                 region = TravelCellCreator.instance().createCell((ViaggioEntity) item);
@@ -74,17 +71,5 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         else region = new Label("NOT IMPLEMENTED"); //T not supported
 
         return region;
-    }
-
-    private Region buildProgress() {
-        //Progress placeholder for loading purposes
-
-        GridPane pane = new GridPane();
-        pane.setAlignment(Pos.CENTER);
-        pane.getChildren().add(ProgressCircle.circleElevated());
-        pane.prefWidthProperty().bind(getListView().widthProperty());
-        pane.prefHeightProperty().bind(getListView().heightProperty());
-
-        return pane;
     }
 }

@@ -5,9 +5,22 @@ import java.util.List;
 public class CheaperSearchStrategy extends BFSearchStrategy {
 
     @Override
-    protected void addToResults(List<Station> list, Station station) {
-        super.addToResults(list, station);
-        while (list.size() > 1) list.remove(1);
+    protected boolean addToResults(List<Station> list, Station station) {
+
+        int i;
+        for (i = 0; i < list.size(); ++i)
+            if (list.get(i).getWeight().doubleValue() > station.getWeight().doubleValue()) break;
+
+        boolean partial = i == list.size();
+        boolean result = true;
+        list.add(i, station);
+
+        while (list.size() > limit) {
+            list.remove(list.size() - 1);
+            if (partial) result = partial = false;
+        }
+
+        return result;
     }
 
     @Override
@@ -22,6 +35,11 @@ public class CheaperSearchStrategy extends BFSearchStrategy {
         public Double getWeight() {
             if (parent == null) return 0.0;
             return parent.getWeight().doubleValue() + cache.get(parent.acorn).getPrezzo();
+        }
+
+        @Override
+        public String weightToString() {
+            return "Prezzo: " + super.weightToString();
         }
     }
 }

@@ -13,6 +13,8 @@ import java.util.Map;
 
 public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]> {
 
+    int limit = Integer.MAX_VALUE;
+
     @Override
     public List<Station> search(Arrival[] factor) {
 
@@ -23,25 +25,21 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
 
         DBManager.initHibernate();
 
-        List<Station> aggregate = bfsearch(0, makeNode(from), to.city);
+        List<Station> aggregate = bfsearch(makeNode(from), to.city);
 
         DBManager.shutdown();
-
-        if (aggregate == null) {
-            System.out.println("NO RESULTS");
-        }
 
         return aggregate;
     }
 
-    private List<Station> bfsearch(int i, Station from, String to) {
+    private List<Station> bfsearch(Station from, String to) {
 
         List<Station> results = new ArrayList<>();
-        List<ViaggioEntity> result = new ArrayList<>(), partial = new ArrayList<>();
+        List<ViaggioEntity> result = new ArrayList<>(), partial;
         List<Station> stations = new ArrayList<>();
         stations.add(from);
 
-        Number found = -1;
+        int found = 0;
 
         while (stations.size() > 0) {
 
@@ -50,7 +48,7 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
             Station current = stations.remove(0);
             System.out.println("CURRENTLY IN " + current.acorn.city);
 
-            if (found.doubleValue() != -1 && found.doubleValue() <= current.getWeight().doubleValue()) continue;
+            if (found >= limit || evaluate(current, results)) continue;
 
             partial = (List<ViaggioEntity>) ViaggioDaoHibernate.instance().
                     getByCriteria(query(current.getAcorn()));
@@ -69,14 +67,16 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
 
                 current.attach(newStation, e);
 
+                System.out.println("NEW STATION " + newStation.acorn.city);
+
                 if (e.getDestinazione().equals(to)) {
-                    found = newStation.getWeight();
-                    System.out.println("FOUND YA!!! VALUE: " + newStation.getWeight());
-                    addToResults(results, newStation);
+                    if (addToResults(results, newStation)) ++found;
+                    System.out.println("FOUND ONE");
                 }
+
                 else {
+                    System.out.println("NO LUCK");
                     stations.add(newStation);
-                    System.out.println(e.getDestinazione() + " WAS NOT " + to);
                 }
             }
         }
@@ -84,14 +84,9 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
         return results.size() > 0 ? results : null;
     }
 
-    protected void addToResults(List<Station> list, Station station) {
+    protected boolean evaluate(Station station, List<Station> station1) { return false; }
 
-        int i;
-        for (i = 0; i < list.size(); ++i)
-            if (list.get(i).getWeight().doubleValue() > station.getWeight().doubleValue()) break;
-
-        list.add(i, station);
-    }
+    protected abstract boolean addToResults(List<Station> list, Station station);
 
     protected abstract Station makeNode(Arrival arrival) ;
 
@@ -108,14 +103,16 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
             query += "', '%Y-%m-%d %k:%i') and dataInizio < ";
             query += "str_to_date('";
             query += new SimpleDateFormat("yyyy-MM-dd HH:mm").
-                    format(new Timestamp(arrival.arrival.getTime() + 12 * 3600000));
+                    format(new Timestamp(arrival.arrival.getTime() + 24 * 3600000));
             query += "', '%Y-%m-%d %k:%i')";
         }
+
+        System.out.println(query);
 
         return query;
     }
 
-    protected abstract class Station extends Node<Arrival, Number> {
+    public abstract class Station extends Node<Arrival, Number> {
 
         protected Map<Arrival, ViaggioEntity> cache = new HashMap<>();
 
@@ -143,20 +140,6 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
             entities.add(cache.get(parent.acorn));
 
             return entities;
-        }
-
-        private String recreate() {
-
-            String query = "where stazionePartenza like '";
-            query += ((Arrival) getParent().acorn).city;
-            query += "' and stazioneArrivo like '";
-            query += acorn.city;
-            query += "' and dataArrivo = ";
-            query += "str_to_date('";
-            query += new SimpleDateFormat("yyyy-MM-dd HH:mm").format(acorn.arrival);
-            query += "', '%Y-%m-%d %k:%i')";
-
-            return query;
         }
 
         @Override

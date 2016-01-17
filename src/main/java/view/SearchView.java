@@ -7,17 +7,17 @@ import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import model.entityDB.ViaggioEntity;
-import view.material.DBListView;
-import view.material.FloatingActionButton;
-import view.material.MaterialTextField;
-import view.material.ProgressCircle;
+import view.material.*;
 
 import java.util.List;
 
@@ -60,13 +60,19 @@ public class SearchView extends VBox {
                             new BFSearchStrategy.Arrival(from.getText(), null),
                             new BFSearchStrategy.Arrival(to.getText(), null) } );
                     Platform.runLater(() -> {
-                        pane.getChildren().remove(progressCircle);
-                        if (stations != null) {
+                        ListView listView;
+
+                        boolean empty = stations == null;
+                        if (!empty) {
+                            listView = new ListView();
+                            listView.setCellFactory(param -> new MultiDBCell());
                             for (SearchStrategy.Node node : stations) {
-                                pane.getChildren().addAll(new Text("VALORE: " + node.weightToString()),
-                                        new DBListView(FXCollections.observableList(node.climbUp())));
+                                listView.getItems().add(node);
                             }
+                            pane.getChildren().add(listView);
                         }
+
+                        pane.getChildren().remove(progressCircle);
                     });
                 }).start();
             }

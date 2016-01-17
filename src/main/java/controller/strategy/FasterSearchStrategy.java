@@ -7,9 +7,22 @@ import java.util.List;
 public class FasterSearchStrategy extends BFSearchStrategy {
 
     @Override
-    protected void addToResults(List<Station> list, Station station) {
-        super.addToResults(list, station);
-        while (list.size() > 1) list.remove(1);
+    protected boolean addToResults(List<Station> list, Station station) {
+
+        int i;
+        for (i = 0; i < list.size(); ++i)
+            if (list.get(i).getWeight().doubleValue() > station.getWeight().doubleValue()) break;
+
+        boolean partial = i == list.size();
+        boolean result = true;
+        list.add(i, station);
+
+        while (list.size() > limit) {
+            list.remove(list.size() - 1);
+            if (partial) result = partial = false;
+        }
+
+        return result;
     }
 
     @Override
@@ -39,7 +52,7 @@ public class FasterSearchStrategy extends BFSearchStrategy {
 
         @Override
         public String weightToString() {
-            return new SimpleDateFormat("HH:mm").format(new Date(getWeight()));
+            return "Tempo totale: " + new SimpleDateFormat("HH:mm").format(new Date(getWeight()));
         }
     }
 }

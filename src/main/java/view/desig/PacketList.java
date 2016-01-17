@@ -26,30 +26,33 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
      */
     public OffertaEntity getPrevious(int pos) {
 
+        /**
+         * Must check for PernottamentoEntity instances; after that, it is
+         * important to check if the actual previous instance takes place after
+         * the PernottamentoEntity. One of them is then returned.
+         */
+
+        PernottamentoEntity entity = goDeep(pos - 1);
+        OffertaEntity realPrev = (OffertaEntity) get(pos - 1);
+        Date finale;
+        if (realPrev instanceof ViaggioEntity)
+            finale = ((ViaggioEntity) realPrev).getDataArrivo();
+        else if (realPrev instanceof EventoEntity)
+            finale = ((EventoEntity) realPrev).getDataFine();
+        else finale = ((PernottamentoEntity) realPrev).getDataFinale();
+
+        if (entity != null && entity.getDataFinale().after(finale))
+            return entity;
+        else
+            return realPrev;
+    }
+
+    public PernottamentoEntity goDeep(int pos) {
         if (pos > size() || pos < 1) return null; //Invalid position; also, recursion base
 
-        if (get(pos - 1) instanceof PernottamentoEntity)
-            return (OffertaEntity) get(pos - 1); //PernottamentoEntity found
+        else if ((get(pos - 1) instanceof PernottamentoEntity))
+            return (PernottamentoEntity) get(pos - 1); //PernottamentoEntity found
 
-        else {
-            /**
-             * Must check for PernottamentoEntity instances; after that, it is
-             * important to check if the actual previous instance takes place after
-             * the PernottamentoEntity. One of them is then returned.
-             */
-            PernottamentoEntity entity = (PernottamentoEntity) getPrevious(pos - 1);
-            OffertaEntity realPrev = (OffertaEntity) get(pos - 1);
-            Date finale;
-            if (realPrev instanceof ViaggioEntity)
-                finale = ((ViaggioEntity) realPrev).getDataArrivo();
-            else if (realPrev instanceof EventoEntity)
-                finale = ((EventoEntity) realPrev).getDataFine();
-            else finale = ((PernottamentoEntity) realPrev).getDataFinale();
-
-            if (entity != null && entity.getDataFinale().after(finale))
-                return entity;
-            else
-                return realPrev;
-        }
+        else return goDeep(pos - 1);
     }
 }

@@ -39,6 +39,8 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
 
         if (c.wasAdded()) {
 
+            System.out.println("ADDED");
+
             int len = c.getAddedSize(), size = c.getList().size();
 
             //Getting all the added offers (tipically one at a time)
@@ -66,14 +68,14 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
                      */
 
                     if (!checkLocation(prevEntity, newEntity)) {
-
+                        System.out.println("WRONG LOCATION");
                         Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").showWarning();
                         c.getList().remove(pos, size);
                         return;
                     }
 
                     if (!checkDate(prevEntity, newEntity)) {
-
+                        System.out.println("WRONG TIME");
                         Notifications.create().text("Le date non sono tra loro coerenti").showWarning();
                         c.getList().remove(pos, size);
                         return;
@@ -108,9 +110,14 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
 
             firstDate = ((ViaggioEntity) previous).getDataArrivo();
 
-            if (next instanceof PernottamentoEntity)
-                result = firstDate.getTime() - firstDate.getHours() * 3600000
-                       - firstDate.getMinutes() * 60000 - firstDate.getSeconds() * 1000 == secondDate.getTime();
+            if (next instanceof PernottamentoEntity) {
+
+                long travel = firstDate.getTime() - firstDate.getHours() * 3600000
+                        - firstDate.getMinutes() * 60000 - firstDate.getSeconds() * 1000,
+                     stay = secondDate.getTime() - secondDate.getHours() * 3600000
+                        - secondDate.getMinutes() * 60000 - secondDate.getSeconds() * 1000;
+                result = travel == stay;
+            }
             else
                 result = firstDate.before(secondDate) && new Date(firstDate.getTime() + acceptableDelay).after(secondDate);
         }
