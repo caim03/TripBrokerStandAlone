@@ -50,7 +50,7 @@ public class PernottamentoDaoHibernate extends OffertaDaoHibernate {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity "+where).list();
+        List<PernottamentoEntity> pernottamentoEntities = session.createQuery("from PernottamentoEntity "+ where).list();
 
         // close connection
         session.close();

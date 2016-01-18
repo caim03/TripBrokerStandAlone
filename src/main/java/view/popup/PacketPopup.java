@@ -1,5 +1,6 @@
 package view.popup;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -7,13 +8,24 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.DBManager;
+import model.dao.OffertaDaoHibernate;
+import model.dao.PacchettoOffertaDaoHibernate;
+import model.entityDB.AbstractEntity;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.OffertaEntity;
+import model.entityDB.PacchettoOffertaEntity;
+import view.material.DBCell;
 import view.material.DBListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PacketPopup extends PopupView {
 
     private CreaPacchettoEntity entity;
+    private ListView list;
 
     public PacketPopup(CreaPacchettoEntity prodottoEntity) {
 
@@ -90,8 +102,25 @@ public class PacketPopup extends PopupView {
 
     private ListView generateList() {
 
-        ListView list = new DBListView("from OffertaEntity where id in (select idOfferta from PacchettoOffertaEntity where idPacchetto = " + entity.getId() + " order by posizione)");
-        list.refresh();
+        list = new ListView();
+        list.setCellFactory(callback -> new DBCell());
+        list.getItems().add(AbstractEntity.getInvalidEntity());
+        new Thread(() -> {
+            DBManager.initHibernate();
+            List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>)
+                    PacchettoOffertaDaoHibernate.instance().
+                            getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");
+            List<OffertaEntity> buffer;
+            if (ids != null) {
+                for (PacchettoOffertaEntity e : ids) {
+                    buffer = (List<OffertaEntity>) OffertaDaoHibernate.instance().getByCriteria("where id = " + e.getIdOfferta());
+                    final List finalBuffer = buffer;
+                    if (buffer != null) Platform.runLater(() -> list.getItems().addAll(finalBuffer));
+                }
+            }
+            list.getItems().remove(0);
+            DBManager.shutdown();
+        }).start();
         return list;
     }
 }

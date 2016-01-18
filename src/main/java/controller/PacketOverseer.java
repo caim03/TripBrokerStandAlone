@@ -6,6 +6,7 @@ import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.NumberLabel;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -131,11 +132,16 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
              */
 
             firstDate = ((PernottamentoEntity)previous).getDataFinale();
+            firstDate = new Timestamp(firstDate.getTime() - firstDate.getHours() * 3600000
+                    - firstDate.getMinutes() * 60000 - firstDate.getSeconds() * 1000);
             Date firstDateEnd = new Date(firstDate.getTime() + 3600000 * 23 + 60000 * 59);
 
             if (next instanceof EventoEntity) {
                 Date zeroDate = previous.getDataInizio();
+                zeroDate = new Timestamp(zeroDate.getTime() - zeroDate.getHours() * 3600000
+                        - zeroDate.getMinutes() * 60000 - zeroDate.getSeconds() * 1000);
                 Date thirdDate = ((EventoEntity) next).getDataFine();
+                System.out.println(secondDate.toString() + " WITH " + zeroDate.toString() +"\n" + firstDateEnd + " WITH " + thirdDate);
                 result = secondDate.after(zeroDate) && thirdDate.before(firstDateEnd);
             }
             else if (next instanceof ViaggioEntity)

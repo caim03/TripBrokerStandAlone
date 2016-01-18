@@ -43,16 +43,23 @@ public class DBListView extends ListView<AbstractEntity> {
     public void setWhere(String where) { this.where = where; }
 
     @Override
-    public void refresh() { fill(); }
+    public void refresh() {
+        getItems().clear();
+        fill();
+    }
     //Refresh routine hijacked and used as filling routine to overcome Polymorphism issues
 
     public void fill() {
 
-        getItems().add(AbstractEntity.getInvalidEntity()); //ProgressCircle loading effect
+        spin(); //ProgressCircle loading effect
 
         Thread th = new Thread(new AsyncPeek()); //Concurrent filling routine
         th.setDaemon(true); //No need to update if Application is no longer displayed
         th.start();
+    }
+
+    public void spin() {
+        getItems().add(AbstractEntity.getInvalidEntity());
     }
 
     class AsyncPeek extends Task<Void> {

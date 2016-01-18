@@ -11,10 +11,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This ConcreteStrategy class implements the BFS search algorithm via Template Method pattern.
+ * Template method search specifies the algorithm main steps, but leaves to subclasses the implementation
+ * of steps concerning the final result creation.
+ * T type is defined by the Arrival inner class; a Node subclass is also specified to responde to the
+ * algorithm needs.
+ */
+
 public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]> {
 
-    int limit = Integer.MAX_VALUE;
+    int limit = Integer.MAX_VALUE; //default results number limit
 
+    /**
+     * search method implementation. It checks arguments before actually doing research.
+     * @param factor T: a couple of Arrival objects. The algorithm only proceeds if is an actual couple
+     *               of Arrival objects.
+     * @return List<Station>: a List of Station objects. It is possible to retrieve a list of ViaggioEntities
+     *                        from them via climbUp() method.
+     */
     @Override
     public List<Station> search(Arrival[] factor) {
 
@@ -23,41 +38,48 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
         Arrival from = factor[0];
         Arrival to = factor[1];
 
-        DBManager.initHibernate();
+        DBManager.initHibernate(); //DB initialization and lock
 
-        List<Station> aggregate = bfsearch(makeNode(from), to.city);
+        List<Station> aggregate = bfsearch(makeNode(from), to.city); //Actual search
 
-        DBManager.shutdown();
+        DBManager.shutdown(); //DB release
 
         return aggregate;
     }
 
+    /**
+     * Actual BFS search algorithm. Its goal is to find routes from an A city to a B city.
+     * @param from Station: the Station root node wrapping A city name.
+     * @param to String: arrival city name.
+     * @return List<Station>: same as search return value.
+     */
     private List<Station> bfsearch(Station from, String to) {
 
-        List<Station> results = new ArrayList<>();
-        List<ViaggioEntity> result = new ArrayList<>(), partial;
-        List<Station> stations = new ArrayList<>();
+        List<Station> results = new ArrayList<>(); //@return
+        List<ViaggioEntity> partial = new ArrayList<>(), buffer; //ViaggioEntity buffer
+        List<Station> stations = new ArrayList<>(); //Station buffer
         stations.add(from);
 
-        int found = 0;
+        int found = 0; //results counter
 
+        //while all meaningful tree nodes have been explored
         while (stations.size() > 0) {
 
-            result.clear();
+            partial.clear();
 
-            Station current = stations.remove(0);
-            System.out.println("CURRENTLY IN " + current.acorn.city);
+            Station current = stations.remove(0); //Pop top Station
 
             if (found >= limit || evaluate(current, results)) continue;
+            //If the number of requested results has been reached or research is no longer meaningful
+            //just skip exploration
 
-            partial = (List<ViaggioEntity>) ViaggioDaoHibernate.instance().
+            buffer = (List<ViaggioEntity>) ViaggioDaoHibernate.instance().
                     getByCriteria(query(current.getAcorn()));
+            if (buffer != null) partial.addAll(buffer);
 
-            if (partial == null) continue;
+            if (partial.isEmpty()) continue; //Leaf
 
-            result.addAll(partial);
-
-            for (ViaggioEntity e : result) {
+            for (ViaggioEntity e : partial) {
 
                 Station newStation =
                         makeNode((
@@ -66,25 +88,21 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
                                         e.getDataArrivo())));
 
                 current.attach(newStation, e);
-
-                System.out.println("NEW STATION " + newStation.acorn.city);
+                //Attach a new Station child to its parent
 
                 if (e.getDestinazione().equals(to)) {
-                    if (addToResults(results, newStation)) ++found;
-                    System.out.println("FOUND ONE");
+                    //Destination has been found and (hopefully) added into results
+                    if (addToResults(results, newStation)) ++found; //counter updated
                 }
 
-                else {
-                    System.out.println("NO LUCK");
-                    stations.add(newStation);
-                }
+                else stations.add(newStation); //continue exploring
             }
         }
 
         return results.size() > 0 ? results : null;
     }
 
-    protected boolean evaluate(Station station, List<Station> station1) { return false; }
+    protected abstract boolean evaluate(Station station, List<Station> station1) ;
 
     protected abstract boolean addToResults(List<Station> list, Station station);
 

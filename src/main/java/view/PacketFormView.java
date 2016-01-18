@@ -17,6 +17,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import model.DBManager;
+import model.dao.OffertaDaoHibernate;
+import model.dao.PacchettoOffertaDaoHibernate;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -54,7 +57,6 @@ public class PacketFormView extends VBox implements Collector {
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
 
         list = new DBListView(new PacketList());
-        //list.setCellFactory(param -> new DBCell());
         list.setPadding(new Insets(16, 16, 16, 16));
         addListener();
 
@@ -71,8 +73,25 @@ public class PacketFormView extends VBox implements Collector {
         nameField.setText(entity.getNome());
         priceField.setText(Double.toString(entity.getPrezzo()));
 
-        ((DBListView)list).setWhere("from OffertaEntity where id in (select idOfferta from PacchettoOffertaEntity where idPacchetto = " + entity.getId() + " order by posizione)");
-        ((DBListView)list).fill();
+        ((DBListView)list).spin();
+
+        new Thread(() -> {
+            DBManager.initHibernate();
+            List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>)
+                    PacchettoOffertaDaoHibernate.instance().
+                            getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");
+            if (ids != null) {
+                List<OffertaEntity> buffer;
+                boolean trick = true;
+                for (PacchettoOffertaEntity e : ids) {
+                    if (trick) { trick = false; Platform.runLater(() -> list.getItems().remove(0)); }
+                    buffer = (List<OffertaEntity>) OffertaDaoHibernate.instance().getByCriteria("where id = " + e.getIdOfferta());
+                    final List finalBuffer = buffer;
+                    if (buffer != null) Platform.runLater(() -> list.getItems().addAll(finalBuffer));
+                }
+            }
+            DBManager.shutdown();
+        }).start();
 
         if (entity.getStato() == 2) {
 

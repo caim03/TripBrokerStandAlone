@@ -23,6 +23,8 @@ public class CheaperSearchStrategy extends BFSearchStrategy {
         return result;
     }
 
+    @Override protected boolean evaluate(Station station, List<Station> station1) { return false; }
+
     @Override
     protected Station makeNode(Arrival arrival) {
         return new CheaperStation(arrival);

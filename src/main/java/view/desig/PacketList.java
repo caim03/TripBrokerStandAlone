@@ -41,17 +41,22 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
             finale = ((EventoEntity) realPrev).getDataFine();
         else finale = ((PernottamentoEntity) realPrev).getDataFinale();
 
-        if (entity != null && entity.getDataFinale().after(finale))
+        if (entity != null && entity.getDataFinale().after(finale)) {
+            System.out.println("PERNOTTAMENTO RETURNED");
             return entity;
+        }
         else
             return realPrev;
     }
 
     public PernottamentoEntity goDeep(int pos) {
+        System.out.println("RECURSION " + pos);
         if (pos > size() || pos < 1) return null; //Invalid position; also, recursion base
 
-        else if ((get(pos - 1) instanceof PernottamentoEntity))
+        else if ((get(pos - 1) instanceof PernottamentoEntity)) {
+            System.out.println("FOUND");
             return (PernottamentoEntity) get(pos - 1); //PernottamentoEntity found
+        }
 
         else return goDeep(pos - 1);
     }
