@@ -54,6 +54,7 @@ public class PacketEditView extends DBTablePane {
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue != null)
+                list.setVisible(false);
                 attach(new PacketAssembleView(new PacketFormView((CreaPacchettoEntity) newValue)));
         });
 
