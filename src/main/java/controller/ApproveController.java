@@ -13,6 +13,8 @@ import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 
+/** This controller is used to approve a packet and change its state on DataBase;
+ *  the state is changed to 'approved' in order to display it in the public catalog **/
 
 public class ApproveController implements EventHandler<MouseEvent> {
 
@@ -20,6 +22,10 @@ public class ApproveController implements EventHandler<MouseEvent> {
     private TableView<ProdottoEntity> list;
 
     public ApproveController(CreaPacchettoEntity pacchettoEntity, TableView<ProdottoEntity> list) {
+        /** @param CreaPacchettoEntity; this is the packet to approve
+         *  @param TableView; this table view represents the list of all packet;
+         *  in this class it is used to refresh it after the approvation **/
+
         this.pacchettoEntity = pacchettoEntity;
         this.list = list;
     }
@@ -29,6 +35,7 @@ public class ApproveController implements EventHandler<MouseEvent> {
 
         new Thread(() -> {
 
+            // set state to 'approved'
             pacchettoEntity.setStato(1);
 
             DAO dao = CreaPacchettoDaoHibernate.instance();

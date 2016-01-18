@@ -16,9 +16,11 @@ import javafx.stage.Screen;
 public class NavigationDrawer extends VBox {
 
     public static final double WIDTH = 0.2;
-    static double ratio = 0.67;
+    public static double ratio = 0.67;
 
-    static ObservableList scout = FXCollections.<String>observableArrayList("Visualizza catalogo", "Inserisci offerta", "BFS", "Logout"),
+    private double width;
+
+    static ObservableList scout = FXCollections.<String>observableArrayList("Visualizza catalogo", "Inserisci offerta", "Logout"),
                           admin = FXCollections.<String>observableArrayList("Visualizza catalogo", "Approva pacchetto",  "Modifica politiche", "Gestione ruoli", "Aggiungi dipendente", "Logout"),
                           desig = FXCollections.<String>observableArrayList("Visualizza catalogo", "Componi pacchetto",  "Modifica pacchetto", "Logout"),
                           agent = FXCollections.<String>observableArrayList("Visualizza catalogo", "Organizza viaggio",  "Prenota viaggio", "Gestisci prenotazioni", "Vendi prodotto" ,"Logout");
@@ -28,21 +30,27 @@ public class NavigationDrawer extends VBox {
 
     public NavigationDrawer() {
 
-        double width = Screen.getPrimary().getVisualBounds().getWidth() * NavigationDrawer.WIDTH;
+        width = Screen.getPrimary().getVisualBounds().getWidth() * NavigationDrawer.WIDTH;
         setPrefWidth(width);
         setAlignment(Pos.TOP_CENTER);
         setStyle("-fx-background-color: white; -fx-border-color: null");
-
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(width * ratio);
-        imageView.setImage(new Image("gandalf.png"));
-        getChildren().add(imageView);
     }
 
     public NavigationDrawer(String title) {
 
         this();
+
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(width * ratio);
+
+        if (Constants.scout.equals(title)) imageView.setImage(new Image("mastrofini.png"));
+        else if (Constants.admin.equals(title)) imageView.setImage(new Image("cantone.png"));
+        else if (Constants.desig.equals(title)) imageView.setImage(new Image("deangelis.png"));
+        else imageView.setImage(new Image("calavaro.png"));
+
+        getChildren().add(imageView);
+
         setOptions(title);
     }
 

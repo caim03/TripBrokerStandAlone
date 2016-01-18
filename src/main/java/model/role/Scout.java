@@ -44,7 +44,6 @@ public class Scout extends Ruolo {
             container.addCommands(
                     new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
                     new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.scout.OfferInsertionView"))), // offer insertion command
-                    new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.SearchView"))), // visualize catalog command
                     new LogoutCommand(stage)); // logout command
         }
         catch (ClassNotFoundException e) { e.printStackTrace(); }

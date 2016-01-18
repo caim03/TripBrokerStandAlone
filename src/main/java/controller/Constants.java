@@ -1,5 +1,7 @@
 package controller;
 
+/*** This class contains the most used constant values in the application ***/
+
 public class Constants {
 
     //ROLES
