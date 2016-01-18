@@ -34,6 +34,7 @@ public abstract class SearchStrategy<T> {
 
         protected T acorn; //Composition attribute; has its role during tree creation
         protected Node parent; //Node parent; root has @null parent
+        protected N weight; //weight cache
         protected Map<Node, N> subTree = new HashMap<>();
         //Map of children, indexed by actual Node child and containing a weight value
 
@@ -63,10 +64,20 @@ public abstract class SearchStrategy<T> {
         protected abstract void attach(Node son);
 
         /**
-         * weight attribute Getter.
+         * weight attribute Getter. First request triggers weight calculation;
+         * later requests are satisfied giving back the cached value.
          * @return N: weight value
          */
-        abstract N getWeight() ;
+        N getWeight() {
+            if (weight == null) weight = retrieveWeight();
+            return weight;
+        }
+
+        /**
+         * Weight retrieving routine. It varies according to the Node implementation.
+         * @return N: freshly-calculated weight value.
+         */
+        abstract N retrieveWeight() ;
 
         /**
          * @return String: a message associated to weight value

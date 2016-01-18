@@ -7,9 +7,7 @@ import model.entityDB.ViaggioEntity;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This ConcreteStrategy class implements the BFS search algorithm via Template Method pattern.
@@ -102,83 +100,142 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
         return results.size() > 0 ? results : null;
     }
 
-    protected abstract boolean evaluate(Station station, List<Station> station1) ;
-
-    protected abstract boolean addToResults(List<Station> list, Station station);
-
-    protected abstract Station makeNode(Arrival arrival) ;
-
+    /***
+     * Utility method; it generates an SQL query matching the next exploration needs.
+     * @param arrival Arrival: an Arrival object, wrapping up a city and a timestamp
+     * @return String: the appropriate SQL query needed to continue branch exploration
+     */
     private String query(Arrival arrival) {
 
         String query = "where stazionePartenza like '";
         query += arrival.city;
         query += "'";
+        //City constraint
 
         if (arrival.arrival != null) {
-            query += " and dataInizio >= ";
+            query += " and dataInizio between ";
             query += "str_to_date('";
             query += new SimpleDateFormat("yyyy-MM-dd HH:mm").format(arrival.arrival);
-            query += "', '%Y-%m-%d %k:%i') and dataInizio < ";
+            query += "', '%Y-%m-%d %k:%i') and ";
             query += "str_to_date('";
             query += new SimpleDateFormat("yyyy-MM-dd HH:mm").
                     format(new Timestamp(arrival.arrival.getTime() + 24 * 3600000));
             query += "', '%Y-%m-%d %k:%i')";
         }
-
-        System.out.println(query);
+        //Timestamp constraint; initial steps may omit a starting time
 
         return query;
     }
 
+    /**
+     * Primitive operation (from Template Method) used as discriminator when
+     * search algorithm contemplate stopping.
+     * @param current Station: the currently examined Station instance.
+     * @param stations List<Station>: set of already found solutions, used to determine
+     *                 an eventual stop.
+     * @return boolean: whether or not the algorithm should stop.
+     */
+    protected abstract boolean evaluate(Station current, List<Station> stations) ;
+
+    /**
+     * This method provides a custom way of inserting newly found solutions to the others.
+     * @param list List<Station>: set of already-found solution.
+     * @param station Station: newly found solution.
+     * @return boolean: whether or not the Station instance was added to solutions.
+     */
+    protected abstract boolean addToResults(List<Station> list, Station station);
+
+    /**
+     * Subclasses specify concrete Station implementations; this method allows Template Method
+     * to avoid direct instantiation of an abstract class.
+     * @param arrival Arrival: Node acorn.
+     * @return Station: a Station object, wrapping up its acorn.
+     */
+    protected abstract Station makeNode(Arrival arrival) ;
+
+    /**
+     * Node abstract implementation; subclasses implement methods according to the search
+     * purpose. It uses Arrival objects as acorns, wrapping up a destination with a
+     * timestamp.
+     * Strategies from the outer class are only used for ViaggioEntities research;
+     * a Station object caches ViaggioEntity instances for later ascending.
+     */
     public abstract class Station extends Node<Arrival, Number> {
 
-        protected Map<Arrival, ViaggioEntity> cache = new HashMap<>();
+        protected ViaggioEntity cache;
+        //Cached ViaggioEntity; it refers to the parent-child bond, there for there
+        //can be only one item cached at a time.
 
+        /**
+         * Main constructor.
+         * @param city Arrival: acorn.
+         */
         protected Station(Arrival city) { super(city); }
 
-        protected void attach(Node son, ViaggioEntity entity) {
-            ((Station) son).cache.put(acorn, entity);
-            attach(son);
+        /**
+         * This method provides the child attaching routine to the parent subtree.
+         * @param child Station: the child to be attached.
+         * @param entity ViaggioEntity: the route this bond represents.
+         */
+        protected void attach(Node child, ViaggioEntity entity) {
+            ((Station) child).cache =  entity;
+            attach(child);
         }
 
+        /**
+         * Actual attaching routine.
+         * @param child Node: the child to be attached.
+         */
         @Override
-        protected void attach(Node son) {
-            son.setParent(this);
-            subTree.put(son, son.getWeight());
+        protected void attach(Node child) {
+            child.setParent(this);
+            subTree.put(child, child.getWeight());
         }
 
+        /**
+         * Climbing up the route to the route from the calling Station instance.
+         * Cached items are recollected on the way and ultimately returned to the caller.
+         * @return List<ViaggioEntity>: List of cached ViaggioEntities, from root to leaf.
+         */
         @Override
         public List<ViaggioEntity> climbUp() {
 
             List<ViaggioEntity> entities = new ArrayList<>();
 
-            if (getParent() == null) return entities;
+            if (getParent() == null) return entities; //recursion base
 
-            entities.addAll(getParent().climbUp());
-            entities.add(cache.get(parent.acorn));
+            entities.addAll(getParent().climbUp()); //recursive call
+            entities.add(cache); //adding this Station
 
             return entities;
         }
 
+        /**
+         * @return String: a message correlated to this Node.
+         */
         @Override
         public String toString() { return this.acorn.toString(); }
     }
 
+    /**
+     * Acorn class; Station instances wraps up this value for search management.
+     * It contains a city name and (usually) a timestamp indicating time of arrival.
+     * Timestamp is needed to select other relatively forthcoming travels; however,
+     * it can be omitted, with no strong repercussions on the search algorithm.
+     */
     public static class Arrival {
 
-        private String city;
-        private Timestamp arrival;
+        private String city; //Arriving city name
+        private Timestamp arrival; //Time of arrival
 
+        /**
+         * Main constructor.
+         * @param city String: the city name.
+         * @param arrival Timestamp: time of arrival.
+         */
         public Arrival(String city, Timestamp arrival) {
             this.city = city;
             this.arrival = arrival;
-        }
-
-        @Override
-        public String toString() {
-
-            return arrival != null ? city + " @ " + new SimpleDateFormat("HH:mm dd/MM/yyyy").format(arrival) :
-                    city;
         }
     }
 }
