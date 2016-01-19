@@ -3,55 +3,52 @@ package view.popup;
 import controller.SellController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import model.entityDB.OffertaEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
 
-public class SellPopup extends PopupView {
+public class SellPopup extends PopupDecorator {
 
-    private PopupView popupView;
     private OffertaEntity entity;
     private Button sellBtn;
     private MaterialSpinner quantity;
+    private GridPane pane;
 
     public SellPopup(PopupView popupView, OffertaEntity entity) {
         /** @param PopupView; the popup to which must be applied pattern decorator
          *  @param OffertaEntity; the offer that must be purchased and displayed in popup **/
 
-        this.popupView = popupView;
+        super(popupView);
         this.entity = entity;
-
-        getChildren().add(generatePopup());
     }
 
     @Override
-    protected Parent generatePopup() {
-        /** @result Parent; the base class for all nodes that have children in the scene graph. **/
-
-        popupView.generatePopup();
-        return generateItems();
+    protected Node decorate() {
+        return null;
     }
 
     /** Method to do decorator pattern **/
     private Parent generateItems() {
         /** @result: Parent; pane to add in children popup **/
 
+        pane = new GridPane();
+
         Label quantityLabel = new Label("Quantità:");
         sellBtn = new FlatButton("Vendi");
 
-        popupView.pane.add(quantityLabel, 0, popupView.getRow() + 1);
-        popupView.pane.add(sellBtn, 2, popupView.getRow() + 1);
+        pane.add(quantityLabel, 0, 0);
+        pane.add(sellBtn, 2, 0);
 
-        popupView.pane.setAlignment(Pos.CENTER);
-        popupView.pane.setHgap(4);
+        pane.setHgap(4);
 
-        return popupView.pane;
+        return pane;
     }
 
     @Override
@@ -65,13 +62,13 @@ public class SellPopup extends PopupView {
             if (newValue != null && newValue instanceof LayerPane) {
 
                 quantity = new MaterialSpinner((LayerPane) newValue, 1, entity.getQuantità());
-                popupView.pane.add(quantity, 1, popupView.getRow() + 1);
+                pane.add(quantity, 1, 0);
 
                 sellBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         ProgressCircle progressCircle = new ProgressCircle();
-                        popupView.pane.add(progressCircle, 1, popupView.getRow() + 2);
+                        pane.add(progressCircle, 1, 1);
                         progressCircle.start();
 
                         new Thread(() -> {

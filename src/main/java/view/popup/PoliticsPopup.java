@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.PoliticheEntity;
 import org.controlsfx.control.Notifications;
 import view.material.MaterialPopup;
@@ -27,8 +27,6 @@ public class PoliticsPopup extends PopupView {
 
         this.politicheEntity = politicheEntity;
         this.title = "Politiche";
-
-        getChildren().add(generatePopup());
     }
 
     @Override

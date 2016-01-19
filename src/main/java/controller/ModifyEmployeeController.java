@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import view.material.MaterialSpinner;

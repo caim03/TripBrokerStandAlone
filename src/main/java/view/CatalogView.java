@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.ProdottoEntity;
 
 import java.util.List;

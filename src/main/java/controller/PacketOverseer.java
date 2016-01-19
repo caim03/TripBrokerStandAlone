@@ -141,7 +141,6 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
                 zeroDate = new Timestamp(zeroDate.getTime() - zeroDate.getHours() * 3600000
                         - zeroDate.getMinutes() * 60000 - zeroDate.getSeconds() * 1000);
                 Date thirdDate = ((EventoEntity) next).getDataFine();
-                System.out.println(secondDate.toString() + " WITH " + zeroDate.toString() +"\n" + firstDateEnd + " WITH " + thirdDate);
                 result = secondDate.after(zeroDate) && thirdDate.before(firstDateEnd);
             }
             else if (next instanceof ViaggioEntity)

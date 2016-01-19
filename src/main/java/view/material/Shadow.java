@@ -8,7 +8,7 @@ import javafx.util.Duration;
 
 public class Shadow extends DropShadow implements Cloneable {
 
-    protected static double expansion = 1.2;
+    protected static double expansion = 1.5;
     protected Timeline expand;
     private static Shadow instance = new Shadow();
 
@@ -53,7 +53,7 @@ public class Shadow extends DropShadow implements Cloneable {
         Timeline shrink = new Timeline();
         KeyValue keyValue10 = new KeyValue(widthProperty(), restShadowWidth, Interpolator.EASE_OUT);
         KeyValue keyValue11 = new KeyValue(heightProperty(), restShadowHeight, Interpolator.EASE_OUT);
-        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(100), keyValue10, keyValue11);
+        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(250), keyValue10, keyValue11);
         shrink.getKeyFrames().clear();
         shrink.getKeyFrames().add(keyFrame1);
 

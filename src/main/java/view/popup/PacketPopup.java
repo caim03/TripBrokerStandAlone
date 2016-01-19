@@ -31,8 +31,6 @@ public class PacketPopup extends PopupView {
 
         this.entity = prodottoEntity;
         this.title = "Pacchetto";
-
-        getChildren().add(generatePopup());
     }
 
     @Override
@@ -77,7 +75,7 @@ public class PacketPopup extends PopupView {
 
         setRow(4);
 
-        ListView list = generateList();
+        generateList();
 
         VBox dialogVbox = new VBox(pane, list);
 
@@ -100,7 +98,7 @@ public class PacketPopup extends PopupView {
         return dialogVbox;
     }
 
-    private ListView generateList() {
+    private void generateList() {
 
         list = new ListView();
         list.setCellFactory(callback -> new DBCell());
@@ -114,13 +112,15 @@ public class PacketPopup extends PopupView {
             if (ids != null) {
                 for (PacchettoOffertaEntity e : ids) {
                     buffer = (List<OffertaEntity>) OffertaDaoHibernate.instance().getByCriteria("where id = " + e.getIdOfferta());
-                    final List finalBuffer = buffer;
-                    if (buffer != null) Platform.runLater(() -> list.getItems().addAll(finalBuffer));
+                    if (buffer != null) {
+                        final OffertaEntity entity[] = new OffertaEntity[] { buffer.get(0) };
+                        System.out.println("OFFER " + buffer.get(0));
+                        Platform.runLater(() -> list.getItems().add(entity[0]));
+                    }
                 }
             }
-            list.getItems().remove(0);
             DBManager.shutdown();
+            Platform.runLater(() -> list.getItems().remove(0));
         }).start();
-        return list;
     }
 }

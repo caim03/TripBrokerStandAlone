@@ -8,7 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import model.entityDB.PoliticheEntity;

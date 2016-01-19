@@ -18,8 +18,6 @@ public class EventPopup extends PopupView{
 
         this.eventoEntity = prodottoEntity;
         this.title = "Evento";
-
-        getChildren().add(generatePopup());
     }
 
     @Override

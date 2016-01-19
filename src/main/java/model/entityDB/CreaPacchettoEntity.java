@@ -1,6 +1,8 @@
 package model.entityDB;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 
 /*** This class represents the table of packets in DataBase, and it is used to retrieve, save, delete or update
  *   packets.

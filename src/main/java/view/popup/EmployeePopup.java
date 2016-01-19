@@ -31,7 +31,6 @@ public class EmployeePopup extends PopupView{
         this.entity = entity;
         this.index = index;
         this.list = list;
-        getChildren().add(generatePopup());
     }
 
     @Override

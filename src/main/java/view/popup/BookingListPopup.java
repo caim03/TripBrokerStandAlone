@@ -12,8 +12,6 @@ public class BookingListPopup extends PopupView {
     public BookingListPopup(ViaggioGruppoEntity entity) {
 
         this.entity = entity;
-
-        getChildren().add(generatePopup());
     }
 
     @Override

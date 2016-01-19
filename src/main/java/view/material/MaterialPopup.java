@@ -19,27 +19,19 @@ public class MaterialPopup extends GridPane {
 
         this.parent = parent;
         this.popup = popup;
+
+        getChildren().add(this.popup.getGui());
         this.popup.setParent(this);
-
-        DropShadow ds = new DropShadow();
-        ds.setOffsetY(3.0);
-        ds.setOffsetX(3.0);
-        ds.setColor(Color.GRAY);
-        popup.setEffect(ds);
-
-        getChildren().add(this.popup);
 
         setStyle("-fx-background-color: #82828282");
         setAlignment(Pos.CENTER);
 
         defaultEventHandler = Event::consume;
-        this.popup.setOnMouseClicked(getListener(defaultEventHandler, false));
+        this.popup.getGui().setOnMouseClicked(getListener(defaultEventHandler, false));
 
         setOnMouseClicked(event -> {
-
             double x = event.getSceneX(), y = event.getSceneY();
-
-            if (!this.popup.contains(x, y)) hide();
+            if (!this.popup.getGui().contains(x, y)) hide();
         });
     }
 

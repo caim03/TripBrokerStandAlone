@@ -4,7 +4,7 @@ package controller;
 import javafx.scene.control.TableView;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
 
 /*** This controller delete a dependent from DataBase ***/

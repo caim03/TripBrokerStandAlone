@@ -3,7 +3,7 @@ package controller;
 
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.OffertaEntity;
 
 public class SellController {

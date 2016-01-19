@@ -1,11 +1,9 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
 import org.hibernate.Session;
 import model.entityDB.OffertaEntity;
-import view.desig.OffersTabPane;
 
 import java.util.List;
 

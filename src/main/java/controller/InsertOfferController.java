@@ -8,7 +8,7 @@ import model.DBManager;
 import model.dao.EventoDaoHibernate;
 import model.dao.PernottamentoDaoHibernate;
 import model.dao.ViaggioDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.EventoEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
@@ -17,7 +17,6 @@ import view.material.NumericField;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 
 public class InsertOfferController {

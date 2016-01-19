@@ -15,8 +15,6 @@ public class StayPopup extends PopupView {
 
         this.pernottamentoEntity = prodottoEntity;
         this.title = "Pernottamento";
-
-        getChildren().add(generatePopup());
     }
 
     @Override

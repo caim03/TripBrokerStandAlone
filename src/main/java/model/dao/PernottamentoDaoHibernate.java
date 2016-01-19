@@ -1,11 +1,8 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
-import model.entityDB.PrenotazioneEntity;
 import org.hibernate.Session;
 
 import java.util.List;

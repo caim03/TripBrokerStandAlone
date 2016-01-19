@@ -61,36 +61,91 @@ public class OffersTabPane extends JFXTabPane {
     }
 
     abstract class CustomTab extends Tab {
-        CustomTab(String title) { super(title); }
-        abstract ListView getListView();
+
+        protected VBox root = new VBox();
+        protected GridPane fieldsGrid = new GridPane();
+        protected ListView listView;
+        protected TextField field;
+        protected CheckBox checkBox;
+        protected DatePicker datePicker;
+
+        CustomTab(String title) {
+            super(title);
+            generate();
+            setContent(root);
+        }
+
+        abstract ListView getListView() ;
+        protected abstract void generate() ;
+        protected void root() {
+            grid();
+            root.setPadding(new Insets(0, 8, 8, 8));
+            root.prefHeightProperty().bind(OffersTabPane.this.prefHeightProperty().subtract(prefHeightProperty()));
+        }
+        protected void grid() {
+            fieldsGrid.setVgap(4);
+            fieldsGrid.setPadding(new Insets(8, 0, 8, 0));
+        }
     }
 
     class SearchTab extends CustomTab {
 
-        SearchTab(String title) {
-            super(title);
-            setContent(searchTab());
+        private TextField to;
+        private GridPane listGrid;
+        private CalendarTimeTextField timePicker;
+        private ToggleGroup toggleGroup;
+
+        SearchTab(String title) { super(title); }
+
+        @Override
+        protected void generate() {
+            fields();
+            pickers();
+            checkBox();
+            radios();
+            button();
+            listView();
+            root();
         }
 
-        private Node searchTab() {
+        private void fields() {
+            field = new MaterialTextField();
+            to = new MaterialTextField();
 
-            TextField from = new MaterialTextField(), to = new MaterialTextField();
+            fieldsGrid.add(field, 0, 0);
+            fieldsGrid.add(to, 0, 1);
+        }
 
-            CheckBox checkBox = new CheckBox();
-            DatePicker datePicker = new DatePicker(LocalDate.now());
-            CalendarTimeTextField timePicker = new CalendarTimeTextField();
+        private void pickers() {
+            datePicker = new DatePicker(LocalDate.now());
+            timePicker = new CalendarTimeTextField();
+
             datePicker.setDisable(true);
             timePicker.setDisable(true);
+
+            fieldsGrid.add(datePicker, 2, 0);
+            fieldsGrid.add(timePicker, 3, 0);
+        }
+
+        private void checkBox() {
+            checkBox = new CheckBox();
+
             checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override public void changed(ObservableValue<? extends Boolean> observable,
                                               Boolean oldValue, Boolean newValue) { set(!newValue); }
-                private void set(boolean disable) { datePicker.setDisable(disable); timePicker.setDisable(disable); } });
+                private void set(boolean disable) {
+                    datePicker.setDisable(disable);
+                    timePicker.setDisable(disable); } });
 
+            fieldsGrid.add(checkBox, 1, 0);
+        }
+
+        private void radios() {
             RadioButton stopsRadio = new RadioButton("Con meno scali"),
-                    fastestRadio = new RadioButton("Più veloci"),
-                    cheapestRadio = new RadioButton("Più economici");
+                        fastestRadio = new RadioButton("Più veloci"),
+                        cheapestRadio = new RadioButton("Più economici");
 
-            ToggleGroup toggleGroup = new ToggleGroup();
+            toggleGroup = new ToggleGroup();
             stopsRadio.setToggleGroup(toggleGroup);
             fastestRadio.setToggleGroup(toggleGroup);
             cheapestRadio.setToggleGroup(toggleGroup);
@@ -101,83 +156,96 @@ public class OffersTabPane extends JFXTabPane {
             fastestRadio.setId("1");
             cheapestRadio.setId("2");
 
+            fieldsGrid.add(stopsRadio, 0, 2);
+            fieldsGrid.add(fastestRadio, 0, 3);
+            fieldsGrid.add(cheapestRadio, 0, 4);
+        }
+
+        private Timestamp getTimestamp() {
+            if (checkBox.isSelected() && datePicker.getValue() != null) {
+                Timestamp timestamp = Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                if (timePicker.getCalendar() != null)
+                    timestamp = new Timestamp(
+                              timestamp.getTime()
+                            + timePicker.getCalendar().getTime().getHours() * 3600000
+                            + timePicker.getCalendar().getTime().getMinutes() * 60000);
+
+                return timestamp;
+            }
+            return null;
+        }
+
+        private boolean goAhead() { return !"".equals(field.getText()) && !"".equals(to.getText()); }
+
+        private Node circle() {
+            ProgressCircle progressCircle = new ProgressCircle();
+            listGrid.getChildren().add(progressCircle);
+            return progressCircle;
+        }
+
+        private void showResults(List<BFSearchStrategy.Station> stations) {
+
+            listView.getItems().clear();
+            boolean empty = stations == null;
+            if (!empty) {
+                for (SearchStrategy.Node node : stations) listView.getItems().add(node);
+
+                listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    listView.getSelectionModel().clearSelection();
+                    if (newValue != null) {
+                        for (ViaggioEntity entity : ((BFSearchStrategy.Station) newValue).climbUp())
+                            command.execute(entity);
+                    }
+                });
+                listGrid.getChildren().add(listView);
+            }
+        }
+
+        private void button() {
             Button searchBtn = new ElevatedButton("Cerca");
-
-            GridPane pane = new GridPane();
-            pane.add(from, 0, 0);
-            pane.add(checkBox, 1, 0);
-            pane.add(datePicker, 2, 0);
-            pane.add(timePicker, 3, 0);
-            pane.add(to, 0, 1);
-            pane.add(stopsRadio, 0, 2);
-            pane.add(fastestRadio, 0, 3);
-            pane.add(cheapestRadio, 0, 4);
-            pane.add(searchBtn, 0, 5);
-
-            pane.setVgap(4);
-
-            GridPane secondPane = new GridPane();
-            VBox box = new VBox(pane, secondPane);
-            box.setPadding(new Insets(8));
-            box.prefHeightProperty().bind(OffersTabPane.this.prefHeightProperty().subtract(prefHeightProperty()));
-
-            ListView listView = new ListView();
-            GridPane.setHgrow(listView, Priority.ALWAYS);
-            GridPane.setVgrow(listView, Priority.ALWAYS);
-            secondPane.getChildren().add(listView);
+            fieldsGrid.add(searchBtn, 0, 5);
 
             searchBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                if (!"".equals(from.getText()) && !"".equals(to.getText())) {
-                    Timestamp timestamp = null;
-                    if (checkBox.isSelected() && datePicker.getValue() != null) {
-                        timestamp = timePicker.getCalendar() != null ?
-                                new Timestamp(
-                                        Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()
-                                                + timePicker.getCalendar().getTime().getHours() * 3600000
-                                                + timePicker.getCalendar().getTime().getMinutes() * 60000) :
-                                Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    }
-
-                    String fromText = from.getText();
-                    BFSearchStrategy.Arrival start = new BFSearchStrategy.Arrival(fromText, timestamp),
+                if (goAhead()) {
+                    String fromText = field.getText();
+                    BFSearchStrategy.Arrival start = new BFSearchStrategy.Arrival(fromText, getTimestamp()),
                             end = new BFSearchStrategy.Arrival(to.getText(), null);
 
-                    if (secondPane.getChildren().size() > 0) secondPane.getChildren().remove(0);
-                    ProgressCircle progressCircle = new ProgressCircle();
-                    secondPane.getChildren().add(progressCircle);
+                    listGrid.getChildren().clear();
+                    Node circle = circle();
 
                     new DeamonThread(() -> {
-                        List<BFSearchStrategy.Station> stations = getSearchStrategy((RadioButton) toggleGroup.getSelectedToggle()).
+                        List<BFSearchStrategy.Station> stations = getSearchStrategy().
                                 search(new BFSearchStrategy.Arrival[]{start, end});
                         Platform.runLater(() -> {
-                            listView.getItems().clear();
-                            boolean empty = stations == null;
-                            if (!empty) {
-                                listView.setCellFactory(param -> new MultiDBCell());
-                                for (SearchStrategy.Node node : stations) {
-                                    listView.getItems().add(node);
-                                }
-                                listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                                    listView.getSelectionModel().clearSelection();
-                                    if (newValue != null) {
-                                        for (ViaggioEntity entity : ((BFSearchStrategy.Station) newValue).climbUp())
-                                            command.execute(entity);
-                                    }
-                                });
-                                secondPane.getChildren().add(listView);
-                            }
-                            secondPane.getChildren().remove(progressCircle);
+                            showResults(stations);
+                            listGrid.getChildren().remove(circle);
                         });
                     }).start();
                 }
             });
 
-            return box;
         }
 
-        private SearchStrategy getSearchStrategy(RadioButton selectedToggle) {
+        private void listView() {
+            listView = new ListView();
+            listView.setCellFactory(param -> new MultiDBCell());
+            GridPane.setHgrow(listView, Priority.ALWAYS);
+            GridPane.setVgrow(listView, Priority.ALWAYS);
 
-            int pos = Integer.parseInt(selectedToggle.getId());
+            listGrid = new GridPane();
+            listGrid.getChildren().add(listView);
+        }
+
+        @Override
+        protected void root() {
+            super.root();
+            root.getChildren().addAll(fieldsGrid, listGrid);
+        }
+
+        private SearchStrategy getSearchStrategy() {
+
+            int pos = Integer.parseInt(((RadioButton) toggleGroup.getSelectedToggle()).getId());
 
             if (pos == 0) return new FewerStopsSearchStrategy();
             else if (pos == 1) return new FasterSearchStrategy();
@@ -189,53 +257,93 @@ public class OffersTabPane extends JFXTabPane {
 
     class OfferTab extends CustomTab {
 
-        private DBListView list;
+        private int position;
 
         OfferTab(int i) {
             super(tabs[i]);
-            setContent(generate(i));
+            position = i;
         }
 
-        private Node generate(int i) {
+        @Override
+        protected void generate() {
+            fields();
+            checkBox();
+            picker();
+            button();
+            listView();
+            root();
+        }
 
-            list = new DBListView("from ProdottoEntity where tipo like '" + tabs[i] + "'");
-            list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                command.execute(newValue); });
+        @Override
+        protected void root() {
+            super.root();
+            root.getChildren().addAll(fieldsGrid, listView);
+        }
 
+        private void listView() {
+
+            listView = new DBListView("from ProdottoEntity where tipo like '" + tabs[position] + "'");
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                command.execute((AbstractEntity) newValue));
+        }
+
+        private void fields() {
             Label lbl = new Label("Città:");
-            TextField field = new MaterialTextField();
+            field = new MaterialTextField();
 
-            CheckBox checkBox = new CheckBox();
-            DatePicker datePicker = new DatePicker(LocalDate.now());
+            fieldsGrid.add(lbl, 0, 0);
+            fieldsGrid.add(field, 1, 0);
+        }
+
+        private void picker() {
+            datePicker = new DatePicker(LocalDate.now());
             datePicker.setDisable(true);
+            fieldsGrid.add(datePicker, 3, 0);
+        }
+
+        private void checkBox() {
+            checkBox = new CheckBox();
             checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override public void changed(ObservableValue<? extends Boolean> observable,
                                               Boolean oldValue, Boolean newValue) { set(!newValue); }
                 private void set(boolean disable) { datePicker.setDisable(disable); } });
 
+            fieldsGrid.add(checkBox, 2, 0);
+        }
+
+        private String query() {
+
+            String query = "where città like '" + field.getText() + "'";
+
+            if (checkBox.isSelected() && datePicker.getValue() != null) {
+                Timestamp timestamp =
+                        Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                query += " and dataInizio between ";
+                query += "str_to_date('";
+                query += new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
+                query += "', '%Y-%m-%d') and ";
+                query += "str_to_date('";
+                query += new SimpleDateFormat("yyyy-MM-dd").
+                        format(new Timestamp(timestamp.getTime() + 24 * 3600000));
+                query += "', '%Y-%m-%d')";
+            }
+
+            return query;
+        }
+
+        private void button() {
             Button button = new ElevatedButton("Cerca");
             button.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!"".equals(field.getText())) {
-                    list.getItems().clear();
-                    list.getItems().add(AbstractEntity.getInvalidEntity());
+                    listView.getItems().clear();
+                    listView.getItems().add(AbstractEntity.getInvalidEntity());
 
-                    String query = "where città like '" + field.getText() + "'";
-                    if (checkBox.isSelected() && datePicker.getValue() != null) {
-                        Timestamp timestamp = Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                        query += " and dataInizio between ";
-                        query += "str_to_date('";
-                        query += new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
-                        query += "', '%Y-%m-%d') and ";
-                        query += "str_to_date('";
-                        query += new SimpleDateFormat("yyyy-MM-dd").
-                                format(new Timestamp(timestamp.getTime() + 24 * 3600000));
-                        query += "', '%Y-%m-%d')";
-                    }
-                    final String finalQuery = query;
+                    final String finalQuery = query();
                     new DeamonThread(() -> {
                         DBManager.initHibernate();
                         List<OffertaEntity> buffer;
-                        if (i == 1) buffer =
+                        if (position == 1) buffer =
                                 (List<OffertaEntity>) PernottamentoDaoHibernate.instance().
                                         getByCriteria(finalQuery);
                         else buffer =
@@ -244,28 +352,17 @@ public class OffersTabPane extends JFXTabPane {
                         DBManager.shutdown();
 
                         Platform.runLater(() -> {
-                            list.getItems().clear();
-                            if (buffer != null) list.getItems().addAll(buffer);
+                            listView.getItems().clear();
+                            if (buffer != null) listView.getItems().addAll(buffer);
                         });
                     }).start();
                 }
-                else list.refresh();
+                else listView.refresh();
             });
 
-            GridPane pane = new GridPane();
-            pane.add(lbl, 0, 0);
-            pane.add(field, 1, 0);
-            pane.add(checkBox, 2, 0);
-            pane.add(datePicker, 3, 0);
-            pane.add(button, 0, 1);
-            pane.setVgap(4);
-
-            VBox box = new VBox(pane, list);
-            box.setPadding(new Insets(8));
-
-            return box;
+            fieldsGrid.add(button, 0, 1);
         }
 
-        @Override ListView getListView() { return list; }
+        @Override ListView getListView() { return listView; }
     }
 }

@@ -1,32 +1,20 @@
 package view.popup;
 
 import controller.BookingController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Material;
 import javafx.scene.text.Text;
-import model.DBManager;
-import model.dao.GruppoOffertaDaoHibernate;
-import model.dao.OffertaDaoHibernate;
-import model.dao.PrenotazioneDaoHibernate;
-import model.dao.ViaggioGruppoDaoHibernate;
-import model.entityDB.*;
+import model.entityDB.ViaggioGruppoEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
-public class BookingPopup extends PopupView {
+public class BookingPopup extends PopupDecorator {
 
-
-    private PopupView popupView;
     private ViaggioGruppoEntity entity;
     private Button bookBtn;
     private TextField nameField, surnameField;
@@ -35,20 +23,14 @@ public class BookingPopup extends PopupView {
 
     public BookingPopup(PopupView popupView, ViaggioGruppoEntity entity) {
 
-        this.popupView = popupView;
+        super(popupView);
+
         this.entity = entity;
         this.title = "Prenota viaggio";
-
-        getChildren().add(generatePopup());
     }
 
     @Override
-    protected Parent generatePopup() {
-
-        return new VBox(popupView.generatePopup(), generateFields());
-    }
-
-    private Parent generateFields() {
+    protected Node decorate() {
 
         nameField = new MaterialTextField();
         nameField.setPromptText("Inserisci nome");

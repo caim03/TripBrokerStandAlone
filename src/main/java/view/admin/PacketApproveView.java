@@ -2,7 +2,7 @@ package view.admin;
 
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.ProdottoEntity;
 import view.CatalogView;
 

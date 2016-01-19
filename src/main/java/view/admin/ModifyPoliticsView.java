@@ -1,14 +1,12 @@
 package view.admin;
 
 import controller.ModifyPoliticsController;
-import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.PoliticheEntity;
 import view.DBTablePane;
 

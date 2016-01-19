@@ -3,7 +3,7 @@ package controller;
 
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
 
 /*** This controller receives data from 'AddNewEmployeeView', creates a new employee

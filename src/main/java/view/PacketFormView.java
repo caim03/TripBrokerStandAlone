@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
 
-    ListView<? extends AbstractEntity> list;
+    ListView<AbstractEntity> list;
     NumberLabel basePrice, maxPrice;
     TextField nameField, priceField;
 
@@ -56,8 +58,17 @@ public class PacketFormView extends VBox implements Collector {
         nameBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
 
-        list = new DBListView(new PacketList());
+        list = new ListView(new PacketList());
         list.setPadding(new Insets(16, 16, 16, 16));
+        list.setCellFactory(callback -> new DBCell());
+        list.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if (MouseButton.SECONDARY.equals(event.getButton())) {
+                int selected = list.getSelectionModel().getSelectedIndex();
+                list.getItems().remove(selected, list.getItems().size());
+            }
+            else event.consume();
+            list.getSelectionModel().clearSelection();
+        });
         addListener();
 
         getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
@@ -73,7 +84,7 @@ public class PacketFormView extends VBox implements Collector {
         nameField.setText(entity.getNome());
         priceField.setText(Double.toString(entity.getPrezzo()));
 
-        ((DBListView)list).spin();
+        list.getItems().add(AbstractEntity.getInvalidEntity());
 
         new Thread(() -> {
             DBManager.initHibernate();
@@ -117,8 +128,7 @@ public class PacketFormView extends VBox implements Collector {
                     int len = c.getRemovedSize();
                     List<AbstractEntity> removed = c.getRemoved();
 
-                    if (len == c.getList().size()) {
-
+                    if (c.getList().size() == 0) {
                         basePrice.reset();
                         maxPrice.reset();
                     }
@@ -167,7 +177,7 @@ public class PacketFormView extends VBox implements Collector {
 
             int ids[] = new int[list.getItems().size()], i = 0;
 
-            List<AbstractEntity> offers = (List<AbstractEntity>) list.getItems();
+            List<AbstractEntity> offers = list.getItems();
             AbstractEntity beginning = offers.get(0), end = offers.get(offers.size() - 1);
 
             if (!(beginning instanceof ViaggioEntity) || !(end instanceof ViaggioEntity) ||

@@ -1,19 +1,13 @@
 package view.desig;
 
-import controller.TableViewController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.ProdottoDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
-import view.CatalogView;
 import view.DBTablePane;
 import view.PacketFormView;
 

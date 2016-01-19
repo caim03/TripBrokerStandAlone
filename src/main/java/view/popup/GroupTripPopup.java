@@ -16,8 +16,6 @@ public class GroupTripPopup extends PopupView {
 
         this.entity = entity;
         this.title = "Viaggio di gruppo";
-
-        getChildren().add(generatePopup());
     }
 
     @Override

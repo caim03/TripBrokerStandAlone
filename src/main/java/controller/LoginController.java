@@ -2,7 +2,7 @@ package controller;
 
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.hibernate.exception.JDBCConnectionException;

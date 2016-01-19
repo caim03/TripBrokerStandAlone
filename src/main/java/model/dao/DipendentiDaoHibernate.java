@@ -1,9 +1,7 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 import model.entityDB.DipendentiEntity;
 import java.util.List;

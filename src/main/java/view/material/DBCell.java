@@ -1,15 +1,14 @@
 package view.material;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import model.entityDB.*;
-import view.material.cellcreator.*;
-
-import java.util.List;
+import view.material.cellcreator.BookingCellCreator;
+import view.material.cellcreator.EventCellCreator;
+import view.material.cellcreator.StayCellCreator;
+import view.material.cellcreator.TravelCellCreator;
 
 public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 

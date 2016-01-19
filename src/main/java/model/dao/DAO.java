@@ -1,4 +1,4 @@
-package model.daoInterface;
+package model.dao;
 
 import model.entityDB.AbstractEntity;
 import java.util.List;

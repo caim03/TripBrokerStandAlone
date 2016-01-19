@@ -1,9 +1,7 @@
 package model.dao;
 
 import model.DBManager;
-import model.daoInterface.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import model.entityDB.ViaggioGruppoEntity;
 import org.hibernate.Session;

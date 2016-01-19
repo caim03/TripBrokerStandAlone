@@ -1,21 +1,19 @@
 package view.popup;
 
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
-import model.daoInterface.DAO;
+import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
 import view.material.MaterialPopup;
 
 /** Factory Method for popup **/
-public abstract class PopupView extends Pane {
+public abstract class PopupView {
 
     protected GridPane pane;
+    private Parent gui;
     protected MaterialPopup parent;
     protected int row;
     public void setParent(MaterialPopup parent) { this.parent = parent; }
@@ -57,4 +55,6 @@ public abstract class PopupView extends Pane {
 
         this.row = row;
     }
+
+    public Parent getGui() { return gui == null? gui = generatePopup() : gui; }
 }
