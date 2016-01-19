@@ -2,11 +2,12 @@ package view.desig;
 
 import com.jfoenix.controls.JFXTabPane;
 import controller.Constants;
-import controller.command.Command;
 import controller.command.DeamonThread;
 import controller.command.TransferRecordCommand;
 import controller.strategy.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -14,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import jfxtras.scene.control.CalendarTimeTextField;
 import model.DBManager;
 import model.dao.EventoDaoHibernate;
@@ -24,12 +24,10 @@ import model.entityDB.OffertaEntity;
 import model.entityDB.ViaggioEntity;
 import view.material.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OffersTabPane extends JFXTabPane {
@@ -42,21 +40,15 @@ public class OffersTabPane extends JFXTabPane {
         this.command = command;
 
         for (int i = 0; i < 3; ++i) {
-
             if (i == 0) getTabs().add(new SearchTab(tabs[0]));
-
-            else {
-                getTabs().add(new OfferTab(i));
-            }
+            else getTabs().add(new OfferTab(i));
         }
 
         tabMinWidthProperty().bind(widthProperty().divide(3));
         tabMaxWidthProperty().bind(widthProperty().divide(3));
 
         getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-
             if (oldValue.equals(newValue)) return;
-
             ListView list = ((CustomTab) getTabs().get(newValue.intValue())).getListView();
             if (list != null && list.getItems().isEmpty()) list.refresh();
         });
@@ -64,17 +56,7 @@ public class OffersTabPane extends JFXTabPane {
         setStyle("-fx-background-color: white");
     }
 
-    private SearchStrategy getSearchStrategy(RadioButton selectedToggle) {
-
-        int pos = Integer.parseInt(selectedToggle.getId());
-
-        if (pos == 0) return new FewerStopsSearchStrategy();
-        else if (pos == 1) return new FasterSearchStrategy();
-        else return new CheaperSearchStrategy();
-    }
-
-    @Override
-    protected Skin<?> createDefaultSkin() {
+    @Override protected Skin<?> createDefaultSkin() {
         return new JFXTabPaneSkin(this);
     }
 
@@ -93,8 +75,16 @@ public class OffersTabPane extends JFXTabPane {
         private Node searchTab() {
 
             TextField from = new MaterialTextField(), to = new MaterialTextField();
+
+            CheckBox checkBox = new CheckBox();
             DatePicker datePicker = new DatePicker(LocalDate.now());
             CalendarTimeTextField timePicker = new CalendarTimeTextField();
+            datePicker.setDisable(true);
+            timePicker.setDisable(true);
+            checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override public void changed(ObservableValue<? extends Boolean> observable,
+                                              Boolean oldValue, Boolean newValue) { set(!newValue); }
+                private void set(boolean disable) { datePicker.setDisable(disable); timePicker.setDisable(disable); } });
 
             RadioButton stopsRadio = new RadioButton("Con meno scali"),
                     fastestRadio = new RadioButton("Più veloci"),
@@ -111,30 +101,35 @@ public class OffersTabPane extends JFXTabPane {
             fastestRadio.setId("1");
             cheapestRadio.setId("2");
 
-            Button searchBtn = new FlatButton("Cerca");
+            Button searchBtn = new ElevatedButton("Cerca");
 
             GridPane pane = new GridPane();
             pane.add(from, 0, 0);
-            pane.add(datePicker, 1, 0);
-            pane.add(timePicker, 2, 0);
+            pane.add(checkBox, 1, 0);
+            pane.add(datePicker, 2, 0);
+            pane.add(timePicker, 3, 0);
             pane.add(to, 0, 1);
             pane.add(stopsRadio, 0, 2);
             pane.add(fastestRadio, 0, 3);
             pane.add(cheapestRadio, 0, 4);
             pane.add(searchBtn, 0, 5);
 
-            pane.setVgap(2);
+            pane.setVgap(4);
 
             GridPane secondPane = new GridPane();
             VBox box = new VBox(pane, secondPane);
             box.setPadding(new Insets(8));
+            box.prefHeightProperty().bind(OffersTabPane.this.prefHeightProperty().subtract(prefHeightProperty()));
+
+            ListView listView = new ListView();
+            GridPane.setHgrow(listView, Priority.ALWAYS);
+            GridPane.setVgrow(listView, Priority.ALWAYS);
+            secondPane.getChildren().add(listView);
 
             searchBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!"".equals(from.getText()) && !"".equals(to.getText())) {
-
                     Timestamp timestamp = null;
-                    if (datePicker.getValue() != null) {
-
+                    if (checkBox.isSelected() && datePicker.getValue() != null) {
                         timestamp = timePicker.getCalendar() != null ?
                                 new Timestamp(
                                         Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()
@@ -155,10 +150,9 @@ public class OffersTabPane extends JFXTabPane {
                         List<BFSearchStrategy.Station> stations = getSearchStrategy((RadioButton) toggleGroup.getSelectedToggle()).
                                 search(new BFSearchStrategy.Arrival[]{start, end});
                         Platform.runLater(() -> {
-                            ListView listView;
+                            listView.getItems().clear();
                             boolean empty = stations == null;
                             if (!empty) {
-                                listView = new ListView();
                                 listView.setCellFactory(param -> new MultiDBCell());
                                 for (SearchStrategy.Node node : stations) {
                                     listView.getItems().add(node);
@@ -170,7 +164,6 @@ public class OffersTabPane extends JFXTabPane {
                                             command.execute(entity);
                                     }
                                 });
-                                GridPane.setHgrow(listView, Priority.ALWAYS);
                                 secondPane.getChildren().add(listView);
                             }
                             secondPane.getChildren().remove(progressCircle);
@@ -180,6 +173,15 @@ public class OffersTabPane extends JFXTabPane {
             });
 
             return box;
+        }
+
+        private SearchStrategy getSearchStrategy(RadioButton selectedToggle) {
+
+            int pos = Integer.parseInt(selectedToggle.getId());
+
+            if (pos == 0) return new FewerStopsSearchStrategy();
+            else if (pos == 1) return new FasterSearchStrategy();
+            else return new CheaperSearchStrategy();
         }
 
         @Override ListView getListView() { return null; }
@@ -203,24 +205,32 @@ public class OffersTabPane extends JFXTabPane {
             Label lbl = new Label("Città:");
             TextField field = new MaterialTextField();
 
+            CheckBox checkBox = new CheckBox();
             DatePicker datePicker = new DatePicker(LocalDate.now());
+            datePicker.setDisable(true);
+            checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override public void changed(ObservableValue<? extends Boolean> observable,
+                                              Boolean oldValue, Boolean newValue) { set(!newValue); }
+                private void set(boolean disable) { datePicker.setDisable(disable); } });
 
-            Button button = new FlatButton("Cerca");
+            Button button = new ElevatedButton("Cerca");
             button.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!"".equals(field.getText())) {
                     list.getItems().clear();
                     list.getItems().add(AbstractEntity.getInvalidEntity());
 
                     String query = "where città like '" + field.getText() + "'";
-                    Timestamp timestamp = Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    query += " and dataInizio between ";
-                    query += "str_to_date('";
-                    query += new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
-                    query += "', '%Y-%m-%d') and ";
-                    query += "str_to_date('";
-                    query += new SimpleDateFormat("yyyy-MM-dd").
-                            format(new Timestamp(timestamp.getTime() + 24 * 3600000));
-                    query += "', '%Y-%m-%d')";
+                    if (checkBox.isSelected() && datePicker.getValue() != null) {
+                        Timestamp timestamp = Timestamp.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        query += " and dataInizio between ";
+                        query += "str_to_date('";
+                        query += new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
+                        query += "', '%Y-%m-%d') and ";
+                        query += "str_to_date('";
+                        query += new SimpleDateFormat("yyyy-MM-dd").
+                                format(new Timestamp(timestamp.getTime() + 24 * 3600000));
+                        query += "', '%Y-%m-%d')";
+                    }
                     final String finalQuery = query;
                     new DeamonThread(() -> {
                         DBManager.initHibernate();
@@ -245,8 +255,10 @@ public class OffersTabPane extends JFXTabPane {
             GridPane pane = new GridPane();
             pane.add(lbl, 0, 0);
             pane.add(field, 1, 0);
-            pane.add(datePicker, 2, 0);
+            pane.add(checkBox, 2, 0);
+            pane.add(datePicker, 3, 0);
             pane.add(button, 0, 1);
+            pane.setVgap(4);
 
             VBox box = new VBox(pane, list);
             box.setPadding(new Insets(8));

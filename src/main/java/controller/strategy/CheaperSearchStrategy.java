@@ -1,6 +1,8 @@
 package controller.strategy;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * BFSearchStrategy concrete implementation, searching for the cheapest routes from A to B;
@@ -69,7 +71,7 @@ public class CheaperSearchStrategy extends BFSearchStrategy {
         @Override Double getWeight() { return (Double) super.getWeight(); }
 
         @Override public String weightToString() {
-            return "Prezzo: " + super.weightToString();
+            return "Prezzo: " + NumberFormat.getCurrencyInstance(Locale.ITALY).format(getWeight());
         }
     }
 }
