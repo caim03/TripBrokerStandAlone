@@ -13,7 +13,7 @@ public class LoginController {
 
     public static class Credentials {
 
-        String name, surname, password;
+        private String name, surname, password;
 
         public Credentials(String name, String surname, String password) {
 

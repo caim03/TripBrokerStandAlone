@@ -29,7 +29,7 @@ import view.material.Toolbar;
 
 public class TripBrokerLogin extends Application {
 
-    Stage stage;
+    private Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

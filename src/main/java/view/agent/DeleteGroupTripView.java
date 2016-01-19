@@ -7,7 +7,7 @@ import view.material.DBListView;
 
 public class DeleteGroupTripView extends VBox {
 
-    DBListView list;
+    private DBListView list;
 
     public DeleteGroupTripView() {
 
