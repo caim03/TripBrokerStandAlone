@@ -18,8 +18,8 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
 
     private static final ObservableList<String> ROLES = FXCollections.observableArrayList("Agente", "Designer", "Scout");
 
-    TextField name, surname, password, email;
-    MaterialSpinner role;
+    private TextField name, surname, password, email;
+    private MaterialSpinner role;
 
     public AddNewEmployeeView() {
 

@@ -7,7 +7,7 @@ package model.entityDB;
  * actual DB entities and do not track any table.
  * This class also implements Cloneable in order to enable self-cloning and implement the Prototype pattern;
  * this pattern allows to create new objects by cloning a previously instantiated objects, called a prototype.
- * It creates new objects at run-time, using a prototype manager for dinamically saving and
+ * It creates new objects at run-time, using a prototype manager for dynamically saving and
  * retrieving of instances of default objects ***/
 
 //TODO is Prototype pattern necessary?

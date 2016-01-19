@@ -44,14 +44,14 @@ public class NavigationDrawer extends VBox {
         imageView.setFitWidth(width);
         imageView.setFitHeight(width * ratio);
 
-        /*
+
         if (Constants.scout.equals(title)) imageView.setImage(new Image("mastrofini.png"));
         else if (Constants.admin.equals(title)) imageView.setImage(new Image("cantone.png"));
         else if (Constants.desig.equals(title)) imageView.setImage(new Image("deangelis.png"));
         else imageView.setImage(new Image("calavaro.png"));
 
         getChildren().add(imageView);
-        */
+
 
         setOptions(title);
     }

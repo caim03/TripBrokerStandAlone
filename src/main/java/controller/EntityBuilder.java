@@ -32,7 +32,7 @@ public abstract class EntityBuilder {
         entity.setTipo(type);
     }
 
-    public void buildOffer(String city, double price, int amount, int state, Timestamp date) {
+    public void buildOffer(String city, double price, int amount, int prenotazioni, Timestamp date) {
         /** @param String; this string represents the city of the offer
          *  @param double; this double represents the factory price of the offer
          *  @param int; this integer represents the quantity bought of the offer
@@ -42,7 +42,7 @@ public abstract class EntityBuilder {
         ((OffertaEntity)entity).setCittà(city);
         ((OffertaEntity)entity).setPrezzoFabbrica(price);
         ((OffertaEntity)entity).setQuantità(amount);
-        ((OffertaEntity)entity).setPrenotazioni(state);
+        ((OffertaEntity)entity).setPrenotazioni(prenotazioni);
         ((OffertaEntity)entity).setDataInizio(date);
     }
 

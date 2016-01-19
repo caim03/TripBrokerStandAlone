@@ -30,9 +30,9 @@ import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
 
-    ListView<? extends AbstractEntity> list;
-    NumberLabel basePrice, maxPrice;
-    TextField nameField, priceField;
+    protected ListView<? extends AbstractEntity> list;
+    protected NumberLabel basePrice, maxPrice;
+    protected TextField nameField, priceField;
 
     double criteria = 2.0;
 
