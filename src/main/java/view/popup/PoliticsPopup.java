@@ -84,11 +84,7 @@ public class PoliticsPopup extends PopupView {
             }
 
             if ("".equals(minPerc)){
-                politicheEntity.setPercentualeMin(Double.parseDouble(minPerc));
-            }
-
-            if ("".equals(maxPerc)){
-                politicheEntity.setPercentualeMax(Double.parseDouble(maxPerc));
+                politicheEntity.setValore(Double.parseDouble(minPerc));
             }
 
             DAO dao = PoliticheDaoHibernate.instance();

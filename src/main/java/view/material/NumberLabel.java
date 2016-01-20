@@ -60,4 +60,12 @@ public class NumberLabel extends Label {
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public void setMod(double value) {
+
+        prodMod = value;
+        updateNumber();
+    }
+
+    private void updateNumber() { updateNumber(number); }
 }

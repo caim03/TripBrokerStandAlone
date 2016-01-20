@@ -6,38 +6,35 @@ import javax.persistence.*;
 @Table(name = "Politiche", schema = "trip_broker")
 public class PoliticheEntity extends AbstractEntity {
     private int id;
-    private double percentualeMax;
-    private double percentualeMin;
+    private double valore;
     private String nome;
+    private String descrizione;
 
     @Id
     @Column(name = "id")
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "percentuale_max")
-    public double getPercentualeMax() {
-        return percentualeMax;
+    @Column(name = "valore")
+    public double getValore() {
+        return valore;
     }
-
-    public void setPercentualeMax(double percentualeMax) {
-        this.percentualeMax = percentualeMax;
+    public void setValore(double valore) {
+        this.valore = valore;
     }
 
     @Basic
-    @Column(name = "percentuale_min")
-    public double getPercentualeMin() {
-        return percentualeMin;
+    @Column(name = "descrizione")
+    public String getDescrizione() {
+        return descrizione;
     }
-
-    public void setPercentualeMin(double percentualeMin) {
-        this.percentualeMin = percentualeMin;
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 
     @Basic
@@ -53,18 +50,18 @@ public class PoliticheEntity extends AbstractEntity {
 
         PoliticheEntity that = (PoliticheEntity) o;
 
-        if (id != that.id) return false;
-        if (percentualeMax != that.percentualeMax) return false;
-        if (percentualeMin != that.percentualeMin) return false;
-
-        return true;
+        return id == that.id &&
+               valore == that.valore &&
+               nome.equals(that.getNome()) &&
+               descrizione.equals(that.descrizione);
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (int)percentualeMax;
-        result = 31 * result + (int)percentualeMin;
+        result = 31 * result + (int) valore;
+        result = 31 * result + (nome == null ? 0 : nome.hashCode());
+        result = 31 * result + (descrizione == null ? 0 : descrizione.hashCode());
         return result;
     }
 }

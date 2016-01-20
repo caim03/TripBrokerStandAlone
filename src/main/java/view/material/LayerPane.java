@@ -17,11 +17,7 @@ public class LayerPane extends StackPane {
         setMaxHeight(Double.MAX_VALUE);
     }
 
-    void reset() {
-
-        int size = getChildren().size();
-        if (size > 0) getChildren().remove(0, size);
-    }
+    public void reset() { getChildren().clear(); }
 
     public void pop() {
 

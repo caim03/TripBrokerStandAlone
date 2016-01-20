@@ -245,13 +245,13 @@ id_offerta</columns>
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="66" parent="9" name="percentuale_max">
+      <column id="66" parent="9" name="valore">
         <mandatory>1</mandatory>
-        <data-type>float</data-type>
+        <data-type>double</data-type>
       </column>
-      <column id="67" parent="9" name="percentuale_min">
+      <column id="67" parent="9" name="descrizione">
         <mandatory>1</mandatory>
-        <data-type>float</data-type>
+        <data-type>text</data-type>
       </column>
       <column id="68" parent="9" name="nome">
         <mandatory>1</mandatory>

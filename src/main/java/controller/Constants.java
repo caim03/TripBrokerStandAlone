@@ -1,5 +1,10 @@
 package controller;
 
+import model.entityDB.PoliticheEntity;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /*** This class contains the most used constant values in the application ***/
 
 public class Constants {
@@ -23,5 +28,8 @@ public class Constants {
                          train = "Treno",
                          boat  = "Nave";
 
-
+    public static final int minOverprize = 1,
+                            maxOverprice = 2,
+                                discount = 3,
+                                minGroup = 4;
 }

@@ -1,5 +1,6 @@
 package view;
 
+import controller.Constants;
 import controller.PacketAssembleController;
 import controller.PacketOverseer;
 import controller.command.Command;
@@ -22,6 +23,7 @@ import javafx.util.Duration;
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;
 import model.dao.PacchettoOffertaDaoHibernate;
+import model.dao.PoliticheDaoHibernate;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -36,18 +38,27 @@ public class PacketFormView extends VBox implements Collector {
     protected NumberLabel basePrice, maxPrice;
     protected TextField nameField, priceField;
 
-    double criteria = 2.0;
-
     public PacketFormView() {
 
         Label name = new Label("Name"), price = new Label("Price");
         name.setAlignment(Pos.CENTER_LEFT);
         price.setAlignment(Pos.CENTER_LEFT);
 
-        basePrice = new NumberLabel("Base price: ");
+        basePrice = new NumberLabel("Prezzo base: ");
         basePrice.setPadding(new Insets(16, 16, 16, 16));
-        maxPrice = new NumberLabel("Maximum price: ", 0, 0, criteria);
+        maxPrice = new NumberLabel("Prezzo massimo: ");
         maxPrice.setPadding(new Insets(16, 16, 16, 16));
+
+        new Thread(() -> {
+            DBManager.initHibernate();
+            PoliticheEntity entity0 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprize),
+                            entity1 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.maxOverprice);
+            DBManager.shutdown();
+            Platform.runLater(() -> {
+                basePrice.setMod(entity0.getValore());
+                maxPrice.setMod(entity1.getValore());
+            });
+        }).start();
 
         nameField = new MaterialTextField();
         priceField = new NumericField();

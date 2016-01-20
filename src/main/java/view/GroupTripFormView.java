@@ -1,63 +1,67 @@
 package view;
 
+import controller.Constants;
 import controller.GroupTripAssembleController;
 import controller.GroupTripOverseer;
-import controller.PacketAssembleController;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
+import model.DBManager;
+import model.dao.PoliticheDaoHibernate;
 import model.entityDB.AbstractEntity;
+import model.entityDB.PoliticheEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
+import org.jboss.logging.annotations.Message;
+import view.material.LayerPane;
+import view.material.MaterialSpinner;
 import view.material.NumericField;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 public class GroupTripFormView extends PacketFormView {
 
-    private int current = 9999;
-    private Spinner<Integer> minimum, maximum;
+    private int current = 999, minimum = 1;
+    private Spinner<Integer> minSpinner, maxSpinner;
     private GridPane participants;
 
     public GroupTripFormView() {
 
         super();
 
-        Label min = new Label("Minimum "), max = new Label("Maximum ");
-        minimum = new Spinner<>();
-        maximum = new Spinner<>();
+        Label min = new Label("Minimo "), max = new Label("Massimo ");
 
         participants = new GridPane();
         participants.add(min, 0, 0);
         participants.add(max, 0, 1);
-        participants.add(minimum, 1, 0);
-        participants.add(maximum, 1, 1);
+
+        new Thread(() -> {
+            DBManager.initHibernate();
+            minimum = (int) ((PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minGroup)).getValore();
+            DBManager.shutdown();
+
+            Platform.runLater(() -> {
+                minSpinner = new Spinner<>(minimum, current, minimum);
+                maxSpinner = new Spinner<>(minimum, current, minimum);
+
+                participants.add(minSpinner, 1, 0);
+                participants.add(maxSpinner, 1, 1);
+            });
+        }).start();
 
         getChildren().add(4, participants);
     }
 
     @Override
     public void addListener() {
-
-        super.addListener();
-        list.getItems().addListener(new GroupTripOverseer(this));
-    }
-
-    public void refreshSpinners(int max) {
-        /** @param int; integer used to refresh spinner values **/
-
-        int minPtr, maxPtr;
-        try { minPtr = minimum.getValue(); } catch (NullPointerException e) { minPtr = 10; }
-        try { maxPtr = maximum.getValue(); } catch (NullPointerException e) { maxPtr = 9999; }
-
-        if (current > max) {
-
-            minimum = new Spinner<>(10, max, minPtr > max ? max : minPtr);
-            maximum = new Spinner<>(10, max, maxPtr > max ? max : maxPtr);
-
-            current = max;
-
-            participants.add(minimum, 1, 0);
-            participants.add(maximum, 1, 1);
-        }
+        GroupTripOverseer overseer = new GroupTripOverseer(this);
+        list.getItems().addListener(overseer);
+        overseer.subscribe(basePrice, maxPrice);
     }
 
     @Override
@@ -65,7 +69,8 @@ public class GroupTripFormView extends PacketFormView {
 
         String name = nameField.getText();
         double price = ((NumericField)priceField).getNumber();
-        Integer min = minimum.getValue(), max = maximum.getValue();
+        Integer min = minSpinner.getValue(),
+                max = maxSpinner.getValue();
 
         if ("".equals(name) || "".equals(priceField.getText()))
             Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
@@ -93,6 +98,52 @@ public class GroupTripFormView extends PacketFormView {
                 Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
             else
                 Notifications.create().text("Errore interno al database").showError();
+        }
+    }
+
+    public void forceRefresh(int max) {
+
+        int minPtr, maxPtr;
+
+        try { minPtr = minSpinner.getValue(); }
+        catch (NullPointerException e) { e.printStackTrace(); return; }
+        catch (NumberFormatException e) { minPtr = minimum; }
+
+        try { maxPtr = maxSpinner.getValue(); }
+        catch (NullPointerException e) { e.printStackTrace(); return; }
+        catch (NumberFormatException e) { maxPtr = minimum; }
+
+        current = max;
+
+        minSpinner = new Spinner<>(minimum, current, minPtr > max ? max : minPtr);
+        maxSpinner = new Spinner<>(minimum, current, maxPtr > max ? max : maxPtr);
+
+        participants.add(minSpinner, 1, 0);
+        participants.add(maxSpinner, 1, 1);
+    }
+
+    public void refreshSpinners(int max) {
+        /** @param int; integer used to refresh spinner values **/
+
+        int minPtr, maxPtr;
+
+        try { minPtr = minSpinner.getValue(); }
+        catch (NullPointerException e) { e.printStackTrace(); return; }
+        catch (NumberFormatException e) { minPtr = minimum; }
+
+        try { maxPtr = maxSpinner.getValue(); }
+        catch (NullPointerException e) { e.printStackTrace(); return; }
+        catch (NumberFormatException e) { maxPtr = minimum; }
+
+        if (current > max) {
+
+            current = max;
+
+            minSpinner = new Spinner<>(minimum, current, minPtr > max ? max : minPtr);
+            maxSpinner = new Spinner<>(minimum, current, maxPtr > max ? max : maxPtr);
+
+            participants.add(minSpinner, 1, 0);
+            participants.add(maxSpinner, 1, 1);
         }
     }
 }

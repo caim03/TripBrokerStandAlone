@@ -22,17 +22,14 @@ public class ModifyPoliticsView extends DBTablePane {
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Integer>("id"));
-        TableColumn nameColumn = new TableColumn("Name");
+        TableColumn nameColumn = new TableColumn("Nome");
         nameColumn.setMinWidth(500);
         nameColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, String>("nome"));
-        TableColumn minColumn = new TableColumn("Percent Min");
-        minColumn.setMinWidth(260);
-        minColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("percentuale_max"));
-        TableColumn maxColumn = new TableColumn("Percent Max");
-        maxColumn.setMinWidth(260);
-        maxColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("percentuale_max"));
+        TableColumn valColumn = new TableColumn("Valore");
+        valColumn.setMinWidth(260);
+        valColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("valore"));
 
-        list.getColumns().addAll(idColumn, nameColumn, minColumn, maxColumn);
+        list.getColumns().addAll(idColumn, nameColumn, valColumn);
         list.setOnMouseClicked(event -> ModifyPoliticsController.handle(list));
 
         list.setMaxHeight(Double.MAX_VALUE);

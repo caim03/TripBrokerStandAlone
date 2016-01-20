@@ -55,7 +55,7 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         attach(pane);
     }
 
-    private void reset() {
+    public void reset() {
 
         name.setText(null);
         surname.setText(null);
