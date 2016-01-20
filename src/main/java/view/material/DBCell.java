@@ -50,7 +50,7 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         Region region; //Region superclass grants access to width and height properties
         //node is then properly initialized
-        if (!item.isValid()) region = buildProgress(); //ProgressCircle
+        if (item == null || !item.isValid()) region = buildProgress(); //ProgressCircle
         else if (item instanceof OffertaEntity) {
 
             if (item instanceof ViaggioEntity)

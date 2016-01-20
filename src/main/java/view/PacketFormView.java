@@ -84,25 +84,7 @@ public class PacketFormView extends VBox implements Collector {
         nameField.setText(entity.getNome());
         priceField.setText(Double.toString(entity.getPrezzo()));
 
-        list.getItems().add(AbstractEntity.getInvalidEntity());
-
-        new Thread(() -> {
-            DBManager.initHibernate();
-            List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>)
-                    PacchettoOffertaDaoHibernate.instance().
-                            getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");
-            if (ids != null) {
-                List<OffertaEntity> buffer;
-                boolean trick = true;
-                for (PacchettoOffertaEntity e : ids) {
-                    if (trick) { trick = false; Platform.runLater(() -> list.getItems().remove(0)); }
-                    buffer = (List<OffertaEntity>) OffertaDaoHibernate.instance().getByCriteria("where id = " + e.getIdOfferta());
-                    final List finalBuffer = buffer;
-                    if (buffer != null) Platform.runLater(() -> list.getItems().addAll(finalBuffer));
-                }
-            }
-            DBManager.shutdown();
-        }).start();
+        list.getItems().addAll(entity.retrieveOffers());
 
         if (entity.getStato() == 2) {
 

@@ -1,6 +1,9 @@
 package model.dao;
 
+import model.DBManager;
 import model.entityDB.AbstractEntity;
+import org.hibernate.Session;
+
 import java.util.List;
 
 /*** The all classes that implements DAO Interface must override all methods.
@@ -26,4 +29,11 @@ public interface DAO {
     int store(AbstractEntity entity) throws ClassCastException;
     void delete(AbstractEntity entity) throws ClassCastException;
     void update(AbstractEntity entity) throws ClassCastException;
+    default void query(String query) {
+        Session session = DBManager.getSession();
+        session.beginTransaction();
+        session.createQuery(query);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

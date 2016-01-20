@@ -1,8 +1,7 @@
 package model.dao;
 
 import model.DBManager;
-import model.entityDB.AbstractEntity;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.*;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -30,11 +29,12 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<CreaPacchettoEntity> creaPacchettoEntities = session.createQuery("from CreaPacchettoEntity").list();
+        List<CreaPacchettoEntity> entities = session.createQuery("from CreaPacchettoEntity").list();
+        for (CreaPacchettoEntity entity : entities) populate(entity);
 
         // close connection
         session.close();
-        return creaPacchettoEntities;
+        return entities;
     }
 
     public synchronized List<CreaPacchettoEntity> getByCriteria(String where) {
@@ -46,6 +46,7 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
 
         // performs the query
         List<CreaPacchettoEntity> entities = session.createQuery("from CreaPacchettoEntity " + where).list();
+        for (CreaPacchettoEntity entity : entities) populate(entity);
 
         // close connection
         session.close();
@@ -66,6 +67,7 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
 
         // performs the query
         List<CreaPacchettoEntity> entities = session.createQuery(query).list();
+        for (CreaPacchettoEntity entity : entities) populate(entity);
 
         // close connection
         session.close();
@@ -85,15 +87,15 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         Session session = DBManager.getSession();
 
         // performs the query
-        CreaPacchettoEntity creaPacchettoEntity = (CreaPacchettoEntity) session.createQuery("from CreaPacchettoEntity where id = " + id).list().get(0);
+        CreaPacchettoEntity entity = (CreaPacchettoEntity) session.createQuery("from CreaPacchettoEntity where id = " + id).list().get(0);
 
         // close connection
         session.close();
-        if (creaPacchettoEntity == null){
-            return null;
-        } else {
-            return creaPacchettoEntity;
-        }
+
+        if (entity == null) return null;
+
+        populate(entity);
+        return entity;
     }
 
     public synchronized int store(AbstractEntity entity) {
@@ -110,9 +112,9 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         session.save(creaPacchettoEntity);
         // commit transaction
         session.getTransaction().commit();
+        session.close(); // close connection
 
-        // close connection
-        session.close();
+        bindAll(creaPacchettoEntity);
 
         return creaPacchettoEntity.getId();
     }
@@ -130,8 +132,42 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         session.update(creaPacchettoEntity);
         // commit the transaction
         session.getTransaction().commit();
-
         // close connection
         session.close();
+
+        disrupt(creaPacchettoEntity.getId());
+        bindAll(creaPacchettoEntity);
+    }
+
+    private void bindAll(CreaPacchettoEntity entity) {
+
+        int i = 0;
+        for (OffertaEntity offer : entity.retrieveOffers()) {
+            bind(entity.getId(), offer.getId(), i);
+            ++i;
+        }
+    }
+    private void bind(int idPacchetto, int idOfferta, int position) {
+
+        PacchettoOffertaEntity couple = new PacchettoOffertaEntity();
+        couple.setIdPacchetto(idPacchetto);
+        couple.setIdOfferta(idOfferta);
+        couple.setPosizione(position);
+        PacchettoOffertaDaoHibernate.instance().store(couple);
+    }
+
+    private void disrupt(int id) {
+        PacchettoOffertaDaoHibernate.instance().query("DELETE FROM PacchettoOffertaEntity where idPacchetto = " + id);
+    }
+
+    private void populate(CreaPacchettoEntity entity) {
+
+        List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>) PacchettoOffertaDaoHibernate.instance().
+                getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");
+
+        for (PacchettoOffertaEntity id : ids) {
+            OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getById(id.getIdOfferta());
+            entity.addOffer(id.getPosizione(), offer);
+        }
     }
 }

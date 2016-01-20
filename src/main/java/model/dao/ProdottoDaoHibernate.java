@@ -2,10 +2,12 @@ package model.dao;
 
 import model.DBManager;
 import model.entityDB.AbstractEntity;
+import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class ProdottoDaoHibernate implements DAO {
 
@@ -23,6 +25,24 @@ public class ProdottoDaoHibernate implements DAO {
         return singleton;
     }
 
+    private List<ProdottoEntity> replacePackets(List<ProdottoEntity> entities)  {
+
+        if (entities != null) {
+            int i;
+            for (i = 0; i < entities.size(); ++i) {
+                System.out.println("ENTITY " + entities.get(i).getNome());
+                if (entities.get(i) instanceof CreaPacchettoEntity) {
+                    int id = entities.get(i).getId();
+                    ProdottoEntity newEntity = (ProdottoEntity) CreaPacchettoDaoHibernate.instance().getById(id);
+                    entities.remove(i);
+                    entities.add(i, newEntity);
+                }
+            }
+        }
+
+        return entities;
+    }
+
     @Override
     public synchronized List<? extends ProdottoEntity> getAll() {
         /** @result List; return a list of ProdottoEntity, retrieved from the DataBase **/
@@ -31,14 +51,14 @@ public class ProdottoDaoHibernate implements DAO {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity").list();
-
+        List<ProdottoEntity> entities = session.createQuery("from ProdottoEntity").list();
         // close connection
         session.close();
-        if (prodottoEntities.isEmpty()){
-            return null;
-        }
-        return prodottoEntities;
+
+        entities = replacePackets(entities);
+
+        if (entities.isEmpty()) return null;
+        return entities;
     }
 
     @Override
@@ -50,12 +70,15 @@ public class ProdottoDaoHibernate implements DAO {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<ProdottoEntity> prodottoEntities = session.createQuery("from ProdottoEntity " + where).list();
+        List<ProdottoEntity> entities = session.createQuery("from ProdottoEntity " + where).list();
 
         // close connection
         session.close();
-        if (prodottoEntities.isEmpty()) return null;
-        else return prodottoEntities;
+
+        entities = replacePackets(entities);
+
+        if (entities.isEmpty()) return null;
+        else return entities;
     }
 
     @Override
@@ -67,12 +90,13 @@ public class ProdottoDaoHibernate implements DAO {
         Session session = DBManager.getSession();
 
         // performs the query
-        List<ProdottoEntity> prodottoEntities = session.createQuery(query).list();
-
+        List<ProdottoEntity> entities = session.createQuery(query).list();
         // close connection
         session.close();
-        if (prodottoEntities.isEmpty()) return null;
-        else return prodottoEntities;
+
+        entities = replacePackets(entities);
+        if (entities.isEmpty()) return null;
+        else return entities;
     }
 
     @Override
@@ -83,8 +107,10 @@ public class ProdottoDaoHibernate implements DAO {
         // get session (connection)
         Session session = DBManager.getSession();
 
+        List<ProdottoEntity> entities = session.createQuery("from ProdottoEntity where id = " + id).list();
+        entities = replacePackets(entities);
         // performs the query
-        ProdottoEntity prodottoEntity = (ProdottoEntity) session.createQuery("from ProdottoEntity where id = " + id).list().get(0);
+        ProdottoEntity prodottoEntity = entities.get(0);
 
         // close connection
         session.close();

@@ -102,25 +102,6 @@ public class PacketPopup extends PopupView {
 
         list = new ListView();
         list.setCellFactory(callback -> new DBCell());
-        list.getItems().add(AbstractEntity.getInvalidEntity());
-        new Thread(() -> {
-            DBManager.initHibernate();
-            List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>)
-                    PacchettoOffertaDaoHibernate.instance().
-                            getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");
-            List<OffertaEntity> buffer;
-            if (ids != null) {
-                for (PacchettoOffertaEntity e : ids) {
-                    buffer = (List<OffertaEntity>) OffertaDaoHibernate.instance().getByCriteria("where id = " + e.getIdOfferta());
-                    if (buffer != null) {
-                        final OffertaEntity entity[] = new OffertaEntity[] { buffer.get(0) };
-                        System.out.println("OFFER " + buffer.get(0));
-                        Platform.runLater(() -> list.getItems().add(entity[0]));
-                    }
-                }
-            }
-            DBManager.shutdown();
-            Platform.runLater(() -> list.getItems().remove(0));
-        }).start();
+        list.getItems().addAll(entity.retrieveOffers());
     }
 }

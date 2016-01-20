@@ -1,6 +1,8 @@
 package model.entityDB;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /*** This class represents the table of relations between
  *   'OffertaEntity' and 'CreaPacchettoEntity' in DataBase.
@@ -8,7 +10,7 @@ import javax.persistence.*;
  *   it also contains the attribute 'posizione', referring to the right order of offers into the packet ***/
 
 @Entity
-@Table(name = "Pacchetto_Offerta", schema = "trip_broker", catalog = "")
+@Table(name = "Pacchetto_Offerta", schema = "trip_broker")
 @IdClass(PacchettoOffertaEntityPK.class)
 public class PacchettoOffertaEntity extends AbstractEntity {
 

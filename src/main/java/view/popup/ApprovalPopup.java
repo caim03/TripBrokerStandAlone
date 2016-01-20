@@ -28,7 +28,6 @@ public class ApprovalPopup extends PopupDecorator {
         public void handle(MouseEvent event) {
 
             int id = Integer.parseInt(((Button) event.getSource()).getId());
-            System.out.println("ID " + id);
 
             if (id == 2) {
                 Button done = new FlatButton("Conferma");

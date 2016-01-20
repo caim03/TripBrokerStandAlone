@@ -47,7 +47,7 @@ public class TripBrokerLogin extends Application {
         private Button button;
         private TextField nameField, surnameField, passField;
 
-        public LoginScene() {
+        LoginScene() {
             super(new VBox());
 
             getStylesheets().add("material.css");

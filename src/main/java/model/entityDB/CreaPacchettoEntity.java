@@ -1,6 +1,8 @@
 package model.entityDB;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,5 +90,17 @@ public class CreaPacchettoEntity extends ProdottoEntity {
         result = 31 * result + (motivazione != null ? motivazione.hashCode() : 0);
         result = 31 * result + creatore;
         return result;
+    }
+
+    private Map<Integer, OffertaEntity> offers = new HashMap<>();
+    public void addOffer(int key, OffertaEntity entity) { offers.put(key, entity); }
+    public List<OffertaEntity> retrieveOffers() {
+
+        List<OffertaEntity> entities = new ArrayList<>();
+
+        int i;
+        for (i = 0; i < offers.size(); ++i) entities.add(offers.get(i));
+
+        return entities;
     }
 }
