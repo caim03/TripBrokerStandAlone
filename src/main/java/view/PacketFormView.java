@@ -3,33 +3,26 @@ package view;
 import controller.Constants;
 import controller.PacketAssembleController;
 import controller.PacketOverseer;
-import controller.command.Command;
 import controller.command.TransferRecordCommand;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
 import model.DBManager;
-import model.dao.OffertaDaoHibernate;
-import model.dao.PacchettoOffertaDaoHibernate;
 import model.dao.PoliticheDaoHibernate;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.*;
 
-import java.util.Collection;
 import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
@@ -69,22 +62,35 @@ public class PacketFormView extends VBox implements Collector {
         nameBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
         priceBox.setStyle("-fx-hgap: 8px; -fx-padding: 16px");
 
-        list = new ListView(new PacketList());
+        initializeList();
+
+        getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
+
+        setStyle("-fx-vgap: 8px; -fx-fill-height: true");
+    }
+
+    private void initializeList() {
+
+        list = new ListView(initList());
         list.setPadding(new Insets(16, 16, 16, 16));
         list.setCellFactory(callback -> new DBCell());
         list.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (MouseButton.SECONDARY.equals(event.getButton())) {
                 int selected = list.getSelectionModel().getSelectedIndex();
-                list.getItems().remove(selected, list.getItems().size());
+                if (selected >= 0) list.getItems().remove(selected, list.getItems().size());
             }
             else event.consume();
             list.getSelectionModel().clearSelection();
         });
-        addListener();
+    }
 
-        getChildren().addAll(nameBox, basePrice, maxPrice, priceBox, list);
+    protected ObservableList initList() {
 
-        setStyle("-fx-vgap: 8px; -fx-fill-height: true");
+        PacketList packetList = new PacketList();
+        packetList.subscribe(basePrice);
+        packetList.subscribe(maxPrice);
+
+        return packetList;
     }
 
     public PacketFormView(CreaPacchettoEntity entity) {
@@ -107,42 +113,7 @@ public class PacketFormView extends VBox implements Collector {
         setStyle("-fx-background-color: white");
     }
 
-    public void addListener() {
-
-        list.getItems().addListener(new ListChangeListener() {
-
-            @Override
-            public void onChanged(Change c) {
-
-                c.next();
-
-                if (c.wasRemoved()) {
-
-                    int len = c.getRemovedSize();
-                    List<AbstractEntity> removed = c.getRemoved();
-
-                    if (c.getList().size() == 0) {
-                        basePrice.reset();
-                        maxPrice.reset();
-                    }
-
-                    else {
-
-                        for (int i = 0; i < len; ++i) {
-
-                            if (removed.get(i) instanceof OffertaEntity) {
-                                OffertaEntity item = (OffertaEntity) removed.get(i);
-                                basePrice.updateNumber(-item.getPrezzo());
-                                maxPrice.updateNumber(-item.getPrezzo());
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        list.getItems().addListener(new PacketOverseer(basePrice, maxPrice));
-    }
+    public void addListener() { }
 
     public TransferRecordCommand getCommand() {
         /** @return Command; return the command use to complete the operation (Pattern Command). In this case a transfer

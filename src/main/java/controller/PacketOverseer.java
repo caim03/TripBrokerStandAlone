@@ -1,10 +1,8 @@
 package controller;
 
-import javafx.collections.ListChangeListener;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
-import view.material.NumberLabel;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -17,12 +15,11 @@ import java.util.List;
  * explained below.
  */
 
-public class PacketOverseer implements ListChangeListener<AbstractEntity> {
+public class PacketOverseer extends Overseer {
 
-    NumberLabel labels[]; //Price bounds Labels, to be updated on Offer acceptance
+    protected PacketList subjectList;
     private static long acceptableDelay = 12 * 3600000;
-
-    public PacketOverseer(NumberLabel... labels) { this.labels = labels; }
+    public PacketOverseer(PacketList subjectList) { this.subjectList = subjectList; }
 
     /***
      * onChanged method Override.
@@ -33,60 +30,96 @@ public class PacketOverseer implements ListChangeListener<AbstractEntity> {
      * user and the element rejected.
      * @param c Change: a Change instance representing a change into the observed List elements
      */
+
     @Override
-    public void onChanged(Change<? extends AbstractEntity> c) {
+    protected void checkAdded(Change<? extends AbstractEntity> c) {
 
-        c.next();
+        int len = c.getAddedSize(), size = c.getList().size();
 
-        if (c.wasAdded()) {
+        //Getting all the added offers (tipically one at a time)
+        List added = c.getAddedSubList();
 
-            System.out.println("ADDED");
+        double price = subjectList.getPrice();
 
-            int len = c.getAddedSize(), size = c.getList().size();
+        for (int i = 0; i < len; ++i) {
 
-            //Getting all the added offers (tipically one at a time)
-            List added = c.getAddedSubList();
+            if (!(added.get(i) instanceof OffertaEntity)) continue;
+            /**
+             * for every OfferEntity instance in the added sublist,
+             * an evaluation check is performed
+             **/
 
-            for (int i = 0; i < len; ++i) {
+            OffertaEntity newEntity = (OffertaEntity) added.get(i);
 
-                if (!(added.get(i) instanceof OffertaEntity)) continue;
+            int pos = size - len + i;
+            //Absolute position of the entity
+
+            if (pos > 0) {
+
+                OffertaEntity prevEntity = ((PacketList) c.getList()).getPrevious(pos);
                 /**
-                 * for every OfferEntity instance in the added sublist,
-                 * an evaluation check is performed
-                 **/
+                 * Call to getPrevious(int position) method of PacketList;
+                 * see that class documentation for explanation
+                 */
 
-                OffertaEntity newEntity = (OffertaEntity) added.get(i);
-
-                int pos = size - len + i;
-                //Absolute position of the entity
-
-                if (pos > 0) {
-
-                    OffertaEntity prevEntity = ((PacketList) c.getList()).getPrevious(pos);
-                    /**
-                     * Call to getPrevious(int position) method of PacketList;
-                     * see that class documentation for explanation
-                     */
-
-                    if (!checkLocation(prevEntity, newEntity)) {
-                        System.out.println("WRONG LOCATION");
-                        Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").showWarning();
-                        c.getList().remove(pos, size);
-                        return;
-                    }
-
-                    if (!checkDate(prevEntity, newEntity)) {
-                        System.out.println("WRONG TIME");
-                        Notifications.create().text("Le date non sono tra loro coerenti").showWarning();
-                        c.getList().remove(pos, size);
-                        return;
-                    }
+                if (!checkLocation(prevEntity, newEntity)) {
+                    Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").showWarning();
+                    c.getList().remove(pos, size);
+                    return;
                 }
 
-                for (NumberLabel lbl : labels) lbl.updateNumber(newEntity.getPrezzo());
+                if (!checkDate(prevEntity, newEntity)) {
+                    Notifications.create().text("Le date non sono tra loro coerenti").showWarning();
+                    c.getList().remove(pos, size);
+                    return;
+                }
+            }
+
+            if (someOtherAddedCheck(c, newEntity, pos)) {
+                price += newEntity.getPrezzo();
+                updateSubject(price);
+            }
+            else {
+                Notifications.create().text(someOtherAddedMessage()).showWarning();
+                c.getList().remove(pos, size);
+                return;
             }
         }
     }
+
+    protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity, int pos) { return true; }
+    protected String someOtherAddedMessage() { return ""; }
+
+    protected void someOtherRemovedCheck(Change<? extends AbstractEntity> c) { }
+
+    @Override
+    protected void checkRemoved(Change<? extends AbstractEntity> c) {
+
+        int len = c.getRemovedSize();
+        List<AbstractEntity> removed = (List<AbstractEntity>) c.getRemoved();
+
+        if (c.getList().size() == 0) subjectList.setPrice(0.0);
+        else {
+
+            double price = subjectList.getPrice();
+
+            for (int i = 0; i < len; ++i) {
+
+                if (removed.get(i) instanceof OffertaEntity) {
+                    OffertaEntity item = (OffertaEntity) removed.get(i);
+                    price -= item.getPrezzo();
+                }
+            }
+
+            updateSubject(price);
+        }
+
+        someOtherRemovedCheck(c);
+    }
+
+
+
+    protected void updateSubject(double price) { subjectList.setPrice(price); }
 
     /**
      * Utility method for entities temporal comparison

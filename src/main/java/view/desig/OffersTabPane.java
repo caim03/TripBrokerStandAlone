@@ -41,7 +41,10 @@ public class OffersTabPane extends JFXTabPane {
 
         for (int i = 0; i < 3; ++i) {
             if (i == 0) getTabs().add(new SearchTab(tabs[0]));
-            else getTabs().add(new OfferTab(i));
+            else {
+                System.out.println("NUMBER " + i);
+                getTabs().add(new OfferTab(i));
+            }
         }
 
         tabMinWidthProperty().bind(widthProperty().divide(3));
@@ -262,6 +265,8 @@ public class OffersTabPane extends JFXTabPane {
         OfferTab(int i) {
             super(tabs[i]);
             position = i;
+            listView();
+            root();
         }
 
         @Override
@@ -270,8 +275,6 @@ public class OffersTabPane extends JFXTabPane {
             checkBox();
             picker();
             button();
-            listView();
-            root();
         }
 
         @Override
@@ -282,6 +285,7 @@ public class OffersTabPane extends JFXTabPane {
 
         private void listView() {
 
+            System.out.println("LISTVIEW " + tabs[position] + " " + position);
             listView = new DBListView("from ProdottoEntity where tipo like '" + tabs[position] + "'");
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                 command.execute((AbstractEntity) newValue));
@@ -329,6 +333,7 @@ public class OffersTabPane extends JFXTabPane {
                 query += "', '%Y-%m-%d')";
             }
 
+            System.out.println(query);
             return query;
         }
 

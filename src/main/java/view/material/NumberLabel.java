@@ -1,12 +1,14 @@
 package view.material;
 
 import javafx.scene.control.Label;
+import view.observers.Observer;
+import view.observers.Subject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class NumberLabel extends Label {
+public class NumberLabel extends Label implements Observer {
 
     String defaultMsg;
     double number = 0, addMod, prodMod;
@@ -23,31 +25,21 @@ public class NumberLabel extends Label {
     public NumberLabel(String defaultMsg, double number, double addMod, double prodMod) {
 
         this.defaultMsg = defaultMsg;
+        this.number = number;
         this.addMod = addMod;
         this.prodMod = prodMod;
-
-        updateNumber(number);
-    }
-
-    public void updateNumber(double b) {
-
-        double addition = NumberLabel.round((b + addMod) * prodMod);
-
-        number += addition;
-        NumberLabel.round(number);
 
         setText();
     }
 
     public void reset() {
-
         number = 0;
         setText();
     }
 
     public void setText() {
-
-        setText(defaultMsg + new DecimalFormat("#.##").format(number));
+        double modified = NumberLabel.round((number + addMod) * prodMod);
+        setText(defaultMsg + new DecimalFormat("#.##").format(modified));
     }
 
     public double getNumber() {
@@ -64,8 +56,12 @@ public class NumberLabel extends Label {
     public void setMod(double value) {
 
         prodMod = value;
-        updateNumber();
+        setText();
     }
 
-    private void updateNumber() { updateNumber(number); }
+    @Override
+    public void update() {
+        number = (double) subject[0].requestInfo();
+        setText();
+    }
 }

@@ -6,6 +6,8 @@ import controller.GroupTripOverseer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -18,16 +20,19 @@ import model.entityDB.PoliticheEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 import org.jboss.logging.annotations.Message;
+import view.agent.GroupTripList;
+import view.desig.PacketList;
 import view.material.LayerPane;
 import view.material.MaterialSpinner;
 import view.material.NumericField;
+import view.observers.Subject;
 
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class GroupTripFormView extends PacketFormView {
 
     private int current = 999, minimum = 1;
-    private Spinner<Integer> minSpinner, maxSpinner;
+    private ObservantSpinner minSpinner, maxSpinner;
     private GridPane participants;
 
     public GroupTripFormView() {
@@ -37,6 +42,7 @@ public class GroupTripFormView extends PacketFormView {
         Label min = new Label("Minimo "), max = new Label("Massimo ");
 
         participants = new GridPane();
+        participants.setPadding(new Insets(16));
         participants.add(min, 0, 0);
         participants.add(max, 0, 1);
 
@@ -46,8 +52,11 @@ public class GroupTripFormView extends PacketFormView {
             DBManager.shutdown();
 
             Platform.runLater(() -> {
-                minSpinner = new Spinner<>(minimum, current, minimum);
-                maxSpinner = new Spinner<>(minimum, current, minimum);
+                minSpinner = new ObservantSpinner(minimum, current, minimum);
+                maxSpinner = new ObservantSpinner(minimum, current, minimum);
+
+                ((Subject)list.getItems()).subscribe(minSpinner);
+                ((Subject)list.getItems()).subscribe(maxSpinner);
 
                 participants.add(minSpinner, 1, 0);
                 participants.add(maxSpinner, 1, 1);
@@ -58,10 +67,13 @@ public class GroupTripFormView extends PacketFormView {
     }
 
     @Override
-    public void addListener() {
-        GroupTripOverseer overseer = new GroupTripOverseer(this);
-        list.getItems().addListener(overseer);
-        overseer.subscribe(basePrice, maxPrice);
+    protected ObservableList initList() {
+
+        PacketList packetList = new GroupTripList();
+        packetList.subscribe(basePrice);
+        packetList.subscribe(maxPrice);
+
+        return packetList;
     }
 
     @Override
@@ -98,52 +110,6 @@ public class GroupTripFormView extends PacketFormView {
                 Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
             else
                 Notifications.create().text("Errore interno al database").showError();
-        }
-    }
-
-    public void forceRefresh(int max) {
-
-        int minPtr, maxPtr;
-
-        try { minPtr = minSpinner.getValue(); }
-        catch (NullPointerException e) { e.printStackTrace(); return; }
-        catch (NumberFormatException e) { minPtr = minimum; }
-
-        try { maxPtr = maxSpinner.getValue(); }
-        catch (NullPointerException e) { e.printStackTrace(); return; }
-        catch (NumberFormatException e) { maxPtr = minimum; }
-
-        current = max;
-
-        minSpinner = new Spinner<>(minimum, current, minPtr > max ? max : minPtr);
-        maxSpinner = new Spinner<>(minimum, current, maxPtr > max ? max : maxPtr);
-
-        participants.add(minSpinner, 1, 0);
-        participants.add(maxSpinner, 1, 1);
-    }
-
-    public void refreshSpinners(int max) {
-        /** @param int; integer used to refresh spinner values **/
-
-        int minPtr, maxPtr;
-
-        try { minPtr = minSpinner.getValue(); }
-        catch (NullPointerException e) { e.printStackTrace(); return; }
-        catch (NumberFormatException e) { minPtr = minimum; }
-
-        try { maxPtr = maxSpinner.getValue(); }
-        catch (NullPointerException e) { e.printStackTrace(); return; }
-        catch (NumberFormatException e) { maxPtr = minimum; }
-
-        if (current > max) {
-
-            current = max;
-
-            minSpinner = new Spinner<>(minimum, current, minPtr > max ? max : minPtr);
-            maxSpinner = new Spinner<>(minimum, current, maxPtr > max ? max : maxPtr);
-
-            participants.add(minSpinner, 1, 0);
-            participants.add(maxSpinner, 1, 1);
         }
     }
 }

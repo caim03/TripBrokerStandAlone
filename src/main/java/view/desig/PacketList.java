@@ -1,9 +1,13 @@
 package view.desig;
 
+import controller.PacketOverseer;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import model.entityDB.*;
+import view.ObservantSpinner;
+import view.observers.Observer;
 
+import javax.security.auth.Subject;
 import java.util.Date;
 
 /***
@@ -12,9 +16,16 @@ import java.util.Date;
  * wisely selects the previous-in-line offer to be compared with the addition.
  * @param <T> extends OffertaEntity: any OffertaEntity subclass instance
  */
-public class PacketList<T extends OffertaEntity> extends SimpleListProperty<AbstractEntity> {
+public class PacketList<T extends OffertaEntity> extends SimpleListProperty<AbstractEntity> implements view.observers.Subject<Double> {
 
-    public PacketList() { super(FXCollections.observableArrayList()); }
+     Double price = 0.0;
+
+    public PacketList() {
+        super(FXCollections.observableArrayList());
+        addListener();
+    }
+
+    protected void addListener() { addListener(new PacketOverseer(this)); }
 
     /**
      * Main research method provided by the class. It recursively checks for any
@@ -32,7 +43,7 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
          * the PernottamentoEntity. One of them is then returned.
          */
 
-        PernottamentoEntity entity = goDeep(pos - 1);
+        PernottamentoEntity entity = goDeep(pos);
         OffertaEntity realPrev = (OffertaEntity) get(pos - 1);
         Date finale;
         if (realPrev instanceof ViaggioEntity)
@@ -60,4 +71,13 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
 
         else return goDeep(pos - 1);
     }
+
+    @Override public Double requestInfo() { return getPrice(); }
+
+    public void setPrice(double price) {
+        this.price = price;
+        publish();
+    }
+
+    public Double getPrice() { return price; }
 }
