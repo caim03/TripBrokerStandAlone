@@ -77,7 +77,8 @@ public class PacketFormView extends VBox implements Collector {
         list.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (MouseButton.SECONDARY.equals(event.getButton())) {
                 int selected = list.getSelectionModel().getSelectedIndex();
-                if (selected >= 0) list.getItems().remove(selected, list.getItems().size());
+                if (selected >= 0 && selected < list.getItems().size())
+                    list.getItems().remove(selected, list.getItems().size());
             }
             else event.consume();
             list.getSelectionModel().clearSelection();
@@ -87,8 +88,8 @@ public class PacketFormView extends VBox implements Collector {
     protected ObservableList initList() {
 
         PacketList packetList = new PacketList();
-        packetList.subscribe(basePrice);
-        packetList.subscribe(maxPrice);
+        packetList.subscribe(basePrice.getObserverAdapter());
+        packetList.subscribe(maxPrice.getObserverAdapter());
 
         return packetList;
     }

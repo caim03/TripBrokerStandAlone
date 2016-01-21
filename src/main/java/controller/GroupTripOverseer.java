@@ -18,14 +18,12 @@ public class GroupTripOverseer extends PacketOverseer {
 
         int qu = entity.getQuantità();
 
-        boolean result = qu <
+        boolean result = qu >=
                 ((PoliticheEntity) PoliticheDaoHibernate.instance().
                         getById(Constants.minGroup)).getValore();
-        if (result)
-            c.getList().remove(pos, c.getList().size());
-        else ((GroupTripList) subjectList).setQu(qu);
 
-        return !result;
+        if (result)  ((GroupTripList) subjectList).setQu(qu);
+        return result;
     }
 
     @Override
@@ -42,6 +40,6 @@ public class GroupTripOverseer extends PacketOverseer {
             current = current <= (qu = ((OffertaEntity) aList).getQuantità()) ?
                     qu : current;
 
-        ((GroupTripList) subjectList).forceQu(current == 0 ? 999 : current);
+        ((GroupTripList) subjectList).forceQu(current == 0 ? 99 : current);
     }
 }

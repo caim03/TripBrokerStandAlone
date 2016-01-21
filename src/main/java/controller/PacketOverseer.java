@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.util.Duration;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -19,6 +20,11 @@ public class PacketOverseer extends Overseer {
 
     protected PacketList subjectList;
     private static long acceptableDelay = 12 * 3600000;
+    private final Notifications
+            ERROR_LOC = Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
+            ERROR_TME = Notifications.create().text("Le date non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
+            ERROR_CST = Notifications.create().text(someOtherAddedMessage()).hideAfter(Duration.seconds(2));
+
     public PacketOverseer(PacketList subjectList) { this.subjectList = subjectList; }
 
     /***
@@ -63,13 +69,13 @@ public class PacketOverseer extends Overseer {
                  */
 
                 if (!checkLocation(prevEntity, newEntity)) {
-                    Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").showWarning();
+                    ERROR_LOC.showWarning();
                     c.getList().remove(pos, size);
                     return;
                 }
 
                 if (!checkDate(prevEntity, newEntity)) {
-                    Notifications.create().text("Le date non sono tra loro coerenti").showWarning();
+                    ERROR_TME.showWarning();
                     c.getList().remove(pos, size);
                     return;
                 }
@@ -80,7 +86,7 @@ public class PacketOverseer extends Overseer {
                 updateSubject(price);
             }
             else {
-                Notifications.create().text(someOtherAddedMessage()).showWarning();
+                ERROR_CST.showWarning();
                 c.getList().remove(pos, size);
                 return;
             }
@@ -89,8 +95,6 @@ public class PacketOverseer extends Overseer {
 
     protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity, int pos) { return true; }
     protected String someOtherAddedMessage() { return ""; }
-
-    protected void someOtherRemovedCheck(Change<? extends AbstractEntity> c) { }
 
     @Override
     protected void checkRemoved(Change<? extends AbstractEntity> c) {
@@ -117,7 +121,7 @@ public class PacketOverseer extends Overseer {
         someOtherRemovedCheck(c);
     }
 
-
+    protected void someOtherRemovedCheck(Change<? extends AbstractEntity> c) { }
 
     protected void updateSubject(double price) { subjectList.setPrice(price); }
 

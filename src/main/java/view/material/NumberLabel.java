@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class NumberLabel extends Label implements Observer {
+public class NumberLabel extends Label {
 
     String defaultMsg;
     double number = 0, addMod, prodMod;
@@ -59,9 +59,17 @@ public class NumberLabel extends Label implements Observer {
         setText();
     }
 
-    @Override
-    public void update() {
-        number = (double) subject[0].requestInfo();
-        setText();
+    public Observer getObserverAdapter() { return new ObserverAdapter(this); }
+
+    class ObserverAdapter implements Observer {
+
+        NumberLabel adaptee;
+        ObserverAdapter(NumberLabel adaptee) { this.adaptee = adaptee; }
+
+        @Override
+        public void update() {
+            adaptee.number = (double) subject[0].requestInfo();
+            adaptee.setText();
+        }
     }
 }

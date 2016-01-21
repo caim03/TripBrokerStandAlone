@@ -7,28 +7,21 @@ import view.observers.Observer;
 
 public class GroupTripList extends PacketList {
 
-    private int qu = 999;
+    private int qu = 99;
 
     @Override protected void addListener() { addListener(new GroupTripOverseer(this)); }
 
     @Override
     public Double requestInfo(Observer observer) {
-        if (observer instanceof ObservantSpinner) return (double) qu;
+        if (observer instanceof ObservantSpinner.ObserverAdapter) return (double) qu;
         return requestInfo();
-    }
-
-    public int getQu() {
-        return qu;
     }
 
     public void setQu(int qu) { setQu(qu, false); }
     public void forceQu(int qu) { setQu(qu, true); }
 
     private void setQu(int qu, boolean force) {
-
-        System.out.println("QUANTITY " + qu);
         if (force || this.qu > qu) {
-            System.out.println("UPDATED");
             this.qu = qu;
             publishQu();
         }
@@ -36,7 +29,8 @@ public class GroupTripList extends PacketList {
 
     private void publishQu() {
         for (Observer o : observers) {
-            if (o instanceof ObservantSpinner) o.update();
+            if (o instanceof ObservantSpinner.ObserverAdapter)
+                o.update();
         }
     }
 }
