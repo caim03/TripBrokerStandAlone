@@ -10,10 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 /***
- * ListChangeListener implementation used in conjunction with a PacketList
+ * Overseer implementation used in conjunction with a PacketList
  * instance to monitor and eventually refuse Offers addition to an under construction
- * Packet. Offers acceptance or refusal depend on spatial and temporal comparison, as
- * explained below.
+ * Packet. Offers acceptance or refusal depend on spatial and temporal comparison.
  */
 
 public class PacketOverseer extends Overseer {
@@ -26,16 +25,6 @@ public class PacketOverseer extends Overseer {
             ERROR_CST = Notifications.create().text(someOtherAddedMessage()).hideAfter(Duration.seconds(2));
 
     public PacketOverseer(PacketList subjectList) { this.subjectList = subjectList; }
-
-    /***
-     * onChanged method Override.
-     * When a new OfferEntity instance is added to the observed List, this Overseer instance
-     * considers whether or not the inserted object fits into a Packet semantical structure.
-     * It checks both spatial and temporal bounds of the new element and the previous one in the List,
-     * and if they match the Change is allowed; otherwise, a warning notifications is shown to the
-     * user and the element rejected.
-     * @param c Change: a Change instance representing a change into the observed List elements
-     */
 
     @Override
     protected void checkAdded(Change<? extends AbstractEntity> c) {
@@ -81,7 +70,7 @@ public class PacketOverseer extends Overseer {
                 }
             }
 
-            if (someOtherAddedCheck(c, newEntity, pos)) {
+            if (someOtherAddedCheck(c, newEntity)) {
                 price += newEntity.getPrezzo();
                 updateSubject(price);
             }
@@ -93,7 +82,7 @@ public class PacketOverseer extends Overseer {
         }
     }
 
-    protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity, int pos) { return true; }
+    protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity) { return true; }
     protected String someOtherAddedMessage() { return ""; }
 
     @Override

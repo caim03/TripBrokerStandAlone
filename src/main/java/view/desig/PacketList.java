@@ -14,11 +14,13 @@ import java.util.Date;
  * Peculiar ObservableList implementation, used in conjunction with PacketOverseer objects,
  * aimed at supervise offer additions to a Packet under construction. This class
  * wisely selects the previous-in-line offer to be compared with the addition.
+ * It also implements Subject<Double> interface because the total price of OffertaEntity
+ * assembly is monitored by NumberLabel ObserverAdapters.
  * @param <T> extends OffertaEntity: any OffertaEntity subclass instance
  */
 public class PacketList<T extends OffertaEntity> extends SimpleListProperty<AbstractEntity> implements view.observers.Subject<Double> {
 
-     Double price = 0.0;
+    Double price = 0.0;
 
     public PacketList() {
         super(FXCollections.observableArrayList());
@@ -68,8 +70,16 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
         else return goDeep(pos - 1);
     }
 
+    /**
+     * Implementation of requestInfo() Subject method.
+     * @return Double: total price.
+     */
     @Override public Double requestInfo() { return getPrice(); }
 
+    /**
+     * Setter method realizing the publishing routine.
+     * @param price double: total price.
+     */
     public void setPrice(double price) {
         this.price = price;
         publish();

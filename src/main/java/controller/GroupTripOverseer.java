@@ -14,7 +14,7 @@ public class GroupTripOverseer extends PacketOverseer {
     @Override protected void updateSubject(double price) { subjectList.setPrice(price); }
 
     @Override
-    protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity, int pos) {
+    protected boolean someOtherAddedCheck(Change<? extends AbstractEntity> c, OffertaEntity entity) {
 
         int qu = entity.getQuantità();
 
