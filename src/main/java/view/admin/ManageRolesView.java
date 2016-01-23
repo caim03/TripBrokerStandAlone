@@ -17,7 +17,8 @@ import view.DBTablePane;
 
 import java.util.List;
 
-public class ManageRolesView extends DBTablePane{
+public class ManageRolesView extends DBTablePane {
+
     @Override
     protected List<? extends AbstractEntity> query() {
         List<DipendentiEntity> entities;

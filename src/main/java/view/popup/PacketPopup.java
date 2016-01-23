@@ -2,13 +2,16 @@ package view.popup;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.DBManager;
+import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.OffertaDaoHibernate;
 import model.dao.PacchettoOffertaDaoHibernate;
 import model.entityDB.AbstractEntity;
@@ -17,13 +20,17 @@ import model.entityDB.OffertaEntity;
 import model.entityDB.PacchettoOffertaEntity;
 import view.material.DBCell;
 import view.material.DBListView;
+import view.material.ProgressCircle;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class PacketPopup extends PopupView {
 
+    private int id;
+    private GridPane container = new GridPane();
     private CreaPacchettoEntity entity;
     private ListView list;
 
@@ -31,10 +38,41 @@ public class PacketPopup extends PopupView {
 
         this.entity = prodottoEntity;
         this.title = "Pacchetto";
+        container.setAlignment(Pos.CENTER);
+    }
+
+    public PacketPopup(int id) {
+
+        this.id = id;
+        this.title = "Pacchetto";
+        container.setAlignment(Pos.CENTER);
     }
 
     @Override
     protected Parent generatePopup() {
+
+        if (entity == null) {
+
+            ProgressCircle circle = ProgressCircle.circleElevated();
+            container.getChildren().add(circle);
+            new Thread(() -> {
+                CreaPacchettoEntity entity =
+                        (CreaPacchettoEntity) CreaPacchettoDaoHibernate.instance().getById(id);
+                Platform.runLater(() -> {
+                    container.getChildren().remove(circle);
+                    this.entity = entity;
+                    container.getChildren().add(generate());
+                });
+            }).start();
+
+            return container;
+        }
+        else container.getChildren().add(generate());
+
+        return container;
+    }
+
+    private Parent generate() {
 
         String state;
 

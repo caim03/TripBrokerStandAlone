@@ -30,7 +30,7 @@ public class ModifyPoliticsView extends DBTablePane {
         valColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("valore"));
 
         list.getColumns().addAll(idColumn, nameColumn, valColumn);
-        list.setOnMouseClicked(event -> ModifyPoliticsController.handle(list));
+        list.setOnMouseClicked(event -> ModifyPoliticsController.handle(list, this));
 
         list.setMaxHeight(Double.MAX_VALUE);
         list.setMaxWidth(Double.MAX_VALUE);

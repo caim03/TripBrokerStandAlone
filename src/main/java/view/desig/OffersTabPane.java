@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import jfxtras.scene.control.CalendarTimeTextField;
 import model.DBManager;
+import model.Route;
 import model.dao.EventoDaoHibernate;
 import model.dao.PernottamentoDaoHibernate;
 import model.entityDB.AbstractEntity;
@@ -39,24 +40,28 @@ public class OffersTabPane extends JFXTabPane {
 
         this.command = command;
 
-        for (int i = 0; i < 3; ++i) {
-            if (i == 0) getTabs().add(new SearchTab(tabs[0]));
-            else {
-                System.out.println("NUMBER " + i);
-                getTabs().add(new OfferTab(i));
-            }
-        }
-
         tabMinWidthProperty().bind(widthProperty().divide(3));
         tabMaxWidthProperty().bind(widthProperty().divide(3));
 
         getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue.equals(newValue)) return;
-            ListView list = ((CustomTab) getTabs().get(newValue.intValue())).getListView();
-            if (list != null && list.getItems().isEmpty()) list.refresh();
+            int n = (int) newValue;
+            CustomTab tab = (CustomTab) getTabs().get(n);
+            if (tab.isEmpty()) tab.instanciate();
+            ListView list;
+            if (n != 0 && (list = tab.getListView()).getItems().isEmpty()) list.refresh();
         });
 
         setStyle("-fx-background-color: white");
+
+        for (int i = 0; i < 3; ++i) {
+            if (i == 0) {
+                CustomTab tab = new SearchTab(tabs[0]);
+                tab.instanciate();
+                getTabs().add(tab);
+            }
+            else getTabs().add(new OfferTab(i));
+        }
     }
 
     @Override protected Skin<?> createDefaultSkin() {
@@ -64,6 +69,9 @@ public class OffersTabPane extends JFXTabPane {
     }
 
     abstract class CustomTab extends Tab {
+
+        private boolean empty = true;
+        boolean isEmpty() { return empty; }
 
         protected VBox root = new VBox();
         protected GridPane fieldsGrid = new GridPane();
@@ -74,11 +82,15 @@ public class OffersTabPane extends JFXTabPane {
 
         CustomTab(String title) {
             super(title);
-            generate();
-            setContent(root);
         }
 
         abstract ListView getListView() ;
+
+        public void instanciate() {
+            generate();
+            setContent(root);
+            empty = false;
+        }
         protected abstract void generate() ;
         protected void root() {
             grid();
@@ -132,7 +144,6 @@ public class OffersTabPane extends JFXTabPane {
 
         private void checkBox() {
             checkBox = new CheckBox();
-
             checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override public void changed(ObservableValue<? extends Boolean> observable,
                                               Boolean oldValue, Boolean newValue) { set(!newValue); }
@@ -186,17 +197,17 @@ public class OffersTabPane extends JFXTabPane {
             return progressCircle;
         }
 
-        private void showResults(List<BFSearchStrategy.Station> stations) {
+        private void showResults(List<Route> routes) {
 
             listView.getItems().clear();
-            boolean empty = stations == null;
+            boolean empty = routes == null;
             if (!empty) {
-                for (SearchStrategy.Node node : stations) listView.getItems().add(node);
+                for (Route route : routes) listView.getItems().add(route);
 
                 listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     listView.getSelectionModel().clearSelection();
                     if (newValue != null) {
-                        for (ViaggioEntity entity : ((BFSearchStrategy.Station) newValue).climbUp())
+                        for (ViaggioEntity entity : (Route) newValue)
                             command.execute(entity);
                     }
                 });
@@ -210,18 +221,15 @@ public class OffersTabPane extends JFXTabPane {
 
             searchBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 if (goAhead()) {
-                    String fromText = field.getText();
-                    BFSearchStrategy.Arrival start = new BFSearchStrategy.Arrival(fromText, getTimestamp()),
-                            end = new BFSearchStrategy.Arrival(to.getText(), null);
 
                     listGrid.getChildren().clear();
                     Node circle = circle();
 
                     new DeamonThread(() -> {
-                        List<BFSearchStrategy.Station> stations = getSearchStrategy().
-                                search(new BFSearchStrategy.Arrival[]{start, end});
+                        List<Route> routes = getSearchStrategy().
+                                search(field.getText(), to.getText(), getTimestamp());
                         Platform.runLater(() -> {
-                            showResults(stations);
+                            showResults(routes);
                             listGrid.getChildren().remove(circle);
                         });
                     }).start();
@@ -246,7 +254,7 @@ public class OffersTabPane extends JFXTabPane {
             root.getChildren().addAll(fieldsGrid, listGrid);
         }
 
-        private SearchStrategy getSearchStrategy() {
+        private BFSearchStrategy getSearchStrategy() {
 
             int pos = Integer.parseInt(((RadioButton) toggleGroup.getSelectedToggle()).getId());
 
@@ -265,8 +273,6 @@ public class OffersTabPane extends JFXTabPane {
         OfferTab(int i) {
             super(tabs[i]);
             position = i;
-            listView();
-            root();
         }
 
         @Override
@@ -275,6 +281,8 @@ public class OffersTabPane extends JFXTabPane {
             checkBox();
             picker();
             button();
+            listView();
+            root();
         }
 
         @Override
@@ -284,8 +292,6 @@ public class OffersTabPane extends JFXTabPane {
         }
 
         private void listView() {
-
-            System.out.println("LISTVIEW " + tabs[position] + " " + position);
             listView = new DBListView("from ProdottoEntity where tipo like '" + tabs[position] + "'");
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                 command.execute((AbstractEntity) newValue));
@@ -333,7 +339,6 @@ public class OffersTabPane extends JFXTabPane {
                 query += "', '%Y-%m-%d')";
             }
 
-            System.out.println(query);
             return query;
         }
 

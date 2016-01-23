@@ -2,10 +2,8 @@ package view;
 
 import controller.Constants;
 import controller.PacketAssembleController;
-import controller.PacketOverseer;
 import controller.command.TransferRecordCommand;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,7 +42,7 @@ public class PacketFormView extends VBox implements Collector {
 
         new Thread(() -> {
             DBManager.initHibernate();
-            PoliticheEntity entity0 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprize),
+            PoliticheEntity entity0 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprice),
                             entity1 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.maxOverprice);
             DBManager.shutdown();
             Platform.runLater(() -> {

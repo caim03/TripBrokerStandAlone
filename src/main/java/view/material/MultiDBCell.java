@@ -6,13 +6,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.Route;
 import model.entityDB.*;
 import view.material.cellcreator.BookingCellCreator;
 import view.material.cellcreator.EventCellCreator;
 import view.material.cellcreator.StayCellCreator;
 import view.material.cellcreator.TravelCellCreator;
 
-public class MultiDBCell<T extends BFSearchStrategy.Station> extends MaterialCell<T> {
+import java.util.List;
+
+public class MultiDBCell<T extends Route> extends MaterialCell<T> {
 
     @Override
     protected void updateItem(T item, boolean empty) {
@@ -27,12 +30,12 @@ public class MultiDBCell<T extends BFSearchStrategy.Station> extends MaterialCel
             return;
         }
 
-        Label lbl = new Label(item.weightToString());
+        Label lbl = new Label(item.getValue());
         lbl.setPadding(new Insets(16));
 
         VBox node = new VBox(lbl);
 
-        for (AbstractEntity entity : item.climbUp())
+        for (AbstractEntity entity : item)
             node.getChildren().add(getNode(entity)); //Region superclass grants access to width and height properties
         //node is then properly initialized
 

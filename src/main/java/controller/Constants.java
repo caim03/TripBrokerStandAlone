@@ -28,7 +28,7 @@ public class Constants {
                          train = "Treno",
                          boat  = "Nave";
 
-    public static final int minOverprize = 1,
+    public static final int minOverprice = 1,
                             maxOverprice = 2,
                                 discount = 3,
                                 minGroup = 4;

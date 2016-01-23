@@ -1,11 +1,11 @@
 package view.popup;
 
+import controller.Constants;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -14,33 +14,33 @@ import model.dao.PoliticheDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.PoliticheEntity;
 import org.controlsfx.control.Notifications;
+import view.material.FlatButton;
 import view.material.MaterialPopup;
+import view.material.NumericField;
 
 
 public class PoliticsPopup extends PopupView {
 
-    private PoliticheEntity politicheEntity;
-    private TextField nameTxt, minTxt, maxTxt;
+    private PoliticheEntity entity;
+    private NumericField field;
     private Button modButton;
 
-    public PoliticsPopup(PoliticheEntity politicheEntity) {
-
-        this.politicheEntity = politicheEntity;
+    public PoliticsPopup(PoliticheEntity entity) {
+        this.entity = entity;
         this.title = "Politiche";
     }
 
     @Override
     protected Parent generatePopup() {
 
-        nameTxt = new TextField();
-        minTxt = new TextField();
-        maxTxt = new TextField();
+        Label politic = new Label(entity.getNome());
+        Label description = new Label(entity.getDescrizione());
 
-        modButton = new Button("Modifica");
+        field = new NumericField(false);
+        field.setText(entity.toString());
+        field.setPromptText("Inserisci il nuovo valore");
 
-        Label nameLbl = new Label("Nome:"),
-                minLbl = new Label("Percentuale minima:"),
-                maxLbl = new Label("Percentuale massima:");
+        modButton = new FlatButton("Modifica");
 
         GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -48,16 +48,11 @@ public class PoliticsPopup extends PopupView {
         pane.setVgap(8);
         pane.setPadding(new Insets(25, 25, 25, 25));
 
-        pane.add(nameLbl, 0, 0);
-        pane.add(minLbl, 0, 1);
-        pane.add(maxLbl, 0, 2);
-        pane.add(modButton, 0, 3);
-
-        pane.add(nameTxt, 1, 0);
-        pane.add(minTxt, 1, 1);
-        pane.add(maxTxt, 1, 2);
-
-        modButton.setOnMouseClicked(parent.getListener(new ModifyController(), true));
+        pane.add(politic, 0, 0);
+        pane.add(description, 0, 1);
+        pane.add(field, 0, 2);
+        if (entity.getId() != Constants.minGroup) pane.add(new Label("%"), 1, 2);
+        pane.add(modButton, 1, 3);
 
         return new VBox(40, pane);
     }
@@ -69,30 +64,65 @@ public class PoliticsPopup extends PopupView {
         modButton.setOnMouseClicked(parent.getListener(new ModifyController(), true));
     }
 
-    class ModifyController implements EventHandler<MouseEvent>{
+    class ModifyController implements EventHandler<MouseEvent> {
 
         @Override
         public void handle(MouseEvent event) {
-            String namePolitic, minPerc, maxPerc;
-
-            namePolitic = nameTxt.getText();
-            minPerc = minTxt.getText();
-            maxPerc = maxTxt.getText();
-
-            if ("".equals(namePolitic)){
-                politicheEntity.setNome(namePolitic);
-            }
-
-            if ("".equals(minPerc)){
-                politicheEntity.setValore(Double.parseDouble(minPerc));
-            }
 
             DAO dao = PoliticheDaoHibernate.instance();
+            double newValue = field.getNumber();
+            newValue = polishValue(newValue);
+            String msg;
+            if ((msg = evaluate(newValue)) != null) {
+                Notifications.create().text(msg).showWarning();
+                return;
+            }
+
+            entity.setValore(newValue);
+
             DBManager.initHibernate();
-            dao.update(politicheEntity);
+            dao.update(entity);
             DBManager.shutdown();
 
             Notifications.create().title("Modificata").text("La politica è stata modificata con successo").show();
+        }
+
+        private String evaluate(double newValue) {
+
+            DAO dao = PoliticheDaoHibernate.instance();
+
+            switch (entity.getId()) {
+                case Constants.minOverprice:
+                    double maxValue = ((PoliticheEntity) dao.getById(Constants.maxOverprice)).getValore();
+                    double discount = ((PoliticheEntity) dao.getById(Constants.discount)).getValore();
+                    if (newValue >= maxValue) return "Il nuovo valore eccede quello del sovrapprezzo massimo";
+                    else if (newValue * discount < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
+                    break;
+                case Constants.maxOverprice:
+                    double minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
+                    if (newValue <= minValue) return "Il sovrapprezzo massimo è inferiore a quello minimo";
+                    break;
+                case Constants.discount:
+                    minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
+                    if (minValue * newValue < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
+                    break;
+                case Constants.minGroup: default:
+                    if (newValue < 2) return "Un viaggio di gruppo dev'essere composto da almeno 2 persone";
+            }
+
+            return null;
+        }
+
+        private double polishValue(double value) {
+
+            switch (entity.getId()) {
+                case Constants.discount:
+                    return 1 - value / 100.0;
+                case Constants.minGroup:
+                    return value;
+                default:
+                    return 1 + value / 100.0;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package controller.strategy;
 
 import model.DBManager;
+import model.Route;
 import model.dao.ViaggioDaoHibernate;
 import model.entityDB.ViaggioEntity;
 
@@ -17,9 +18,15 @@ import java.util.List;
  * algorithm needs.
  */
 
-public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.Arrival[]> {
+public abstract class BFSearchStrategy extends SearchStrategy<Arrival[]> {
 
     int limit = Integer.MAX_VALUE; //default results number limit
+
+    public List<Route> search(String departure, String destination, Timestamp timestamp) {
+        return search(new Arrival[] {
+                new Arrival(departure, timestamp),
+                new Arrival(destination) });
+    }
 
     /**
      * search method implementation. It checks arguments before actually doing research.
@@ -29,7 +36,7 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
      *                        from them via climbUp() method.
      */
     @Override
-    public List<Station> search(Arrival[] factor) {
+    public List<Route> search(Arrival[] factor) {
 
         if (factor.length != 2) return null;
 
@@ -38,7 +45,7 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
 
         DBManager.initHibernate(); //DB initialization and lock
 
-        List<Station> aggregate = bfsearch(makeNode(from), to.city); //Actual search
+        List<Route> aggregate = bfsearch(makeNode(from), to.getCity()); //Actual search
 
         DBManager.shutdown(); //DB release
 
@@ -51,7 +58,7 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
      * @param to String: arrival city name.
      * @return List<Station>: same as search return value.
      */
-    private List<Station> bfsearch(Station from, String to) {
+    private List<Route> bfsearch(Station from, String to) {
 
         List<Station> results = new ArrayList<>(); //@return
         List<ViaggioEntity> partial = new ArrayList<>(), buffer; //ViaggioEntity buffer
@@ -97,7 +104,11 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
             }
         }
 
-        return results.size() > 0 ? results : null;
+        List<Route> wrap = new ArrayList<>();
+
+        for (Station station : results) wrap.add(new Route(station.climbUp(), station.weightToString()));
+
+        return wrap.size() > 0 ? wrap : null;
     }
 
     /***
@@ -108,18 +119,18 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
     private String query(Arrival arrival) {
 
         String query = "where stazionePartenza like '";
-        query += arrival.city;
+        query += arrival.getCity();
         query += "'";
         //City constraint
 
-        if (arrival.arrival != null) {
+        if (arrival.getArrival() != null) {
             query += " and dataInizio between ";
             query += "str_to_date('";
-            query += new SimpleDateFormat("yyyy-MM-dd HH:mm").format(arrival.arrival);
+            query += new SimpleDateFormat("yyyy-MM-dd HH:mm").format(arrival.getArrival());
             query += "', '%Y-%m-%d %k:%i') and ";
             query += "str_to_date('";
             query += new SimpleDateFormat("yyyy-MM-dd HH:mm").
-                    format(new Timestamp(arrival.arrival.getTime() + 24 * 3600000));
+                    format(new Timestamp(arrival.getArrival().getTime() + 24 * 3600000));
             query += "', '%Y-%m-%d %k:%i')";
         }
         //Timestamp constraint; initial steps may omit a starting time
@@ -215,27 +226,5 @@ public abstract class BFSearchStrategy extends SearchStrategy<BFSearchStrategy.A
          */
         @Override
         public String toString() { return this.acorn.toString(); }
-    }
-
-    /**
-     * Acorn class; Station instances wraps up this value for search management.
-     * It contains a city name and (usually) a timestamp indicating time of arrival.
-     * Timestamp is needed to select other relatively forthcoming travels; however,
-     * it can be omitted, with no strong repercussions on the search algorithm.
-     */
-    public static class Arrival {
-
-        private String city; //Arriving city name
-        private Timestamp arrival; //Time of arrival
-
-        /**
-         * Main constructor.
-         * @param city String: the city name.
-         * @param arrival Timestamp: time of arrival.
-         */
-        public Arrival(String city, Timestamp arrival) {
-            this.city = city;
-            this.arrival = arrival;
-        }
     }
 }

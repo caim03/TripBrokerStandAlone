@@ -43,8 +43,7 @@ public class TableViewController implements EventHandler<MouseEvent> {
             popupView = new GroupTripPopup((ViaggioGruppoEntity) entity);
 
         else {
-
-            popupView = new PacketPopup((CreaPacchettoEntity) entity);
+            popupView = new PacketPopup(entity.getId());
             if (pane instanceof PacketApproveView)
                 popupView = new ApprovalPopup(popupView, (CreaPacchettoEntity) entity, tableView);
         }

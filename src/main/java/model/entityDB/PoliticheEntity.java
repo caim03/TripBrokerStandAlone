@@ -1,5 +1,7 @@
 package model.entityDB;
 
+import controller.Constants;
+
 import javax.persistence.*;
 
 @Entity
@@ -63,5 +65,18 @@ public class PoliticheEntity extends AbstractEntity {
         result = 31 * result + (nome == null ? 0 : nome.hashCode());
         result = 31 * result + (descrizione == null ? 0 : descrizione.hashCode());
         return result;
+    }
+
+    @Override
+    public String toString() {
+
+        switch (id) {
+            case Constants.minGroup:
+                return String.valueOf((int) valore);
+            case Constants.discount:
+                return String.valueOf((int) ((1 - valore) * 100));
+            default:
+                return String.valueOf((int) ((valore - 1) * 100));
+        }
     }
 }
