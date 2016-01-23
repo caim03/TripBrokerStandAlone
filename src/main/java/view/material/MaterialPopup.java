@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import view.popup.PopupView;
 
@@ -15,12 +16,19 @@ public class MaterialPopup extends GridPane {
     PopupView popup;
     EventHandler defaultEventHandler;
 
-    public MaterialPopup(LayerPane parent, PopupView popup) {
+    public MaterialPopup(LayerPane parent, PopupView popup) { this(parent, popup, false); }
 
+    public MaterialPopup(LayerPane parent, PopupView popup, boolean fullscreen) {
         this.parent = parent;
         this.popup = popup;
 
-        getChildren().add(this.popup.getGui());
+        Region view = (Region) this.popup.getGui();
+        if (fullscreen) {
+            view.prefHeightProperty().bind(heightProperty());
+            view.prefWidthProperty().bind(widthProperty());
+        }
+        getChildren().add(view);
+
         this.popup.setParent(this);
 
         setStyle("-fx-background-color: #82828282");
@@ -34,6 +42,7 @@ public class MaterialPopup extends GridPane {
             if (!this.popup.getGui().contains(x, y)) hide();
         });
     }
+
 
     public void show() { parent.attach(this); }
     public void hide() { parent.pop(); }

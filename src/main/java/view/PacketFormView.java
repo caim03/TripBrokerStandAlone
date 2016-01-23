@@ -31,7 +31,7 @@ public class PacketFormView extends VBox implements Collector {
 
     public PacketFormView() {
 
-        Label name = new Label("Name"), price = new Label("Price");
+        Label name = new Label("Nome: "), price = new Label("Prezzo: ");
         name.setAlignment(Pos.CENTER_LEFT);
         price.setAlignment(Pos.CENTER_LEFT);
 

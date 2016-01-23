@@ -22,7 +22,7 @@ public class Agente extends Ruolo {
     protected void addCommands() throws ClassNotFoundException {
         container.addCommands(
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), //Show Catalog command
-                new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.agent.GroupTripAssembleView"))), //Show group trip assemble interface
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.GroupTripAssembleView"))), //Show group trip assemble interface
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.GroupTripBookingView"))), //Show booking interface
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.ManageBookingView"))), //Show booking management GUI
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.agent.SellProductView"))), //Show product selling GUI

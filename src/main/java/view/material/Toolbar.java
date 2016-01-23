@@ -18,6 +18,7 @@ import java.io.IOException;
 public class Toolbar extends HBox {
 
     @FXML Label title;
+    FlatButton backBtn = new FlatButton("Indietro");
 
     public Toolbar() {
 
@@ -60,5 +61,9 @@ public class Toolbar extends HBox {
         int size = getChildren().size();
         if (size > 2)
             getChildren().remove(2, size);
+    }
+
+    public void dismissBackButton() {
+        getChildren().remove(backBtn);
     }
 }

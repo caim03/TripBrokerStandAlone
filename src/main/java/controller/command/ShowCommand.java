@@ -1,9 +1,13 @@
 package controller.command;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import view.Collector;
 import view.material.ConsolePane;
+import view.material.FlatButton;
 
 /**
  * Command implementation that allows for on-the-fly creation of a certain GUI element and its

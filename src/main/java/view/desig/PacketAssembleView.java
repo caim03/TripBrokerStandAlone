@@ -1,11 +1,13 @@
 package view.desig;
 
-import controller.command.ButtonInvoker;
-import controller.command.Command;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import view.Collector;
 import view.PacketFormView;
 import view.material.FloatingActionButton;
@@ -23,8 +25,8 @@ public class PacketAssembleView extends GridPane implements Collector {
 
         OffersTabPane lists = new OffersTabPane(form.getCommand());
 
-        Button button = new FloatingActionButton();
-        button.setOnMouseClicked(new ButtonInvoker(new Command() { @Override public void execute() { form.clear(); } }));
+        Button button = new FloatingActionButton(new Image("create.png"));
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> harvest());
 
         AnchorPane base = new AnchorPane(lists, form, button);
         setHgrow(base, Priority.ALWAYS);
@@ -43,7 +45,10 @@ public class PacketAssembleView extends GridPane implements Collector {
         form.prefWidthProperty().bind(base.widthProperty().divide(2));
 
         base.widthProperty().addListener((observable, oldValue, newValue) -> {
-            AnchorPane.setLeftAnchor(button, newValue.doubleValue() / 2 - 32);
+            if (newValue != null) {
+                double value = newValue.doubleValue() / 2;
+                AnchorPane.setLeftAnchor(button, value - 32);
+            }
         });
 
         lists.setMaxWidth(Double.MAX_VALUE);
@@ -52,13 +57,7 @@ public class PacketAssembleView extends GridPane implements Collector {
         getChildren().addAll(base);
     }
 
-    public PacketAssembleView() {
+    public PacketAssembleView() { this(new PacketFormView()); }
 
-        this(new PacketFormView());
-    }
-
-    public void harvest() {
-
-        form.harvest();
-    }
+    public void harvest() { form.harvest(); }
 }

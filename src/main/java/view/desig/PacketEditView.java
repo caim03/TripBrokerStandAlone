@@ -10,6 +10,8 @@ import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import view.DBTablePane;
 import view.PacketFormView;
+import view.material.MaterialPopup;
+import view.popup.FormPopup;
 
 import java.util.List;
 
@@ -47,9 +49,15 @@ public class PacketEditView extends DBTablePane {
 
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
-            if (newValue != null)
-                list.setVisible(false);
-                attach(new PacketAssembleView(new PacketFormView((CreaPacchettoEntity) newValue)));
+            if (newValue != null) {
+                MaterialPopup popup = new MaterialPopup(PacketEditView.this,
+                        new FormPopup(
+                                new PacketAssembleView(
+                                        new PacketFormView(
+                                                (CreaPacchettoEntity) newValue))), true);
+
+                popup.show();
+            }
         });
 
         list.setMaxHeight(Double.MAX_VALUE);
