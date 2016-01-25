@@ -1,5 +1,6 @@
 package controller;
 
+import controller.builder.EntityBuilder;
 import model.DBManager;
 import model.dao.DAO;
 import model.dao.EventoDaoHibernate;

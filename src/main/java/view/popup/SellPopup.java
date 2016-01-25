@@ -1,6 +1,6 @@
 package view.popup;
 
-import controller.SellController;
+import controller.agent.SellController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;

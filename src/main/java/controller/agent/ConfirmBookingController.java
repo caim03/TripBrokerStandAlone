@@ -1,4 +1,4 @@
-package controller;
+package controller.agent;
 
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;

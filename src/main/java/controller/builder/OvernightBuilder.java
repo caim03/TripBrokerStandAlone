@@ -1,4 +1,4 @@
-package controller;
+package controller.builder;
 
 import model.entityDB.PernottamentoEntity;
 
@@ -7,7 +7,7 @@ public class OvernightBuilder extends EntityBuilder<PernottamentoEntity, EntityB
     public OvernightBuilder() { entity = new PernottamentoEntity(); }
 
     @Override
-    protected void buildEntity(OvernightArguments arguments) {
+    public void buildEntity(OvernightArguments arguments) {
         entity.setDataFinale(arguments.date);
         entity.setServizio(arguments.service);
         entity.setQualità(arguments.quality);

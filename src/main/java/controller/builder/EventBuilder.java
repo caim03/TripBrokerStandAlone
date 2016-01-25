@@ -1,16 +1,13 @@
-package controller;
+package controller.builder;
 
 import model.entityDB.EventoEntity;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 
 public class EventBuilder extends EntityBuilder<EventoEntity, EntityBuilder.EventArguments> {
 
     public EventBuilder() { entity = new EventoEntity(); }
 
     @Override
-    protected void buildEntity(EventArguments arguments) {
+    public void buildEntity(EventArguments arguments) {
         entity.setDataFine(arguments.date);
         entity.setLuogo(arguments.location);
     }

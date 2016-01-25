@@ -1,6 +1,6 @@
 package view.agent;
 
-import controller.GroupTripOverseer;
+import controller.agent.GroupTripOverseer;
 import view.ObservantSpinner;
 import view.desig.PacketList;
 import view.observers.Observer;

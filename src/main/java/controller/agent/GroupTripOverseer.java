@@ -1,5 +1,7 @@
-package controller;
+package controller.agent;
 
+import controller.Constants;
+import controller.PacketOverseer;
 import model.dao.PoliticheDaoHibernate;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;

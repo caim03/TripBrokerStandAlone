@@ -1,6 +1,6 @@
 package view.popup;
 
-import controller.BookingController;
+import controller.agent.BookingController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

@@ -1,7 +1,7 @@
 package view;
 
 import controller.Constants;
-import controller.GroupTripAssembleController;
+import controller.agent.GroupTripAssembleController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

@@ -1,5 +1,6 @@
-package controller;
+package controller.builder;
 
+import controller.Constants;
 import model.entityDB.OffertaEntity;
 
 import java.sql.Timestamp;
@@ -44,7 +45,7 @@ public abstract class EntityBuilder<T extends OffertaEntity, A extends EntityBui
         entity.setDataInizio(date);
     }
 
-    public abstract EntityBuilder buildEntity(A arguments);
+    public abstract void buildEntity(A arguments);
 
     public static EntityBuilder getBuilder(String type) {
         if (Constants.travel.equals(type)) return new TravelBuilder();

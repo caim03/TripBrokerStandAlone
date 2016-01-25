@@ -1,5 +1,6 @@
-package controller;
+package controller.agent;
 
+import controller.Constants;
 import model.DBManager;
 import model.dao.GruppoOffertaDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;

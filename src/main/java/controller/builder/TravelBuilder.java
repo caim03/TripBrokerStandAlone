@@ -1,8 +1,6 @@
-package controller;
+package controller.builder;
 
 import model.entityDB.ViaggioEntity;
-import java.sql.Date;
-import java.sql.Timestamp;
 
 public class TravelBuilder extends EntityBuilder<ViaggioEntity, EntityBuilder.TravelArguments> {
 

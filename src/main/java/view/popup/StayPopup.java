@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.entityDB.PernottamentoEntity;
 
+import java.text.SimpleDateFormat;
+
 public class StayPopup extends PopupView {
     PernottamentoEntity pernottamentoEntity;
 
@@ -53,8 +55,8 @@ public class StayPopup extends PopupView {
         pane.add(new Text(pernottamentoEntity.getCittà()), 1, 2);
         pane.add(new Text(Integer.toString(pernottamentoEntity.getQuantità())), 1, 3);
         pane.add(new Text(Integer.toString(pernottamentoEntity.getPrenotazioni())), 1, 4);
-        pane.add(new Text(pernottamentoEntity.getDataInizio().toString()), 1, 5);
-        pane.add(new Text(pernottamentoEntity.getDataFinale().toString()), 1, 6);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(pernottamentoEntity.getDataInizio())), 1, 5);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(pernottamentoEntity.getDataFinale())), 1, 6);
         pane.add(new Text(pernottamentoEntity.getQualità()),1, 7);
         pane.add(new Text(pernottamentoEntity.getServizio()),1, 8);
         pane.add(new Text(pernottamentoEntity.getLuogo()), 1, 9);
