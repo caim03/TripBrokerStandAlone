@@ -75,6 +75,10 @@ public abstract class EntityBuilder<T extends OffertaEntity, A extends EntityBui
         protected Arguments(Timestamp date) { this.date = date; }
 
         public Timestamp getDate() { return this.date; }
+
+        public void setDate(Timestamp timestamp) {
+            this.date = timestamp;
+        }
     }
 
     protected static class TravelArguments extends Arguments {

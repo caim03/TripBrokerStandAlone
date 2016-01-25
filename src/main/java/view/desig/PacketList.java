@@ -60,7 +60,7 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
             return realPrev;
     }
 
-    public PernottamentoEntity goDeep(int pos) {
+    protected PernottamentoEntity goDeep(int pos) {
 
         if (pos > size() || pos < 1) return null; //Invalid position; also, recursion base
 
