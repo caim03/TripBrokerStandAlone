@@ -44,10 +44,20 @@ public abstract class EntityBuilder<T extends OffertaEntity, A extends EntityBui
         entity.setDataInizio(date);
     }
 
-    protected abstract void buildEntity(A arguments);
+    public abstract EntityBuilder buildEntity(A arguments);
+
+    public static EntityBuilder getBuilder(String type) {
+        if (Constants.travel.equals(type)) return new TravelBuilder();
+        else if (Constants.event.equals(type)) return new EventBuilder();
+        else if (Constants.stay.equals(type)) return new OvernightBuilder();
+        return null;
+    }
+
     /** **/
 
     public static class Arguments {
+
+        protected Timestamp date;
 
         public static Arguments from(String destination, Timestamp arrivalDate, String vehicle, String quality) {
             return new TravelArguments(destination, arrivalDate, vehicle, quality);
@@ -60,42 +70,43 @@ public abstract class EntityBuilder<T extends OffertaEntity, A extends EntityBui
         public static Arguments from(String location, String service, String quality, Timestamp checkOut) {
             return new OvernightArguments(location, service, quality, checkOut);
         }
+
+        protected Arguments(Timestamp date) { this.date = date; }
+
+        public Timestamp getDate() { return this.date; }
     }
 
     protected static class TravelArguments extends Arguments {
 
         protected String destination, vehicle, quality;
-        protected Timestamp arrivalDate;
 
         public TravelArguments(String destination, Timestamp arrivalDate, String vehicle, String quality) {
+            super(arrivalDate);
             this.destination = destination;
             this.vehicle = vehicle;
             this.quality = quality;
-            this.arrivalDate = arrivalDate;
         }
     }
 
     protected static class EventArguments extends Arguments {
 
         protected String location;
-        protected Timestamp endDate;
 
         public EventArguments(String location, Timestamp endDate) {
+            super(endDate);
             this.location = location;
-            this.endDate = endDate;
         }
     }
 
     protected static class OvernightArguments extends Arguments {
 
         protected String location, service, quality;
-        protected Timestamp checkOut;
 
         public OvernightArguments(String location, String service, String quality, Timestamp checkOut) {
+            super(checkOut);
             this.location = location;
             this.service = service;
             this.quality = quality;
-            this.checkOut = checkOut;
         }
     }
 }

@@ -12,7 +12,7 @@ public class TravelBuilder extends EntityBuilder<ViaggioEntity, EntityBuilder.Tr
     public void buildEntity(TravelArguments arguments) {
 
         entity.setDestinazione(arguments.destination);
-        entity.setDataArrivo(arguments.arrivalDate);
+        entity.setDataArrivo(arguments.date);
         entity.setMezzo(arguments.vehicle);
         entity.setClasse(arguments.quality);
     }

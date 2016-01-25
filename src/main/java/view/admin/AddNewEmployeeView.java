@@ -1,6 +1,6 @@
 package view.admin;
 
-import controller.AddNewEmployeeController;
+import controller.admin.AddNewEmployeeController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

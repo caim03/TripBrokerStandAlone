@@ -16,10 +16,11 @@ public class InsertOfferController {
 
     public static boolean handle(String name, double price, int qu, String type,
                                  String city, Timestamp date, EntityBuilder.Arguments arguments) {
-        if (!checkStrings(name, type, city) || qu < 1 || price <= 0 || arguments == null)
+        if (!checkStrings(name, type, city) || qu < 1 || price <= 0 ||
+                arguments == null || !dateCheck(date, arguments.getDate()))
             return false;
 
-        EntityBuilder builder = getBuilder(type);
+        EntityBuilder builder = EntityBuilder.getBuilder(type);
 
         builder.buildProduct(name, price,type);
         builder.buildOffer(city, qu, 0, date);
@@ -34,6 +35,8 @@ public class InsertOfferController {
         return true;
     }
 
+    private static boolean dateCheck(Timestamp start, Timestamp end) { return start.before(end); }
+
     private static void insert(OffertaEntity entity) throws HibernateException {
 
         DAO dao;
@@ -44,12 +47,6 @@ public class InsertOfferController {
         DBManager.initHibernate();
         dao.store(entity);
         DBManager.shutdown();
-    }
-
-    private static EntityBuilder getBuilder(String type) {
-        if (Constants.travel.equals(type)) return new TravelBuilder();
-        else if (Constants.event.equals(type)) return new EventBuilder();
-        else return new OvernightBuilder();
     }
 
     private static boolean checkStrings(String string) { return string != null && !"".equals(string); }

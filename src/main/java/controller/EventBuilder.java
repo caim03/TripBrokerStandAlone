@@ -11,7 +11,7 @@ public class EventBuilder extends EntityBuilder<EventoEntity, EntityBuilder.Even
 
     @Override
     protected void buildEntity(EventArguments arguments) {
-        entity.setDataFine(arguments.endDate);
+        entity.setDataFine(arguments.date);
         entity.setLuogo(arguments.location);
     }
 }

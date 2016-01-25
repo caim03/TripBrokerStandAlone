@@ -1,7 +1,7 @@
 package view.popup;
 
 
-import controller.ApproveController;
+import controller.admin.ApproveController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

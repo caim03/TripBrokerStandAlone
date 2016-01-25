@@ -8,7 +8,7 @@ public class OvernightBuilder extends EntityBuilder<PernottamentoEntity, EntityB
 
     @Override
     protected void buildEntity(OvernightArguments arguments) {
-        entity.setDataFinale(arguments.checkOut);
+        entity.setDataFinale(arguments.date);
         entity.setServizio(arguments.service);
         entity.setQualità(arguments.quality);
         entity.setLuogo(arguments.location);
