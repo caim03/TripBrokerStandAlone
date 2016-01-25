@@ -24,7 +24,7 @@ public class TravelPopup extends PopupView{
 
         Label nameLbl = new Label("Nome:"),
                 priceLbl = new Label("Prezzo:"),
-                cityLbl = new Label("Città:"),
+                cityLbl = new Label("Partenza:"),
                 quanitityLbl = new Label("Quantità:"),
                 stateLbl = new Label("Prenotazioni:"),
                 dateParLbl = new Label("Data Partenza:"),
@@ -33,9 +33,7 @@ public class TravelPopup extends PopupView{
                 parLbl = new Label("Ora Partenza:"),
                 arrLbl = new Label("Ora Arrivo:"),
                 mezzoLbl = new Label("Mezzo:"),
-                classeLbl = new Label("Classe:"),
-                stzParLbl = new Label("Stazione Partenza:"),
-                stzArrLbl = new Label("Stazione Arrivo:");
+                classeLbl = new Label("Classe:");
 
         pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
@@ -55,8 +53,6 @@ public class TravelPopup extends PopupView{
         pane.add(arrLbl, 0, 9);
         pane.add(mezzoLbl, 0, 10);
         pane.add(classeLbl, 0, 11);
-        pane.add(stzParLbl, 0, 12);
-        pane.add(stzArrLbl, 0, 13);
 
         pane.add(new Text(viaggioEntity.getNome()), 1, 0);
         pane.add(new Text(Double.toString(viaggioEntity.getPrezzo())), 1, 1);
@@ -70,13 +66,9 @@ public class TravelPopup extends PopupView{
         pane.add(new Text(new SimpleDateFormat("HH:mm").format(viaggioEntity.getDataArrivo())), 1, 9);
         pane.add(new Text(viaggioEntity.getMezzo()), 1, 10);
         pane.add(new Text(viaggioEntity.getClasse()), 1, 11);
-        pane.add(new Text(viaggioEntity.getStazionePartenza()), 1, 12);
-        pane.add(new Text(viaggioEntity.getStazioneArrivo()), 1, 13);
 
         setRow(13);
 
-        VBox dialogVbox = new VBox(40, pane);
-
-        return dialogVbox;
+        return new VBox(40, pane);
     }
 }

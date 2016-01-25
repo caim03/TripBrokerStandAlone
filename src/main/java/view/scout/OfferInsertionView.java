@@ -1,19 +1,21 @@
 package view.scout;
 
 import controller.Constants;
+import controller.EntityBuilder;
 import controller.InsertOfferController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jfxtras.scene.control.CalendarTimeTextField;
+import model.entityDB.EventoEntity;
+import model.entityDB.OffertaEntity;
+import model.entityDB.PernottamentoEntity;
+import model.entityDB.ViaggioEntity;
 import org.controlsfx.control.Notifications;
 import view.Collector;
 import view.material.LayerPane;
@@ -21,43 +23,57 @@ import view.material.MaterialSpinner;
 import view.material.MaterialTextField;
 import view.material.NumericField;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 
 public class OfferInsertionView extends LayerPane implements Collector {
 
-    private TextField nameField, priceField, quField;
-    private Node[] offerNode;
+    private TextField nameField;
+    private NumericField priceField, quField;
+    private OfferForm form;
     private MaterialSpinner spinner;
-    private VBox vBox;
 
-    public String getOfferName() {
-        /** @result String; return the name of the offer **/
+    /** @return String; return the name of the offer **/
+    public String getName() { return nameField.getText(); }
 
-        return nameField.getText();
-    }
-    public String getPriceoffer() {
-        /** @result String; return the price of the offer as string **/
+    /** @return String; return the price of the offer as string **/
+    public Double getPrice() { return priceField.getNumber(); }
 
-        return priceField.getText();
-    }
+    /** @return int; return the current quantity of the offer **/
+    public int getQuantity() { return (int) quField.getNumber(); }
 
-    public int getOfferQuantity() {
-        /** @result int; return the current quantity of the offer **/
+    /** @return String; return the spinner value selected **/
+    public String getType() { return spinner.getValue(); }
 
-        if ("".equals(quField.getText())) return 0;
-        return Integer.parseInt(quField.getText());
-    }
+    public String getCity() { return form.getCity(); }
 
-    public String getSpinner() {
-        /** @result String; return the spinner value selected **/
+    public Timestamp getDate() { return form.getMainDate(); }
 
-        return spinner.getValue();
-    }
+    public void harvest() {
 
-    public Node[] getOfferNode() {
-        /** @result Node[]; return the list of nodes attached to pane **/
+        String name = getName(),
+               type = getType(),
+               city = getCity();
+        double price = getPrice();
+        int qu = getQuantity();
+        Timestamp date = getDate();
+        EntityBuilder.Arguments arguments = form.harvest();
 
-        return offerNode;
+        new Thread(() -> {
+            boolean result = InsertOfferController.handle(name, price, qu, type, city, date, arguments);
+            Platform.runLater(() -> {
+                Notifications notifications = Notifications.create();
+                if (!result) notifications.
+                        text("Non è stato possibile inserire l'offerta, per favore ricontrolla tutti i campi").
+                        title("Errore nell'inserimento").showWarning();
+                else notifications.
+                        text("L'offerta è stata inserita con successo").
+                        title("Inserimento avvenuto con successo").showConfirm();
+            });
+        }).start();
     }
 
     public OfferInsertionView() {
@@ -91,209 +107,299 @@ public class OfferInsertionView extends LayerPane implements Collector {
         pane.add(quField, 1, 3, 2, 1);
         pane.add(spinner, 1, 4, 2, 1);
 
+        form = new EmptyForm();
+        VBox vBox = new VBox(pane, form);
+
         spinner.textProperty().addListener((observable, oldValue, newValue) -> {
 
-            try { vBox.getChildren().remove(1); } catch (IndexOutOfBoundsException ignore) {}
-
-            vBox.getChildren().add(fromOffer(newValue));
+            System.out.println(newValue);
+            form = fromOffer(newValue);
+            vBox.getChildren().remove(1);
+            vBox.getChildren().add(form);
+            form.generate();
         });
-
-        vBox = new VBox(pane, fromOffer(spinner.getValue()));
 
         attach(vBox);
     }
 
-    private Node fromOffer(String type) {
-        /** @param String; type of offer that must be inserted
-         *  @result Node; return the node (pane) that contains new graphic elements **/
-
-        Node attachment;
-
-        if (Constants.travel.equals(type))
-            attachment = travelAttachment();
-
-        else if (Constants.event.equals(type))
-            attachment = eventAttachment();
-
-        else if (Constants.stay.equals(type))
-            attachment = stayAttachment();
-
-        else attachment = new Pane();
-
-        return attachment;
+    private OfferForm fromOffer(String type) {
+        if (Constants.travel.equals(type)) return new TravelForm();
+        else if (Constants.event.equals(type)) return new EventForm();
+        else if (Constants.stay.equals(type)) return new OvernightForm();
+        else return new EmptyForm();
     }
 
-    private Node stayAttachment() {
-        /** @return Node; return the pane with stay graphic elements **/
+    private class EmptyForm extends OfferForm {
 
-        offerNode = new Node[6];
-
-        Label city = new Label("City");
-        TextField ctyField = new MaterialTextField();
-        ctyField.setPromptText("Insert city");
-
-        Label location = new Label("Location");
-        TextField locField = new MaterialTextField();
-        locField.setPromptText("Insert location");
-
-        Label from = new Label("From"), to = new Label("to");
-        DatePicker datePicker = new DatePicker(LocalDate.now());
-        DatePicker endPicker = new DatePicker(LocalDate.now());
-
-        Label service = new Label("Service");
-        MaterialSpinner srvSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("Pensione completa", "Mezza pensione"));
-
-        Label stars = new Label("Stars");
-        MaterialSpinner strSpinner = new MaterialSpinner(this, FXCollections.<String>observableArrayList("1", "2", "3", "4", "5"));
-
-        GridPane pane = new GridPane();
-        pane.setStyle("-fx-background-color: white");
-        pane.setHgap(25);
-        pane.setVgap(8);
-
-        pane.add(city, 0, 1);
-        pane.add(location, 0, 2);
-        pane.add(from, 0, 3);
-        pane.add(to, 2, 3);
-        pane.add(stars, 0, 4);
-        pane.add(service, 0, 5);
-
-        pane.add(ctyField, 1, 1);
-        pane.add(locField, 1, 2);
-        pane.add(datePicker, 1, 3);
-        pane.add(endPicker, 3, 3);
-        pane.add(strSpinner, 1, 4);
-        pane.add(srvSpinner, 1, 5);
-
-        pane.setPadding(new Insets(25, 25, 25, 25));
-
-        offerNode[0] = ctyField;
-        offerNode[1] = locField;
-        offerNode[2] = strSpinner;
-        offerNode[3] = srvSpinner;
-        offerNode[4] = datePicker;
-        offerNode[5] = endPicker;
-
-        return pane;
+        @Override void generate() { }
+        @Override EntityBuilder.Arguments harvest() { return null; }
+        @Override protected String getCity() { return null; }
+        @Override protected Timestamp getMainDate() { return null; }
     }
 
-    private Node eventAttachment() {
-        /** @result Node; return the pane with event graphic elements  **/
+    public abstract class OfferForm<T extends OffertaEntity> extends GridPane {
 
-        offerNode = new Node[6];
-        Label city = new Label("City");
-        TextField ctyField = new MaterialTextField();
-        ctyField.setPromptText("Insert city");
+        protected TextField cityField;
+        protected DatePicker mainDatePicker;
 
-        Label location = new Label("Location");
-        TextField locField = new MaterialTextField();
-        locField.setPromptText("Insert location");
+        OfferForm() {
+            setStyle("-fx-background-color: white");
+            setHgap(25);
+            setVgap(8);
+            setPadding(new Insets(25));
+        }
 
-        Label date = new Label("Date"), until = new Label("until");
-        DatePicker datePicker = new DatePicker(LocalDate.now());
-        CalendarTimeTextField timePicker = new CalendarTimeTextField();
-        CalendarTimeTextField endPicker = new CalendarTimeTextField();
+        abstract void generate();
+        abstract EntityBuilder.Arguments harvest();
 
-        Label seat = new Label("Seat");
-        TextField seatField = new NumericField(false);
-        seatField.setPromptText("Insert seat number (leave empty for parterre)");
+        protected String getCity() { return cityField.getText(); }
+        protected Timestamp getMainDate() {
 
-        GridPane pane = new GridPane();
-        pane.setStyle("-fx-background-color: white");
-        pane.setHgap(25);
-        pane.setVgap(8);
+            LocalDate localDate = mainDatePicker.getValue();
+            if (localDate == null) return null;
+            Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
 
-        pane.add(city, 0, 1);
-        pane.add(location, 0, 2);
-        pane.add(date, 0, 3);
-        pane.add(seat, 0, 4);
-
-        pane.add(ctyField, 1, 1);
-        pane.add(locField, 1, 2);
-        pane.add(datePicker, 1, 3);
-        pane.add(timePicker, 2, 3);
-        pane.add(until, 3, 3);
-        pane.add(endPicker, 4, 3);
-        pane.add(seatField, 1, 4);
-
-        pane.setPadding(new Insets(25, 25, 25, 25));
-
-        offerNode[0] = ctyField;
-        offerNode[1] = locField;
-        offerNode[2] = seatField;
-        offerNode[3] = datePicker;
-        offerNode[4] = timePicker;
-        offerNode[5] = endPicker;
-
-        return pane;
+            return Timestamp.from(instant);
+        }
     }
 
-    private Node travelAttachment() {
-        /** @result Node; return the pane with stay graphic elements **/
+    private class TravelForm extends OfferForm<ViaggioEntity> {
 
+        private TextField arrField;
+        private DatePicker arrDatePicker;
+        private CalendarTimeTextField depTimePicker, arrTimePicker;
+        private MaterialSpinner vehSpinner, clsSpinner;
 
-        offerNode = new Node[8];
-        Label departure = new Label("Departure");
-        TextField depField = new MaterialTextField();
-        depField.setPromptText("Insert departure station");
+        private void fields() {
+            Label departure = new Label("Partenza");
+            cityField = new MaterialTextField();
+            cityField.setPromptText("Inserisci città di partenza");
 
-        DatePicker depDatePicker = new DatePicker(LocalDate.now());
-        CalendarTimeTextField depTimePicker = new CalendarTimeTextField();
+            Label arrival = new Label("Arrivo");
+            arrField = new MaterialTextField();
+            arrField.setPromptText("Inserisci destinazione");
 
-        Label arrival = new Label("Arrival");
-        TextField arrField = new MaterialTextField();
-        arrField.setPromptText("Insert arrival station");
+            add(departure, 0, 1);
+            add(arrival, 0, 2);
+            add(cityField, 1, 1);
+            add(arrField, 1, 2);
+        }
 
-        DatePicker arrDatePicker = new DatePicker(LocalDate.now());
-        CalendarTimeTextField arrTimePicker = new CalendarTimeTextField();
+        private void pickers() {
 
-        Label vehicle = new Label("Vehicol");
-        MaterialSpinner vehSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("Aereo", "Treno", "Bus"));
+            mainDatePicker = new DatePicker(LocalDate.now());
+            depTimePicker = new CalendarTimeTextField();
 
-        Label classLbl = new Label("Class");
-        MaterialSpinner clsSpinner = new MaterialSpinner(this, FXCollections.observableArrayList("First", "Second"));
+            arrDatePicker = new DatePicker(LocalDate.now());
+            arrTimePicker = new CalendarTimeTextField();
 
-        GridPane pane = new GridPane();
-        pane.setStyle("-fx-background-color: white");
-        pane.setHgap(25);
-        pane.setVgap(8);
+            add(mainDatePicker, 3, 1);
+            add(arrDatePicker, 3, 2);
+            add(depTimePicker, 4, 1);
+            add(arrTimePicker, 4, 2);
+        }
 
-        pane.add(departure, 0, 1);
-        pane.add(arrival, 0, 2);
-        pane.add(vehicle, 0, 3);
-        pane.add(classLbl, 3, 3);
+        private void spinners() {
 
-        pane.add(depField, 1, 1);
-        pane.add(arrField, 1, 2);
-        pane.add(vehSpinner, 1, 3);
-        pane.add(clsSpinner, 4, 3);
+            vehSpinner = new MaterialSpinner(OfferInsertionView.this, FXCollections.observableArrayList("Aereo", "Treno", "Bus"));
+            clsSpinner = new MaterialSpinner(OfferInsertionView.this, FXCollections.observableArrayList("Prima", "Seconda"));
 
-        pane.add(depDatePicker, 3, 1);
-        pane.add(arrDatePicker, 3, 2);
-        pane.add(depTimePicker, 4, 1);
-        pane.add(arrTimePicker, 4, 2);
+            add(new Label("Mezzo"), 0, 3);
+            add(new Label("Classe"), 3, 3);
+            add(vehSpinner, 1, 3);
+            add(clsSpinner, 4, 3);
+        }
+        @Override
+        void generate() {
+            fields();
+            pickers();
+            spinners();
+        }
 
-        pane.setPadding(new Insets(25, 25, 25, 25));
+        @Override
+        EntityBuilder.Arguments harvest() {
 
-        offerNode[0] = depField;
-        offerNode[1] = arrField;
-        offerNode[2] = vehSpinner;
-        offerNode[3] = clsSpinner;
-        offerNode[4] = depDatePicker;
-        offerNode[5] = depTimePicker;
-        offerNode[6] = arrDatePicker;
-        offerNode[7] = arrTimePicker;
+            String arrival = arrField.getText();
+            if (arrival == null || "".equals(arrival)) return null;
 
-        return pane;
+            LocalDate arrLcl = arrDatePicker.getValue();
+            Calendar arrCalendar = arrTimePicker.getCalendar();
+            if (arrLcl == null || arrCalendar == null)
+                return null;
+
+            String vehicle = vehSpinner.getValue(), _class = clsSpinner.getValue();
+            if (vehicle == null || "".equals(vehicle) ||
+                    _class == null || "".equals(_class)) return null;
+
+            Instant arrInstant = arrLcl.atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+            long arrHour = arrCalendar.getTime().getHours() * 3600000;
+            long arrMinute = arrCalendar.getTime().getMinutes() * 60000;
+
+            arrInstant.plusMillis(arrHour + arrMinute);
+
+            Timestamp arrivalTime = Timestamp.from(arrInstant);
+
+            return EntityBuilder.Arguments.from(arrival, arrivalTime, vehicle, _class);
+        }
+
+        @Override
+        protected Timestamp getMainDate() {
+            Timestamp base = super.getMainDate();
+            Calendar calendar = depTimePicker.getCalendar();
+            if (calendar == null) return base;
+
+            long hour = calendar.getTime().getHours() * 3600000;
+            long minute = calendar.getTime().getMinutes() * 60000;
+
+            return new Timestamp(base.getTime() + hour + minute);
+        }
     }
 
-    public void harvest() {
+    private class EventForm extends OfferForm<EventoEntity> {
 
-        Notifications notifications = Notifications.create();
+        private TextField locationField;
+        private CalendarTimeTextField timePicker, endPicker;
 
-        if (!InsertOfferController.handle(getOfferName(), getPriceoffer(), getOfferQuantity(), getSpinner(), getOfferNode()))
-            notifications.text("Non è stato possibile inserire l'offerta, per favore ricontrolla tutti i campi").title("Errore nell'inserimento").showWarning();
+        private void fields() {
+            Label cityLbl = new Label("Città");
+            cityField = new MaterialTextField();
+            cityField.setPromptText("Inserisci città di partenza");
 
-        else notifications.text("L'offerta è stata inserita con successo").title("Inserimento avvenuto con successo").showConfirm();
+            Label locationLbl = new Label("Presso: ");
+            locationField = new MaterialTextField();
+            locationField.setPromptText("Inserisci luogo");
+
+            add(cityLbl, 0, 1);
+            add(locationLbl, 0, 2);
+            add(cityField, 1, 1);
+            add(locationField, 1, 2);
+        }
+
+        private void pickers() {
+
+            mainDatePicker = new DatePicker(LocalDate.now());
+            timePicker = new CalendarTimeTextField();
+            endPicker = new CalendarTimeTextField();
+
+            add(new Label("Inizio: "), 0, 3);
+            add(mainDatePicker, 1, 3);
+            add(timePicker, 2, 3);
+            add(new Label("Fino a: "), 3, 3);
+            add(endPicker, 4, 3);
+        }
+
+        @Override
+        void generate() {
+            fields();
+            pickers();
+        }
+
+        @Override
+        EntityBuilder.Arguments harvest() {
+
+            String location = locationField.getText();
+            if (location == null || "".equals(location)) return null;
+
+            LocalDate localDate = mainDatePicker.getValue();
+            Calendar endCalendar = endPicker.getCalendar();
+            if (localDate == null || endCalendar == null)
+                return null;
+
+            Instant endInstant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+            long endHour = endCalendar.getTime().getHours() * 3600000;
+            long endMinute = endCalendar.getTime().getMinutes() * 60000;
+
+            endInstant.plusMillis(endHour + endMinute);
+            Timestamp endTime = Timestamp.from(endInstant);
+
+            return EntityBuilder.Arguments.from(location, endTime);
+        }
+
+        @Override
+        protected Timestamp getMainDate() {
+            Timestamp base = super.getMainDate();
+            Calendar calendar = timePicker.getCalendar();
+            if (calendar == null) return base;
+
+            long hour = calendar.getTime().getHours() * 3600000;
+            long minute = calendar.getTime().getMinutes() * 60000;
+
+            return new Timestamp(base.getTime() + hour + minute);
+        }
+    }
+
+    private class OvernightForm extends OfferForm<PernottamentoEntity> {
+
+        private TextField locationField;
+        private DatePicker endPicker;
+        private MaterialSpinner srvSpinner, strSpinner;
+
+        private void fields() {
+
+            cityField = new MaterialTextField();
+            cityField.setPromptText("Inserisci città");
+
+            locationField = new MaterialTextField();
+            locationField.setPromptText("Inserisci luogo");
+
+            add(new Label("Città"), 0, 1);
+            add(new Label("Location"), 0, 2);
+            add(cityField, 1, 1);
+            add(locationField, 1, 2);
+        }
+
+        private void pickers() {
+
+            mainDatePicker = new DatePicker(LocalDate.now());
+            endPicker = new DatePicker(LocalDate.now());
+
+            add(new Label("Inizio: "), 0, 3);
+            add(mainDatePicker, 1, 3);
+            add(new Label("Fino a: "), 2, 3);
+            add(endPicker, 3, 3);
+        }
+
+        private void spinners() {
+
+            srvSpinner = new MaterialSpinner(OfferInsertionView.this,
+                    FXCollections.observableArrayList("Pensione completa", "Mezza pensione"));
+            strSpinner = new MaterialSpinner(OfferInsertionView.this, 1, 5);
+
+            add(new Label("Stars"), 0, 4);
+            add(new Label("Service"), 0, 5);
+            add(strSpinner, 1, 4);
+            add(srvSpinner, 1, 5);
+        }
+
+        @Override
+        void generate() {
+            fields();
+            pickers();
+            spinners();
+        }
+
+        @Override
+        EntityBuilder.Arguments harvest() {
+
+            String location = locationField.getText();
+            if (location == null || "".equals(location)) return null;
+
+            String service = srvSpinner.getValue(),
+                     stars = strSpinner.getValue();
+            if (service == null || "".equals(service) ||
+                    stars == null || "".equals(stars)) return null;
+
+            LocalDate localDate = endPicker.getValue();
+
+            if (localDate == null)
+                return null;
+
+            Instant checkOutInstant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Timestamp checkOut = Timestamp.from(checkOutInstant);
+
+            return EntityBuilder.Arguments.from(location, service, stars, checkOut);
+        }
     }
 }

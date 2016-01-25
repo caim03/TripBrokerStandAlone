@@ -5,15 +5,13 @@ import model.entityDB.EventoEntity;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class EventBuilder extends EntityBuilder {
+public class EventBuilder extends EntityBuilder<EventoEntity, EntityBuilder.EventArguments> {
 
     public EventBuilder() { entity = new EventoEntity(); }
 
     @Override
-    public void buildEntity(Object...objects) {
-
-        ((EventoEntity)entity).setNumeroPosto((int) objects[0]);
-        ((EventoEntity)entity).setDataFine((Timestamp) objects[1]);
-        ((EventoEntity)entity).setLuogo((String) objects[2]);
+    protected void buildEntity(EventArguments arguments) {
+        entity.setDataFine(arguments.endDate);
+        entity.setLuogo(arguments.location);
     }
 }

@@ -118,7 +118,7 @@ public abstract class BFSearchStrategy extends SearchStrategy<Arrival[]> {
      */
     private String query(Arrival arrival) {
 
-        String query = "where stazionePartenza like '";
+        String query = "where città like '";
         query += arrival.getCity();
         query += "'";
         //City constraint

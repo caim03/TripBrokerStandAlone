@@ -34,8 +34,6 @@ public class ViaggioEntity extends OffertaEntity {
     private String destinazione;
     private String mezzo;
     private String classe;
-    private String stazionePartenza;
-    private String stazioneArrivo;
     private Timestamp dataArrivo;
 
     @Basic
@@ -75,31 +73,6 @@ public class ViaggioEntity extends OffertaEntity {
     }
 
     @Basic
-    @Column(name = "stazione_partenza")
-    public String getStazionePartenza() {
-        /** @result String; return the departure station of the travel **/
-        return stazionePartenza;
-    }
-
-    public void setStazionePartenza(String stazionePartenza) {
-        /** @param String; set the departure station of the travel **/
-        this.stazionePartenza = stazionePartenza;
-    }
-
-    @Basic
-    @Column(name = "stazione_arrivo")
-    public String getStazioneArrivo() {
-        /** @result String; return the arrival station of the travel **/
-        return stazioneArrivo;
-    }
-
-    public void setStazioneArrivo(String stazioneArrivo) {
-        /** @param String; set the arrival station of the travel **/
-        this.stazioneArrivo = stazioneArrivo;
-    }
-
-
-    @Basic
     @Column (name = "data_arrivo")
     public Timestamp getDataArrivo() {
         /** @result Timestamp; return the date as timestamp of the arrival date **/
@@ -122,10 +95,6 @@ public class ViaggioEntity extends OffertaEntity {
         if (destinazione != null ? !destinazione.equals(that.destinazione) : that.destinazione != null) return false;
         if (mezzo != null ? !mezzo.equals(that.mezzo) : that.mezzo != null) return false;
         if (classe != null ? !classe.equals(that.classe) : that.classe != null) return false;
-        if (stazionePartenza != null ? !stazionePartenza.equals(that.stazionePartenza) : that.stazionePartenza != null)
-            return false;
-        if (stazioneArrivo != null ? !stazioneArrivo.equals(that.stazioneArrivo) : that.stazioneArrivo != null)
-            return false;
 
         return true;
     }
@@ -137,8 +106,6 @@ public class ViaggioEntity extends OffertaEntity {
         result = 31 * result + (dataArrivo != null ? dataArrivo.hashCode() : 0);
         result = 31 * result + (mezzo != null ? mezzo.hashCode() : 0);
         result = 31 * result + (classe != null ? classe.hashCode() : 0);
-        result = 31 * result + (stazionePartenza != null ? stazionePartenza.hashCode() : 0);
-        result = 31 * result + (stazioneArrivo != null ? stazioneArrivo.hashCode() : 0);
         return result;
     }
 

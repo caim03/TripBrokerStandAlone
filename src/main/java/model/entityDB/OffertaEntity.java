@@ -35,9 +35,8 @@ import java.sql.Timestamp;
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class OffertaEntity extends ProdottoEntity {
-    //private int id;
+
     private String città;
-    private double prezzoFabbrica;
     private int quantità;
     private int prenotazioni;
     private Timestamp dataInizio;
@@ -52,18 +51,6 @@ public class OffertaEntity extends ProdottoEntity {
     public void setCittà(String città) {
         /** @param String; set the city of the offer **/
         this.città = città;
-    }
-
-    @Basic
-    @Column(name = "prezzo_fabbrica")
-    public double getPrezzoFabbrica() {
-        /** @result double; return the the price at which the offer was bought **/
-        return prezzoFabbrica;
-    }
-
-    public void setPrezzoFabbrica(double prezzoFabbrica) {
-        /** @param double; set the price at which the offer was bought **/
-        this.prezzoFabbrica = prezzoFabbrica;
     }
 
     @Basic
@@ -116,7 +103,6 @@ public class OffertaEntity extends ProdottoEntity {
         OffertaEntity that = (OffertaEntity) o;
 
         //if (id != that.id) return false;
-        if (Double.compare(that.prezzoFabbrica, prezzoFabbrica) != 0) return false;
         if (quantità != that.quantità) return false;
         if (prenotazioni != that.prenotazioni) return false;
         if (città != null ? !città.equals(that.città) : that.città != null) return false;
@@ -131,8 +117,6 @@ public class OffertaEntity extends ProdottoEntity {
         long temp;
         result = super.getId();
         result = 31 * result + (città != null ? città.hashCode() : 0);
-        temp = Double.doubleToLongBits(prezzoFabbrica);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + quantità;
         result = 31 * result + (int) prenotazioni;
         result = 31 * result + (dataInizio != null ? dataInizio.hashCode() : 0);
