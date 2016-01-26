@@ -3,13 +3,11 @@ package view.agent;
 import controller.Constants;
 import controller.SearchProductController;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -28,7 +26,7 @@ public class SellProductView extends LayerPane implements Collector {
     private DBListView listView;
     private GridPane pane;
 
-    public SellProductView(){
+    public SellProductView() {
 
         spinner = new MaterialSpinner(this, FXCollections.<String>observableArrayList(Constants.travel,
                 Constants.event, Constants.stay, Constants.packet));
@@ -44,19 +42,16 @@ public class SellProductView extends LayerPane implements Collector {
         pane.add(spinner, 0, 0, 5, 1);
         pane.add(button, 6, 0);
 
-        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                harvest();
-                try {
-                listView.refresh();
-                } catch (NullPointerException nullPointer) {
-                    Notifications.create().title("Campi vuoti").text("Riempire tutti i campi obbligatori").show();
-                    return;
-                }
-                vBox.getChildren().clear();
-                vBox.getChildren().add(listView);
+        button.setOnMouseClicked(event -> {
+            harvest();
+            try {
+            listView.refresh();
+            } catch (NullPointerException nullPointer) {
+                Notifications.create().title("Campi vuoti").text("Riempire tutti i campi obbligatori").show();
+                return;
             }
+            vBox.getChildren().clear();
+            vBox.getChildren().add(listView);
         });
 
         spinner.textProperty().addListener((observable, oldValue, newValue) -> {

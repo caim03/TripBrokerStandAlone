@@ -2,7 +2,7 @@ package view.scout;
 
 import controller.Constants;
 import controller.builder.EntityBuilder;
-import controller.InsertOfferController;
+import controller.scout.InsertOfferController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;

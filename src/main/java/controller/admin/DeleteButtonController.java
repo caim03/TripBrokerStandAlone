@@ -1,4 +1,4 @@
-package controller;
+package controller.admin;
 
 
 import javafx.scene.control.TableView;
@@ -17,7 +17,7 @@ public class DeleteButtonController {
 
         DAO dao = DipendentiDaoHibernate.instance();
         DBManager.initHibernate();
-        // delete the dependent
+        // delete the employee
         dao.delete(entity);
         DBManager.shutdown();
 

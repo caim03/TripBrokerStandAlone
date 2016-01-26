@@ -1,7 +1,7 @@
 package view;
 
 import controller.Constants;
-import controller.PacketAssembleController;
+import controller.desig.PacketAssembleController;
 import controller.command.TransferRecordCommand;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -20,6 +20,7 @@ import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.*;
+import view.observers.Observer;
 
 import java.util.List;
 

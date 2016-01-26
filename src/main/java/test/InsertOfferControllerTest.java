@@ -1,6 +1,6 @@
 package test;
 
-import controller.InsertOfferController;
+import controller.scout.InsertOfferController;
 import controller.builder.EntityBuilder;
 import model.entityDB.OffertaEntity;
 import org.junit.Before;

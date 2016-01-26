@@ -1,5 +1,6 @@
-package controller;
+package controller.desig;
 
+import controller.Constants;
 import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.PacchettoOffertaDaoHibernate;

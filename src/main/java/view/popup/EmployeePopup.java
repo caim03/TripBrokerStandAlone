@@ -1,12 +1,9 @@
 package view.popup;
 
 
-import controller.ModifyEmployeeController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import controller.admin.ModifyEmployeeController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;

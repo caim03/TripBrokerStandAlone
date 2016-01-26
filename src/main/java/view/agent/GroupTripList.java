@@ -9,7 +9,7 @@ public class GroupTripList extends PacketList {
 
     private int qu = 99;
 
-    @Override protected void addListener() { addListener(new GroupTripOverseer(this)); }
+    @Override protected void addListener(boolean notify) { addListener(new GroupTripOverseer(this, notify)); }
 
     @Override
     public Double requestInfo(Observer observer) {

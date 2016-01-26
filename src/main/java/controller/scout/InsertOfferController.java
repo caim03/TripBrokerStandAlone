@@ -1,4 +1,4 @@
-package controller;
+package controller.scout;
 
 import controller.builder.EntityBuilder;
 import model.DBManager;

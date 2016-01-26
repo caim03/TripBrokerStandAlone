@@ -1,4 +1,4 @@
-package controller;
+package controller.desig;
 
 import javafx.util.Duration;
 import model.entityDB.*;
@@ -18,13 +18,19 @@ import java.util.List;
 public class PacketOverseer extends Overseer {
 
     protected PacketList subjectList;
+    private boolean notify;
     private static long acceptableDelay = 12 * 3600000;
     private final Notifications
             ERROR_LOC = Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
             ERROR_TME = Notifications.create().text("Le date non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
             ERROR_CST = Notifications.create().text(someOtherAddedMessage()).hideAfter(Duration.seconds(2));
 
-    public PacketOverseer(PacketList subjectList) { this.subjectList = subjectList; }
+    public PacketOverseer(PacketList subjectList) { this(subjectList, true); }
+
+    public PacketOverseer(PacketList subjectList, boolean notify) {
+        this.subjectList = subjectList;
+        this.notify = notify;
+    }
 
     @Override
     protected void checkAdded(Change<? extends AbstractEntity> c) {
@@ -58,13 +64,13 @@ public class PacketOverseer extends Overseer {
                  */
 
                 if (!checkLocation(prevEntity, newEntity)) {
-                    ERROR_LOC.showWarning();
+                    if (notify) ERROR_LOC.showWarning();
                     c.getList().remove(pos, size);
                     return;
                 }
 
                 if (!checkDate(prevEntity, newEntity)) {
-                    ERROR_TME.showWarning();
+                    if (notify) ERROR_TME.showWarning();
                     c.getList().remove(pos, size);
                     return;
                 }
@@ -75,7 +81,7 @@ public class PacketOverseer extends Overseer {
                 updateSubject(price);
             }
             else {
-                ERROR_CST.showWarning();
+                if (notify) ERROR_CST.showWarning();
                 c.getList().remove(pos, size);
                 return;
             }

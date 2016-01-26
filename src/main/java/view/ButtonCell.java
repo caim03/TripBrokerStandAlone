@@ -1,6 +1,6 @@
 package view;
 
-import controller.DeleteButtonController;
+import controller.admin.DeleteButtonController;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;

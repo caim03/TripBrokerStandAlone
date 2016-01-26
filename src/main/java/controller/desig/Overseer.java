@@ -1,4 +1,4 @@
-package controller;
+package controller.desig;
 
 import javafx.collections.ListChangeListener;
 import model.entityDB.AbstractEntity;

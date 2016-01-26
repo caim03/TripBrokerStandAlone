@@ -1,7 +1,7 @@
 package controller.agent;
 
 import controller.Constants;
-import controller.PacketOverseer;
+import controller.desig.PacketOverseer;
 import model.dao.PoliticheDaoHibernate;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
@@ -12,7 +12,8 @@ import java.util.List;
 
 public class GroupTripOverseer extends PacketOverseer {
 
-    public GroupTripOverseer(GroupTripList groupTripList) { super(groupTripList); }
+    public GroupTripOverseer(GroupTripList groupTripList, boolean notify) { super(groupTripList, notify); }
+
     @Override protected void updateSubject(double price) { subjectList.setPrice(price); }
 
     @Override

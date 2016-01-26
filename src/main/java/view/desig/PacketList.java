@@ -1,13 +1,12 @@
 package view.desig;
 
-import controller.PacketOverseer;
+import controller.desig.PacketOverseer;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import model.entityDB.*;
-import view.ObservantSpinner;
+import view.PacketFormView;
 import view.observers.Observer;
 
-import javax.security.auth.Subject;
 import java.util.Date;
 
 /***
@@ -23,11 +22,15 @@ public class PacketList<T extends OffertaEntity> extends SimpleListProperty<Abst
     Double price = 0.0;
 
     public PacketList() {
-        super(FXCollections.observableArrayList());
-        addListener();
+        this(true);
     }
 
-    protected void addListener() { addListener(new PacketOverseer(this)); }
+    public PacketList(boolean notifications) {
+        super(FXCollections.observableArrayList());
+        addListener(notifications);
+    }
+
+    protected void addListener(boolean notifications) { addListener(new PacketOverseer(this, notifications)); }
 
     /**
      * Main research method provided by the class. It recursively checks for any

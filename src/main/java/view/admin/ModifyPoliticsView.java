@@ -1,6 +1,6 @@
 package view.admin;
 
-import controller.ModifyPoliticsController;
+import controller.admin.ModifyPoliticsController;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
