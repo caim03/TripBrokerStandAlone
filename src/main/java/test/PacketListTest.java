@@ -4,19 +4,17 @@ import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
 import model.entityDB.ViaggioEntity;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import view.desig.PacketList;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PacketListTest {
     private static long acceptableDelay = 12 * 3600000;
@@ -24,12 +22,34 @@ public class PacketListTest {
             "Pescara", "L'Aquila", "Chieti", "Isernia", "Urbino", "Macerata", "Pesaro", "Firenze", "Siena",
             "Agrigento", "Palermo", "Aosta", "Venezia", "Trento" };
     private Random random;
-    private OffertaEntity entity;
-    private OffertaEntity prev;
+
+    @Before public void seed() { random = new Random(Date.from(Instant.now()).getTime()); }
+
+    @Test
+    public void testAdd() throws Exception {
+
+        PacketList list = new PacketList(false);
+        int expected = 0;
+        OffertaEntity entity, prev;
+        for (long i = 0; i < 10000000; ++i) {
+            entity = generate();
+            if (i > 0) {
+                prev = list.getPrevious(list.size());
+                if (checkDate(prev, entity) && checkLocation(prev, entity)) {
+                    ++expected;
+                }
+                list.add(entity);
+            }
+            else {
+                list.add(entity);
+                ++expected;
+            }
+        }
+
+        assertEquals(expected, list.size());
+    }
 
     private OffertaEntity generate() {
-
-        random = new Random(Date.from(Instant.now()).getTime());
 
         int type = random.nextInt(3);
 
@@ -104,62 +124,13 @@ public class PacketListTest {
         return random.nextInt(30) + 1;
     }
 
-    @Test
-    public void testAdd() throws Exception {
-
-        PacketList list = new PacketList(false);
-        int expected = 0;
-        for (long i = 0; i < 10000000; ++i) {
-            entity = generate();
-            if (i > 0) {
-                prev = list.getPrevious(list.size());
-                if (checkDate(prev, entity) && checkLocation(prev, entity)) {
-                    ++expected;
-                }
-                list.add(entity);
-            }
-            else {
-                list.add(entity);
-                ++expected;
-            }
-        }
-
-        assertEquals(expected, list.size());
-    }
-
-    private String getInfo(OffertaEntity entity) {
-
-        String msg = entity.getCittà() + " " + entity.getDataInizio() + " ";
-        if (entity instanceof ViaggioEntity) {
-            msg += ((ViaggioEntity) entity).getDestinazione() + " " + ((ViaggioEntity) entity).getDataArrivo();
-            msg = "Viaggio " + msg;
-        }
-        else if (entity instanceof EventoEntity) {
-            msg += ((EventoEntity) entity).getDataFine();
-            msg = "Evento " + msg;
-        }
-        else if (entity instanceof PernottamentoEntity) {
-            msg += ((PernottamentoEntity) entity).getDataFinale();
-            msg = "Pernotto " + msg;
-        }
-
-        return msg;
-    }
-
     private boolean checkDate(OffertaEntity previous, OffertaEntity next) {
 
         Date firstDate,
-                secondDate = next.getDataInizio(); //Scrutiny refers to the beginning of the added offer
+                secondDate = next.getDataInizio();
         boolean result;
 
         if (previous instanceof ViaggioEntity) {
-            /**
-             * PernottamentoEntities behave differently when next to ViaggioEntity instances.
-             * Given that PernottamentoEntities do not specify any schedule restriction,
-             * one can place them after a travel offer as long as day of arrival and reception matches.
-             * For all the other Offers, common sense suggests that arrival should take place earlier than
-             * the next offer start and that delays between the two should not be longer than 12 hours.
-             **/
 
             firstDate = ((ViaggioEntity) previous).getDataArrivo();
 
@@ -176,12 +147,6 @@ public class PacketListTest {
         }
 
         else if (previous instanceof PernottamentoEntity) {
-            /**
-             * PernottamentoEntities put specific restriction for every type of OfferEntity.
-             * An event could take place anytime between reception and overnight stay end.
-             * A trip departure date should take place on the last day of overnight, as should a change
-             * of overnight stays.
-             */
 
             firstDate = ((PernottamentoEntity)previous).getDataFinale();
             firstDate = new Timestamp(firstDate.getTime() - firstDate.getHours() * 3600000
@@ -202,13 +167,6 @@ public class PacketListTest {
         }
 
         else {
-            /**
-             * EventoEntities put no specific restriction on offers;
-             * common sense suggests that any new offer should take place after the event ends,
-             * but not later than 12 hours.
-             * Tipically, EventoEntities are not scrutinized, due to the fact that they are often
-             * included into overnight stays time spans.
-             */
             firstDate = previous.getDataInizio();
             result = firstDate.before(secondDate) && new Date(firstDate.getTime() + acceptableDelay).after(secondDate);
         }
@@ -216,12 +174,6 @@ public class PacketListTest {
         return result;
     }
 
-    /**
-     * Utility method for entities spatial comparison
-     * @param previous OffertaEntity: last meaningful entity in the observed List
-     * @param next OffertaEntity: scrutinized entity
-     * @return boolean: whether or not the entities can be placed one after another
-     */
     boolean checkLocation(OffertaEntity previous, OffertaEntity next) {
 
         String city;
