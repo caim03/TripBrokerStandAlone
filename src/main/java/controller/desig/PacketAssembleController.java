@@ -12,6 +12,10 @@ import view.TripBrokerConsole;
 public class PacketAssembleController {
 
 
+    /** @param name; represents the name of the new packet
+     *  @param price; represents the name of the new packet
+     *  @param ids; represents a list of id of all offers in the packet
+     *  @return boolean; return a boolean value that represents the result of operation **/
     public static boolean create(String name, double price, int... ids) {
 
         try {

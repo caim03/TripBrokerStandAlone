@@ -8,10 +8,10 @@ import model.entityDB.OffertaEntity;
 
 public class SellController {
 
+    /** @param entity; the entity that must be updated
+     *  @param quantityStr; this string represents the quantity selected in spinner that must be converted to int
+     *  @return boolean; return false if arguments are not legal, else return true **/
     public static boolean handle(OffertaEntity entity, String quantityStr) {
-        /** @param: OffertaEntity; the entity that must be updated
-         *  @param: String; this string represents the quantity selected in spinner that must be converted to int
-         *  @result: boolean; return false if arguments are not legal, else return true **/
 
         if (entity == null || quantityStr == null || "".equals(quantityStr)) {
             return false;
