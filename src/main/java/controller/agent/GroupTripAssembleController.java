@@ -10,6 +10,11 @@ import view.TripBrokerConsole;
 
 public class GroupTripAssembleController {
 
+    /** @param name; the name of the new group trip
+     *  @param price; the price of the new group trip
+     *  @param min; the minimum number of bookings for this group trip
+     *  @param max; the maximum number of bookings for this group trip
+     *  @param ids; a list of id of all offers in group trip **/
     public static boolean create(String name, double price, int min, int max, int... ids) {
 
         try {

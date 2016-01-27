@@ -12,11 +12,11 @@ import model.entityDB.*;
 
 public class BookingController {
 
+    /** @param entity; this entity represents the group trip booked
+     *  @param name; this string represents the buyer name
+     *  @param surname; this string represents the buyer surname
+     *  @param bookings; this integer represents the number of bookings for the group trip **/
     public static void handle(ViaggioGruppoEntity entity, String name, String surname, int bookings) {
-        /** @param ViaggioGruppoEntity; this entity represents the group trip booked
-         *  @param String; this string represents the buyer name
-         *  @param String; this string represents the buyer surname
-         *  @param int; this integer represents the number of bookings for the group trip **/
 
         new Thread(() -> {
 

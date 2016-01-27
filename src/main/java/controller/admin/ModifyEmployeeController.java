@@ -23,6 +23,14 @@ public class ModifyEmployeeController implements EventHandler<MouseEvent>{
     private DipendentiEntity entity;
     private int index;
 
+    /** @param nameTxt; textfield of the name
+     *  @param surnameTxt; textfield of the surname
+     *  @param roleTxt; spinner of the role
+     *  @param passTxt; textfield of the password string
+     *  @param mailTxt; textfield of the mail
+     *  @param list; list of employees
+     *  @param entity; employee
+     *  @param index; **/
     public ModifyEmployeeController(TextField nameTxt, TextField surnameTxt,
                                     MaterialSpinner roleTxt, TextField passTxt, TextField mailTxt,
                                     TableView<DipendentiEntity> list, DipendentiEntity entity, int index) {

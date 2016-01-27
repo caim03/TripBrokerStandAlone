@@ -12,6 +12,8 @@ import java.util.List;
 
 public class GroupTripOverseer extends PacketOverseer {
 
+    /** @param groupTripList; a list of all offers in group trip
+     *  @param notify; a boolean value that represents **/
     public GroupTripOverseer(GroupTripList groupTripList, boolean notify) { super(groupTripList, notify); }
 
     @Override protected void updateSubject(double price) { subjectList.setPrice(price); }

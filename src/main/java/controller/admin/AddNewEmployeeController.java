@@ -11,12 +11,13 @@ import model.entityDB.DipendentiEntity;
 
 public class AddNewEmployeeController {
 
+    /** @param name; this string represents the name of the new dependent
+     *  @param surname; this string represents the surname of the new dependent
+     *  @param password; this string represents the password of the new dependent
+     *  @param role; this string represents the role of the new dependent
+     *  @param mail; this string represents the mail of the new dependent **/
     public static void handle(String name, String surname, String password, String role, String mail){
-        /** @param String; this string represents the name of the new dependent
-         *  @param String; this string represents the surname of the new dependent
-         *  @param String; this string represents the password of the new dependent
-         *  @param String; this string represents the role of the new dependent
-         *  @param String; this string represents the mail of the new dependent **/
+
 
         // new dependent
         DipendentiEntity entity = new DipendentiEntity();
