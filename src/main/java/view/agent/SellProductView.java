@@ -1,34 +1,21 @@
 package view.agent;
 
 import controller.Constants;
-import controller.SearchProductController;
-import controller.builder.EntityBuilder;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import jfxtras.scene.control.CalendarTimeTextField;
-import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
-import model.entityDB.PernottamentoEntity;
-import model.entityDB.ViaggioEntity;
-import org.controlsfx.control.Notifications;
-import view.Collector;
 import view.material.*;
+import view.popup.SellPopup;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Locale;
 
 public class SellProductView extends LayerPane {
 
@@ -68,6 +55,12 @@ public class SellProductView extends LayerPane {
             }
             listView = new DBListView(query);
             listView.refresh();
+
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == null) return;
+                listView.getSelectionModel().clearSelection();
+                new MaterialPopup(this, new SellPopup((OffertaEntity) newValue)).show();
+            });
 
             vBox.getChildren().add(listView);
         });
@@ -134,16 +127,6 @@ public class SellProductView extends LayerPane {
             checkbox();
         }
         abstract String getQuery();
-
-        protected String getCity() { return cityField.getText(); }
-        protected Timestamp getMainDate() {
-
-            LocalDate localDate = mainDatePicker.getValue();
-            if (localDate == null) return null;
-            Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-
-            return Timestamp.from(instant);
-        }
     }
 
     private class TravelOptions extends OfferOptions {
@@ -233,10 +216,7 @@ public class SellProductView extends LayerPane {
             if (arrivalCheck.isSelected() && arrivalDatePicker.getValue() != null) {
 
                 if (clause) arrTime += " and ";
-                else {
-                    where = " where ";
-                    clause = true;
-                }
+                else where = " where ";
 
                 Instant instant = arrivalDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
                 Timestamp from = Timestamp.from(instant),

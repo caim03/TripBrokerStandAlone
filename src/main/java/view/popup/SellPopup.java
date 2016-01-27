@@ -2,6 +2,7 @@ package view.popup;
 
 import controller.agent.SellController;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -9,7 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
+import model.entityDB.PernottamentoEntity;
+import model.entityDB.ViaggioEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
@@ -27,6 +31,15 @@ public class SellPopup extends PopupDecorator {
 
         super(popupView);
         this.entity = entity;
+    }
+
+    public SellPopup(OffertaEntity entity) { this(fromOffer(entity), entity); }
+
+    private static PopupView fromOffer(OffertaEntity entity) {
+        if (entity instanceof ViaggioEntity) return new TravelPopup((ViaggioEntity) entity);
+        else if (entity instanceof EventoEntity) return new EventPopup((EventoEntity) entity);
+        else if (entity instanceof PernottamentoEntity) return new StayPopup((PernottamentoEntity) entity);
+        return null;
     }
 
     @Override
