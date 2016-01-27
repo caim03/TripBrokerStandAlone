@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ConfirmBookingController {
 
+    /** @param entity; the booking that must be confirmed **/
     public static void handle(PrenotazioneEntity entity) {
-        /** @param PrenotazioneEntity; the booking that must be confirmed **/
 
         DBManager.initHibernate();
 

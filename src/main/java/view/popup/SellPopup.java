@@ -31,7 +31,7 @@ public class SellPopup extends PopupDecorator {
 
     @Override
     protected Node decorate() {
-        return null;
+        return generateItems();
     }
 
     /** Method to do decorator pattern **/

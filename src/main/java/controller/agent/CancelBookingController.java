@@ -12,8 +12,8 @@ import model.entityDB.ViaggioGruppoEntity;
 
 public class CancelBookingController {
 
+    /** @param entity; the booking that must be deleted **/
     public static void handle(PrenotazioneEntity entity) {
-        /** @param PrenotazioneEntity; the booking that must be deleted **/
 
         new Thread(() -> {
             DBManager.initHibernate();

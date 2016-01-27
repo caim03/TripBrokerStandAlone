@@ -11,9 +11,9 @@ import model.entityDB.DipendentiEntity;
 
 public class DeleteButtonController {
 
+    /** @param tableView; list of dependent; this param is used here to refresh the table
+     *  @param entity; the dependent that must be deleted **/
     public static void handle(TableView<DipendentiEntity> tableView, DipendentiEntity entity) {
-        /** @param TableView; list of dependent; this param is used here to refresh the table
-         *  @param DipendentiEntity; the dependent that must be deleted **/
 
         DAO dao = DipendentiDaoHibernate.instance();
         DBManager.initHibernate();

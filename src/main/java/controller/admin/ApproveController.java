@@ -14,6 +14,8 @@ import org.controlsfx.control.Notifications;
 
 public class ApproveController {
 
+    /** @param entity; this entity represents the packet that must be approved
+     *  @param id; this integer represents the identifier of the packet **/
     public static void handle(CreaPacchettoEntity entity, int id) {
 
         String message;
@@ -25,6 +27,8 @@ public class ApproveController {
         Platform.runLater(() -> Notifications.create().text(message).show());
     }
 
+    /** @param entity; this entity represents the product that must be deleted
+     *  @return String; return a string that represents the result of operation **/
     private static String delete(ProdottoEntity entity) {
 
         try {
@@ -41,6 +45,8 @@ public class ApproveController {
         return "Il pacchetto è stato cancellato";
     }
 
+    /** @param entity; this entity represent the packet that must be updated
+     *  @return String; return a string that represents the result of operation **/
     private static String update(CreaPacchettoEntity entity) {
         DAO dao = CreaPacchettoDaoHibernate.instance();
         try {
