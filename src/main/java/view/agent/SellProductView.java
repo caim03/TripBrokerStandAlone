@@ -1,13 +1,18 @@
 package view.agent;
 
 import controller.Constants;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import model.DBManager;
+import model.dao.CreaPacchettoDaoHibernate;
+import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.OffertaEntity;
 import view.material.*;
+import view.popup.SellPacketPopup;
 import view.popup.SellPopup;
 
 import java.sql.Timestamp;
@@ -16,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 
 public class SellProductView extends LayerPane {
 
@@ -53,13 +59,35 @@ public class SellProductView extends LayerPane {
                 listView = new ListView();
                 return;
             }
-            listView = new DBListView(query);
-            listView.refresh();
+
+            if (options instanceof PacketOptions) {
+                listView = new ListView();
+                listView.setCellFactory(callback -> new DBCell());
+                listView.getItems().add(null);
+                new Thread(() -> {
+                    DBManager.initHibernate();
+                    List<CreaPacchettoEntity> list =
+                            (List<CreaPacchettoEntity>) CreaPacchettoDaoHibernate.instance().getByCriteria(query);
+                    DBManager.shutdown();
+                    Platform.runLater(() -> {
+                        listView.getItems().clear();
+                        listView.getItems().addAll(list);
+                    });
+                }).start();
+            }
+
+            else {
+                listView = new DBListView(query);
+                listView.refresh();
+            }
 
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null) return;
                 listView.getSelectionModel().clearSelection();
-                new MaterialPopup(this, new SellPopup((OffertaEntity) newValue)).show();
+                if (newValue instanceof CreaPacchettoEntity)
+                    new MaterialPopup(this, new SellPacketPopup((CreaPacchettoEntity) newValue)).show();
+                else
+                    new MaterialPopup(this, new SellPopup((OffertaEntity) newValue)).show();
             });
 
             vBox.getChildren().add(listView);
@@ -73,6 +101,7 @@ public class SellProductView extends LayerPane {
             if (Constants.travel.equals(newValue)) options = new TravelOptions();
             else if (Constants.event.equals(newValue)) options = new EventOptions();
             else if (Constants.stay.equals(newValue)) options = new OvernightOptions();
+            else if (Constants.packet.equals(newValue)) options = new PacketOptions();
             else options = new EmptyOptions();
 
             vBox.getChildren().add(options);
@@ -319,6 +348,28 @@ public class SellProductView extends LayerPane {
             }
 
             return query + where + city + date;
+        }
+    }
+
+    private class PacketOptions extends OfferOptions {
+
+        @Override
+        protected void fields() {
+            super.fields();
+            cityField.setPromptText("Cerca per nome...");
+            add(new Label("Pacchetto"), 0, 0);
+        }
+
+        @Override protected void pickers() { }
+        @Override protected void checkbox() { }
+        @Override String getQuery() {
+            String query = "where stato = 1";
+
+            String buffer = cityField.getText();
+            if (buffer != null && !"".equals(buffer))
+                query += " and nome like '%" + cityField.getText() + "%'";
+
+            return query;
         }
     }
 

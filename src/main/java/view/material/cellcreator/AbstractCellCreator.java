@@ -1,9 +1,8 @@
 package view.material.cellcreator;
 
 import controller.Constants;
-import model.entityDB.AbstractEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.ViaggioEntity;
+import javafx.scene.Node;
+import model.entityDB.*;
 import view.material.EmptyCell;
 
 public abstract class AbstractCellCreator<T extends AbstractEntity> {
@@ -21,7 +20,7 @@ public abstract class AbstractCellCreator<T extends AbstractEntity> {
         }
 
         @Override
-        EmptyCell createCell(OffertaEntity entity) {
+        protected EmptyCell createCell(OffertaEntity entity) {
 
             String type = entity.getTipo(); //retrieve item type
 
@@ -42,5 +41,25 @@ public abstract class AbstractCellCreator<T extends AbstractEntity> {
 
             return new EmptyCell(entity.getNome()); //Automated cell creation
         }
+    }
+
+    public static EmptyCell getCell(AbstractEntity entity) {
+
+        if (entity instanceof ViaggioEntity)
+            return TravelCellCreator.instance().createCell((ViaggioEntity) entity);
+
+        else if (entity instanceof EventoEntity)
+            return EventCellCreator.instance().createCell((EventoEntity) entity);
+
+        else if (entity instanceof PernottamentoEntity)
+            return StayCellCreator.instance().createCell((PernottamentoEntity) entity);
+
+        else if (entity instanceof CreaPacchettoEntity)
+            return PacketCellCreator.instance().createCell((CreaPacchettoEntity) entity);
+
+        else if (entity instanceof PrenotazioneEntity)
+            return BookingCellCreator.instance().createCell((PrenotazioneEntity) entity);
+
+        else return null;
     }
 }

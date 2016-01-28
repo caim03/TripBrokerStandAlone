@@ -5,10 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import model.entityDB.*;
-import view.material.cellcreator.BookingCellCreator;
-import view.material.cellcreator.EventCellCreator;
-import view.material.cellcreator.StayCellCreator;
-import view.material.cellcreator.TravelCellCreator;
+import view.material.cellcreator.*;
 
 public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
@@ -51,26 +48,13 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         Region region; //Region superclass grants access to width and height properties
         //node is then properly initialized
         if (item == null || !item.isValid()) region = buildProgress(); //ProgressCircle
-        else if (item instanceof OffertaEntity) {
 
-            if (item instanceof ViaggioEntity)
-                region = TravelCellCreator.instance().createCell((ViaggioEntity) item);
-            else if (item instanceof EventoEntity)
-                region = EventCellCreator.instance().createCell((EventoEntity) item);
-            else
-                region = StayCellCreator.instance().createCell((PernottamentoEntity) item);
-        }
-
-        else if (item instanceof ViaggioGruppoEntity) {
+        else if (item instanceof ViaggioGruppoEntity)
             region = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");
-        }
 
-        else if (item instanceof PrenotazioneEntity) {
-            setFocusTraversable(false); //disable cell ripple
-            region = BookingCellCreator.instance().createForListView(getListView(), (PrenotazioneEntity) item);
-        }
+        else region = AbstractCellCreator.getCell(item);
 
-        else region = new Label("NOT IMPLEMENTED"); //T not supported
+        if (region == null) region = new Label("NOT IMPLEMENTED"); //T not supported
 
         return region;
     }

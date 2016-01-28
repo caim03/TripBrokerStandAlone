@@ -7,25 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
-import model.dao.OffertaDaoHibernate;
-import model.dao.PacchettoOffertaDaoHibernate;
-import model.entityDB.AbstractEntity;
 import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.PacchettoOffertaEntity;
 import view.material.DBCell;
-import view.material.DBListView;
 import view.material.ProgressCircle;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class PacketPopup extends PopupView {
 
@@ -47,6 +34,8 @@ public class PacketPopup extends PopupView {
         this.title = "Pacchetto";
         container.setAlignment(Pos.CENTER);
     }
+
+    public CreaPacchettoEntity getEntity() { return entity; }
 
     @Override
     protected Parent generatePopup() {
@@ -139,6 +128,7 @@ public class PacketPopup extends PopupView {
     private void generateList() {
 
         list = new ListView();
+        list.setMaxHeight(200);
         list.setCellFactory(callback -> new DBCell());
         list.getItems().addAll(entity.retrieveOffers());
     }

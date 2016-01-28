@@ -103,4 +103,13 @@ public class CreaPacchettoEntity extends ProdottoEntity {
 
         return entities;
     }
+
+    public int retrieveQuantity() {
+        int qu = Integer.MAX_VALUE, av;
+        for (OffertaEntity offer : retrieveOffers()) {
+            av = offer.getQuantità() - offer.getPrenotazioni();
+            if (av < qu) qu = av;
+        }
+        return qu;
+    }
 }

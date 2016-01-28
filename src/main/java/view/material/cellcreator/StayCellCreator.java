@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 public class StayCellCreator extends SubOfferCellCreator<PernottamentoEntity> {
 
     private static StayCellCreator me;
-    public static StayCellCreator instance() {
+    protected static StayCellCreator instance() {
 
         if (me == null) me = new StayCellCreator();
         return me;

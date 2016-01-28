@@ -12,8 +12,6 @@ import model.dao.PoliticheDaoHibernate;
 import model.entityDB.*;
 import view.material.ProgressCircle;
 
-import java.text.SimpleDateFormat;
-
 public class OfferPopup<T extends OffertaEntity> extends PopupView {
 
     protected T entity;
