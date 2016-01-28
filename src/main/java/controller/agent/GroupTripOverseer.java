@@ -13,9 +13,10 @@ import java.util.List;
 public class GroupTripOverseer extends PacketOverseer {
 
     /** @param groupTripList; a list of all offers in group trip
-     *  @param notify; a boolean value that represents **/
+     *  @param notify; a boolean value that enable or disable the notifications for test **/
     public GroupTripOverseer(GroupTripList groupTripList, boolean notify) { super(groupTripList, notify); }
 
+    /** @param price; represent the new price of the group trip **/
     @Override protected void updateSubject(double price) { subjectList.setPrice(price); }
 
     @Override
@@ -31,6 +32,7 @@ public class GroupTripOverseer extends PacketOverseer {
         return result;
     }
 
+    /** @return String; return a string that represents a warning information **/
     @Override
     protected String someOtherAddedMessage() {
         return "Il numero di biglietti disponibili è insufficiente per formare un viaggio di gruppo";

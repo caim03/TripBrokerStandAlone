@@ -15,6 +15,14 @@ import java.sql.Timestamp;
 
 public class InsertOfferController {
 
+    /** @param name; represents the name of the new offer
+     *  @param price; represents the price of the new offer
+     *  @param qu; represents the quantity of the new offer
+     *  @param type; represents the type of the new offer (travel, stay or event)
+     *  @param city; represents the city of the new offer
+     *  @param date; represents the start date of the new offer
+     *  @param arguments; represent the all parameters of the specific offer
+     *  @return boolean; return a boolean value that represents the result of operation **/
     public static boolean handle(String name, double price, int qu, String type,
                                  String city, Timestamp date, EntityBuilder.Arguments arguments) {
         if (!checkStrings(name, type, city) || qu < 1 || price <= 0 ||
@@ -36,8 +44,12 @@ public class InsertOfferController {
         return true;
     }
 
+    /** @param start; the timestamp of the start date
+     *  @param end; the timestamp of the end date
+     *  @return boolean; return a boolean value that represents the result of operation **/
     private static boolean dateCheck(Timestamp start, Timestamp end) { return start.before(end); }
 
+    /** @param entity; the entity that must be inserted **/
     private static void insert(OffertaEntity entity) throws HibernateException {
 
         DAO dao;
@@ -50,8 +62,13 @@ public class InsertOfferController {
         DBManager.shutdown();
     }
 
+    /** @param string; string that must be checked
+     *  @return boolean; return a boolean value that represents the result of operation **/
+
     private static boolean checkStrings(String string) { return string != null && !"".equals(string); }
 
+    /** @param strings; strings that must be checked
+     *  @return boolean; return a boolean value that represents the result of operation **/
     private static boolean checkStrings(String... strings) {
         for (String s : strings) if (!checkStrings(s)) return false;
         return true;
