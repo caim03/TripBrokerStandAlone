@@ -30,18 +30,7 @@ public class TableViewController implements EventHandler<MouseEvent> {
 
         String type = entity.getTipo();
 
-        if (Constants.event.equals(type))
-            popupView = new EventPopup((EventoEntity) entity);
-
-        else if (Constants.travel.equals(type))
-            popupView = new TravelPopup((ViaggioEntity) entity);
-
-        else if (Constants.stay.equals(type))
-            popupView = new StayPopup((PernottamentoEntity) entity);
-
-        else if (Constants.group.equals(type))
-            popupView = new GroupTripPopup((ViaggioGruppoEntity) entity);
-
+        if (entity instanceof OffertaEntity) popupView = OfferPopup.getCatalogPopup((OffertaEntity) entity);
         else {
             popupView = new PacketPopup(entity.getId());
             if (pane instanceof PacketApproveView)

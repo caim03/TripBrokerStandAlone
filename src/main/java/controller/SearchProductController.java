@@ -5,10 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import model.DBManager;
-import model.entityDB.EventoEntity;
-import model.entityDB.PernottamentoEntity;
-import model.entityDB.ViaggioEntity;
-import model.entityDB.ViaggioGruppoEntity;
+import model.entityDB.*;
 import view.agent.SellProductView;
 import view.material.DBListView;
 import view.material.MaterialPopup;
@@ -40,10 +37,7 @@ public class SearchProductController {
             listView = retrieveEvents(city, date);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                new MaterialPopup(
-                        sellProductView,
-                        new SellPopup(new EventPopup((EventoEntity)newValue), (EventoEntity)newValue))
-                        .show();
+                new MaterialPopup(sellProductView, new SellPopup((OffertaEntity)newValue)).show();
             });
         }
 
@@ -64,10 +58,7 @@ public class SearchProductController {
             listView = retrieveTravels(departure, arrival, vehicle, vehClass, depDate, arrDate);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                new MaterialPopup(
-                        sellProductView,
-                        new SellPopup(new TravelPopup((ViaggioEntity)newValue), (ViaggioEntity)newValue))
-                        .show();
+                new MaterialPopup(sellProductView, new SellPopup((OffertaEntity) newValue)).show();
             });
         }
 
@@ -84,10 +75,7 @@ public class SearchProductController {
             listView = retrieveStay(city, checkIn, checkOut);
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null || newValue.equals(oldValue)) return;
-                new MaterialPopup(
-                        sellProductView,
-                        new SellPopup(new StayPopup((PernottamentoEntity)newValue), (PernottamentoEntity)newValue))
-                        .show();
+                new MaterialPopup(sellProductView, new SellPopup((OffertaEntity)newValue)).show();
             });
         }
 

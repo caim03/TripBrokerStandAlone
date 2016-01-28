@@ -1,70 +1,37 @@
 package view.popup;
 
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.entityDB.PernottamentoEntity;
 
 import java.text.SimpleDateFormat;
 
-public class StayPopup extends PopupView {
-    PernottamentoEntity pernottamentoEntity;
+public class StayPopup extends OfferPopup<PernottamentoEntity> {
 
-    public StayPopup(PernottamentoEntity prodottoEntity) {
-
-        this.pernottamentoEntity = prodottoEntity;
-        this.title = "Pernottamento";
-    }
+    protected StayPopup(PernottamentoEntity entity) { super(entity); }
+    protected StayPopup(PernottamentoEntity entity, boolean selling) { super(entity, selling); }
 
     @Override
     protected Parent generatePopup() {
 
-        Label nameLbl = new Label("Nome:"),
-                priceLbl = new Label("Prezzo:"),
-                cityLbl = new Label("Città:"),
-                quanitityLbl = new Label("Quantità:"),
-                stateLbl = new Label("Prenotazioni:"),
-                dateInLbl = new Label("Data Iniziale:"),
-                dateFinLbl = new Label("Data Finale:"),
-                qualityLbl = new Label("Qualità:"),
-                serviceLbl = new Label("Servizio:"),
-                placeLbl = new Label("Luogo:");
+        GridPane pane = (GridPane) super.generatePopup();
 
-        pane = new GridPane();
-        pane.setStyle("-fx-background-color: white");
-        pane.setHgap(25);
-        pane.setVgap(8);
-        pane.setPadding(new Insets(25, 25, 25, 25));
+        int i = selling ? 0 : 1;
 
-        pane.add(nameLbl, 0, 0);
-        pane.add(priceLbl, 0, 1);
-        pane.add(cityLbl, 0, 2);
-        pane.add(quanitityLbl, 0, 3);
-        pane.add(stateLbl, 0, 4);
-        pane.add(dateInLbl, 0, 5);
-        pane.add(dateFinLbl, 0, 6);
-        pane.add(qualityLbl, 0, 7);
-        pane.add(serviceLbl, 0, 8);
-        pane.add(placeLbl, 0, 9);
+        pane.add(new Label("Presso:"), 0, 4 + i);
+        pane.add(new Label("Data check-in:"), 0, 5 + i);
+        pane.add(new Label("Data check-out:"), 0, 6 + i);
+        pane.add(new Label("Qualità:"), 0, 7 + i);
+        pane.add(new Label("Servizio:"), 0, 8 + i);
 
-        pane.add(new Text(pernottamentoEntity.getNome()), 1, 0);
-        pane.add(new Text(Double.toString(pernottamentoEntity.getPrezzo())), 1, 1);
-        pane.add(new Text(pernottamentoEntity.getCittà()), 1, 2);
-        pane.add(new Text(Integer.toString(pernottamentoEntity.getQuantità())), 1, 3);
-        pane.add(new Text(Integer.toString(pernottamentoEntity.getPrenotazioni())), 1, 4);
-        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(pernottamentoEntity.getDataInizio())), 1, 5);
-        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(pernottamentoEntity.getDataFinale())), 1, 6);
-        pane.add(new Text(pernottamentoEntity.getQualità()),1, 7);
-        pane.add(new Text(pernottamentoEntity.getServizio()),1, 8);
-        pane.add(new Text(pernottamentoEntity.getLuogo()), 1, 9);
+        pane.add(new Text(entity.getLuogo()), 1, 4 + i);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(entity.getDataInizio())), 1, 5 + i);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(entity.getDataFinale())), 1, 6 + i);
+        pane.add(new Text(entity.getQualità()),1, 7 + i);
+        pane.add(new Text(entity.getServizio()),1, 8 + i);
 
-        setRow(9);
-
-        VBox dialogVbox = new VBox(40, pane);
-
-        return dialogVbox;
+        return pane;
     }
 }
