@@ -3,11 +3,9 @@ package view.material;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import view.popup.PopupView;
 
 public class MaterialPopup extends GridPane {
@@ -22,7 +20,7 @@ public class MaterialPopup extends GridPane {
         this.parent = parent;
         this.popup = popup;
 
-        Region view = (Region) this.popup.getGui();
+        Region view = this.popup.getGui();
         if (fullscreen) {
             view.prefHeightProperty().bind(heightProperty());
             view.prefWidthProperty().bind(widthProperty());
@@ -47,14 +45,13 @@ public class MaterialPopup extends GridPane {
     public void show() { parent.attach(this); }
     public void hide() { parent.pop(); }
 
-    public PopupEventHandler getListener(EventHandler handler) { return new PopupEventHandler(handler); }
     public PopupEventHandler getListener(EventHandler handler, boolean dismiss) { return new PopupEventHandler(handler, dismiss); }
 
     class PopupEventHandler implements EventHandler<MouseEvent> {
 
         EventHandler<MouseEvent> handler;
         boolean dismiss;
-        PopupEventHandler(EventHandler<MouseEvent> handler) { this(handler, true); }
+
         PopupEventHandler(EventHandler<MouseEvent> handler, boolean dismiss) {
             this.handler = handler;
             this.dismiss = dismiss;

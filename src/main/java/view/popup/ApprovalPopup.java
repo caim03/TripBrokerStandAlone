@@ -55,7 +55,6 @@ public class ApprovalPopup extends PopupDecorator {
 
         super(popupView);
         this.pacchetto = pacchetto;
-        this.title = "Approva Pacchetto";
         this.list = list;
     }
 

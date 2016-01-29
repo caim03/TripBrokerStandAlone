@@ -22,11 +22,8 @@ public class BookingPopup extends PopupDecorator {
     private GridPane pane;
 
     public BookingPopup(PopupView popupView, ViaggioGruppoEntity entity) {
-
         super(popupView);
-
         this.entity = entity;
-        this.title = "Prenota viaggio";
     }
 
     @Override

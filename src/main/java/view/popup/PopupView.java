@@ -1,17 +1,17 @@
 package view.popup;
 
 import javafx.scene.Parent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
+import model.dao.DipendentiDaoHibernate;
 import model.entityDB.DipendentiEntity;
 import view.material.MaterialPopup;
 
 /** Factory Method for popup **/
 public abstract class PopupView {
 
+    protected Region gui;
     protected MaterialPopup parent;
     public void setParent(MaterialPopup parent) { this.parent = parent; }
 
@@ -32,5 +32,10 @@ public abstract class PopupView {
         }
 
         return entity.getNome() + " " + entity.getCognome();
+    }
+
+    public Region getGui() {
+        if (gui == null) gui = (Region) generatePopup();
+        return gui;
     }
 }
