@@ -22,16 +22,12 @@ public class PacketPopup extends PopupView {
     private ListView list;
 
     public PacketPopup(CreaPacchettoEntity prodottoEntity) {
-
         this.entity = prodottoEntity;
-        this.title = "Pacchetto";
         container.setAlignment(Pos.CENTER);
     }
 
     public PacketPopup(int id) {
-
         this.id = id;
-        this.title = "Pacchetto";
         container.setAlignment(Pos.CENTER);
     }
 
@@ -63,44 +59,31 @@ public class PacketPopup extends PopupView {
 
     private Parent generate() {
 
-        String state;
+        int i = entity.getStato() == 2 ? 1 : 0;
 
-        Label nameLbl = new Label("Nome:"),
-                priceLbl = new Label("Prezzo:"),
-                stateLbl = new Label("Stato:"),
-                motivLbl = new Label("Motivazione:"),
-                creatLbl = new Label("Creatore:");
-
-        pane = new GridPane();
+        GridPane pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
         pane.setPadding(new Insets(25));
 
-        pane.add(nameLbl, 0, 0);
-        pane.add(priceLbl, 0, 1);
-        pane.add(stateLbl, 0, 2);
-        pane.add(motivLbl, 0, 3);
-        pane.add(creatLbl, 0, 4);
+        pane.add(new Label("Nome:"), 0, 0);
+        pane.add(new Label("Prezzo:"), 0, 1);
+        pane.add(new Label("Stato:"), 0, 2);
+        if (entity.getStato() == 2) pane.add(new Label("Motivazione:"), 0, 3);
+        pane.add(new Label("Creatore:"), 0, 3 + i);
 
         pane.add(new Text(entity.getNome()), 1, 0);
         pane.add(new Text(Double.toString(entity.getPrezzo())), 1, 1);
-        if (entity.getStato() == 0){
-            state = "In attesa di approvazione";
-        }
 
-        else if (entity.getStato() == 1){
-            state = "Approvato";
-        }
+        String state;
+        if (entity.getStato() == 0) state = "In attesa di approvazione";
+        else if (entity.getStato() == 1) state = "Approvato";
+        else state = "Rifiutato";
 
-        else{
-            state = "Rifiutato";
-        }
         pane.add(new Text(state), 1, 2);
-        pane.add(new Text((entity.getMotivazione())), 1, 3);
-        pane.add(new Text(getEmployee(entity.getCreatore())), 1, 4);
-
-        setRow(4);
+        if (entity.getStato() == 2) pane.add(new Text((entity.getMotivazione())), 1, 3);
+        pane.add(new Text(getEmployee(entity.getCreatore())), 1, 3 + i);
 
         generateList();
 
@@ -108,15 +91,7 @@ public class PacketPopup extends PopupView {
 
         list.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue.doubleValue() > dialogVbox.getPrefWidth()) {
-                dialogVbox.prefWidthProperty().setValue(newValue);
-            }
-        });
-
-        list.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (oldValue != null)
-                    dialogVbox.prefHeightProperty().subtract(oldValue.doubleValue());
-                dialogVbox.prefHeightProperty().add(newValue.doubleValue());
+                dialogVbox.prefWidthProperty().setValue(newValue.doubleValue() + 32);
             }
         });
 

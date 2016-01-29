@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 
 public class StayPopup extends OfferPopup<PernottamentoEntity> {
 
-    protected StayPopup(PernottamentoEntity entity) { super(entity); }
     protected StayPopup(PernottamentoEntity entity, boolean selling) { super(entity, selling); }
 
     @Override

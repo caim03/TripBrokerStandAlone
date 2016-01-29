@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;
 import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.OffertaEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 

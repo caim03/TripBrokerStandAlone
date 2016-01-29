@@ -25,10 +25,7 @@ public class PoliticsPopup extends PopupView {
     private NumericField field;
     private Button modButton;
 
-    public PoliticsPopup(PoliticheEntity entity) {
-        this.entity = entity;
-        this.title = "Politiche";
-    }
+    public PoliticsPopup(PoliticheEntity entity) { this.entity = entity; }
 
     @Override
     protected Parent generatePopup() {
