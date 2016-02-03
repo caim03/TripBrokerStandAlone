@@ -49,6 +49,7 @@ public class PacketEditView extends DBTablePane {
 
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
+            list.getSelectionModel().clearSelection();
             if (newValue != null) {
                 MaterialPopup popup = new MaterialPopup(PacketEditView.this,
                         new FormPopup(

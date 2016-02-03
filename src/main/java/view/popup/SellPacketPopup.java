@@ -1,5 +1,6 @@
 package view.popup;
 
+import controller.Constants;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,8 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import model.DBManager;
+import model.dao.DAO;
 import model.dao.OffertaDaoHibernate;
+import model.dao.StatusDaoHibenate;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.StatusEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
@@ -35,7 +39,6 @@ public class SellPacketPopup extends PopupDecorator {
 
         box = new HBox(button);
         box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(4));
         box.setPadding(new Insets(16));
 
         return box;
@@ -82,6 +85,10 @@ public class SellPacketPopup extends PopupDecorator {
 
                                             OffertaDaoHibernate.instance().update(entity.retrieveOffers().get(i));
                                         }
+                                        DAO dao = StatusDaoHibenate.getInstance();
+                                        StatusEntity entries = (StatusEntity) dao.getById(Constants.entries);
+                                        entries.update(Math.round(entity.getPrezzo() * qu * 100) / 100.0);
+                                        dao.update(entries);
                                     }
                                     catch (Exception e) {
                                         Notifications.create().

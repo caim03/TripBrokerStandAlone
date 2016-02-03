@@ -25,6 +25,7 @@ public class Amministratore extends Ruolo {
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))), // modify politics command
                 new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ManageRolesView"))), // menage roles command
                 new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.admin.AddNewEmployeeView"))), // add employee command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.CompanyStatusView"))), // add employee command
                 new LogoutCommand(stage)); // logout command
     }
 

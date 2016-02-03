@@ -1,8 +1,8 @@
 package view;
 
 import controller.Constants;
-import controller.desig.PacketAssembleController;
 import controller.command.TransferRecordCommand;
+import controller.desig.PacketAssembleController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,12 +16,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
-import model.entityDB.*;
+import model.entityDB.AbstractEntity;
+import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.OffertaEntity;
+import model.entityDB.PoliticheEntity;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
-import view.material.*;
-import view.observers.Observer;
+import view.material.DBCell;
+import view.material.MaterialTextField;
+import view.material.NumberLabel;
+import view.material.NumericField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
@@ -126,46 +132,32 @@ public class PacketFormView extends VBox implements Collector {
     public void harvest() {
 
         String name = nameField.getText();
-        double price = ((NumericField)priceField).getNumber();
-
-        if ("".equals(name) || "".equals(priceField.getText()))
-            Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
-
-        else if (price < basePrice.getNumber() || price > maxPrice.getNumber())
-            Notifications.create().text("Il prezzo deve essere compreso tra i suoi limiti").showWarning();
-
-        else if (list.getItems().size() == 0)
-            Notifications.create().text("Pacchetto vuoto").showWarning();
-
-        else {
-
-            int ids[] = new int[list.getItems().size()], i = 0;
-
-            List<AbstractEntity> offers = list.getItems();
-            AbstractEntity beginning = offers.get(0), end = offers.get(offers.size() - 1);
-
-            if (!(beginning instanceof ViaggioEntity) || !(end instanceof ViaggioEntity) ||
-                !((ViaggioEntity) beginning).getCittà().equals(((ViaggioEntity) end).getDestinazione()))
-                Notifications.create().text("I pacchetti dovrebbero iniziare e terminare con un viaggio, check-in e check-out nella stessa location").showWarning();
-
-            else {
-
-                for (AbstractEntity entity : list.getItems()) {
-                    ids[i] = ((ProdottoEntity) entity).getId();
-                    ++i;
-                }
-
-                new Thread(() -> {
-                    boolean result = PacketAssembleController.create(name, price, ids);
-                    Platform.runLater(()-> {
-
-                        if (result)
-                            Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
-                        else
-                            Notifications.create().text("Errore interno al database").showError();
-                    });
-                }).start();
-            }
+        double price = ((NumericField) priceField).getNumber();
+        List<OffertaEntity> entities = new ArrayList<>();
+        for (AbstractEntity entity : list.getItems()) {
+            if (entity instanceof OffertaEntity) entities.add((OffertaEntity) entity);
         }
+
+        new Thread(() -> {
+            String str = "";
+            boolean result = false;
+            try {
+                result = PacketAssembleController.create(name, price, basePrice.getNumber(), maxPrice.getNumber(), entities);
+                str += "Il pacchetto '" + name + "' è stato aggiunto al catalogo";
+            }
+            catch (Exception e) { str = e.getMessage(); }
+            finally {
+                final String msg = str;
+                if (result) {
+                    Platform.runLater(() -> {
+                        Notifications.create().text(msg).show();
+                        list.getItems().clear();
+                        nameField.setText(null);
+                        priceField.setText(null);
+                    });
+                }
+                else Platform.runLater(() -> Notifications.create().text(msg).showWarning());
+            }
+        }).start();
     }
 }

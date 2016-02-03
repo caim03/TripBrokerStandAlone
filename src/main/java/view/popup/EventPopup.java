@@ -11,9 +11,7 @@ import java.text.SimpleDateFormat;
 
 public class EventPopup extends OfferPopup<EventoEntity> {
 
-    protected EventPopup(EventoEntity entity) { super(entity); }
     protected EventPopup(EventoEntity entity, boolean selling) { super(entity, selling); }
-
 
     @Override
     protected Parent generatePopup() {

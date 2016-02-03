@@ -23,12 +23,10 @@ public class TableViewController implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
 
         ProdottoEntity entity = tableView.getSelectionModel().getSelectedItem();
+        tableView.getSelectionModel().clearSelection();
         PopupView popupView;
 
-        if (entity == null)
-            return;
-
-        String type = entity.getTipo();
+        if (entity == null) return;
 
         if (entity instanceof OffertaEntity) popupView = OfferPopup.getCatalogPopup((OffertaEntity) entity);
         else {

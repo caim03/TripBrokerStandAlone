@@ -32,4 +32,8 @@ public class Constants {
                             maxOverprice = 2,
                                 discount = 3,
                                 minGroup = 4;
+
+    public static final int costs = 1,
+                          entries = 2;
+
 }

@@ -24,6 +24,8 @@ import view.material.MaterialTextField;
 import view.material.NumericField;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -236,9 +238,7 @@ public class OfferInsertionView extends LayerPane implements Collector {
             long arrHour = arrCalendar.getTime().getHours() * 3600000;
             long arrMinute = arrCalendar.getTime().getMinutes() * 60000;
 
-            arrInstant.plusMillis(arrHour + arrMinute);
-
-            Timestamp arrivalTime = Timestamp.from(arrInstant);
+            Timestamp arrivalTime = new Timestamp(Timestamp.from(arrInstant).getTime() + arrHour + arrMinute);
 
             return EntityBuilder.Arguments.from(arrival, arrivalTime, vehicle, _class);
         }
@@ -311,8 +311,7 @@ public class OfferInsertionView extends LayerPane implements Collector {
             long endHour = endCalendar.getTime().getHours() * 3600000;
             long endMinute = endCalendar.getTime().getMinutes() * 60000;
 
-            endInstant.plusMillis(endHour + endMinute);
-            Timestamp endTime = Timestamp.from(endInstant);
+            Timestamp endTime = new Timestamp(Timestamp.from(endInstant).getTime() + endHour + endMinute);
 
             return EntityBuilder.Arguments.from(location, endTime);
         }

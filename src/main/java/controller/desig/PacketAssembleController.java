@@ -1,22 +1,40 @@
 package controller.desig;
 
 import controller.Constants;
+import controller.exception.BoundsException;
+import controller.exception.EmptyFormException;
+import controller.exception.EmptyPacketException;
+import controller.exception.LocationsException;
 import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.PacchettoOffertaDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.PacchettoOffertaEntity;
-import org.hibernate.Session;
+import model.entityDB.*;
 import view.TripBrokerConsole;
+
+import java.util.List;
 
 public class PacketAssembleController {
 
 
     /** @param name; represents the name of the new packet
      *  @param price; represents the name of the new packet
-     *  @param ids; represents a list of id of all offers in the packet
+     *
+     *
+     *
      *  @return boolean; return a boolean value that represents the result of operation **/
-    public static boolean create(String name, double price, int... ids) {
+    public static boolean create(String name, double price, double bound0, double bound1, List<OffertaEntity> entities) throws Exception {
+
+        if (name == null || "".equals(name)) throw new EmptyFormException();
+        if (entities.size() == 0) throw new EmptyPacketException();
+        if (price < bound0 || price > bound1) throw new BoundsException();
+
+        checkLocations(entities.get(0), entities.get(entities.size() - 1));
+
+        int ids[] = new int[entities.size()], i = 0;
+        for (OffertaEntity entity : entities) {
+            ids[i] = entity.getId();
+            ++i;
+        }
 
         try {
 
@@ -47,5 +65,10 @@ public class PacketAssembleController {
         finally { DBManager.shutdown(); }
 
         return true;
+    }
+
+    private static void checkLocations(OffertaEntity from, OffertaEntity to) throws LocationsException {
+        if (!(from instanceof ViaggioEntity && to instanceof ViaggioEntity)) throw new LocationsException();
+        else if (!from.getCittà().equals(((ViaggioEntity) to).getDestinazione())) throw new LocationsException();
     }
 }

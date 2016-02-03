@@ -55,14 +55,17 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         attach(pane);
     }
 
+    @Override
     public void reset() {
-
-        name.setText(null);
-        surname.setText(null);
-        password.setText(null);
-        email.setText(null);
-        role = null;
-        role = new MaterialSpinner(this, ROLES);
+        try {
+            name.setText(null);
+            surname.setText(null);
+            password.setText(null);
+            email.setText(null);
+            role = null;
+            role = new MaterialSpinner(this, ROLES);
+        }
+        catch (NullPointerException ignore) {}
     }
 
 

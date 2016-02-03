@@ -68,7 +68,16 @@ public class SellPopup extends PopupDecorator {
                     progressCircle.start();
 
                     new Thread(() -> {
-                        if (!SellController.handle(entity, quantity.getValue())) {
+                        int qu;
+                        try { qu = Integer.parseInt(quantity.getValue()); }
+                        catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Platform.runLater(() -> Notifications.create().
+                                    text("Selezionare una quantità").showWarning());
+                            return;
+                        }
+
+                        if (!SellController.handle(entity, qu)) {
                             Platform.runLater(()-> {
                                 Notifications.create().title("Acquisto fallito").text("L'acquisto dell'offerta è fallito, riprova successivamente").show();
                                 parent.hide();

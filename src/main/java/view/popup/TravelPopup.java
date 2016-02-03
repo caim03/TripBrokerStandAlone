@@ -25,9 +25,9 @@ public class TravelPopup extends OfferPopup<ViaggioEntity> {
         pane.add(new Label("Mezzo:"), 0, 7 + i);
         pane.add(new Label("Classe:"), 0, 8 + i);
 
-        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(entity.getDataInizio())), 1, 4 + i);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(entity.getDataInizio())), 1, 4 + i);
         pane.add(new Text(entity.getDestinazione()), 1, 5 + i);
-        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy").format(entity.getDataArrivo())), 1, 6 + i);
+        pane.add(new Text(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(entity.getDataArrivo())), 1, 6 + i);
         pane.add(new Text(entity.getMezzo()), 1, 7 + i);
         pane.add(new Text(entity.getClasse()), 1, 8 + i);
 

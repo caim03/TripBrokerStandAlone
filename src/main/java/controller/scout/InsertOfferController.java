@@ -1,17 +1,17 @@
 package controller.scout;
 
+import controller.Constants;
 import controller.builder.EntityBuilder;
 import model.DBManager;
-import model.dao.DAO;
-import model.dao.EventoDaoHibernate;
-import model.dao.PernottamentoDaoHibernate;
-import model.dao.ViaggioDaoHibernate;
+import model.dao.*;
 import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
+import model.entityDB.StatusEntity;
 import model.entityDB.ViaggioEntity;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class InsertOfferController {
 
@@ -35,11 +35,16 @@ public class InsertOfferController {
         builder.buildOffer(city, qu, 0, date);
         builder.buildEntity(arguments);
 
-        try { insert(builder.getEntity()); }
+        try {
+            DBManager.initHibernate();
+            insert(builder.getEntity());
+            update(Math.round(price * qu * 100) / 100.0);
+        }
         catch (HibernateException e) {
             e.printStackTrace();
             return false;
         }
+        finally { DBManager.shutdown(); }
 
         return true;
     }
@@ -57,9 +62,7 @@ public class InsertOfferController {
         else if (entity instanceof EventoEntity) dao = EventoDaoHibernate.instance();
         else dao = PernottamentoDaoHibernate.instance();
 
-        DBManager.initHibernate();
         dao.store(entity);
-        DBManager.shutdown();
     }
 
     /** @param string; string that must be checked
@@ -72,5 +75,13 @@ public class InsertOfferController {
     private static boolean checkStrings(String... strings) {
         for (String s : strings) if (!checkStrings(s)) return false;
         return true;
+    }
+
+    private static void update(double price) {
+        System.out.println("UPDATE " + price);
+        DAO dao = StatusDaoHibenate.getInstance();
+        StatusEntity entity = (StatusEntity) dao.getById(Constants.costs);
+        entity.update(price);
+        dao.update(entity);
     }
 }

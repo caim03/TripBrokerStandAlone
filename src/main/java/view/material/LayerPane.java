@@ -10,7 +10,6 @@ import javafx.util.Duration;
 public class LayerPane extends StackPane {
 
     public LayerPane() {
-
         reset();
         setAlignment(Pos.CENTER);
         setMaxWidth(Double.MAX_VALUE);
