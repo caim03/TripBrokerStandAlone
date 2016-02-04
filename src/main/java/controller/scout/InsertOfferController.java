@@ -78,7 +78,6 @@ public class InsertOfferController {
     }
 
     private static void update(double price) {
-        System.out.println("UPDATE " + price);
         DAO dao = StatusDaoHibenate.getInstance();
         StatusEntity entity = (StatusEntity) dao.getById(Constants.costs);
         entity.update(price);

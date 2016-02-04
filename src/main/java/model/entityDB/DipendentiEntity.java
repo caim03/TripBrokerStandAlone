@@ -114,10 +114,19 @@ public class DipendentiEntity extends AbstractEntity {
 
         DipendentiEntity that = (DipendentiEntity) o;
 
+        System.out.println(
+                this.id + "\t" + that.id + "\n" +
+                this.nome + "\t" + that.nome + "\n" +
+                this.cognome + "\t" + that.cognome + "\n" +
+                this.job + "\t" + that.job + "\n" +
+                this.passwordLogin + "\t" + that.passwordLogin + "\n" +
+                this.mail + "\t" + that.mail
+        );
+
         if (id != that.id) return false;
         if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
         if (cognome != null ? !cognome.equals(that.cognome) : that.cognome != null) return false;
-        if (job != null ? !job.equals(that.job) : that.job != null) return false;
+        if (getRuolo() != null ? !getRuolo().equals(that.getRuolo()) : that.getRuolo() != null) return false;
         if (passwordLogin != null ? !passwordLogin.equals(that.passwordLogin) : that.passwordLogin != null)
             return false;
         if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;

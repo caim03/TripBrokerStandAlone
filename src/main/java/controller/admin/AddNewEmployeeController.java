@@ -1,6 +1,7 @@
 package controller.admin;
 
 
+import controller.exception.EmptyFormException;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
@@ -16,9 +17,9 @@ public class AddNewEmployeeController {
      *  @param password; this string represents the password of the new dependent
      *  @param role; this string represents the role of the new dependent
      *  @param mail; this string represents the mail of the new dependent **/
-    public static void handle(String name, String surname, String password, String role, String mail){
+    public static boolean handle(String name, String surname, String password, String role, String mail) throws EmptyFormException {
 
-
+        if (!checkStrings(name, surname, password, role, mail)) throw new EmptyFormException();
         // new dependent
         DipendentiEntity entity = new DipendentiEntity();
 
@@ -29,10 +30,25 @@ public class AddNewEmployeeController {
         entity.setRuolo(role);
         entity.setMail(mail);
 
-        // use dao of dependent to add it into DB
         DAO dao = DipendentiDaoHibernate.instance();
-        DBManager.initHibernate();
-        dao.store(entity);
-        DBManager.shutdown();
+
+        try {
+            // use dao of dependent to add it into DB
+            DBManager.initHibernate();
+            dao.store(entity);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally { DBManager.shutdown(); }
+
+        return true;
+    }
+
+    private static boolean checkString(String str) { return str != null && !"".equals(str); }
+    private static boolean checkStrings(String... strings) {
+        for (String str: strings) if (!checkString(str)) return false;
+        return true;
     }
 }

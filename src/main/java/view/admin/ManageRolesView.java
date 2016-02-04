@@ -63,7 +63,7 @@ public class ManageRolesView extends DBTablePane {
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });
-        modBtnColumn.setCellFactory(param -> new ButtonCell("modify", this));
+        modBtnColumn.setCellFactory(param -> new ButtonCell("Modifica", this));
 
         TableColumn delBtnColumn = new TableColumn("");
         delBtnColumn.setMinWidth(200);
@@ -74,7 +74,7 @@ public class ManageRolesView extends DBTablePane {
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });
-        delBtnColumn.setCellFactory(param -> new ButtonCell("delete", this));
+        delBtnColumn.setCellFactory(param -> new ButtonCell("Elimina", this));
 
         list.getColumns().addAll(idColumn,
                 nameColumn,

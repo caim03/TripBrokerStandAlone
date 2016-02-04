@@ -77,36 +77,4 @@ public class InsertOfferControllerTest {
 
         assertEquals(qu * price, total, 0.01);
     }
-
-    /*
-    @Test
-    public void testHandle2() throws Exception {
-        entity.setNome(null);
-        assertFalse(InsertOfferController.handle(entity.getNome(), entity.getPrezzo(),
-                entity.getQuantità(), entity.getTipo(), entity.getCittà(), entity.getDataInizio(), arg));
-    }
-
-    @Test
-    public void testHandle3() throws Exception {
-        entity.setNome("Test2");
-        entity.setQuantità(0);
-        assertFalse(InsertOfferController.handle(entity.getNome(), entity.getPrezzo(),
-                entity.getQuantità(), entity.getTipo(), entity.getCittà(), entity.getDataInizio(), arg));
-    }
-
-    @Test
-    public void testHandle4() throws Exception {
-        entity.setQuantità(1);
-        entity.setPrezzo(0);
-        assertFalse(InsertOfferController.handle(entity.getNome(), entity.getPrezzo(),
-                entity.getQuantità(), entity.getTipo(), entity.getCittà(), entity.getDataInizio(), arg));
-    }
-
-    @Test
-    public void testHandle5() throws Exception {
-        entity.setPrezzo(100.0);
-        arg.setDate(Timestamp.from(entity.getDataInizio().toInstant().minus(Duration.ofMillis(100000L))));
-        assertFalse(InsertOfferController.handle(entity.getNome(), entity.getPrezzo(),
-                entity.getQuantità(), entity.getTipo(), entity.getCittà(), entity.getDataInizio(), arg));
-    }*/
 }

@@ -1,5 +1,10 @@
 package test;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
@@ -7,6 +12,7 @@ import model.entityDB.ViaggioEntity;
 import org.junit.Before;
 import org.junit.Test;
 import view.desig.PacketList;
+import view.material.DBListView;
 
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -31,7 +37,7 @@ public class PacketListTest {
         PacketList list = new PacketList(false);
         int expected = 0;
         OffertaEntity entity, prev;
-        for (long i = 0; i < 10000000; ++i) {
+        for (long i = 0; i < 1000000; ++i) {
             entity = generate();
             if (i > 0) {
                 prev = list.getPrevious(list.size());

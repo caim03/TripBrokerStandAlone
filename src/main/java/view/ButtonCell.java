@@ -42,11 +42,11 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             setGraphic(cell);
 
             // if modify button
-            if (type.equals("modify"))
+            if (type.equals("Modifica"))
                 cellButton.setOnMouseClicked(event -> {
 
                     DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
-                    PopupView popupView = new EmployeePopup(getTableView(), entity, getTableRow().getIndex());
+                    PopupView popupView = new EmployeePopup(getTableView(), entity);
                     new MaterialPopup(pane, popupView).show();
                 });
 

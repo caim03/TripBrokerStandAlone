@@ -19,7 +19,7 @@ public class CompanyStatusView extends GridPane {
     public CompanyStatusView() {
 
         setPadding(new Insets(25));
-        setStyle("-fx-background-color: white");
+        setStyle("-fx-background-color: white; -fx-hgap: 16px; -fx-vgap: 4px");
         setAlignment(Pos.TOP_LEFT);
 
         add(new Label("Costi"), 0, 0);

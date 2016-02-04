@@ -1,6 +1,7 @@
 package view.admin;
 
 import controller.admin.AddNewEmployeeController;
+import controller.exception.EmptyFormException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -72,35 +73,33 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
     @Override
     public void harvest() {
 
-        if (check()) {
-
-            new Thread(() -> {
-                AddNewEmployeeController.handle(
+        new Thread(() -> {
+            boolean result = false;
+            try {
+                result = AddNewEmployeeController.handle(
                         name.getText(),
                         surname.getText(),
                         password.getText(),
                         role.getValue(),
                         email.getText());
+            }
+            catch (EmptyFormException e) { Platform.runLater(() ->
+                    Notifications.create().text(e.getMessage()).showWarning()); }
+
+            if (result) {
                 Platform.runLater(() -> {
                     Notifications.create()
                             .text("Il dipendente " + name.getText() + " " + surname.getText() + " è stato aggiunto con successo")
                             .title("Operazione completata")
                             .show();
+                    reset(); });
+            }
+            else Platform.runLater(() ->
+                Notifications.create()
+                        .text("Errore inaspettato")
+                        .title("Operazione fallita")
+                        .showError());
 
-                    reset();
-                });
-            }).start();
-        }
-
-        else Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
-    }
-
-    private boolean check() {
-
-        return (name.getText() != null && !"".equals(name.getText())) &&
-               (surname.getText() != null && !"".equals(surname.getText())) &&
-               (password.getText() != null && !"".equals(password.getText())) &&
-               (email.getText() != null && !"".equals(email.getText())) &&
-               (role.getValue() != null && !"".equals(role.getValue()));
+        }).start();
     }
 }

@@ -1,6 +1,7 @@
 package controller.admin;
 
 
+import controller.exception.EmptyFormException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
@@ -13,67 +14,35 @@ import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import view.material.MaterialSpinner;
 
-public class ModifyEmployeeController implements EventHandler<MouseEvent>{
-    private TextField nameTxt;
-    private TextField surnameTxt;
-    private MaterialSpinner roleTxt;
-    private TextField passTxt;
-    private TextField mailTxt;
-    private TableView<DipendentiEntity> list;
-    private DipendentiEntity entity;
-    private int index;
+public class ModifyEmployeeController {
 
-    /** @param nameTxt; textfield of the name
-     *  @param surnameTxt; textfield of the surname
-     *  @param roleTxt; spinner of the role
-     *  @param passTxt; textfield of the password string
-     *  @param mailTxt; textfield of the mail
-     *  @param list; list of employees
-     *  @param entity; employee
-     *  @param index; **/
-    public ModifyEmployeeController(TextField nameTxt, TextField surnameTxt,
-                                    MaterialSpinner roleTxt, TextField passTxt, TextField mailTxt,
-                                    TableView<DipendentiEntity> list, DipendentiEntity entity, int index) {
-        this.nameTxt = nameTxt;
-        this.surnameTxt = surnameTxt;
-        this.roleTxt = roleTxt;
-        this.passTxt = passTxt;
-        this.mailTxt = mailTxt;
-        this.list = list;
-        this.entity = entity;
-        this.index = index;
+    public static boolean handle(DipendentiEntity entity) throws EmptyFormException {
+        if (!checkEmployee(entity)) throw new EmptyFormException();
+        try {
+            DBManager.initHibernate();
+            update(entity);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally { DBManager.shutdown(); }
+
+        return true;
     }
 
-    @Override
-    public void handle(MouseEvent event) {
+    private static void update(DipendentiEntity entity) {
+        DAO dao = DipendentiDaoHibernate.instance();
+        dao.update(entity);
+    }
 
-        if (!"".equals(nameTxt.getText())){
-            entity.setNome(nameTxt.getText());
-        }
-        if (!"".equals(surnameTxt.getText())){
-            entity.setCognome(surnameTxt.getText());
-        }
-        if (!"".equals(roleTxt.getValue())){
-            entity.setRuolo(roleTxt.getValue());
-        }
-        if (!"".equals(passTxt.getText())){
-            entity.setPasswordLogin(passTxt.getText());
-        }
-        if (!"".equals(mailTxt.getText())){
-            entity.setMail(mailTxt.getText());
-        }
+    private static boolean checkEmployee(DipendentiEntity entity) {
+        return checkStrings(entity.getNome(), entity.getCognome(), entity.getRuolo(), entity.getPasswordLogin(), entity.getMail());
+    }
 
-        new Thread(()-> {
-            DAO dao = DipendentiDaoHibernate.instance();
-            DBManager.initHibernate();
-            dao.update(entity);
-            DBManager.shutdown();
-
-            Platform.runLater(() -> {
-                Notifications.create().title("Modificato").text("Il dipendente è stato modificato con successo").show();
-                list.getItems().set(index, entity);
-                list.refresh();
-            });
-        }).start();
+    private static boolean checkString(String string) { return string != null && !"".equals(string); }
+    private static boolean checkStrings(String... strings) {
+        for (String string : strings) if (!checkString(string)) return false;
+        return true;
     }
 }
