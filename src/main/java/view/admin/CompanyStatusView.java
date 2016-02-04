@@ -11,6 +11,8 @@ import model.dao.StatusDaoHibenate;
 import model.entityDB.StatusEntity;
 import view.material.ProgressCircle;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -47,7 +49,7 @@ public class CompanyStatusView extends GridPane {
             lock1.unlock();
             Platform.runLater(() -> {
                 getChildren().remove(circle0);
-                add(new Label(Double.toString(value)), 1, 0);
+                add(new Label(NumberFormat.getCurrencyInstance(Locale.ITALY).format(value)), 1, 0);
             });
         }).start();
 
@@ -60,7 +62,7 @@ public class CompanyStatusView extends GridPane {
             lock2.unlock();
             Platform.runLater(() -> {
                 getChildren().remove(circle1);
-                add(new Label(Double.toString(value)), 1, 1);
+                add(new Label(NumberFormat.getCurrencyInstance(Locale.ITALY).format(value)), 1, 1);
             });
         }).start();
 
@@ -71,7 +73,7 @@ public class CompanyStatusView extends GridPane {
             lock2.unlock();
             Platform.runLater(() -> {
                 getChildren().remove(circle2);
-                add(new Label(Double.toString(result[0])), 1, 2);
+                add(new Label(NumberFormat.getCurrencyInstance(Locale.ITALY).format(result[0])), 1, 2);
             });
         }).start();
     }
