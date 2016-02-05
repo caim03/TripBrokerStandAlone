@@ -51,7 +51,7 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         else if (item instanceof PrenotazioneEntity) {
             setFocusTraversable(false);
-            region = new BookingCellCreator().createCell(getListView(), (PrenotazioneEntity) item);
+            region = BookingCellCreator.instance().createCell(getListView(), (PrenotazioneEntity) item);
         }
 
         else if (item instanceof ViaggioGruppoEntity)

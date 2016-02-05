@@ -14,7 +14,7 @@ public class GroupTripBookingView extends LayerPane {
 
     public GroupTripBookingView() {
 
-        list = new DBListView("from ViaggioGruppoEntity entity where entity.prenotazioni < entity.max");
+        list = new DBListView("from ViaggioGruppoEntity entity where entity.prenotazioni + entity.acquisti < entity.max");
         list.fill();
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
