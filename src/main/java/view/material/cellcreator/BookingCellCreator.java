@@ -67,7 +67,9 @@ public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> 
         EmptyCell cell = new EmptyCell(entity.getNome() + " " + entity.getCognome());
 
         //Reservation quantity
-        cell.addSubHeaders("Posti prenotati: " + entity.getQuantità());
+        cell.addSubHeaders(
+                "Numero di telefono: " + entity.getTelefono(),
+                "Posti prenotati: " + entity.getQuantità());
 
         return cell;
     }

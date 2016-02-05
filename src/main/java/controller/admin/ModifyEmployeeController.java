@@ -1,23 +1,15 @@
 package controller.admin;
 
 
-import controller.exception.EmptyFormException;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
-import org.controlsfx.control.Notifications;
-import view.material.MaterialSpinner;
 
 public class ModifyEmployeeController {
 
-    public static boolean handle(DipendentiEntity entity) throws EmptyFormException {
-        if (!checkEmployee(entity)) throw new EmptyFormException();
+    public static boolean handle(DipendentiEntity entity) throws Exception {
+        if (!checkEmployee(entity)) throw new Exception("Riempire tutti i campi obbligatori");
         try {
             DBManager.initHibernate();
             update(entity);

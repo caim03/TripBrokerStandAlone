@@ -2,6 +2,7 @@ package view;
 
 import controller.Constants;
 import controller.agent.GroupTripAssembleController;
+import controller.desig.PacketAssembleController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import model.DBManager;
 import model.dao.PoliticheDaoHibernate;
 import model.entityDB.AbstractEntity;
+import model.entityDB.OffertaEntity;
 import model.entityDB.PoliticheEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
@@ -17,6 +19,9 @@ import view.agent.GroupTripList;
 import view.desig.PacketList;
 import view.material.NumericField;
 import view.observers.Subject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupTripFormView extends PacketFormView {
 
@@ -68,36 +73,35 @@ public class GroupTripFormView extends PacketFormView {
     public void harvest() {
 
         String name = nameField.getText();
-        double price = ((NumericField)priceField).getNumber();
+        double price = ((NumericField) priceField).getNumber();
         Integer min = minSpinner.getValue(),
                 max = maxSpinner.getValue();
 
-        if ("".equals(name) || "".equals(priceField.getText()))
-            Notifications.create().text("Riempire tutti i campi obbligatori").showWarning();
-
-        else if (price < basePrice.getNumber() || price > maxPrice.getNumber())
-            Notifications.create().text("Il prezzo deve essere compreso tra i suoi limiti").showWarning();
-
-        else if (min == null || max == null)
-            Notifications.create().text("Specificare il minimo e/o il massimo di prenotazioni disponibili").showWarning();
-
-        else if (min.compareTo(max) > 0)
-            Notifications.create().text("Attenzione, il numero minimo di biglietti prenotabili è maggiore del numero massimo di biglietti prenotabili").showWarning();
-
-        else if (list.getItems().size() == 0)
-            Notifications.create().text("Pacchetto vuoto").showWarning();
-
-        else {
-
-            int ids[] = new int[list.getItems().size()], i = 0;
-            for (AbstractEntity entity : list.getItems()) {
-                ids[i] = ((ProdottoEntity) entity).getId();
-                ++i;
-            }
-            if (GroupTripAssembleController.create(name, price, min, max, ids))
-                Notifications.create().text("Il pacchetto '" + name + "' è stato aggiunto al catalogo").show();
-            else
-                Notifications.create().text("Errore interno al database").showError();
+        List<OffertaEntity> entities = new ArrayList<>();
+        for (AbstractEntity entity : list.getItems()) {
+            if (entity instanceof OffertaEntity) entities.add((OffertaEntity) entity);
         }
+
+        new Thread(() -> {
+            boolean result = false;
+            try { result = GroupTripAssembleController.create(name, price,
+                        basePrice.getNumber(), maxPrice.getNumber(), min, max, entities); }
+            catch (Exception e) {
+                Platform.runLater(() -> Notifications.create().text(e.getMessage()).showWarning());
+                return;
+            }
+            if (result) {
+                Platform.runLater(() -> {
+                    Notifications.
+                            create().
+                            text("Il viaggio di gruppo '" + name + "' è stato aggiunto al catalogo").
+                            show();
+                    list.getItems().clear();
+                    nameField.setText(null);
+                    priceField.setText(null);
+                });
+            }
+            else Platform.runLater(() -> Notifications.create().text("Inserimento fallito").showError());
+        }).start();
     }
 }

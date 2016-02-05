@@ -1,10 +1,6 @@
 package controller.desig;
 
 import controller.Constants;
-import controller.exception.BoundsException;
-import controller.exception.EmptyFormException;
-import controller.exception.EmptyPacketException;
-import controller.exception.LocationsException;
 import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.PacchettoOffertaDaoHibernate;
@@ -24,9 +20,9 @@ public class PacketAssembleController {
      *  @return boolean; return a boolean value that represents the result of operation **/
     public static boolean create(String name, double price, double bound0, double bound1, List<OffertaEntity> entities) throws Exception {
 
-        if (name == null || "".equals(name)) throw new EmptyFormException();
-        if (entities.size() == 0) throw new EmptyPacketException();
-        if (price < bound0 || price > bound1) throw new BoundsException();
+        if (name == null || "".equals(name)) throw new Exception("Riempire tutti i campi obbligatori");
+        if (entities.size() == 0) throw new Exception("Pacchetto vuoto");
+        if (!(price >= bound0 && price <= bound1)) throw new Exception("Il prezzo deve essere compreso tra i suoi limiti");
 
         checkLocations(entities.get(0), entities.get(entities.size() - 1));
 
@@ -67,8 +63,12 @@ public class PacketAssembleController {
         return true;
     }
 
-    private static void checkLocations(OffertaEntity from, OffertaEntity to) throws LocationsException {
-        if (!(from instanceof ViaggioEntity && to instanceof ViaggioEntity)) throw new LocationsException();
-        else if (!from.getCittà().equals(((ViaggioEntity) to).getDestinazione())) throw new LocationsException();
+    private static void checkLocations(OffertaEntity from, OffertaEntity to) throws Exception {
+        String message = "I pacchetti dovrebbero iniziare e terminare con un viaggio, " +
+                "check-in e check-out nella stessa location";
+        if (!(from instanceof ViaggioEntity && to instanceof ViaggioEntity))
+            throw new Exception(message);
+        else if (!from.getCittà().equals(((ViaggioEntity) to).getDestinazione()))
+            throw new Exception(message);
     }
 }

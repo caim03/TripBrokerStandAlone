@@ -1,7 +1,6 @@
 package controller.admin;
 
 
-import controller.exception.EmptyFormException;
 import model.DBManager;
 import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
@@ -17,9 +16,9 @@ public class AddNewEmployeeController {
      *  @param password; this string represents the password of the new dependent
      *  @param role; this string represents the role of the new dependent
      *  @param mail; this string represents the mail of the new dependent **/
-    public static boolean handle(String name, String surname, String password, String role, String mail) throws EmptyFormException {
+    public static boolean handle(String name, String surname, String password, String role, String mail) throws Exception {
 
-        if (!checkStrings(name, surname, password, role, mail)) throw new EmptyFormException();
+        if (!checkStrings(name, surname, password, role, mail)) throw new Exception("Riempire tutti i campi obbligatori");
         // new dependent
         DipendentiEntity entity = new DipendentiEntity();
 

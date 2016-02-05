@@ -1,7 +1,6 @@
 package view.popup;
 
 import controller.admin.ModifyEmployeeController;
-import controller.exception.EmptyFormException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -108,7 +107,7 @@ public class EmployeePopup extends PopupView{
                             try {
                                 result = ModifyEmployeeController.handle(clone);
                             }
-                            catch (EmptyFormException e) { Platform.runLater(() ->
+                            catch (Exception e) { Platform.runLater(() ->
                                     Notifications.create().text(e.getMessage()).showWarning());
                                 return;
                             }

@@ -32,18 +32,14 @@ public class NumberLabel extends Label {
         setText();
     }
 
-    public void reset() {
-        number = 0;
-        setText();
-    }
-
     public void setText() {
         double modified = NumberLabel.round((number + addMod) * prodMod);
         setText(defaultMsg + new DecimalFormat("#.##").format(modified));
     }
 
     public double getNumber() {
-        return number;
+
+        return (number + addMod) * prodMod;
     }
 
     public static double round(double value) {

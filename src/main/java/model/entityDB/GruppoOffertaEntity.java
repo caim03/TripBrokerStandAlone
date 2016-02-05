@@ -11,8 +11,7 @@ import javax.persistence.*;
 @IdClass(GruppoOffertaEntityPK.class)
 public class GruppoOffertaEntity extends AbstractEntity {
 
-    private int idGruppo;
-    private int idOfferta;
+    private int idGruppo, idOfferta, posizione;
 
     public GruppoOffertaEntity() {}
 
@@ -34,21 +33,31 @@ public class GruppoOffertaEntity extends AbstractEntity {
         this.idOfferta = idOfferta;
     }
 
+    @Id
+    @Column(name = "posizione")
+    public int getPosizione() {
+        return posizione;
+    }
+    public void setPosizione(int posizione) {
+        this.posizione = posizione;
+    }
+
     @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GruppoOffertaEntityPK that = (GruppoOffertaEntityPK) o;
+        GruppoOffertaEntity that = (GruppoOffertaEntity) o;
 
-        return super.equals(o) && idGruppo == that.getIdGruppo() && idOfferta == that.getIdOfferta();
+        return super.equals(o) && idGruppo == that.getIdGruppo() && idOfferta == that.getIdOfferta() && posizione == that.posizione;
     }
 
     @Override
     public int hashCode() {
         int result = idGruppo;
         result = 31 * result + idOfferta;
+        result = 31 * result + posizione;
         return result;
     }
 }
