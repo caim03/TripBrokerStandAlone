@@ -26,7 +26,7 @@ public class PrenotazioneEntity extends AbstractEntity {
     private int vid;
     private String nome;
     private String cognome;
-    private int quantità;
+    private int quantità, telefono;
 
     @Id
     @Column(name = "vid")
@@ -73,6 +73,17 @@ public class PrenotazioneEntity extends AbstractEntity {
     public void setQuantità(int quantità) {
         /** @param int; set the quantity of the booking **/
         this.quantità = quantità;
+    }
+
+    @Column(name = "telefono")
+    public int getTelefono() {
+        /** @result int; return the remain quantity of the booking **/
+        return this.telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        /** @param int; set the quantity of the booking **/
+        this.telefono = telefono;
     }
 
     @Override

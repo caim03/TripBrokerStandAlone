@@ -1,22 +1,22 @@
 package view.popup;
 
 import controller.Constants;
-import javafx.event.EventHandler;
+import controller.admin.ModifyPoliticsController;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import model.DBManager;
-import model.dao.PoliticheDaoHibernate;
-import model.dao.DAO;
 import model.entityDB.PoliticheEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.MaterialPopup;
 import view.material.NumericField;
+import view.material.ProgressCircle;
 
 
 public class PoliticsPopup extends PopupView {
@@ -24,8 +24,15 @@ public class PoliticsPopup extends PopupView {
     private PoliticheEntity entity;
     private NumericField field;
     private Button modButton;
+    private GridPane pane;
+    private TableView table;
 
     public PoliticsPopup(PoliticheEntity entity) { this.entity = entity; }
+
+    public PoliticsPopup(PoliticheEntity entity, TableView table) {
+        this.entity = entity;
+        this.table = table;
+    }
 
     @Override
     protected Parent generatePopup() {
@@ -39,7 +46,7 @@ public class PoliticsPopup extends PopupView {
 
         modButton = new FlatButton("Modifica");
 
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setStyle("-fx-background-color: white");
         pane.setHgap(25);
         pane.setVgap(8);
@@ -58,68 +65,44 @@ public class PoliticsPopup extends PopupView {
     public void setParent(MaterialPopup parent) {
         super.setParent(parent);
 
-        modButton.setOnMouseClicked(parent.getListener(new ModifyController(), true));
-    }
+        modButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
 
-    class ModifyController implements EventHandler<MouseEvent> {
+            ProgressCircle circle = ProgressCircle.miniCircle();
+            pane.getChildren().remove(modButton);
+            pane.add(circle, 1, 3);
 
-        @Override
-        public void handle(MouseEvent event) {
+            new Thread(() -> {
+                PoliticheEntity clone = (PoliticheEntity) entity.clone();
+                clone.setValore(field.getNumber());
 
-            DAO dao = PoliticheDaoHibernate.instance();
-            double newValue = field.getNumber();
-            newValue = polishValue(newValue);
-            String msg;
-            if ((msg = evaluate(newValue)) != null) {
-                Notifications.create().text(msg).showWarning();
-                return;
-            }
+                boolean result = false;
+                try {
+                    result = ModifyPoliticsController.handle(clone);
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        Notifications.create().text(e.getMessage()).showWarning();
+                        pane.getChildren().remove(circle);
+                        pane.add(modButton, 1, 3);
+                    });
+                    return;
+                }
 
-            entity.setValore(newValue);
+                if (result)
+                    Platform.runLater(() -> {
+                        Notifications.
+                                create().
+                                text("Aggiornamento effettuato con successo").
+                                show();
+                        table.getItems().set(table.getItems().indexOf(entity), clone);
+                    });
 
-            DBManager.initHibernate();
-            dao.update(entity);
-            DBManager.shutdown();
-
-            Notifications.create().title("Modificata").text("La politica è stata modificata con successo").show();
-        }
-
-        private String evaluate(double newValue) {
-
-            DAO dao = PoliticheDaoHibernate.instance();
-
-            switch (entity.getId()) {
-                case Constants.minOverprice:
-                    double maxValue = ((PoliticheEntity) dao.getById(Constants.maxOverprice)).getValore();
-                    double discount = ((PoliticheEntity) dao.getById(Constants.discount)).getValore();
-                    if (newValue >= maxValue) return "Il nuovo valore eccede quello del sovrapprezzo massimo";
-                    else if (newValue * discount < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
-                    break;
-                case Constants.maxOverprice:
-                    double minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
-                    if (newValue <= minValue) return "Il sovrapprezzo massimo è inferiore a quello minimo";
-                    break;
-                case Constants.discount:
-                    minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
-                    if (minValue * newValue < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
-                    break;
-                case Constants.minGroup: default:
-                    if (newValue < 2) return "Un viaggio di gruppo dev'essere composto da almeno 2 persone";
-            }
-
-            return null;
-        }
-
-        private double polishValue(double value) {
-
-            switch (entity.getId()) {
-                case Constants.discount:
-                    return 1 - value / 100.0;
-                case Constants.minGroup:
-                    return value;
-                default:
-                    return 1 + value / 100.0;
-            }
-        }
+                else Platform.runLater(() ->
+                        Notifications.
+                                create().
+                                text("Aggiornamento fallito").
+                                showError());
+                Platform.runLater(parent::hide);
+            }).start();
+        });
     }
 }

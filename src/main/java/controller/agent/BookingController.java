@@ -20,35 +20,51 @@ public class BookingController {
 
         new Thread(() -> {
 
+
+        }).start();
+    }
+
+    public static boolean handle(ViaggioGruppoEntity entity, String name, String surname, int phone, int qu) throws Exception{
+
+        if (!checkStrings(name, surname)) throw new Exception("Dati del cliente non pervenuti");
+        if (phone == 0) throw new Exception("Numero del cliente non pervenuto");
+
+        try {
             DBManager.initHibernate();
 
             // new booking
             PrenotazioneEntity booking = new PrenotazioneEntity();
-
-            // set parameters
             booking.setViaggioId(entity.getId());
             booking.setNome(name);
             booking.setCognome(surname);
-            booking.setQuantità(bookings);
-
-            // store the booking in DataBase
+            booking.setTelefono(phone);
+            booking.setQuantità(qu);
             PrenotazioneDaoHibernate.instance().store(booking);
 
             // refresh the number of the bookings
-            entity.addPrenotazione(bookings);
-
-            // update the group trip entity
+            entity.addPrenotazione(qu);
             ViaggioGruppoDaoHibernate.instance().update(entity);
 
             // for all offer in group trip refresh the number of bookings
             for (AbstractEntity gruppoOfferta : GruppoOffertaDaoHibernate.instance().getByCriteria("where id_gruppo = " + entity.getId())) {
-
                 OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getByCriteria("where id = " + ((GruppoOffertaEntity) gruppoOfferta).getIdOfferta()).get(0);
-                offer.addPrenotazioni(bookings);
+                offer.addPrenotazioni(qu);
                 OffertaDaoHibernate.instance().update(offer);
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally { DBManager.shutdown(); }
 
-            DBManager.shutdown();
-        }).start();
+        return true;
     }
+
+    private static boolean checkStrings(String... strings) {
+        for (String string : strings) if (!checkString(string)) return false;
+        return true;
+    }
+
+    private static boolean checkString(String string) { return string != null && !"".equals(string); }
 }
