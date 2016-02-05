@@ -29,8 +29,18 @@ public class ConfirmBookingController {
         // for all offer in group trip refresh the quantity
         for (OffertaEntity offer : entities) {
             offer.setQuantità(offer.getQuantità() - entity.getQuantità());
+            offer.addPrenotazioni(-entity.getQuantità());
             OffertaDaoHibernate.instance().update(offer);
         }
+
+        ViaggioGruppoEntity trip = (ViaggioGruppoEntity) ViaggioGruppoDaoHibernate.instance()
+                .getById(entity.getViaggioId());
+
+        // refresh the number of the bookings
+        trip.addPrenotazione(-entity.getQuantità());
+        trip.addAcquisti(entity.getQuantità());
+        // update the group trip
+        ViaggioGruppoDaoHibernate.instance().update(trip);
 
         // delete the booking
         PrenotazioneDaoHibernate.instance().delete(entity);

@@ -79,7 +79,7 @@ public class OffertaEntity extends ProdottoEntity {
 
     public void addPrenotazioni(int add) {
         /** @param int; refresh the number of the bookings **/
-        if (quantità < prenotazioni + add) return;
+        if (quantità < prenotazioni + add || prenotazioni + add < 0) return;
         prenotazioni += add;
     }
 

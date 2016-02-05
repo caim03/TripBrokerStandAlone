@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 
 public class FewerStopsSearchStrategyTest {
 
-
     @Test
     public void testSearch() throws Exception {
         FewerStopsSearchStrategy strategy = new FewerStopsSearchStrategy();

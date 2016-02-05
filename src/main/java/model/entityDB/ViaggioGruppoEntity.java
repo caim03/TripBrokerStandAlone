@@ -26,10 +26,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ViaggioGruppoEntity extends ProdottoEntity {
 
-    private int min;
-    private int max;
-    private int prenotazioni;
-    private int creatore;
+    private int min, max, prenotazioni, acquisti, creatore;
 
     @Basic
     @Column(name = "min")
@@ -69,8 +66,24 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
 
     public void addPrenotazione(int add) {
         /** @param int; refresh the current number of booking of the group trip **/
-        if (prenotazioni + add > max) return;
+        if (prenotazioni + add > max || prenotazioni + add < 0) return;
         this.prenotazioni += add;
+    }
+
+    @Basic
+    @Column(name = "acquisti")
+    public int getAcquisti() {
+        return acquisti;
+    }
+
+    public void setAcquisti(int acquisti) {
+        this.acquisti = acquisti;
+    }
+
+    public void addAcquisti(int add) {
+        /** @param int; refresh the current number of booking of the group trip **/
+        if (add < 0 || acquisti + add > max) return;
+        this.acquisti += add;
     }
 
     @Basic
@@ -104,5 +117,4 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
         result = 31 * result + creatore;
         return result;
     }
-
 }

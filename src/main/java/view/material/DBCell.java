@@ -38,7 +38,7 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
 
         node.widthProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue.doubleValue() > getListView().getPrefWidth()) {
-                getListView().prefWidthProperty().setValue(newValue.doubleValue() + 25);
+                getListView().prefWidthProperty().setValue(newValue.doubleValue() + 32);
             }
         });
     }
@@ -48,6 +48,11 @@ public class DBCell<T extends AbstractEntity> extends MaterialCell<T> {
         Region region; //Region superclass grants access to width and height properties
         //node is then properly initialized
         if (item == null || !item.isValid()) region = buildProgress(); //ProgressCircle
+
+        else if (item instanceof PrenotazioneEntity) {
+            setFocusTraversable(false);
+            region = new BookingCellCreator().createCell(getListView(), (PrenotazioneEntity) item);
+        }
 
         else if (item instanceof ViaggioGruppoEntity)
             region = new EmptyCell(((ProdottoEntity) item).getNome(), "group.png");

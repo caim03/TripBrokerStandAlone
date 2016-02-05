@@ -1,5 +1,6 @@
 package view.agent;
 
+import controller.Constants;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import model.entityDB.ViaggioGruppoEntity;
@@ -12,11 +13,11 @@ public class ManageBookingView extends  LayerPane {
 
     public ManageBookingView() {
 
-        DBListView list = new DBListView("from ViaggioGruppoEntity where prenotazioni > 0");
+        DBListView list = new DBListView("from ViaggioGruppoEntity v where v.prenotazioni > 0 v.prenotazioni + v.acquisti > (select valore from PoliticheEntity where id = " + Constants.minGroup + ")");
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue == null || newValue.equals(oldValue)) return;
-            System.out.println("SELECTED");
+
             new MaterialPopup(
                     ManageBookingView.this,
                     new BookingListPopup((ViaggioGruppoEntity)newValue))

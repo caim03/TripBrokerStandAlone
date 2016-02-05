@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -19,11 +20,11 @@ public class BookingPopup extends PopupDecorator {
     private ViaggioGruppoEntity entity;
     private Button bookBtn;
     private TextField nameField, surnameField, phoneField;
-    private MaterialSpinner bookingSpinner;
+    private Spinner<Integer> bookingSpinner;
     private GridPane pane;
 
-    public BookingPopup(PopupView popupView, ViaggioGruppoEntity entity) {
-        super(popupView);
+    public BookingPopup(ViaggioGruppoEntity entity) {
+        super(new GroupTripPopup(entity));
         this.entity = entity;
     }
 
@@ -52,6 +53,9 @@ public class BookingPopup extends PopupDecorator {
         pane.add(surnameField, 1, 1);
         pane.add(phoneField, 1, 2);
 
+        bookingSpinner = new Spinner<>(1, entity.getMax() - (entity.getPrenotazioni() + entity.getAcquisti()), 1);
+        pane.add(bookingSpinner, 1, 3);
+
         pane.add(bookBtn, 0, 4);
 
         pane.setAlignment(Pos.CENTER);
@@ -67,27 +71,12 @@ public class BookingPopup extends PopupDecorator {
 
         super.setParent(parent);
 
-        parent.parentProperty().addListener((observable, oldValue, newValue) -> {
-
-            if (newValue != null && (newValue instanceof LayerPane)) {
-                bookingSpinner = new MaterialSpinner((LayerPane) newValue, 1, entity.getMax() - entity.getPrenotazioni());
-                pane.add(bookingSpinner, 1, 3);
-            }
-        });
-
         bookBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-
-            int qu;
-            try { qu = Integer.parseInt(bookingSpinner.getValue()); }
-            catch (NumberFormatException e) {
-                e.printStackTrace();
-                Notifications.create().text("Selezionare una quantità").showWarning();
-                return;
-            }
 
             String name = nameField.getText(),
                    surname = surnameField.getText();
             int phone = (int) ((NumericField) phoneField).getNumber();
+            int qu = bookingSpinner.getValue();
 
             ProgressCircle circle = ProgressCircle.miniCircle();
             pane.getChildren().remove(bookBtn);

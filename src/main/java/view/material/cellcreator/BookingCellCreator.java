@@ -17,9 +17,9 @@ public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> 
         if (me == null) me = new BookingCellCreator();
         return me;
     }
-    protected BookingCellCreator() { super(); }
+    public BookingCellCreator() { super(); }
 
-    public EmptyCell createForListView(ListView listView, PrenotazioneEntity entity) {
+    public EmptyCell createCell(ListView listView, PrenotazioneEntity entity) {
 
         EmptyCell cell = createCell(entity);
 

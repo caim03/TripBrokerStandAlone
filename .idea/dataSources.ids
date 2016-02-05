@@ -426,26 +426,31 @@ id_utente</columns>
         <data-type>int(11)</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
-      <key id="112" parent="15" name="PRIMARY">
+      <column id="112" parent="15" name="acquisti">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <key id="113" parent="15" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="113" parent="15" name="FK_5vsqg13qjcq0bxslc3otvug85">
+      <foreign-key id="114" parent="15" name="FK_5vsqg13qjcq0bxslc3otvug85">
         <columns>id</columns>
         <ref-key>~.Prodotto.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="114" parent="16" name="id">
+      <column id="115" parent="16" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="115" parent="16" name="valore">
+      <column id="116" parent="16" name="valore">
         <mandatory>1</mandatory>
         <data-type>double</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
-      <key id="116" parent="16" name="PRIMARY">
+      <key id="117" parent="16" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
