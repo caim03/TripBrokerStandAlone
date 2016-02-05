@@ -11,17 +11,23 @@ import model.entityDB.DipendentiEntity;
 
 public class DeleteButtonController {
 
-    /** @param tableView; list of dependent; this param is used here to refresh the table
-     *  @param entity; the dependent that must be deleted **/
-    public static void handle(TableView<DipendentiEntity> tableView, DipendentiEntity entity) {
+    /**
+     * @param entity ; the dependent that must be deleted   **/
+    public static boolean handle(DipendentiEntity entity) {
 
-        DAO dao = DipendentiDaoHibernate.instance();
-        DBManager.initHibernate();
-        // delete the employee
-        dao.delete(entity);
-        DBManager.shutdown();
+        try {
+            DAO dao = DipendentiDaoHibernate.instance();
+            DBManager.initHibernate();
+            // delete the employee
+            dao.delete(entity);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally { DBManager.shutdown(); }
 
         // refresh table
-        tableView.refresh();
+        return true;
     }
 }

@@ -94,9 +94,14 @@ public class CreaPacchettoEntity extends ProdottoEntity {
 
     private Map<Integer, OffertaEntity> offers = new HashMap<>();
     public void addOffer(int key, OffertaEntity entity) { offers.put(key, entity); }
+
     public List<OffertaEntity> retrieveOffers() {
 
         List<OffertaEntity> entities = new ArrayList<>();
+
+        if (offers.size() == 0) {
+
+        }
 
         int i;
         for (i = 0; i < offers.size(); ++i) entities.add(offers.get(i));

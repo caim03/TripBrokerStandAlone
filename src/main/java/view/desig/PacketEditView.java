@@ -1,9 +1,13 @@
 package view.desig;
 
+import javafx.application.Platform;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import model.DBManager;
+import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.ProdottoDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.CreaPacchettoEntity;
@@ -11,6 +15,7 @@ import model.entityDB.ProdottoEntity;
 import view.DBTablePane;
 import view.PacketFormView;
 import view.material.MaterialPopup;
+import view.material.ProgressCircle;
 import view.popup.FormPopup;
 
 import java.util.List;
@@ -51,11 +56,10 @@ public class PacketEditView extends DBTablePane {
 
             list.getSelectionModel().clearSelection();
             if (newValue != null) {
-                MaterialPopup popup = new MaterialPopup(PacketEditView.this,
-                        new FormPopup(
-                                new PacketAssembleView(
-                                        new PacketFormView(
-                                                (CreaPacchettoEntity) newValue))), true);
+
+                MaterialPopup popup = new MaterialPopup(this,
+                        new FormPopup(new PacketAssembleView(
+                                new PacketFormView((CreaPacchettoEntity) newValue))), true);
 
                 popup.show();
             }

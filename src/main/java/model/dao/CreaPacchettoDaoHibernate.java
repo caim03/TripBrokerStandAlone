@@ -160,7 +160,7 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         PacchettoOffertaDaoHibernate.instance().query("DELETE FROM PacchettoOffertaEntity where idPacchetto = " + id);
     }
 
-    private void populate(CreaPacchettoEntity entity) {
+    public void populate(CreaPacchettoEntity entity) {
 
         List<PacchettoOffertaEntity> ids = (List<PacchettoOffertaEntity>) PacchettoOffertaDaoHibernate.instance().
                 getByCriteria("where idPacchetto = " + entity.getId() + " order by posizione");

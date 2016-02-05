@@ -1,14 +1,23 @@
 package view;
 
 import controller.admin.DeleteButtonController;
+import controller.agent.DeleteGroupTripController;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import model.entityDB.DipendentiEntity;
+import model.entityDB.ViaggioGruppoEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
+import view.material.LayerPane;
 import view.material.MaterialPopup;
 import view.material.ProgressCircle;
 import view.popup.EmployeePopup;
@@ -44,7 +53,6 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             // if modify button
             if (type.equals("Modifica"))
                 cellButton.setOnMouseClicked(event -> {
-
                     DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
                     PopupView popupView = new EmployeePopup(getTableView(), entity);
                     new MaterialPopup(pane, popupView).show();
@@ -54,27 +62,72 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             else {
 
                 DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
-                cellButton.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> {
-
-                            ProgressCircle mini = ProgressCircle.miniCircle();
-                            cell.getChildren().add(mini);
-
-                            new Thread(() -> {
-
-                                DeleteButtonController.handle(getTableView(), entity);
-
-                                Platform.runLater(() -> {
-                                    Notifications.create().title("Cancellato").text("Il dipendente è stato cancellato con successo").show();
-                                    getTableView().getItems().remove(entity);
-                                    getTableView().refresh();
-                                    cell.getChildren().remove(mini);
-                                });
-                            }).start();
-                        });
+                cellButton.setOnMouseClicked(event -> {
+                    PopupView confirmPopup = new ConfirmPopup(entity);
+                    new MaterialPopup((LayerPane) getTableView().getParent().getParent(), confirmPopup).show();
+                });
             }
         }
 
         else setGraphic(null);
+    }
+
+    private class ConfirmPopup extends PopupView {
+
+        private VBox pane;
+        private Button confirm, cancel;
+        private DipendentiEntity entity;
+        private HBox buttons;
+
+        private ConfirmPopup(DipendentiEntity entity) {
+            this.entity = entity;
+        }
+
+        @Override
+        protected Parent generatePopup() {
+            confirm = new FlatButton("Conferma");
+            cancel = new FlatButton("Annulla");
+
+            confirm.setOnMouseClicked(event -> {
+                buttons.getChildren().remove(confirm);
+                buttons.getChildren().remove(cancel);
+                buttons.getChildren().add(ProgressCircle.miniCircle());
+                new Thread(() -> {
+                    boolean result = DeleteButtonController.handle(entity);
+                    if (result)
+                        Platform.runLater(() -> {
+                            parent.hide();
+                            Notifications.
+                                    create().
+                                    text("Dipendente cancellato").
+                                    show();
+                            getTableView().getItems().remove(entity);
+                        });
+                    else
+                        Platform.runLater(() -> {
+                            parent.hide();
+                            Notifications.
+                                    create().
+                                    text("Errore durante la cancellazione").
+                                    showError();
+                        });
+                }).start();
+            });
+            cancel.setOnMouseClicked(event -> Platform.runLater(parent::hide));
+
+            Pane emptyBox = new Pane();
+
+            buttons = new HBox(emptyBox, confirm, cancel);
+            HBox.setHgrow(emptyBox, Priority.ALWAYS);
+
+            Label label = new Label("Confermi l'eliminazione del dipendente?");
+            buttons.maxWidthProperty().bind(label.prefWidthProperty());
+
+            pane = new VBox(label, buttons);
+            pane.setStyle("-fx-background-color: white");
+            pane.setPadding(new Insets(16));
+
+            return pane;
+        }
     }
 }

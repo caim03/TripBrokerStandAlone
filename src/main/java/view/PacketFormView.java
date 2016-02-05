@@ -15,11 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.DBManager;
+import model.dao.CreaPacchettoDaoHibernate;
 import model.dao.PoliticheDaoHibernate;
-import model.entityDB.AbstractEntity;
-import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
 import view.material.DBCell;
@@ -74,6 +72,43 @@ public class PacketFormView extends VBox implements Collector {
         setStyle("-fx-vgap: 8px; -fx-fill-height: true");
     }
 
+    public PacketFormView(CreaPacchettoEntity entity) {
+        /** @param CreaPacchettoEntity; new packet that must be added in database **/
+
+        this();
+
+        nameField.setText(entity.getNome());
+        priceField.setText(Double.toString(entity.getPrezzo()));
+
+        if (entity.getStato() == 2) {
+
+            Label motivation = new Label("Respinto poiché: " + entity.getMotivazione());
+            motivation.setPadding(new Insets(16, 16, 0, 16));
+            getChildren().add(0, motivation);
+        }
+
+        list.getItems().add(AbstractEntity.getInvalidEntity());
+        new Thread(() -> {
+            List<OffertaEntity> offers = entity.retrieveOffers();
+            if (offers.size() == 0) {
+                DBManager.initHibernate();
+                ((CreaPacchettoDaoHibernate) CreaPacchettoDaoHibernate.instance()).populate(entity);
+                DBManager.shutdown();
+                offers = entity.retrieveOffers();
+            }
+
+            if (offers != null) {
+                final List<OffertaEntity> finalOffers = offers;
+                Platform.runLater(() -> {
+                    list.getItems().clear();
+                    list.getItems().addAll(finalOffers);
+                });
+            }
+        }).start();
+
+        setStyle("-fx-background-color: white");
+    }
+
     private void initializeList() {
 
         list = new ListView(initList());
@@ -97,26 +132,6 @@ public class PacketFormView extends VBox implements Collector {
         packetList.subscribe(maxPrice.getObserverAdapter());
 
         return packetList;
-    }
-
-    public PacketFormView(CreaPacchettoEntity entity) {
-        /** @param CreaPacchettoEntity; new packet that must be added in database **/
-
-        this();
-
-        nameField.setText(entity.getNome());
-        priceField.setText(Double.toString(entity.getPrezzo()));
-
-        list.getItems().addAll(entity.retrieveOffers());
-
-        if (entity.getStato() == 2) {
-
-            Label motivation = new Label("Respinto poiché: " + entity.getMotivazione());
-            motivation.setPadding(new Insets(16, 16, 0, 16));
-            getChildren().add(0, motivation);
-        }
-
-        setStyle("-fx-background-color: white");
     }
 
     public void addListener() { }
