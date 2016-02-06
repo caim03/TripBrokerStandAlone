@@ -15,9 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
+import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.MaterialTextField;
 import view.material.ProgressCircle;
+
+import java.io.NotActiveException;
 
 public class ApprovalPopup extends PopupDecorator {
 
@@ -42,7 +45,9 @@ public class ApprovalPopup extends PopupDecorator {
         private void call(CreaPacchettoEntity entity, int id) {
             changeDecoration(ProgressCircle.miniCircle());
             new Thread(() -> {
-                ApproveController.handle(entity, id);
+                boolean result = ApproveController.handle(entity, id);
+                if (result) Platform.runLater(() -> Notifications.create().text("Operazione completata").show());
+                else Platform.runLater(() -> Notifications.create().text("Errore interno").showError());
                 Platform.runLater(() -> {
                     parent.hide();
                     list.getItems().remove(entity);
@@ -52,7 +57,6 @@ public class ApprovalPopup extends PopupDecorator {
     };
 
     public ApprovalPopup(PopupView popupView, CreaPacchettoEntity pacchetto, TableView<ProdottoEntity> list){
-
         super(popupView);
         this.pacchetto = pacchetto;
         this.list = list;

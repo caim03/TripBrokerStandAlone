@@ -208,7 +208,8 @@ public class OffersTabPane extends JFXTabPane {
                     listView.getSelectionModel().clearSelection();
                     if (newValue != null) {
                         for (ViaggioEntity entity : (Route) newValue)
-                            command.execute(entity);
+                            command.load(entity);
+                        command.execute();
                     }
                 });
                 listGrid.getChildren().add(listView);

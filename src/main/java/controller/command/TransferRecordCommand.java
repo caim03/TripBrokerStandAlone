@@ -3,6 +3,9 @@ package controller.command;
 import javafx.scene.control.ListView;
 import model.entityDB.AbstractEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This peculiar implementation of Command is used for ListViews uncoupling: it basically
  * migrates DB entities from one ListView to another. In order to avoid frequent re-instantiation
@@ -14,7 +17,7 @@ import model.entityDB.AbstractEntity;
  */
 public class TransferRecordCommand extends Command {
 
-    private AbstractEntity entity;
+    private List<AbstractEntity> entities = new ArrayList<>();
     ListView list;
 
     /**
@@ -28,17 +31,25 @@ public class TransferRecordCommand extends Command {
      * @param entity AbstractEntity: to-be-transferred entity
      */
     public void execute(AbstractEntity entity) {
-        this.entity = entity; //store entity
+         //store entity
+        load(entity);
         execute(); //actual execution
     }
 
-    @Override
-    protected void execute() {
+    public void execute(List<AbstractEntity> entities) {
+        if (entities == null) return;
+        for (AbstractEntity entity : entities) load(entity);
+        execute(); //actual execution
+    }
 
-        if (entity == null) return; //Fallacious call
-        list.getItems().add(entity); //Migration
+    public void load(AbstractEntity entity) { entities.add(entity); }
+
+    @Override
+    public void execute() {
+        if (entities.size() == 0) return; //Fallacious call
+        list.getItems().addAll(entities); //Migration
         consume();
     }
 
-    private void consume() { entity = null; } //entity attribute is reset after every use
+    private void consume() { entities.clear(); } //entity attribute is reset after every use
 }

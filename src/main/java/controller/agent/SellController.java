@@ -16,11 +16,10 @@ public class SellController {
     /** @param entity; the entity that must be updated
      *  @param qu; represents the quantity selected in spinner
      *  @return boolean; return false if arguments are not legal, else return true **/
-    public static boolean handle(OffertaEntity entity, int qu) {
+    public static boolean handle(OffertaEntity entity, int qu) throws Exception {
 
-        if (entity == null || qu <= 0) {
-            return false;
-        }
+        if (qu <= 0) throw new Exception("Selezionare una quantità prima dell'acquisto!");
+        else if (entity == null) return false;
 
         int currQuantity;
         currQuantity = entity.getQuantità();

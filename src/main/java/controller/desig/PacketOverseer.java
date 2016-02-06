@@ -20,10 +20,10 @@ public class PacketOverseer extends Overseer {
     protected PacketList subjectList;
     private boolean notify;
     private static long acceptableDelay = 12 * 3600000;
-    private final Notifications
-            ERROR_LOC = Notifications.create().text("Le locazioni delle offerte non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
-            ERROR_TME = Notifications.create().text("Le date non sono tra loro coerenti").hideAfter(Duration.seconds(2)),
-            ERROR_CST = Notifications.create().text(someOtherAddedMessage()).hideAfter(Duration.seconds(2));
+    private final String
+            ERROR_LOC = "Le locazioni delle offerte non sono tra loro coerenti",
+            ERROR_TME = "Le date non sono tra loro coerenti",
+            ERROR_CST = someOtherAddedMessage();
 
     public PacketOverseer(PacketList subjectList) { this(subjectList, true); }
 
@@ -64,14 +64,14 @@ public class PacketOverseer extends Overseer {
                  */
 
                 if (!checkLocation(prevEntity, newEntity)) {
-                    if (notify) ERROR_LOC.showWarning();
                     c.getList().remove(pos, size);
+                    if (notify) Notifications.create().text(ERROR_LOC).showWarning();
                     return;
                 }
 
                 if (!checkDate(prevEntity, newEntity)) {
-                    if (notify) ERROR_TME.showWarning();
                     c.getList().remove(pos, size);
+                    if (notify) Notifications.create().text(ERROR_TME).showWarning();
                     return;
                 }
             }
@@ -81,8 +81,8 @@ public class PacketOverseer extends Overseer {
                 updateSubject(price);
             }
             else {
-                if (notify) ERROR_CST.showWarning();
                 c.getList().remove(pos, size);
+                if (notify) Notifications.create().text(ERROR_CST).showWarning();
                 return;
             }
         }

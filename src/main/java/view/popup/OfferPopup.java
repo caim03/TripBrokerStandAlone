@@ -73,7 +73,7 @@ public class OfferPopup<T extends OffertaEntity> extends PopupView {
         Text quantity = new Text();
         if (selling) {
             boolean available = entity.getQuantità() - entity.getPrenotazioni() > 0;
-            quantity.setText( available ? "Disponibile" : "Non disponibile");
+            quantity.setText(available ? "Disponibile" : "Non disponibile");
         }
         else quantity.setText(Integer.toString(entity.getQuantità()));
 

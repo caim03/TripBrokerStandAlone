@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import model.entityDB.OffertaEntity;
@@ -17,8 +18,9 @@ public class SellPopup extends PopupDecorator {
 
     private OffertaEntity entity;
     private Button sellBtn;
-    private MaterialSpinner quantity;
+    private Spinner<Integer> quantity;
     private GridPane pane;
+    private boolean available;
 
     public SellPopup(OfferPopup popupView) {
         super(popupView);
@@ -38,11 +40,15 @@ public class SellPopup extends PopupDecorator {
 
         pane = new GridPane();
 
-        Label quantityLabel = new Label("Quantità:");
-        sellBtn = new FlatButton("Vendi");
+        if (available = entity.getQuantità() - entity.getPrenotazioni() > 0) {
+            Label quantityLabel = new Label("Quantità:");
+            quantity = new Spinner<>(1, entity.getQuantità() - entity.getPrenotazioni(), 1);
+            sellBtn = new FlatButton("Vendi");
 
-        pane.add(quantityLabel, 0, 0);
-        pane.add(sellBtn, 2, 0);
+            pane.add(quantityLabel, 0, 0);
+            pane.add(quantity, 1, 0);
+            pane.add(sellBtn, 2, 0);
+        }
 
         pane.setHgap(4);
 
@@ -55,12 +61,11 @@ public class SellPopup extends PopupDecorator {
 
         super.setParent(parent);
 
+        if (!available) return;
+
         this.parent.parentProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue != null && newValue instanceof LayerPane) {
-
-                quantity = new MaterialSpinner((LayerPane) newValue, 1, entity.getQuantità());
-                pane.add(quantity, 1, 0);
 
                 sellBtn.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                     ProgressCircle progressCircle = new ProgressCircle();
@@ -68,24 +73,22 @@ public class SellPopup extends PopupDecorator {
                     progressCircle.start();
 
                     new Thread(() -> {
-                        int qu;
-                        try { qu = Integer.parseInt(quantity.getValue()); }
-                        catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            Platform.runLater(() -> Notifications.create().
-                                    text("Selezionare una quantità").showWarning());
+                        int qu = quantity.getValue();
+                        boolean result = false;
+                        try { result = SellController.handle(entity, qu); }
+                        catch (Exception e) {
+                            Platform.runLater(()-> Notifications.create().text(e.getMessage()).showWarning());
                             return;
                         }
-
-                        if (!SellController.handle(entity, qu)) {
+                        if (result) {
                             Platform.runLater(()-> {
-                                Notifications.create().title("Acquisto fallito").text("L'acquisto dell'offerta è fallito, riprova successivamente").show();
+                                Notifications.create().title("Offerta acquistata").text("L'offerta è stata acquistata con successo").show();
                                 parent.hide();
                             });
                         }
                         else {
                             Platform.runLater(() -> {
-                                Notifications.create().title("Offerta acquistata").text("L'offerta è stata acquistata con successo").show();
+                                Notifications.create().title("Acquisto fallito").text("L'acquisto dell'offerta è fallito, riprova successivamente").showError();
                                 parent.hide();
                             });
                         }

@@ -65,17 +65,32 @@ public class OfferInsertionView extends LayerPane implements Collector {
         EntityBuilder.Arguments arguments = form.harvest();
 
         new Thread(() -> {
-            boolean result = InsertOfferController.handle(name, price, qu, type, city, date, arguments);
-            Platform.runLater(() -> {
-                Notifications notifications = Notifications.create();
-                if (!result) notifications.
-                        text("Non è stato possibile inserire l'offerta, per favore ricontrolla tutti i campi").
-                        title("Errore nell'inserimento").showWarning();
-                else notifications.
-                        text("L'offerta è stata inserita con successo").
-                        title("Inserimento avvenuto con successo").showConfirm();
-            });
+            boolean result = false;
+            try { result = InsertOfferController.handle(name, price, qu, type, city, date, arguments); }
+            catch (Exception e) {
+                Platform.runLater(() ->Notifications.create().text(e.getMessage()).showWarning());
+                return;
+            }
+            if (result) {
+                Platform.runLater(() -> {
+                    Notifications.create().text("L'offerta è stata inserita con successo").show();
+                    clearForm();
+                });
+            }
+            else {
+                Platform.runLater(() -> {
+                    Notifications.create().text("Errore interno").showError();
+                    clearForm();
+                });
+            }
         }).start();
+    }
+
+    private void clearForm() {
+        nameField.setText(null);
+        priceField.setText(null);
+        quField.setText(null);
+        spinner.setValue("");
     }
 
     public OfferInsertionView() {
@@ -113,8 +128,6 @@ public class OfferInsertionView extends LayerPane implements Collector {
         VBox vBox = new VBox(pane, form);
 
         spinner.textProperty().addListener((observable, oldValue, newValue) -> {
-
-            System.out.println(newValue);
             form = fromOffer(newValue);
             vBox.getChildren().remove(1);
             vBox.getChildren().add(form);

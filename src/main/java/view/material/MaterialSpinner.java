@@ -112,7 +112,6 @@ public class MaterialSpinner extends FlatButton {
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && shown) {
-
                 playExitAnimation();
                 setText(newValue);
                 getChildren().remove(mask);
@@ -242,7 +241,11 @@ public class MaterialSpinner extends FlatButton {
         return getText();
     }
 
-    public void setValue(String item) { setText(item); }
+    public void setValue(String item) {
+        setText(item);
+        getChildren().remove(mask);
+        getChildren().add(0, mask);
+    }
 
     class SpinnerCell extends ListCell<String> {
 

@@ -24,10 +24,11 @@ public class InsertOfferController {
      *  @param arguments; represent the all parameters of the specific offer
      *  @return boolean; return a boolean value that represents the result of operation **/
     public static boolean handle(String name, double price, int qu, String type,
-                                 String city, Timestamp date, EntityBuilder.Arguments arguments) {
-        if (!checkStrings(name, type, city) || qu < 1 || price <= 0 ||
-                arguments == null || !dateCheck(date, arguments.getDate()))
-            return false;
+                                 String city, Timestamp date, EntityBuilder.Arguments arguments) throws Exception {
+        if (!checkStrings(name, type, city) || arguments == null)
+            throw new Exception("Form incompleto; si prega di ricontrollare");
+        else if (qu < 1 || price <= 0 || !dateCheck(date, arguments.getDate()))
+            throw new Exception("Informazioni non coerenti; si prega di ricontrollare");
 
         EntityBuilder builder = EntityBuilder.getBuilder(type);
 

@@ -16,20 +16,20 @@ public class ApproveController {
 
     /** @param entity; this entity represents the packet that must be approved
      *  @param id; this integer represents the identifier of the packet **/
-    public static void handle(CreaPacchettoEntity entity, int id) {
+    public static boolean handle(CreaPacchettoEntity entity, int id) {
 
-        String message;
-        if (id == 0) message = delete(entity);
+        boolean result;
+        if (id == 0) result = delete(entity);
         else {
             entity.setStato(id);
-            message = update(entity);
+            result = update(entity);
         }
-        Platform.runLater(() -> Notifications.create().text(message).show());
+        return result;
     }
 
     /** @param entity; this entity represents the product that must be deleted
      *  @return String; return a string that represents the result of operation **/
-    private static String delete(ProdottoEntity entity) {
+    private static boolean delete(ProdottoEntity entity) {
 
         try {
             DAO dao = ProdottoDaoHibernate.instance();  // Primary key is set on Prodotto Table (ON DELETE CASCADE)
@@ -38,16 +38,16 @@ public class ApproveController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return "Errore interno al database";
+            return false;
         }
         finally { DBManager.shutdown(); }
 
-        return "Il pacchetto è stato cancellato";
+        return true;
     }
 
     /** @param entity; this entity represent the packet that must be updated
      *  @return String; return a string that represents the result of operation **/
-    private static String update(CreaPacchettoEntity entity) {
+    private static boolean update(CreaPacchettoEntity entity) {
         DAO dao = CreaPacchettoDaoHibernate.instance();
         try {
             DBManager.initHibernate();
@@ -55,10 +55,9 @@ public class ApproveController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return "Errore interno al database";
+            return false;
         }
         finally { DBManager.shutdown(); }
-        return entity.getStato() == 1 ? "Il pacchetto è stato approvato" :
-                                        "Il pacchetto è stato rifiutato";
+        return true;
     }
 }
