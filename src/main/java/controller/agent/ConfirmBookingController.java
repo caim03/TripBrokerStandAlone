@@ -10,42 +10,52 @@ import model.entityDB.ViaggioGruppoEntity;
 
 import java.util.List;
 
-/*** This controller is used to confirm a booking from a group trip;
- *   it refreshes the quantity of the offers contained into the group trip selected,
- *   and it cancels the booking associated into DataBase ***/
-
+/***
+ * Controller class for booking management use case.
+ ***/
 public class ConfirmBookingController {
 
-    /** @param entity; the booking that must be confirmed **/
+    /**
+     * Failure is handled by View class, apparently
+     * @param entity; the booking that must be confirmed
+     **/
     public static void handle(PrenotazioneEntity entity) {
 
         try {
             DBManager.initHibernate();
 
-            int id = entity.getViaggioId(), qu = entity.getQuantità();
-            // retrieve the list of offers contained into the group trip
-            handleOffers(id, qu);
+            int id, qu;
+            handleOffers(id = entity.getViaggioId(), qu = entity.getQuantità());
             handleTrip(id, qu);
 
-            // delete the booking
-            PrenotazioneDaoHibernate.instance().delete(entity);
+            PrenotazioneDaoHibernate.instance().delete(entity); //Booking instance can be released from DB
         }
         finally { DBManager.shutdown(); }
     }
 
+    /**
+     * Update the booking and confirmation attributes values into group trip entity.
+     * @param id: ViaggioGruppoEntity id.
+     * @param qu: confirmed participation
+     */
     private static void handleTrip(int id, int qu) {
         ViaggioGruppoEntity trip = (ViaggioGruppoEntity) ViaggioGruppoDaoHibernate.instance()
                 .getById(id);
 
-        // refresh the number of the bookings
+        //update bookings and confirmed values
         trip.addPrenotazione(-qu);
         trip.addAcquisti(qu);
-        // update the group trip
-        ViaggioGruppoDaoHibernate.instance().update(trip);
 
+        ViaggioGruppoDaoHibernate.instance().update(trip); //DB update
+
+        //also register entries
         handleEconomics(Math.round(trip.getPrezzo() * qu * 100) / 100.0);
     }
 
+    /**
+     * Utility method for entries register update
+     * @param entries: double; how much the company earned with this confirmation
+     */
     private static void handleEconomics(double entries) {
         DAO dao = StatusDaoHibenate.getInstance();
         StatusEntity status = (StatusEntity) dao.getById(Constants.entries);
@@ -53,15 +63,20 @@ public class ConfirmBookingController {
         dao.update(status);
     }
 
+    /**
+     * OffertaEntities store a bookings attribute that has to be updated.
+     * @param id: group trip id.
+     * @param qu: quantity sold
+     */
     private static void handleOffers(int id, int qu) {
-
+        //retrieving offers
         List<OffertaEntity> entities = (List<OffertaEntity>) OffertaDaoHibernate.instance()
                 .getByCriteria("WHERE id IN " +
                         "(SELECT idOfferta FROM GruppoOffertaEntity WHERE idGruppo = " + id + ")");
 
-        // for all offer in group trip refresh the quantity
+        //for each offer, both bookings and quantity attributes have to be updated
         for (OffertaEntity offer : entities) {
-            offer.setQuantità(offer.getQuantità() - qu);
+            offer.setQuantità(offer.getQuantità() - qu); //qu sold
             offer.addPrenotazioni(-qu);
             OffertaDaoHibernate.instance().update(offer);
         }

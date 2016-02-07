@@ -1,6 +1,5 @@
 package controller.desig;
 
-import javafx.util.Duration;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -14,7 +13,6 @@ import java.util.List;
  * instance to monitor and eventually refuse Offers addition to an under construction
  * Packet. Offers acceptance or refusal depend on spatial and temporal comparison.
  */
-
 public class PacketOverseer extends Overseer {
 
     protected PacketList subjectList;
@@ -22,10 +20,7 @@ public class PacketOverseer extends Overseer {
     private static long acceptableDelay = 12 * 3600000;
     private final String
             ERROR_LOC = "Le locazioni delle offerte non sono tra loro coerenti",
-            ERROR_TME = "Le date non sono tra loro coerenti",
-            ERROR_CST = someOtherAddedMessage();
-
-    public PacketOverseer(PacketList subjectList) { this(subjectList, true); }
+            ERROR_TME = "Le date non sono tra loro coerenti";
 
     public PacketOverseer(PacketList subjectList, boolean notify) {
         this.subjectList = subjectList;
@@ -82,7 +77,7 @@ public class PacketOverseer extends Overseer {
             }
             else {
                 c.getList().remove(pos, size);
-                if (notify) Notifications.create().text(ERROR_CST).showWarning();
+                if (notify) Notifications.create().text(someOtherAddedMessage()).showWarning();
                 return;
             }
         }

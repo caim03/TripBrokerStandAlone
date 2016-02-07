@@ -1,21 +1,16 @@
 package view.desig;
 
-import javafx.application.Platform;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
-import model.dao.ProdottoDaoHibernate;
 import model.dao.DAO;
+import model.dao.ProdottoDaoHibernate;
 import model.entityDB.CreaPacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import view.DBTablePane;
 import view.PacketFormView;
 import view.material.MaterialPopup;
-import view.material.ProgressCircle;
 import view.popup.FormPopup;
 
 import java.util.List;

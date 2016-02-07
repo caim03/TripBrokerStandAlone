@@ -1,20 +1,17 @@
 package view;
 
 import controller.admin.DeleteButtonController;
-import controller.agent.DeleteGroupTripController;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.entityDB.DipendentiEntity;
-import model.entityDB.ViaggioGruppoEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.LayerPane;

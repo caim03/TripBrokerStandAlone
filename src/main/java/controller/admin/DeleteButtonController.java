@@ -1,33 +1,31 @@
 package controller.admin;
 
-
-import javafx.scene.control.TableView;
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
+import model.dao.DipendentiDaoHibernate;
 import model.entityDB.DipendentiEntity;
 
-/*** This controller delete a dependent from DataBase ***/
-
+/*** Controller class for employee deletion from DB ***/
 public class DeleteButtonController {
 
     /**
-     * @param entity ; the dependent that must be deleted   **/
+     * @param entity ; employee to be deleted
+     * @return boolean: whether or not the operation was successful
+     * **/
     public static boolean handle(DipendentiEntity entity) {
 
         try {
             DAO dao = DipendentiDaoHibernate.instance();
             DBManager.initHibernate();
-            // delete the employee
             dao.delete(entity);
         }
         catch (Exception e) {
+            //failure
             e.printStackTrace();
             return false;
         }
-        finally { DBManager.shutdown(); }
+        finally { DBManager.shutdown(); } //always shut the DB down
 
-        // refresh table
         return true;
     }
 }

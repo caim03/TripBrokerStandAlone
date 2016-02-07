@@ -30,11 +30,14 @@ import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
 
+    private CreaPacchettoEntity entity = new CreaPacchettoEntity();
     protected ListView<AbstractEntity> list;
     protected NumberLabel basePrice, maxPrice;
     protected TextField nameField, priceField;
 
     public PacketFormView() {
+
+        entity.setId(0);
 
         Label name = new Label("Nome: "), price = new Label("Prezzo: ");
         name.setAlignment(Pos.CENTER_LEFT);
@@ -77,6 +80,8 @@ public class PacketFormView extends VBox implements Collector {
 
         this();
 
+        this.entity = entity;
+
         nameField.setText(entity.getNome());
         priceField.setText(Double.toString(entity.getPrezzo()));
 
@@ -112,7 +117,7 @@ public class PacketFormView extends VBox implements Collector {
     private void initializeList() {
 
         list = new ListView(initList());
-        list.setPadding(new Insets(16, 16, 16, 16));
+        list.setPadding(new Insets(16));
         list.setCellFactory(callback -> new DBCell());
         list.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (MouseButton.SECONDARY.equals(event.getButton())) {
@@ -146,8 +151,14 @@ public class PacketFormView extends VBox implements Collector {
 
     public void harvest() {
 
-        String name = nameField.getText();
-        double price = ((NumericField) priceField).getNumber();
+        CreaPacchettoEntity clone = (CreaPacchettoEntity) entity.clone();
+        clone.setNome(nameField.getText());
+        clone.setPrezzo(((NumericField) priceField).getNumber());
+        clone.setTipo(Constants.packet);
+        clone.setCreatore(TripBrokerConsole.getGuestID());
+        clone.setStato(0);
+        clone.setMotivazione("");
+
         List<OffertaEntity> entities = new ArrayList<>();
         for (AbstractEntity entity : list.getItems()) {
             if (entity instanceof OffertaEntity) entities.add((OffertaEntity) entity);
@@ -157,8 +168,8 @@ public class PacketFormView extends VBox implements Collector {
             String str = "";
             boolean result = false;
             try {
-                result = PacketAssembleController.create(name, price, basePrice.getNumber(), maxPrice.getNumber(), entities);
-                str += "Il pacchetto '" + name + "' è stato aggiunto al catalogo";
+                result = PacketAssembleController.handle(clone, basePrice.getNumber(), maxPrice.getNumber(), entities);
+                str += "Il pacchetto '" + clone.getNome() + "' è stato aggiunto al catalogo";
             }
             catch (Exception e) { str = e.getMessage(); }
             finally {

@@ -3,6 +3,10 @@ package controller.desig;
 import javafx.collections.ListChangeListener;
 import model.entityDB.AbstractEntity;
 
+/**
+ * ListChangeListener abstract implementation; it coordinates list addition and eventually
+ * rejects list updates if not coherent.
+ */
 public abstract class Overseer implements ListChangeListener<AbstractEntity> {
 
     @Override

@@ -11,51 +11,66 @@ import model.entityDB.ViaggioEntity;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
+/**
+ * Controller class for offer insertion use case.
+ */
 public class InsertOfferController {
 
-    /** @param name; represents the name of the new offer
-     *  @param price; represents the price of the new offer
-     *  @param qu; represents the quantity of the new offer
-     *  @param type; represents the type of the new offer (travel, stay or event)
-     *  @param city; represents the city of the new offer
-     *  @param date; represents the start date of the new offer
-     *  @param arguments; represent the all parameters of the specific offer
-     *  @return boolean; return a boolean value that represents the result of operation **/
+    /**
+     * @param name; String; offer name
+     * @param price; double; offer price
+     * @param qu; integer; offer availability
+     * @param type; String; offer type (among Travel, Overnight and Event)
+     * @param city; String; city from which the offer takes place (its meaning can vary)
+     * @param date; Timestamp; when the offer takes place (its meaning can vary)
+     * @param arguments; Arguments; utility class wrapping up all remaining attributes
+     * @return boolean: whether or not the operation was successful
+     * @throws Exception: incomplete/invalid submitted input is handled via Exception
+     **/
     public static boolean handle(String name, double price, int qu, String type,
                                  String city, Timestamp date, EntityBuilder.Arguments arguments) throws Exception {
+        //checks
         if (!checkStrings(name, type, city) || arguments == null)
             throw new Exception("Form incompleto; si prega di ricontrollare");
         else if (qu < 1 || price <= 0 || !dateCheck(date, arguments.getDate()))
             throw new Exception("Informazioni non coerenti; si prega di ricontrollare");
 
-        EntityBuilder builder = EntityBuilder.getBuilder(type);
+        //Offer instantiation is performed via Builder class due to its complexity
+        EntityBuilder builder = EntityBuilder.getBuilder(type); //getting Builder by type
 
         builder.buildProduct(name, price,type);
         builder.buildOffer(city, qu, 0, date);
-        builder.buildEntity(arguments);
+        builder.buildEntity(arguments); //subclass
 
+        //DB interaction
         try {
             DBManager.initHibernate();
-            insert(builder.getEntity());
-            update(Math.round(price * qu * 100) / 100.0);
+            insert(builder.getEntity()); //Offer storing
+            update(Math.round(price * qu * 100) / 100.0); //Costs register update
         }
         catch (HibernateException e) {
+            //failure
             e.printStackTrace();
             return false;
         }
-        finally { DBManager.shutdown(); }
+        finally { DBManager.shutdown(); } //always shut the DB down
 
         return true;
     }
 
-    /** @param start; the timestamp of the start date
-     *  @param end; the timestamp of the end date
-     *  @return boolean; return a boolean value that represents the result of operation **/
+    /**
+     * Utility method for Timestamp instances comparison.
+     * @param start; the timestamp of the start date
+     * @param end; the timestamp of the end date
+     * @return boolean
+     **/
     private static boolean dateCheck(Timestamp start, Timestamp end) { return start.before(end); }
 
-    /** @param entity; the entity that must be inserted **/
+    /**
+     * Store method; it selects DAO from entity subclass
+     * @param entity; OffertaEntity to be stored
+     * **/
     private static void insert(OffertaEntity entity) throws HibernateException {
 
         DAO dao;
@@ -66,22 +81,32 @@ public class InsertOfferController {
         dao.store(entity);
     }
 
-    /** @param string; string that must be checked
-     *  @return boolean; return a boolean value that represents the result of operation **/
+    /**
+     * Costs register update method. Everytime a new offer is inserted into catalog,
+     * its TOTAL cost (price * quantity) is accounted.
+     * @param totalPrice: double; price * quantity
+     */
+    private static void update(double totalPrice) {
+        DAO dao = StatusDaoHibenate.getInstance();
+        StatusEntity entity = (StatusEntity) dao.getById(Constants.costs);
+        entity.update(totalPrice);
+        dao.update(entity);
+    }
 
+    /**
+     * Utility method for String coherence checking.
+     * @param string; String to check
+     * @return boolean
+     **/
     private static boolean checkStrings(String string) { return string != null && !"".equals(string); }
 
-    /** @param strings; strings that must be checked
-     *  @return boolean; return a boolean value that represents the result of operation **/
+    /**
+     * Utility method for Strings coherence checking
+     * @param strings; String[]; strings to check
+     * @return boolean
+     **/
     private static boolean checkStrings(String... strings) {
         for (String s : strings) if (!checkStrings(s)) return false;
         return true;
-    }
-
-    private static void update(double price) {
-        DAO dao = StatusDaoHibenate.getInstance();
-        StatusEntity entity = (StatusEntity) dao.getById(Constants.costs);
-        entity.update(price);
-        dao.update(entity);
     }
 }

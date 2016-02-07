@@ -71,11 +71,9 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
 
         // close connection
         session.close();
-        if (entities.isEmpty()) {
-            return null;
-        } else {
-            return entities;
-        }
+
+        if (entities.isEmpty()) return null;
+        else return entities;
     }
 
     @Override
@@ -114,8 +112,6 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         session.getTransaction().commit();
         session.close(); // close connection
 
-        bindAll(creaPacchettoEntity);
-
         return creaPacchettoEntity.getId();
     }
 
@@ -136,14 +132,13 @@ public class CreaPacchettoDaoHibernate extends ProdottoDaoHibernate {
         session.close();
 
         disrupt(creaPacchettoEntity.getId());
-        bindAll(creaPacchettoEntity);
     }
 
-    private void bindAll(CreaPacchettoEntity entity) {
+    public void bindAll(int id, List<OffertaEntity> offers) {
 
         int i = 0;
-        for (OffertaEntity offer : entity.retrieveOffers()) {
-            bind(entity.getId(), offer.getId(), i);
+        for (OffertaEntity offer : offers) {
+            bind(id, offer.getId(), i);
             ++i;
         }
     }

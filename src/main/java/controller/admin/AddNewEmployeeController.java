@@ -6,23 +6,25 @@ import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.DipendentiEntity;
 
-/*** This controller receives data from 'AddNewEmployeeView', creates a new employee
- *   and adds it into DataBase ***/
+/*** Controller class for the employee additions use case. ***/
 
 public class AddNewEmployeeController {
 
-    /** @param name; this string represents the name of the new dependent
-     *  @param surname; this string represents the surname of the new dependent
-     *  @param password; this string represents the password of the new dependent
-     *  @param role; this string represents the role of the new dependent
-     *  @param mail; this string represents the mail of the new dependent **/
+    /** @param name; String representing the employee's name
+     *  @param surname; String representing the employee's surname
+     *  @param password; String representing the employee's password
+     *  @param role; String representing the employee's role into TripBroker Agency
+     *  @param mail; String representing the employee's mail address
+     *  @return boolean: whether or not the operation was successful;
+     *  @throws Exception: incomplete/invalid submitted input is handled via Exception
+     *  **/
     public static boolean handle(String name, String surname, String password, String role, String mail) throws Exception {
 
+        //Checking for input coherence
         if (!checkStrings(name, surname, password, role, mail)) throw new Exception("Riempire tutti i campi obbligatori");
-        // new dependent
-        DipendentiEntity entity = new DipendentiEntity();
 
-        // set the parameters
+        //Employee entity
+        DipendentiEntity entity = new DipendentiEntity();
         entity.setNome(name);
         entity.setCognome(surname);
         entity.setPasswordLogin(password);
@@ -32,20 +34,32 @@ public class AddNewEmployeeController {
         DAO dao = DipendentiDaoHibernate.instance();
 
         try {
-            // use dao of dependent to add it into DB
+            //DB interaction
             DBManager.initHibernate();
             dao.store(entity);
         }
         catch (Exception e) {
+            //Something went wrong; catching the Exception and returning false
             e.printStackTrace();
             return false;
         }
-        finally { DBManager.shutdown(); }
+        finally { DBManager.shutdown(); } //always shut DB when done
 
-        return true;
+        return true; //successful operation
     }
 
+    /**
+     * Utility method for input validation.
+     * @param str: String to check.
+     * @return boolean
+     */
     private static boolean checkString(String str) { return str != null && !"".equals(str); }
+
+    /**
+     * Utility method for input validation.
+     * @param strings: Strings to check.
+     * @return boolean
+     */
     private static boolean checkStrings(String... strings) {
         for (String str: strings) if (!checkString(str)) return false;
         return true;

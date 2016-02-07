@@ -98,13 +98,7 @@ public class CreaPacchettoEntity extends ProdottoEntity {
     public List<OffertaEntity> retrieveOffers() {
 
         List<OffertaEntity> entities = new ArrayList<>();
-
-        if (offers.size() == 0) {
-
-        }
-
-        int i;
-        for (i = 0; i < offers.size(); ++i) entities.add(offers.get(i));
+        for (int i = 0; i < offers.size(); ++i) entities.add(offers.get(i));
 
         return entities;
     }

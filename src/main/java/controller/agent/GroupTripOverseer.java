@@ -10,6 +10,10 @@ import view.agent.GroupTripList;
 
 import java.util.List;
 
+/**
+ * Overseer implementation; inherits PacketOverseer base behaviour, but also checks for
+ * minimum participants constraint.
+ */
 public class GroupTripOverseer extends PacketOverseer {
 
     /** @param groupTripList; a list of all offers in group trip
