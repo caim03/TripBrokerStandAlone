@@ -1,15 +1,9 @@
 package model.role;
 
 import controller.Constants;
-import controller.command.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import view.agent.GroupTripAssembleView;
-import view.material.ConsolePane;
+import controller.command.LogoutCommand;
+import controller.command.RefreshMacroCommand;
+import controller.command.ShowCommand;
 
 /***
  * This implementation of Ruolo represents the set of responsibilities and jobs a

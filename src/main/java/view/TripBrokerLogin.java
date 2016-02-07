@@ -18,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.entityDB.AbstractEntity;
 import model.entityDB.DipendentiEntity;
 import org.controlsfx.control.Notifications;
 import org.hibernate.exception.JDBCConnectionException;
@@ -142,29 +141,16 @@ public class TripBrokerLogin extends Application {
                 Node circle = circle();
 
                 new Thread(() -> {
-                    AbstractEntity entity;
+                    DipendentiEntity entity;
                     try {
                         entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
                                 surnameField.getText(), passField.getText()));
 
                         Platform.runLater(() -> {
-                            if (entity != null && entity.isValid()) {
-                                stage.close();
-                                TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(((DipendentiEntity) entity));
-                                try { tripBrokerConsole.start(); }
-                                catch (Exception e) { e.printStackTrace(); }
-                            }
-
-                            else if (entity == null)
-                                Notifications.create().
-                                        title("Campi vuoti").
-                                        text("Riempire tutti i campi obbligatori").
-                                        show();
-
-                            else Notifications.create().
-                                        title("Dipendente non trovato").
-                                        text("Questo dipendente non è registrato").
-                                        show();
+                            stage.close();
+                            TripBrokerConsole tripBrokerConsole = new TripBrokerConsole(entity);
+                            try { tripBrokerConsole.start(); }
+                            catch (Exception e) { e.printStackTrace(); }
                         });
                     }
                     catch (JDBCConnectionException e) {
@@ -172,12 +158,18 @@ public class TripBrokerLogin extends Application {
                         Platform.runLater(() -> Notifications.create().
                                     title("Connessione rifiutata").
                                     text("Errore interno al database").
-                                    showWarning());
+                                    showError());
+                    }
+                    catch (Exception e) {
+                        Platform.runLater(() -> Notifications.create().
+                                text(e.getMessage()).
+                                showWarning());
                     }
                     finally {
                         Platform.runLater(() -> {
                             grid.getChildren().remove(circle);
-                            enable(); });
+                            enable();
+                        });
                     }
                 }).start();
             });

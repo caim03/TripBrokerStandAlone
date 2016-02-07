@@ -105,7 +105,6 @@ public abstract class BFSearchStrategy extends SearchStrategy<Arrival[]> {
         }
 
         List<Route> wrap = new ArrayList<>();
-
         for (Station station : results) wrap.add(new Route(station.climbUp(), station.weightToString()));
 
         return wrap.size() > 0 ? wrap : null;

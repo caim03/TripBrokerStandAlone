@@ -1,47 +1,74 @@
 package controller;
 
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
 import model.dao.DAO;
-import model.entityDB.AbstractEntity;
+import model.dao.DipendentiDaoHibernate;
 import model.entityDB.DipendentiEntity;
 import org.hibernate.exception.JDBCConnectionException;
 
 import java.util.List;
 
+/**
+ * Controller class for login use case.
+ */
 public class LoginController {
 
+    /**
+     * Main controller interface.
+     * @param credentials: submitted user Credentials
+     * @return DipendentiEntity: a DB entity representing the logging employee
+     * @throws JDBCConnectionException: DB connection failure
+     * @throws Exception: incomplete/invalid input management via Exceptions
+     */
+    public static DipendentiEntity handle(Credentials credentials) throws Exception {
+        //Incomplete/invalid credentials
+        if (!credentials.areValid()) throw new Exception("Riempire tutti i campi obbligatori");
+
+        List<DipendentiEntity> entities = null;
+        DAO dao = DipendentiDaoHibernate.instance();
+
+        try {
+            DBManager.initHibernate();
+            entities = (List<DipendentiEntity>) dao.getByCriteria(credentials.getQuery()); //DB interaction
+        }
+        finally { DBManager.shutdown(); } //always shut the DB down
+
+        //no luck; there was no match
+        if (entities == null || entities.size() == 0)
+            throw new Exception("Dipendente non registrato");
+
+        return entities.get(0);
+    }
+
+    /**
+     * Utility class for credentials management.
+     */
     public static class Credentials {
 
+        //User name, surname and password
         private String name, surname, password;
 
         public Credentials(String name, String surname, String password) {
-
             this.name = name;
             this.surname = surname;
             this.password = password;
         }
 
+        /**
+         * Utility method for credential validation/coherence checking
+         * @return boolean: whether or not the application can go on logging the user in
+         */
         public boolean areValid() {
             return name != null && surname != null && password != null &&
-                   !"".equals(name) && !"".equals(surname) && !"".equals(password);
+                    !"".equals(name) && !"".equals(surname) && !"".equals(password);
         }
 
+        /**
+         * Utility method returning a query wrapping up submitted credentials.
+         * @return String: ad-hoc DB query
+         */
         public String getQuery() {
             return "where nome='" + name + "' AND cognome='" + surname + "' AND password_login='" + password + "'";
         }
-    }
-
-    public static AbstractEntity handle(Credentials credentials) throws JDBCConnectionException {
-
-        if (!credentials.areValid()) return null;
-
-        List<DipendentiEntity> dipendentiEntity;
-        DAO dao = DipendentiDaoHibernate.instance();
-        DBManager.initHibernate();
-        dipendentiEntity = (List<DipendentiEntity>) (dao.getByCriteria(credentials.getQuery()));
-        DBManager.shutdown();
-        if (dipendentiEntity == null) return AbstractEntity.getInvalidEntity();
-        else return dipendentiEntity.get(0);
     }
 }

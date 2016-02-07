@@ -2,7 +2,6 @@ package view.popup;
 
 import controller.agent.SellController;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -12,7 +11,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import model.entityDB.OffertaEntity;
 import org.controlsfx.control.Notifications;
-import view.material.*;
+import view.material.FlatButton;
+import view.material.LayerPane;
+import view.material.MaterialPopup;
+import view.material.ProgressCircle;
 
 public class SellPopup extends PopupDecorator {
 

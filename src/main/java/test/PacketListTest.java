@@ -1,10 +1,5 @@
 package test;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 import model.entityDB.EventoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PernottamentoEntity;
@@ -12,7 +7,6 @@ import model.entityDB.ViaggioEntity;
 import org.junit.Before;
 import org.junit.Test;
 import view.desig.PacketList;
-import view.material.DBListView;
 
 import java.sql.Timestamp;
 import java.time.Duration;

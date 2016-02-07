@@ -2,7 +2,6 @@ package view.material;
 
 import javafx.scene.control.Label;
 import view.observers.Observer;
-import view.observers.Subject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

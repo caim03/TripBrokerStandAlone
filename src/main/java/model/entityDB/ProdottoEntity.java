@@ -89,11 +89,10 @@ public class ProdottoEntity extends AbstractEntity {
 
         ProdottoEntity that = (ProdottoEntity) o;
 
-        if (id != that.id) return false;
-        if (Double.compare(that.prezzo, prezzo) != 0) return false;
-        if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
+        return id == that.id &&
+               Double.compare(that.prezzo, prezzo) == 0 &&
+              (nome != null ? nome.equals(that.nome) : that.nome == null);
 
-        return true;
     }
 
     @Override

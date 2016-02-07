@@ -18,7 +18,6 @@ import view.material.MaterialPopup;
 import view.material.NumericField;
 import view.material.ProgressCircle;
 
-
 public class PoliticsPopup extends PopupView {
 
     private PoliticheEntity entity;

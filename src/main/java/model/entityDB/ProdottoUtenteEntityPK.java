@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-/**
- * Created by Christian on 18/11/2015.
- */
 public class ProdottoUtenteEntityPK extends AbstractEntity implements Serializable {
     private int idProdotto;
     private int idUtente;
@@ -38,10 +35,8 @@ public class ProdottoUtenteEntityPK extends AbstractEntity implements Serializab
 
         ProdottoUtenteEntityPK that = (ProdottoUtenteEntityPK) o;
 
-        if (idProdotto != that.idProdotto) return false;
-        if (idUtente != that.idUtente) return false;
+        return idProdotto == that.idProdotto && idUtente == that.idUtente;
 
-        return true;
     }
 
     @Override

@@ -9,8 +9,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.DBManager;
 import model.dao.CreaPacchettoDaoHibernate;
+import model.dao.DAO;
+import model.dao.DipendentiDaoHibernate;
 import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.DipendentiEntity;
 import view.material.DBCell;
 import view.material.ProgressCircle;
 
@@ -80,10 +84,18 @@ public class PacketPopup extends PopupView {
         if (entity.getStato() == 0) state = "In attesa di approvazione";
         else if (entity.getStato() == 1) state = "Approvato";
         else state = "Rifiutato";
-
         pane.add(new Text(state), 1, 2);
         if (entity.getStato() == 2) pane.add(new Text((entity.getMotivazione())), 1, 3);
-        pane.add(new Text(getEmployee(entity.getCreatore())), 1, 3 + i);
+
+        ProgressCircle circle;
+        pane.add(circle = ProgressCircle.miniCircle(), 1, 3 + i);
+        new Thread(() -> {
+            String creator = getCreator(entity.getCreatore());
+            Platform.runLater(() -> {
+                pane.getChildren().remove(circle);
+                pane.add(new Text(creator), 1, 3 + i);
+            });
+        }).start();
 
         generateList();
 
@@ -106,5 +118,26 @@ public class PacketPopup extends PopupView {
         list.setMaxHeight(200);
         list.setCellFactory(callback -> new DBCell());
         list.getItems().addAll(entity.retrieveOffers());
+    }
+
+    private String getCreator(int id) {
+        /** @param: int; Employee id
+         *  @result: String; name of logged in Employee **/
+
+        DipendentiEntity entity;
+        try {
+            DBManager.initHibernate();
+            DAO dao = DipendentiDaoHibernate.instance();
+            entity = (DipendentiEntity) dao.getById(id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Errore";
+        }
+        finally { DBManager.shutdown(); }
+
+        if (entity == null) return "Ignoto";
+
+        return entity.getNome() + " " + entity.getCognome();
     }
 }

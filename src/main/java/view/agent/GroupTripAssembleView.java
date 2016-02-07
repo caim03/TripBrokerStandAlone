@@ -4,9 +4,5 @@ import view.GroupTripFormView;
 import view.desig.PacketAssembleView;
 
 public class GroupTripAssembleView extends PacketAssembleView {
-
-    public GroupTripAssembleView() {
-
-        super(new GroupTripFormView());
-    }
+    public GroupTripAssembleView() { super(new GroupTripFormView()); }
 }

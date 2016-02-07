@@ -4,8 +4,6 @@ import controller.desig.PacketOverseer;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import model.entityDB.*;
-import view.PacketFormView;
-import view.observers.Observer;
 
 import java.util.Date;
 

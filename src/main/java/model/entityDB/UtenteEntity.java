@@ -130,17 +130,14 @@ public class UtenteEntity extends AbstractEntity {
 
         UtenteEntity that = (UtenteEntity) o;
 
-        if (id != that.id) return false;
-        if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
-        if (cognome != null ? !cognome.equals(that.cognome) : that.cognome != null) return false;
-        if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
-        if (passwordLogin != null ? !passwordLogin.equals(that.passwordLogin) : that.passwordLogin != null)
-            return false;
-        if (codiceFiscale != null ? !codiceFiscale.equals(that.codiceFiscale) : that.codiceFiscale != null)
-            return false;
-        if (numeroCarta != null ? !numeroCarta.equals(that.numeroCarta) : that.numeroCarta != null) return false;
+        return id == that.id &&
+              (nome != null ? nome.equals(that.nome) : that.nome == null) &&
+              (cognome != null ? cognome.equals(that.cognome) : that.cognome == null) &&
+              (mail != null ? mail.equals(that.mail) : that.mail == null) &&
+              (passwordLogin != null ? passwordLogin.equals(that.passwordLogin) : that.passwordLogin == null) &&
+              (codiceFiscale != null ? codiceFiscale.equals(that.codiceFiscale) : that.codiceFiscale == null) &&
+              (numeroCarta != null ? numeroCarta.equals(that.numeroCarta) : that.numeroCarta == null);
 
-        return true;
     }
 
     @Override

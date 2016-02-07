@@ -44,10 +44,7 @@ public class ProdottoUtenteEntity extends AbstractEntity {
 
         ProdottoUtenteEntity that = (ProdottoUtenteEntity) o;
 
-        if (idProdotto != that.idProdotto) return false;
-        if (idUtente != that.idUtente) return false;
-
-        return true;
+        return idProdotto == that.idProdotto && idUtente == that.idUtente;
     }
 
     @Override

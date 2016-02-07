@@ -1,7 +1,6 @@
 package model.entityDB;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /*** This class represents the table of travels in DataBase, and it is used to retrieve,

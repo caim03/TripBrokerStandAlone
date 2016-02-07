@@ -5,16 +5,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
-import model.dao.ProdottoDaoHibernate;
 import model.dao.DAO;
-import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.PacchettoOffertaEntity;
+import model.dao.ProdottoDaoHibernate;
 import model.entityDB.ProdottoEntity;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 public class CatalogView extends DBTablePane {
 

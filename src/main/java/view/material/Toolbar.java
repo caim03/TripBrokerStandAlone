@@ -2,16 +2,11 @@ package view.material;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import jfxtras.scene.control.ImageViewButton;
 
 import java.io.IOException;
 

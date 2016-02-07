@@ -38,7 +38,7 @@ public class TransferRecordCommand extends Command {
 
     public void execute(List<AbstractEntity> entities) {
         if (entities == null) return;
-        for (AbstractEntity entity : entities) load(entity);
+        entities.forEach(this::load);
         execute(); //actual execution
     }
 

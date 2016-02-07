@@ -14,6 +14,9 @@ import view.material.LayerPane;
 import view.material.MaterialSpinner;
 import view.material.MaterialTextField;
 
+/**
+ * View class for employee management use case, in particular new one's addition to employee register.
+ */
 public class AddNewEmployeeView extends LayerPane implements Collector {
 
     private static final ObservableList<String> ROLES = FXCollections.observableArrayList("Agente", "Designer", "Scout");
@@ -68,7 +71,9 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
         catch (NullPointerException ignore) {}
     }
 
-
+    /**
+     * Info recollection method; it gathers employee credential and tries to add them into the register.
+     */
     @Override
     public void harvest() {
 
@@ -84,6 +89,7 @@ public class AddNewEmployeeView extends LayerPane implements Collector {
             }
             catch (Exception e) { Platform.runLater(() ->
                     Notifications.create().text(e.getMessage()).showWarning()); }
+            //problems with submitted info
 
             if (result) {
                 Platform.runLater(() -> {

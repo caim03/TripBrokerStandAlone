@@ -17,23 +17,6 @@ public abstract class PopupView {
 
     protected abstract Parent generatePopup();
 
-    protected String getEmployee(int id){
-        /** @param: int; Employee id
-         *  @result: String; name of logged in Employee **/
-
-        DipendentiEntity entity;
-        DBManager.initHibernate();
-        DAO dao = DipendentiDaoHibernate.instance();
-        entity = (DipendentiEntity) dao.getById(id);
-        DBManager.shutdown();
-
-        if (entity == null){
-            return "Unknown";
-        }
-
-        return entity.getNome() + " " + entity.getCognome();
-    }
-
     public Region getGui() {
         if (gui == null) gui = (Region) generatePopup();
         return gui;

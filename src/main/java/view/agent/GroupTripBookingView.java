@@ -5,7 +5,6 @@ import view.material.DBListView;
 import view.material.LayerPane;
 import view.material.MaterialPopup;
 import view.popup.BookingPopup;
-import view.popup.GroupTripPopup;
 import view.popup.PopupView;
 
 public class GroupTripBookingView extends LayerPane {

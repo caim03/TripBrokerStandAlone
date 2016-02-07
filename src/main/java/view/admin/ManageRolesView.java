@@ -32,7 +32,7 @@ public class ManageRolesView extends DBTablePane {
 
     @Override
     protected TableView generateTable() {
-        TableView<DipendentiEntity> list = new TableView<DipendentiEntity>();
+        TableView<DipendentiEntity> list = new TableView<>();
 
         TableColumn idColumn = new TableColumn("id");
         idColumn.setMinWidth(50);

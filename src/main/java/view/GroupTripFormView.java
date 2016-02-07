@@ -2,7 +2,6 @@ package view;
 
 import controller.Constants;
 import controller.agent.GroupTripAssembleController;
-import controller.desig.PacketAssembleController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,7 +12,6 @@ import model.dao.PoliticheDaoHibernate;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PoliticheEntity;
-import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 import view.agent.GroupTripList;
 import view.desig.PacketList;
