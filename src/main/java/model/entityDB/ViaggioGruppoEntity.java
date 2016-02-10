@@ -52,6 +52,7 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
         this.max = max;
     }
 
+
     @Basic
     @Column(name = "prenotazioni")
     public int getPrenotazioni() {

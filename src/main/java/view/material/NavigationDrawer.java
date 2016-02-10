@@ -6,12 +6,18 @@ import controller.command.Command;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
+import view.TripBrokerConsole;
+
+import java.awt.*;
 
 public class NavigationDrawer extends VBox {
 
@@ -40,18 +46,14 @@ public class NavigationDrawer extends VBox {
 
         this();
 
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(width * ratio);
+        double height = width * ratio;
+        Canvas canvas = new Canvas(width, height);
+        canvas.getGraphicsContext2D().setFill(Color.RED);
+        canvas.getGraphicsContext2D().fillRect(0, 0, width, height);
+        canvas.getGraphicsContext2D().setStroke(Color.WHITE);
+        canvas.getGraphicsContext2D().strokeText(TripBrokerConsole.getGuestName(), 16, height - 16);
 
-
-        if (Constants.scout.equals(title)) imageView.setImage(new Image("mastrofini.png"));
-        else if (Constants.admin.equals(title)) imageView.setImage(new Image("cantone.png"));
-        else if (Constants.desig.equals(title)) imageView.setImage(new Image("deangelis.png"));
-        else imageView.setImage(new Image("calavaro.png"));
-
-        getChildren().add(imageView);
-
+        getChildren().add(canvas);
 
         setOptions(title);
     }
