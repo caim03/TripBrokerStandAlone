@@ -10,11 +10,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
+import model.dao.PacchettoDaoHibernate;
 import model.dao.DAO;
-import model.dao.DipendentiDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
-import model.entityDB.DipendentiEntity;
+import model.dao.DipendenteDaoHibernate;
+import model.entityDB.DipendenteEntity;
+import model.entityDB.PacchettoEntity;
 import view.material.DBCell;
 import view.material.ProgressCircle;
 
@@ -22,10 +22,10 @@ public class PacketPopup extends PopupView {
 
     private int id;
     private GridPane container = new GridPane();
-    private CreaPacchettoEntity entity;
+    protected PacchettoEntity entity;
     private ListView list;
 
-    public PacketPopup(CreaPacchettoEntity prodottoEntity) {
+    public PacketPopup(PacchettoEntity prodottoEntity) {
         this.entity = prodottoEntity;
         container.setAlignment(Pos.CENTER);
     }
@@ -35,7 +35,7 @@ public class PacketPopup extends PopupView {
         container.setAlignment(Pos.CENTER);
     }
 
-    public CreaPacchettoEntity getEntity() { return entity; }
+    public PacchettoEntity getEntity() { return entity; }
 
     @Override
     protected Parent generatePopup() {
@@ -45,8 +45,8 @@ public class PacketPopup extends PopupView {
             ProgressCircle circle = ProgressCircle.circleElevated();
             container.getChildren().add(circle);
             new Thread(() -> {
-                CreaPacchettoEntity entity =
-                        (CreaPacchettoEntity) CreaPacchettoDaoHibernate.instance().getById(id);
+                PacchettoEntity entity =
+                        (PacchettoEntity) PacchettoDaoHibernate.instance().getById(id);
                 Platform.runLater(() -> {
                     container.getChildren().remove(circle);
                     this.entity = entity;
@@ -61,7 +61,7 @@ public class PacketPopup extends PopupView {
         return container;
     }
 
-    private Parent generate() {
+    protected GridPane generatePane() {
 
         int i = entity.getStato() == 2 ? 1 : 0;
 
@@ -97,12 +97,18 @@ public class PacketPopup extends PopupView {
             });
         }).start();
 
+        return pane;
+    }
+
+    private Parent generate() {
+
         generateList();
 
-        VBox dialogVbox = new VBox(pane, list);
+        VBox dialogVbox = new VBox(generatePane(), list);
 
+        list.maxWidth(300);
         list.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue.doubleValue() > dialogVbox.getPrefWidth()) {
+            if (newValue != null && newValue.doubleValue() > dialogVbox.getPrefWidth() && newValue.doubleValue() < list.getMaxWidth()) {
                 dialogVbox.prefWidthProperty().setValue(newValue.doubleValue() + 32);
             }
         });
@@ -120,15 +126,15 @@ public class PacketPopup extends PopupView {
         list.getItems().addAll(entity.retrieveOffers());
     }
 
-    private String getCreator(int id) {
+    protected String getCreator(int id) {
         /** @param: int; Employee id
          *  @result: String; name of logged in Employee **/
 
-        DipendentiEntity entity;
+        DipendenteEntity entity;
         try {
             DBManager.initHibernate();
-            DAO dao = DipendentiDaoHibernate.instance();
-            entity = (DipendentiEntity) dao.getById(id);
+            DAO dao = DipendenteDaoHibernate.instance();
+            entity = (DipendenteEntity) dao.getById(id);
         }
         catch (Exception e) {
             e.printStackTrace();

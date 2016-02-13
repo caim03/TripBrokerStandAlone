@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
@@ -22,13 +22,13 @@ public class EmployeePopup extends PopupView{
     private static final ObservableList<String> ROLES = FXCollections.observableArrayList("Agente", "Amministratore", "Designer", "Scout");
 
     private TableView list;
-    private DipendentiEntity entity;
+    private DipendenteEntity entity;
     private Button modButton;
     private TextField nameTxt, surnameTxt, passTxt, mailTxt;
     private MaterialSpinner roleSpinner;
     private GridPane pane;
 
-    public EmployeePopup(TableView list, DipendentiEntity entity) {
+    public EmployeePopup(TableView list, DipendenteEntity entity) {
         this.entity = entity;
         this.list = list;
     }
@@ -94,7 +94,7 @@ public class EmployeePopup extends PopupView{
                     pane.add(mini, 0, 5);
 
                     new Thread(() -> {
-                        DipendentiEntity clone = (DipendentiEntity) entity.clone();
+                        DipendenteEntity clone = (DipendenteEntity) entity.clone();
                         clone.setNome(nameTxt.getText());
                         clone.setCognome(surnameTxt.getText());
                         clone.setRuolo(roleSpinner.getValue());

@@ -32,7 +32,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Dipendenti", schema = "trip_broker")
-public class DipendentiEntity extends AbstractEntity {
+public class DipendenteEntity extends AbstractEntity {
     private int id;
     private String nome;
     private String cognome;
@@ -112,7 +112,7 @@ public class DipendentiEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DipendentiEntity that = (DipendentiEntity) o;
+        DipendenteEntity that = (DipendenteEntity) o;
 
         System.out.println(
                 this.id + "\t" + that.id + "\n" +

@@ -72,7 +72,7 @@ public class ConfirmBookingController {
         //retrieving offers
         List<OffertaEntity> entities = (List<OffertaEntity>) OffertaDaoHibernate.instance()
                 .getByCriteria("WHERE id IN " +
-                        "(SELECT idOfferta FROM GruppoOffertaEntity WHERE idGruppo = " + id + ")");
+                        "(SELECT idOfferta FROM PacchettoOffertaEntity WHERE idPacchetto = " + id + ")");
 
         //for each offer, both bookings and quantity attributes have to be updated
         for (OffertaEntity offer : entities) {

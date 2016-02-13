@@ -17,6 +17,8 @@ public class NumericField extends MaterialTextField {
 
         if (isDouble) discriminator += ".";
 
+        this.textProperty().addListener((observable, oldValue, newValue) -> { if (newValue == null) setText(""); });
+
         this.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
 
             String c = keyEvent.getCharacter(), text1 = NumericField.this.getText();

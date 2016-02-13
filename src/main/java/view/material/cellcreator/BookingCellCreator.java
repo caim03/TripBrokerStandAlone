@@ -59,7 +59,8 @@ public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> 
             cell.getChildren().remove(cancel);
             cell.getChildren().add(circle = ProgressCircle.miniCircle());
             new Thread(() -> {
-                try { CancelBookingController.handle(entity); }
+                boolean result = false;
+                try { result = CancelBookingController.handle(entity); }
                 catch (Exception e) {
                     e.printStackTrace();
                     Platform.runLater(() -> {
@@ -69,10 +70,15 @@ public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> 
                     });
                     return;
                 }
-                Platform.runLater(() -> {
-                    Notifications.create().text("Prenotazione cancellata").show();
-                    listView.getItems().remove(entity);
-                });
+                if (result)
+                    Platform.runLater(() -> {
+                        Notifications.create().text("Prenotazione cancellata").show();
+                        listView.getItems().remove(entity);
+                    });
+
+                else
+                    Platform.runLater(() -> Notifications.create().
+                            text("Errore durante la conferma").showError());
             }).start();
         });
 

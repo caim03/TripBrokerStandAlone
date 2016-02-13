@@ -26,7 +26,7 @@ import java.util.Map;
 @Entity
 @Table(name = "Crea_Pacchetto", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-public class CreaPacchettoEntity extends ProdottoEntity {
+public class PacchettoEntity extends ProdottoEntity {
     //private int id;
     private int stato;
     private String motivazione;
@@ -73,7 +73,7 @@ public class CreaPacchettoEntity extends ProdottoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CreaPacchettoEntity that = (CreaPacchettoEntity) o;
+        PacchettoEntity that = (PacchettoEntity) o;
 
         //if (id != that.id) return false;
         if (stato != that.stato) return false;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Politiche", schema = "trip_broker")
-public class PoliticheEntity extends AbstractEntity {
+public class PoliticaEntity extends AbstractEntity {
     private int id;
     private double valore;
     private String nome;
@@ -50,7 +50,7 @@ public class PoliticheEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PoliticheEntity that = (PoliticheEntity) o;
+        PoliticaEntity that = (PoliticaEntity) o;
 
         return id == that.id &&
                valore == that.valore &&

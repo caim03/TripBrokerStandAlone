@@ -2,12 +2,9 @@ package controller.agent;
 
 import controller.Constants;
 import model.DBManager;
-import model.dao.GruppoOffertaDaoHibernate;
+import model.dao.PacchettoOffertaDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
-import model.entityDB.GruppoOffertaEntity;
-import model.entityDB.OffertaEntity;
-import model.entityDB.ViaggioEntity;
-import model.entityDB.ViaggioGruppoEntity;
+import model.entityDB.*;
 import view.TripBrokerConsole;
 
 import java.util.List;
@@ -18,39 +15,31 @@ import java.util.List;
 public class GroupTripAssembleController {
 
     /**
-     * @param name; group trip name
-     * @param price; group trip price
-     * @param min; minimum number of bookings required for selling the group trip
-     * @param max; maximum number of bookings allowed
+     * @param entity; ViaggioGruppoEntity to create
      * @return boolean: whether or not the operation was successful
      * @throws Exception: incomplete/invalid submitted input is handled via Exception
      */
-    public static boolean create(String name, double price, double bound0, double bound1, int min, int max, List<OffertaEntity> entities) throws Exception {
-
+    public static boolean create(ViaggioGruppoEntity entity, double bound0, double bound1, List<OffertaEntity> entities) throws Exception {
         //checks
-        if (name == null || "".equals(name)) throw new Exception("Riempire tutti i campi obbligatori");
+        if (entity.getNome() == null || "".equals(entity.getNome())) throw new Exception("Riempire tutti i campi obbligatori");
         if (entities.size() == 0) throw new Exception("Pacchetto vuoto");
-        if (!(price >= bound0 && price <= bound1)) throw new Exception("Il prezzo deve essere compreso tra i suoi limiti");
-        if (min > max) throw new Exception("Prenotazioni minime e massime incoerenti");
+        if (!(entity.getPrezzo() >= bound0 && entity.getPrezzo() <= bound1)) throw new Exception("Il prezzo deve essere compreso tra i suoi limiti");
+        if (entity.getMin() > entity.getMax()) throw new Exception("Prenotazioni minime e massime incoerenti");
 
         checkLocations(entities.get(0), entities.get(entities.size() - 1));
 
         //Preparations
         //retrieving offers IDs
         int ids[] = new int[entities.size()], i = 0;
-        for (OffertaEntity entity : entities) {
-            ids[i] = entity.getId();
+        for (OffertaEntity offer : entities) {
+            ids[i] = offer.getId();
             ++i;
         }
 
         //ViaggioGruppoEntity creation
-        ViaggioGruppoEntity entity = new ViaggioGruppoEntity();
-        entity.setNome(name);
-        entity.setPrezzo(price);
         entity.setCreatore(TripBrokerConsole.getGuestID());
         entity.setTipo(Constants.group);
-        entity.setMin(min);
-        entity.setMax(max);
+        entity.setStato(1);
 
         try {
             DBManager.initHibernate();
@@ -60,12 +49,7 @@ public class GroupTripAssembleController {
             //binding offers to group trip
             int pos = 0;
             for (int id : ids) {
-                GruppoOffertaEntity link = new GruppoOffertaEntity();
-                link.setIdOfferta(id);
-                link.setIdGruppo(gtid);
-                link.setPosizione(pos);
-                GruppoOffertaDaoHibernate.instance().store(link);
-
+                bind(gtid, id, pos);
                 ++pos;
             }
         }
@@ -77,6 +61,20 @@ public class GroupTripAssembleController {
         finally { DBManager.shutdown(); } //always shut the DB down
 
         return true;
+    }
+
+    /**
+     * Utility method for ViaggioGruppo/Offerta binding.
+     * @param gtid: int; ViaggioGruppoEntity id
+     * @param id: int; OffertaEntity id
+     * @param pos: int; OffertaEntity position into ViaggioGruppoEntity
+     */
+    private static void bind(int gtid, int id, int pos) {
+        PacchettoOffertaEntity link = new PacchettoOffertaEntity();
+        link.setIdOfferta(id);
+        link.setIdPacchetto(gtid);
+        link.setPosizione(pos);
+        PacchettoOffertaDaoHibernate.instance().store(link);
     }
 
     /**

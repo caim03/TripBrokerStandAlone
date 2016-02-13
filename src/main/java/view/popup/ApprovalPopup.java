@@ -13,18 +13,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.MaterialTextField;
 import view.material.ProgressCircle;
 
-import java.io.NotActiveException;
-
 public class ApprovalPopup extends PopupDecorator {
 
-    private CreaPacchettoEntity pacchetto;
+    private PacchettoEntity pacchetto;
     private TableView<ProdottoEntity> list;
     private EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
         @Override
@@ -42,7 +40,7 @@ public class ApprovalPopup extends PopupDecorator {
             else call(pacchetto, id);
         }
 
-        private void call(CreaPacchettoEntity entity, int id) {
+        private void call(PacchettoEntity entity, int id) {
             changeDecoration(ProgressCircle.miniCircle());
             new Thread(() -> {
                 boolean result = ApproveController.handle(entity, id);
@@ -56,7 +54,7 @@ public class ApprovalPopup extends PopupDecorator {
         }
     };
 
-    public ApprovalPopup(PopupView popupView, CreaPacchettoEntity pacchetto, TableView<ProdottoEntity> list){
+    public ApprovalPopup(PopupView popupView, PacchettoEntity pacchetto, TableView<ProdottoEntity> list){
         super(popupView);
         this.pacchetto = pacchetto;
         this.list = list;

@@ -1,9 +1,7 @@
 package model.dao;
 
 import model.DBManager;
-import model.entityDB.AbstractEntity;
-import model.entityDB.ProdottoEntity;
-import model.entityDB.ViaggioGruppoEntity;
+import model.entityDB.*;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -29,9 +27,13 @@ public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
         /** @result List; return a list of ViaggioGruppoEntity, retrieved from the DataBase **/
 
         Session session = DBManager.getSession();
-
         List<ViaggioGruppoEntity> entities = session.createQuery("from ViaggioGruppoEntity").list();
         session.close();
+
+        if (entities != null) {
+            for (ViaggioGruppoEntity entity : entities)
+                ((PacchettoDaoHibernate) PacchettoDaoHibernate.instance()).populate(entity);
+        }
         return entities;
     }
 
@@ -44,8 +46,12 @@ public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
         List<ViaggioGruppoEntity> entities = session.createQuery("from ViaggioGruppoEntity " + where).list();
         session.close();
 
-        if (entities.isEmpty()) return null;
-        else return entities;  // return first
+        if (entities == null || entities.isEmpty()) return null;
+        else if (entities != null) {
+            for (ViaggioGruppoEntity entity : entities)
+                ((PacchettoDaoHibernate) PacchettoDaoHibernate.instance()).populate(entity);
+        }
+        return entities;  // return first
     }
 
     @Override
@@ -57,9 +63,9 @@ public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
 
         ViaggioGruppoEntity viaggioGruppoEntity = (ViaggioGruppoEntity) session.createQuery("from ViaggioGruppoEntity where id = " + id).list().get(0);
         session.close();
-        if (viaggioGruppoEntity == null){
-            return null;
-        } else {
+        if (viaggioGruppoEntity == null) return null;
+        else {
+            ((PacchettoDaoHibernate) PacchettoDaoHibernate.instance()).populate(viaggioGruppoEntity);
             return viaggioGruppoEntity;
         }
     }
@@ -83,10 +89,12 @@ public class ViaggioGruppoDaoHibernate extends ProdottoDaoHibernate {
     public void update(AbstractEntity entity) throws ClassCastException {
         /** @param AbstractEntity; entity that must be updated to the DataBase **/
 
+        ViaggioGruppoEntity viaggioGruppoEntity = (ViaggioGruppoEntity) entity;
+
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.update(entity);
+        session.update(viaggioGruppoEntity);
         session.getTransaction().commit();
 
         session.close();

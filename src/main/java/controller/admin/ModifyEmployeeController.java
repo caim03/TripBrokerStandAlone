@@ -1,9 +1,9 @@
 package controller.admin;
 
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
+import model.dao.DipendenteDaoHibernate;
 import model.dao.DAO;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 
 /**
  * Controller class for employee credential management use case.
@@ -11,11 +11,11 @@ import model.entityDB.DipendentiEntity;
 public class ModifyEmployeeController {
 
     /**
-     * @param entity: DipendentiEntity instance to update
+     * @param entity: DipendenteEntity instance to update
      * @return boolean: whether or not the operation was successful
      * @throws Exception: incomplete/invalid submitted input is handled via Exception
      */
-    public static boolean handle(DipendentiEntity entity) throws Exception {
+    public static boolean handle(DipendenteEntity entity) throws Exception {
         if (!checkEmployee(entity)) throw new Exception("Riempire tutti i campi obbligatori");
         try {
             DBManager.initHibernate();
@@ -33,19 +33,19 @@ public class ModifyEmployeeController {
 
     /**
      * Utility method realizing the actual update.
-     * @param entity: DipendentiEntity to update
+     * @param entity: DipendenteEntity to update
      */
-    private static void update(DipendentiEntity entity) {
-        DAO dao = DipendentiDaoHibernate.instance();
+    private static void update(DipendenteEntity entity) {
+        DAO dao = DipendenteDaoHibernate.instance();
         dao.update(entity);
     }
 
     /**
      * Utility method for input validation.
-     * @param entity: DipendentiEntity whose fields have to be checked before updating
+     * @param entity: DipendenteEntity whose fields have to be checked before updating
      * @return boolean
      */
-    private static boolean checkEmployee(DipendentiEntity entity) {
+    private static boolean checkEmployee(DipendenteEntity entity) {
         return checkStrings(entity.getNome(), entity.getCognome(), entity.getRuolo(), entity.getPasswordLogin(), entity.getMail());
     }
 

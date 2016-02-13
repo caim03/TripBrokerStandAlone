@@ -2,9 +2,9 @@ package controller.admin;
 
 
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
+import model.dao.DipendenteDaoHibernate;
 import model.dao.DAO;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 
 /*** Controller class for the employee additions use case. ***/
 
@@ -24,14 +24,14 @@ public class AddNewEmployeeController {
         if (!checkStrings(name, surname, password, role, mail)) throw new Exception("Riempire tutti i campi obbligatori");
 
         //Employee entity
-        DipendentiEntity entity = new DipendentiEntity();
+        DipendenteEntity entity = new DipendenteEntity();
         entity.setNome(name);
         entity.setCognome(surname);
         entity.setPasswordLogin(password);
         entity.setRuolo(role);
         entity.setMail(mail);
 
-        DAO dao = DipendentiDaoHibernate.instance();
+        DAO dao = DipendenteDaoHibernate.instance();
 
         try {
             //DB interaction

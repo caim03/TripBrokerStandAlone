@@ -6,7 +6,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.DBManager;
 import model.dao.DAO;
 import model.dao.ProdottoDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.ProdottoEntity;
 import view.DBTablePane;
 import view.PacketFormView;
@@ -54,7 +54,7 @@ public class PacketEditView extends DBTablePane {
 
                 MaterialPopup popup = new MaterialPopup(this,
                         new FormPopup(new PacketAssembleView(
-                                new PacketFormView((CreaPacchettoEntity) newValue))), true);
+                                new PacketFormView((PacchettoEntity) newValue))), true);
 
                 popup.show();
             }

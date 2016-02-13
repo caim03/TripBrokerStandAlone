@@ -2,10 +2,6 @@ package view.popup;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
-import model.DBManager;
-import model.dao.DAO;
-import model.dao.DipendentiDaoHibernate;
-import model.entityDB.DipendentiEntity;
 import view.material.MaterialPopup;
 
 /** Factory Method for popup **/

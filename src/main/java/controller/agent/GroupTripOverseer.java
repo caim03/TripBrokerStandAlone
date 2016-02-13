@@ -2,10 +2,10 @@ package controller.agent;
 
 import controller.Constants;
 import controller.desig.PacketOverseer;
-import model.dao.PoliticheDaoHibernate;
+import model.dao.PoliticaDaoHibernate;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.PoliticaEntity;
 import view.agent.GroupTripList;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class GroupTripOverseer extends PacketOverseer {
         int qu = entity.getQuantità();
 
         boolean result = qu >=
-                ((PoliticheEntity) PoliticheDaoHibernate.instance().
+                ((PoliticaEntity) PoliticaDaoHibernate.instance().
                         getById(Constants.minGroup)).getValore();
 
         if (result)  ((GroupTripList) subjectList).setQu(qu);

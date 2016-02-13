@@ -1,11 +1,10 @@
 package controller.agent;
 
 import model.DBManager;
-import model.dao.GruppoOffertaDaoHibernate;
-import model.dao.OffertaDaoHibernate;
-import model.dao.PrenotazioneDaoHibernate;
-import model.dao.ViaggioGruppoDaoHibernate;
+import model.dao.*;
 import model.entityDB.*;
+
+import java.util.List;
 
 /**
  * Controller class for group trip booking use case.
@@ -44,8 +43,12 @@ public class BookingController {
             ViaggioGruppoDaoHibernate.instance().update(entity);
 
             //bookings update for each offer assembled by the group trip
-            for (AbstractEntity gruppoOfferta : GruppoOffertaDaoHibernate.instance().getByCriteria("where id_gruppo = " + entity.getId())) {
-                OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getByCriteria("where id = " + ((GruppoOffertaEntity) gruppoOfferta).getIdOfferta()).get(0);
+            List<PacchettoOffertaEntity> links = (List<PacchettoOffertaEntity>) PacchettoOffertaDaoHibernate.instance().
+                    getByCriteria("where id_pacchetto = " + entity.getId());
+            for (PacchettoOffertaEntity link : links) {
+                int id = link.getIdOfferta();
+                System.out.println("ID " + id);
+                OffertaEntity offer = (OffertaEntity) OffertaDaoHibernate.instance().getById(id);
                 offer.addPrenotazioni(qu);
                 OffertaDaoHibernate.instance().update(offer);
             }

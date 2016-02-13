@@ -18,7 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 import org.controlsfx.control.Notifications;
 import org.hibernate.exception.JDBCConnectionException;
 import view.material.FlatButton;
@@ -141,7 +141,7 @@ public class TripBrokerLogin extends Application {
                 Node circle = circle();
 
                 new Thread(() -> {
-                    DipendentiEntity entity;
+                    DipendenteEntity entity;
                     try {
                         entity = LoginController.handle(new LoginController.Credentials(nameField.getText(),
                                 surnameField.getText(), passField.getText()));

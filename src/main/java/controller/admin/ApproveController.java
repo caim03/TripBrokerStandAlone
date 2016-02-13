@@ -1,10 +1,10 @@
 package controller.admin;
 
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
+import model.dao.PacchettoDaoHibernate;
 import model.dao.DAO;
 import model.dao.ProdottoDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.ProdottoEntity;
 
 /** Controller for a packet prototype approval use case;
@@ -13,7 +13,7 @@ public class ApproveController {
 
     /** @param entity; the packet whose state has to be updated
      *  @param state; integer representing the packet future state **/
-    public static boolean handle(CreaPacchettoEntity entity, int state) {
+    public static boolean handle(PacchettoEntity entity, int state) {
 
         boolean result;
         if (state == 0) result = delete(entity); //packet was rejected and has to be deleted
@@ -24,7 +24,7 @@ public class ApproveController {
         return result;
     }
 
-    /** @param entity; CreaPacchettoEntity to be deleted from DB
+    /** @param entity; PacchettoEntity to be deleted from DB
      *  @return boolean; whether or not the operation was successful **/
     private static boolean delete(ProdottoEntity entity) {
 
@@ -43,10 +43,10 @@ public class ApproveController {
         return true;
     }
 
-    /** @param entity; CreaPacchettoEntity to be updated
+    /** @param entity; PacchettoEntity to be updated
      *  @return boolean; whether or not the operation was successful **/
-    private static boolean update(CreaPacchettoEntity entity) {
-        DAO dao = CreaPacchettoDaoHibernate.instance();
+    private static boolean update(PacchettoEntity entity) {
+        DAO dao = PacchettoDaoHibernate.instance();
         try {
             DBManager.initHibernate();
             dao.update(entity);

@@ -4,10 +4,10 @@ import controller.Constants;
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;
 import model.dao.DAO;
-import model.dao.PoliticheDaoHibernate;
+import model.dao.PoliticaDaoHibernate;
 import model.dao.StatusDaoHibenate;
 import model.entityDB.OffertaEntity;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.PoliticaEntity;
 import model.entityDB.StatusEntity;
 
 /**
@@ -36,7 +36,7 @@ public class SellController {
             DAO dao = OffertaDaoHibernate.instance();
             dao.update(entity); //OffertaEntity update
 
-            double overprice = ((PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprice)).getValore();
+            double overprice = ((PoliticaEntity) PoliticaDaoHibernate.instance().getById(Constants.minOverprice)).getValore();
             handleEconomics(Math.round(overprice * entity.getPrezzo() * qu * 100) / 100.0);
         }
         catch (Exception e) {

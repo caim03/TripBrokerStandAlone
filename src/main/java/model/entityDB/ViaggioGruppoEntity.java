@@ -24,9 +24,9 @@ import javax.persistence.*;
 @Table(name = "Viaggio_Gruppo", schema = "trip_broker")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class ViaggioGruppoEntity extends ProdottoEntity {
+public class ViaggioGruppoEntity extends PacchettoEntity {
 
-    private int min, max, prenotazioni, acquisti, creatore;
+    private int min, max, prenotazioni, acquisti;
 
     @Basic
     @Column(name = "min")
@@ -87,18 +87,6 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
         this.acquisti += add;
     }
 
-    @Basic
-    @Column(name = "creatore")
-    public int getCreatore() {
-        /** @result int; return the identifier of the dependent that has created the group trip **/
-        return creatore;
-    }
-
-    public void setCreatore(int creatore) {
-        /** @param int; set the identifier of the dependent that has created the group trip **/
-        this.creatore = creatore;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,15 +95,15 @@ public class ViaggioGruppoEntity extends ProdottoEntity {
         ViaggioGruppoEntity that = (ViaggioGruppoEntity) o;
 
         //if (id != that.id) return false;
-        return super.equals(o) && min == that.min && max == that.max && creatore == that.creatore;
+        return super.equals(o) && min == that.min && max == that.max &&
+               prenotazioni == that.prenotazioni && acquisti == that.acquisti;
     }
 
     @Override
     public int hashCode() {
-        int result = super.getId();
+        int result = super.hashCode();
         result = 31 * result + min;
         result = 31 * result + max;
-        result = 31 * result + creatore;
         return result;
     }
 }

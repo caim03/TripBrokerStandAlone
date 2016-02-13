@@ -4,14 +4,14 @@ import controller.command.Command;
 import controller.command.LogoutCommand;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 
 public class TripBrokerConsole extends Application {
 
     public static Command logoutCommand;
-    private static DipendentiEntity guest;
+    private static DipendenteEntity guest;
 
-    public TripBrokerConsole(DipendentiEntity entity) {
+    public TripBrokerConsole(DipendenteEntity entity) {
         /** @param int; this integer represents the employee's identifier (logged in employee) **/
         guest = entity;
     }

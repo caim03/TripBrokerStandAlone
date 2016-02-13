@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*** This class represents the table of relations between
- *   'OffertaEntity' and 'CreaPacchettoEntity' in DataBase.
+ *   'OffertaEntity' and 'PacchettoEntity' in DataBase.
  *   It contains two private attributes which reference the primary key of tables;
  *   it also contains the attribute 'posizione', referring to the right order of offers into the packet ***/
 

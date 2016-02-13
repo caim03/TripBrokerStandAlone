@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import model.entityDB.DipendentiEntity;
+import model.entityDB.DipendenteEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.LayerPane;
@@ -21,7 +21,7 @@ import view.popup.EmployeePopup;
 import view.popup.PopupView;
 
 
-public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
+public class ButtonCell extends TableCell<DipendenteEntity, Boolean> {
     final private Button cellButton;
     private DBTablePane pane;
     private String type;
@@ -50,7 +50,7 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             // if modify button
             if (type.equals("Modifica"))
                 cellButton.setOnMouseClicked(event -> {
-                    DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
+                    DipendenteEntity entity = (DipendenteEntity) getTableRow().getItem();
                     PopupView popupView = new EmployeePopup(getTableView(), entity);
                     new MaterialPopup(pane, popupView).show();
                 });
@@ -58,7 +58,7 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
             // if delete button
             else {
 
-                DipendentiEntity entity = (DipendentiEntity) getTableRow().getItem();
+                DipendenteEntity entity = (DipendenteEntity) getTableRow().getItem();
                 cellButton.setOnMouseClicked(event -> {
                     PopupView confirmPopup = new ConfirmPopup(entity);
                     new MaterialPopup((LayerPane) getTableView().getParent().getParent(), confirmPopup).show();
@@ -73,10 +73,10 @@ public class ButtonCell extends TableCell<DipendentiEntity, Boolean> {
 
         private VBox pane;
         private Button confirm, cancel;
-        private DipendentiEntity entity;
+        private DipendenteEntity entity;
         private HBox buttons;
 
-        private ConfirmPopup(DipendentiEntity entity) {
+        private ConfirmPopup(DipendenteEntity entity) {
             this.entity = entity;
         }
 

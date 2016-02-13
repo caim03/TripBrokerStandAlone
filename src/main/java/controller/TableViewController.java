@@ -3,16 +3,14 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.ProdottoEntity;
+import model.entityDB.ViaggioGruppoEntity;
 import view.DBTablePane;
 import view.admin.PacketApproveView;
 import view.material.MaterialPopup;
-import view.popup.ApprovalPopup;
-import view.popup.OfferPopup;
-import view.popup.PacketPopup;
-import view.popup.PopupView;
+import view.popup.*;
 
 /**
  * ItemSelection EventHandler for generic catalog vision use case.
@@ -37,10 +35,12 @@ public class TableViewController implements EventHandler<MouseEvent> {
 
         if (entity instanceof OffertaEntity) popupView = OfferPopup.getCatalogPopup((OffertaEntity) entity);
         else {
-            popupView = new PacketPopup(entity.getId());
+            if (entity instanceof ViaggioGruppoEntity)
+                popupView = new GroupTripPopup(entity.getId());
+            else popupView = new PacketPopup(entity.getId());
             //if request comes from PacketApproveView, popup needs decoration
             if (pane instanceof PacketApproveView)
-                popupView = new ApprovalPopup(popupView, (CreaPacchettoEntity) entity, tableView);
+                popupView = new ApprovalPopup(popupView, (PacchettoEntity) entity, tableView);
         }
 
         new MaterialPopup(pane, popupView).show();

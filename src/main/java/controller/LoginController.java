@@ -2,8 +2,8 @@ package controller;
 
 import model.DBManager;
 import model.dao.DAO;
-import model.dao.DipendentiDaoHibernate;
-import model.entityDB.DipendentiEntity;
+import model.dao.DipendenteDaoHibernate;
+import model.entityDB.DipendenteEntity;
 import org.hibernate.exception.JDBCConnectionException;
 
 import java.util.List;
@@ -16,20 +16,20 @@ public class LoginController {
     /**
      * Main controller interface.
      * @param credentials: submitted user Credentials
-     * @return DipendentiEntity: a DB entity representing the logging employee
+     * @return DipendenteEntity: a DB entity representing the logging employee
      * @throws JDBCConnectionException: DB connection failure
      * @throws Exception: incomplete/invalid input management via Exceptions
      */
-    public static DipendentiEntity handle(Credentials credentials) throws Exception {
+    public static DipendenteEntity handle(Credentials credentials) throws Exception {
         //Incomplete/invalid credentials
         if (!credentials.areValid()) throw new Exception("Riempire tutti i campi obbligatori");
 
-        List<DipendentiEntity> entities = null;
-        DAO dao = DipendentiDaoHibernate.instance();
+        List<DipendenteEntity> entities = null;
+        DAO dao = DipendenteDaoHibernate.instance();
 
         try {
             DBManager.initHibernate();
-            entities = (List<DipendentiEntity>) dao.getByCriteria(credentials.getQuery()); //DB interaction
+            entities = (List<DipendenteEntity>) dao.getByCriteria(credentials.getQuery()); //DB interaction
         }
         finally { DBManager.shutdown(); } //always shut the DB down
 

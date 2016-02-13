@@ -13,14 +13,14 @@ import model.DBManager;
 import model.dao.DAO;
 import model.dao.OffertaDaoHibernate;
 import model.dao.StatusDaoHibenate;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.StatusEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
 public class SellPacketPopup extends PopupDecorator {
 
-    CreaPacchettoEntity entity;
+    PacchettoEntity entity;
     private HBox box;
     private MaterialSpinner spinner;
     private Button button;
@@ -30,7 +30,7 @@ public class SellPacketPopup extends PopupDecorator {
         this.entity = base.getEntity();
     }
 
-    public SellPacketPopup(CreaPacchettoEntity entity) { this(new PacketPopup(entity)); }
+    public SellPacketPopup(PacchettoEntity entity) { this(new PacketPopup(entity)); }
 
     @Override
     protected Node decorate() {

@@ -15,8 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
-import model.dao.PoliticheDaoHibernate;
+import model.dao.PacchettoDaoHibernate;
+import model.dao.PoliticaDaoHibernate;
 import model.entityDB.*;
 import org.controlsfx.control.Notifications;
 import view.desig.PacketList;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class PacketFormView extends VBox implements Collector {
 
-    private CreaPacchettoEntity entity = new CreaPacchettoEntity();
+    protected PacchettoEntity entity = new PacchettoEntity();
     protected ListView<AbstractEntity> list;
     protected NumberLabel basePrice, maxPrice;
     protected TextField nameField, priceField;
@@ -50,8 +50,8 @@ public class PacketFormView extends VBox implements Collector {
 
         new Thread(() -> {
             DBManager.initHibernate();
-            PoliticheEntity entity0 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprice),
-                            entity1 = (PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.maxOverprice);
+            PoliticaEntity entity0 = (PoliticaEntity) PoliticaDaoHibernate.instance().getById(Constants.minOverprice),
+                            entity1 = (PoliticaEntity) PoliticaDaoHibernate.instance().getById(Constants.maxOverprice);
             DBManager.shutdown();
             Platform.runLater(() -> {
                 basePrice.setMod(entity0.getValore());
@@ -75,8 +75,8 @@ public class PacketFormView extends VBox implements Collector {
         setStyle("-fx-vgap: 8px; -fx-fill-height: true");
     }
 
-    public PacketFormView(CreaPacchettoEntity entity) {
-        /** @param CreaPacchettoEntity; new packet that must be added in database **/
+    public PacketFormView(PacchettoEntity entity) {
+        /** @param PacchettoEntity; new packet that must be added in database **/
 
         this();
 
@@ -97,7 +97,7 @@ public class PacketFormView extends VBox implements Collector {
             List<OffertaEntity> offers = entity.retrieveOffers();
             if (offers.size() == 0) {
                 DBManager.initHibernate();
-                ((CreaPacchettoDaoHibernate) CreaPacchettoDaoHibernate.instance()).populate(entity);
+                ((PacchettoDaoHibernate) PacchettoDaoHibernate.instance()).populate(entity);
                 DBManager.shutdown();
                 offers = entity.retrieveOffers();
             }
@@ -151,7 +151,7 @@ public class PacketFormView extends VBox implements Collector {
 
     public void harvest() {
 
-        CreaPacchettoEntity clone = (CreaPacchettoEntity) entity.clone();
+        PacchettoEntity clone = (PacchettoEntity) entity.clone();
         clone.setNome(nameField.getText());
         clone.setPrezzo(((NumericField) priceField).getNumber());
         clone.setTipo(Constants.packet);

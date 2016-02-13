@@ -22,8 +22,8 @@ public abstract class AbstractCellCreator<T extends AbstractEntity> {
         else if (entity instanceof PernottamentoEntity)
             return StayCellCreator.instance().createCell((PernottamentoEntity) entity);
 
-        else if (entity instanceof CreaPacchettoEntity)
-            return PacketCellCreator.instance().createCell((CreaPacchettoEntity) entity);
+        else if (entity instanceof PacchettoEntity)
+            return PacketCellCreator.instance().createCell((PacchettoEntity) entity);
 
         else if (entity instanceof PrenotazioneEntity)
             return BookingCellCreator.instance().createCell((PrenotazioneEntity) entity);

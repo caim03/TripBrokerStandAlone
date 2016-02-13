@@ -24,7 +24,7 @@ public class BookingPopup extends PopupDecorator {
     private GridPane pane;
 
     public BookingPopup(ViaggioGruppoEntity entity) {
-        super(new GroupTripPopup(entity));
+        super(new GroupTripPopup(entity.getId()));
         this.entity = entity;
     }
 

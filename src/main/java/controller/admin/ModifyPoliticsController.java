@@ -3,8 +3,8 @@ package controller.admin;
 import controller.Constants;
 import model.DBManager;
 import model.dao.DAO;
-import model.dao.PoliticheDaoHibernate;
-import model.entityDB.PoliticheEntity;
+import model.dao.PoliticaDaoHibernate;
+import model.entityDB.PoliticaEntity;
 
 /**
  * Controller class for politics management use case.
@@ -12,11 +12,11 @@ import model.entityDB.PoliticheEntity;
 public class ModifyPoliticsController {
 
     /**
-     * @param entity: PoliticheEntity to update
+     * @param entity: PoliticaEntity to update
      * @return boolean: whether or not the operation was successful
      * @throws Exception: incomplete/invalid submitted input is handled via Exception
      */
-    public static boolean handle(PoliticheEntity entity) throws Exception {
+    public static boolean handle(PoliticaEntity entity) throws Exception {
 
         entity.setValore(polish(entity.getId(), entity.getValore())); //polishing and setting new value
         String msg = evaluate(entity.getId(), entity.getValore()); //checking for input coherence
@@ -24,7 +24,7 @@ public class ModifyPoliticsController {
 
         try {
             DBManager.initHibernate();
-            PoliticheDaoHibernate.instance().update(entity);
+            PoliticaDaoHibernate.instance().update(entity);
         }
         catch (Exception e) {
             //failure
@@ -44,7 +44,7 @@ public class ModifyPoliticsController {
      */
     private static String evaluate(int id, double newValue) {
 
-        DAO dao = PoliticheDaoHibernate.instance();
+        DAO dao = PoliticaDaoHibernate.instance();
 
         switch (id) {
             /**
@@ -53,8 +53,8 @@ public class ModifyPoliticsController {
              * agency discount value (which could take products prices below their factory price)
              */
             case Constants.minOverprice:
-                double maxValue = ((PoliticheEntity) dao.getById(Constants.maxOverprice)).getValore();
-                double discount = ((PoliticheEntity) dao.getById(Constants.discount)).getValore();
+                double maxValue = ((PoliticaEntity) dao.getById(Constants.maxOverprice)).getValore();
+                double discount = ((PoliticaEntity) dao.getById(Constants.discount)).getValore();
                 if (newValue >= maxValue) return "Il nuovo valore eccede quello del sovrapprezzo massimo";
                 else if (newValue * discount < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
                 break;
@@ -64,7 +64,7 @@ public class ModifyPoliticsController {
              * minimum overprice.
              */
             case Constants.maxOverprice:
-                double minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
+                double minValue = ((PoliticaEntity) dao.getById(Constants.minOverprice)).getValore();
                 if (newValue <= minValue) return "Il sovrapprezzo massimo è inferiore a quello minimo";
                 break;
 
@@ -73,7 +73,7 @@ public class ModifyPoliticsController {
              * minimum overprice, in order to avoid it taking prices below factory ones
              */
             case Constants.discount:
-                minValue = ((PoliticheEntity) dao.getById(Constants.minOverprice)).getValore();
+                minValue = ((PoliticaEntity) dao.getById(Constants.minOverprice)).getValore();
                 if (minValue * newValue < 1) return "Lo sconto corrente è superiore al sovrapprezzo minimo";
                 break;
 

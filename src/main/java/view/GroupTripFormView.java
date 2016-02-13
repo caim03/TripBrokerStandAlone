@@ -8,10 +8,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import model.DBManager;
-import model.dao.PoliticheDaoHibernate;
+import model.dao.PoliticaDaoHibernate;
 import model.entityDB.AbstractEntity;
 import model.entityDB.OffertaEntity;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.PoliticaEntity;
+import model.entityDB.ViaggioGruppoEntity;
 import org.controlsfx.control.Notifications;
 import view.agent.GroupTripList;
 import view.desig.PacketList;
@@ -30,6 +31,8 @@ public class GroupTripFormView extends PacketFormView {
 
         super();
 
+        entity = new ViaggioGruppoEntity();
+
         Label min = new Label("Minimo "), max = new Label("Massimo ");
 
         participants = new GridPane();
@@ -39,7 +42,7 @@ public class GroupTripFormView extends PacketFormView {
 
         new Thread(() -> {
             DBManager.initHibernate();
-            int minimum = (int) ((PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minGroup)).getValore();
+            int minimum = (int) ((PoliticaEntity) PoliticaDaoHibernate.instance().getById(Constants.minGroup)).getValore();
             DBManager.shutdown();
 
             Platform.runLater(() -> {
@@ -75,15 +78,23 @@ public class GroupTripFormView extends PacketFormView {
         Integer min = minSpinner.getValue(),
                 max = maxSpinner.getValue();
 
+        ViaggioGruppoEntity clone = (ViaggioGruppoEntity) entity.clone();
+        clone.setNome(name);
+        clone.setPrezzo(price);
+        clone.setMin(min);
+        clone.setMax(max);
+
         List<OffertaEntity> entities = new ArrayList<>();
+        int i = 0;
         for (AbstractEntity entity : list.getItems()) {
-            if (entity instanceof OffertaEntity) entities.add((OffertaEntity) entity);
+            if (entity instanceof OffertaEntity)
+                    entities.add((OffertaEntity) entity);
         }
 
         new Thread(() -> {
+
             boolean result = false;
-            try { result = GroupTripAssembleController.create(name, price,
-                        basePrice.getNumber(), maxPrice.getNumber(), min, max, entities); }
+            try { result = GroupTripAssembleController.create(clone, basePrice.getNumber(), maxPrice.getNumber(), entities); }
             catch (Exception e) {
                 Platform.runLater(() -> Notifications.create().text(e.getMessage()).showWarning());
                 return;

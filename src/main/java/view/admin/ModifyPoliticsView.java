@@ -5,8 +5,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.DBManager;
 import model.dao.DAO;
-import model.dao.PoliticheDaoHibernate;
-import model.entityDB.PoliticheEntity;
+import model.dao.PoliticaDaoHibernate;
+import model.entityDB.PoliticaEntity;
 import view.DBTablePane;
 import view.material.MaterialPopup;
 import view.popup.PoliticsPopup;
@@ -18,17 +18,17 @@ public class ModifyPoliticsView extends DBTablePane {
     @Override
     protected TableView generateTable() {
 
-        TableView<PoliticheEntity> list = new TableView<>();
+        TableView<PoliticaEntity> list = new TableView<>();
 
         TableColumn idColumn = new TableColumn("Id");
         idColumn.setMinWidth(50);
-        idColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Integer>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<PoliticaEntity, Integer>("id"));
         TableColumn nameColumn = new TableColumn("Nome");
         nameColumn.setMinWidth(500);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, String>("nome"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<PoliticaEntity, String>("nome"));
         TableColumn valColumn = new TableColumn("Valore");
         valColumn.setMinWidth(260);
-        valColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Double>("valore"));
+        valColumn.setCellValueFactory(new PropertyValueFactory<PoliticaEntity, Double>("valore"));
 
         list.getColumns().addAll(idColumn, nameColumn, valColumn);
         list.getSelectionModel().
@@ -48,12 +48,12 @@ public class ModifyPoliticsView extends DBTablePane {
     }
 
     @Override
-    protected List<PoliticheEntity> query() {
+    protected List<PoliticaEntity> query() {
 
-        List<PoliticheEntity> entities;
-        DAO dao = PoliticheDaoHibernate.instance();
+        List<PoliticaEntity> entities;
+        DAO dao = PoliticaDaoHibernate.instance();
         DBManager.initHibernate();
-        entities = (List<PoliticheEntity>)dao.getAll();
+        entities = (List<PoliticaEntity>)dao.getAll();
         DBManager.shutdown();
 
         return entities;

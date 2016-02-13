@@ -13,7 +13,7 @@ public class ManageBookingView extends  LayerPane {
 
     public ManageBookingView() {
 
-        DBListView list = new DBListView("from ViaggioGruppoEntity v where v.prenotazioni > 0 and v.prenotazioni + v.acquisti > (select valore from PoliticheEntity where id = " + Constants.minGroup + ")");
+        DBListView list = new DBListView("from ViaggioGruppoEntity v where v.prenotazioni > 0 and v.prenotazioni + v.acquisti >= (select valore from PoliticaEntity where id = " + Constants.minGroup + ")");
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue == null || newValue.equals(oldValue)) return;

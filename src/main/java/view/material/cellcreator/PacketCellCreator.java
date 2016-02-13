@@ -3,11 +3,11 @@ package view.material.cellcreator;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import model.entityDB.CreaPacchettoEntity;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.OffertaEntity;
 import view.material.EmptyCell;
 
-public class PacketCellCreator extends AbstractCellCreator<CreaPacchettoEntity> {
+public class PacketCellCreator extends AbstractCellCreator<PacchettoEntity> {
 
     private static PacketCellCreator me;
     protected static PacketCellCreator instance() {
@@ -17,7 +17,7 @@ public class PacketCellCreator extends AbstractCellCreator<CreaPacchettoEntity> 
     protected PacketCellCreator() { super(); }
 
     @Override
-    protected EmptyCell createCell(CreaPacchettoEntity entity) {
+    protected EmptyCell createCell(PacchettoEntity entity) {
 
         Label label = new Label(entity.getNome());
         label.setPadding(new Insets(0, 0, 0, 25));

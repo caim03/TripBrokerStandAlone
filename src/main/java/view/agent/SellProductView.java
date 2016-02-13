@@ -8,8 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
+import model.dao.PacchettoDaoHibernate;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.OffertaEntity;
 import view.material.*;
 import view.popup.SellPacketPopup;
@@ -66,8 +66,8 @@ public class SellProductView extends LayerPane {
                 listView.getItems().add(null);
                 new Thread(() -> {
                     DBManager.initHibernate();
-                    List<CreaPacchettoEntity> list =
-                            (List<CreaPacchettoEntity>) CreaPacchettoDaoHibernate.instance().getByCriteria(query);
+                    List<PacchettoEntity> list =
+                            (List<PacchettoEntity>) PacchettoDaoHibernate.instance().getByCriteria(query);
                     DBManager.shutdown();
                     Platform.runLater(() -> {
                         listView.getItems().clear();
@@ -84,8 +84,8 @@ public class SellProductView extends LayerPane {
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null) return;
                 listView.getSelectionModel().clearSelection();
-                if (newValue instanceof CreaPacchettoEntity)
-                    new MaterialPopup(this, new SellPacketPopup((CreaPacchettoEntity) newValue)).show();
+                if (newValue instanceof PacchettoEntity)
+                    new MaterialPopup(this, new SellPacketPopup((PacchettoEntity) newValue)).show();
                 else
                     new MaterialPopup(this, new SellPopup((OffertaEntity) newValue)).show();
             });

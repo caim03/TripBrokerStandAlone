@@ -10,19 +10,18 @@
     <property name="hibernate.connection.password">asroma93</property>
     <!-- DB schema will be updated if needed -->
     <!--<property name="hbm2ddl.auto">update</property>-->
-    <mapping class="model.entityDB.CreaPacchettoEntity"/>
-    <mapping class="model.entityDB.DipendentiEntity"/>
+    <mapping class="model.entityDB.PacchettoEntity"/>
+    <mapping class="model.entityDB.DipendenteEntity"/>
     <mapping class="model.entityDB.EventoEntity"/>
     <mapping class="model.entityDB.OffertaEntity"/>
     <mapping class="model.entityDB.PacchettoOffertaEntity"/>
     <mapping class="model.entityDB.PernottamentoEntity"/>
-    <mapping class="model.entityDB.PoliticheEntity"/>
+    <mapping class="model.entityDB.PoliticaEntity"/>
     <mapping class="model.entityDB.ProdottoEntity"/>
     <mapping class="model.entityDB.ProdottoUtenteEntity"/>
     <mapping class="model.entityDB.UtenteEntity"/>
     <mapping class="model.entityDB.ViaggioEntity"/>
     <mapping class="model.entityDB.ViaggioGruppoEntity"/>
-    <mapping class="model.entityDB.GruppoOffertaEntity"/>
     <mapping class="model.entityDB.PrenotazioneEntity"/>
     <mapping class="model.entityDB.StatusEntity"/>
   </session-factory>

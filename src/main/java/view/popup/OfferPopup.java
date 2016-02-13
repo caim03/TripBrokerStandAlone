@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.DBManager;
-import model.dao.PoliticheDaoHibernate;
+import model.dao.PoliticaDaoHibernate;
 import model.entityDB.*;
 import view.material.ProgressCircle;
 
@@ -60,7 +60,7 @@ public class OfferPopup<T extends OffertaEntity> extends PopupView {
             pane.add(circle, 1, 1);
             new Thread(() -> {
                 DBManager.initHibernate();
-                double overprice = ((PoliticheEntity) PoliticheDaoHibernate.instance().getById(Constants.minOverprice)).getValore();
+                double overprice = ((PoliticaEntity) PoliticaDaoHibernate.instance().getById(Constants.minOverprice)).getValore();
                 DBManager.shutdown();
                 Platform.runLater(() -> {
                     pane.getChildren().remove(circle);

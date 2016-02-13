@@ -11,7 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.PoliticaEntity;
 import org.controlsfx.control.Notifications;
 import view.material.FlatButton;
 import view.material.MaterialPopup;
@@ -20,15 +20,15 @@ import view.material.ProgressCircle;
 
 public class PoliticsPopup extends PopupView {
 
-    private PoliticheEntity entity;
+    private PoliticaEntity entity;
     private NumericField field;
     private Button modButton;
     private GridPane pane;
     private TableView table;
 
-    public PoliticsPopup(PoliticheEntity entity) { this.entity = entity; }
+    public PoliticsPopup(PoliticaEntity entity) { this.entity = entity; }
 
-    public PoliticsPopup(PoliticheEntity entity, TableView table) {
+    public PoliticsPopup(PoliticaEntity entity, TableView table) {
         this.entity = entity;
         this.table = table;
     }
@@ -71,7 +71,7 @@ public class PoliticsPopup extends PopupView {
             pane.add(circle, 1, 3);
 
             new Thread(() -> {
-                PoliticheEntity clone = (PoliticheEntity) entity.clone();
+                PoliticaEntity clone = (PoliticaEntity) entity.clone();
                 clone.setValore(field.getNumber());
 
                 boolean result = false;

@@ -49,14 +49,13 @@ public class CancelBookingController {
         //retrieving offers
         List<OffertaEntity> entities = (List<OffertaEntity>) OffertaDaoHibernate.instance()
                 .getByCriteria("WHERE id IN " +
-                        "(SELECT idOfferta FROM GruppoOffertaEntity WHERE idGruppo = " + id + ")");
+                        "(SELECT idOfferta FROM PacchettoOffertaEntity WHERE idPacchetto = " + id + ")");
 
         //For each OffertaEntity release the bookings
         for (OffertaEntity offer : entities) {
             offer.addPrenotazioni(-qu);
             OffertaDaoHibernate.instance().update(offer);
         }
-
     }
 
     /**

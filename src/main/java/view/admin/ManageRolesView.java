@@ -7,11 +7,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import model.DBManager;
-import model.dao.DipendentiDaoHibernate;
+import model.dao.DipendenteDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.AbstractEntity;
-import model.entityDB.DipendentiEntity;
-import model.entityDB.PoliticheEntity;
+import model.entityDB.DipendenteEntity;
+import model.entityDB.PoliticaEntity;
 import view.ButtonCell;
 import view.DBTablePane;
 
@@ -21,10 +21,10 @@ public class ManageRolesView extends DBTablePane {
 
     @Override
     protected List<? extends AbstractEntity> query() {
-        List<DipendentiEntity> entities;
-        DAO dao = DipendentiDaoHibernate.instance();
+        List<DipendenteEntity> entities;
+        DAO dao = DipendenteDaoHibernate.instance();
         DBManager.initHibernate();
-        entities = (List<DipendentiEntity>)dao.getAll();
+        entities = (List<DipendenteEntity>)dao.getAll();
         DBManager.shutdown();
 
         return entities;
@@ -32,34 +32,34 @@ public class ManageRolesView extends DBTablePane {
 
     @Override
     protected TableView generateTable() {
-        TableView<DipendentiEntity> list = new TableView<>();
+        TableView<DipendenteEntity> list = new TableView<>();
 
         TableColumn idColumn = new TableColumn("id");
         idColumn.setMinWidth(50);
-        idColumn.setCellValueFactory(new PropertyValueFactory<PoliticheEntity, Integer>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<PoliticaEntity, Integer>("id"));
 
         TableColumn nameColumn = new TableColumn("Name");
         nameColumn.setMinWidth(150);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<DipendentiEntity, String>("nome"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<DipendenteEntity, String>("nome"));
 
         TableColumn surnameColumn = new TableColumn("Surname");
         surnameColumn.setMinWidth(150);
-        surnameColumn.setCellValueFactory(new PropertyValueFactory<DipendentiEntity, String>("cognome"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<DipendenteEntity, String>("cognome"));
 
         TableColumn roleColumn = new TableColumn("Role");
         roleColumn.setMinWidth(150);
-        roleColumn.setCellValueFactory(new PropertyValueFactory<DipendentiEntity, String>("ruolo"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<DipendenteEntity, String>("ruolo"));
 
         TableColumn mailColumn = new TableColumn("Mail");
         mailColumn.setMinWidth(200);
-        mailColumn.setCellValueFactory(new PropertyValueFactory<DipendentiEntity, String>("mail"));
+        mailColumn.setCellValueFactory(new PropertyValueFactory<DipendenteEntity, String>("mail"));
 
         TableColumn modBtnColumn = new TableColumn("");
         modBtnColumn.setMinWidth(200);
         modBtnColumn.setSortable(false);
-        modBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendentiEntity, Boolean>, ObservableValue<Boolean>>() {
+        modBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendenteEntity, Boolean>, ObservableValue<Boolean>>() {
             @Override
-            public ObservableValue call(TableColumn.CellDataFeatures<DipendentiEntity, Boolean> param) {
+            public ObservableValue call(TableColumn.CellDataFeatures<DipendenteEntity, Boolean> param) {
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });
@@ -68,9 +68,9 @@ public class ManageRolesView extends DBTablePane {
         TableColumn delBtnColumn = new TableColumn("");
         delBtnColumn.setMinWidth(200);
         delBtnColumn.setSortable(false);
-        delBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendentiEntity, Boolean>, ObservableValue<Boolean>>() {
+        delBtnColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DipendenteEntity, Boolean>, ObservableValue<Boolean>>() {
             @Override
-            public ObservableValue call(TableColumn.CellDataFeatures<DipendentiEntity, Boolean> param) {
+            public ObservableValue call(TableColumn.CellDataFeatures<DipendenteEntity, Boolean> param) {
                 return new SimpleBooleanProperty(param.getValue() != null);
             }
         });

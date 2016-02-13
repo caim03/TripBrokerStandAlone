@@ -2,8 +2,8 @@ package controller.admin;
 
 import model.DBManager;
 import model.dao.DAO;
-import model.dao.DipendentiDaoHibernate;
-import model.entityDB.DipendentiEntity;
+import model.dao.DipendenteDaoHibernate;
+import model.entityDB.DipendenteEntity;
 
 /*** Controller class for employee deletion from DB ***/
 public class DeleteButtonController {
@@ -12,10 +12,10 @@ public class DeleteButtonController {
      * @param entity ; employee to be deleted
      * @return boolean: whether or not the operation was successful
      * **/
-    public static boolean handle(DipendentiEntity entity) {
+    public static boolean handle(DipendenteEntity entity) {
 
         try {
-            DAO dao = DipendentiDaoHibernate.instance();
+            DAO dao = DipendenteDaoHibernate.instance();
             DBManager.initHibernate();
             dao.delete(entity);
         }

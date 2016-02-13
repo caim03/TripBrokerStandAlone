@@ -2,15 +2,16 @@ package model.dao;
 
 import model.DBManager;
 import model.entityDB.AbstractEntity;
+import model.entityDB.DipendenteEntity;
 import org.hibernate.Session;
-import model.entityDB.DipendentiEntity;
+
 import java.util.List;
 
-public class DipendentiDaoHibernate implements DAO {
+public class DipendenteDaoHibernate implements DAO {
 
     private static DAO singleton;
 
-    protected DipendentiDaoHibernate() {}
+    protected DipendenteDaoHibernate() {}
 
     public static DAO instance() {
         /** @result DAO; return the DAO **/
@@ -18,22 +19,22 @@ public class DipendentiDaoHibernate implements DAO {
         /* This method is used to implement the Singleton Pattern;
          * in fact the constructor is protected and the object DAO is instantiate only one time */
 
-        if (singleton == null) singleton = new DipendentiDaoHibernate();
+        if (singleton == null) singleton = new DipendenteDaoHibernate();
         return singleton;
     }
 
-    public synchronized List<DipendentiEntity> getAll(){
+    public synchronized List<DipendenteEntity> getAll(){
         Session session = DBManager.getSession();
 
-        List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity").list();
+        List<DipendenteEntity> dipendentiEntities = session.createQuery("from DipendenteEntity").list();
         session.close();
         return dipendentiEntities;
     }
 
-    public synchronized List<DipendentiEntity> getByCriteria(String where) {
+    public synchronized List<DipendenteEntity> getByCriteria(String where) {
         Session session = DBManager.getSession();
 
-        List<DipendentiEntity> dipendentiEntities = session.createQuery("from DipendentiEntity " + where).list();
+        List<DipendenteEntity> dipendentiEntities = session.createQuery("from DipendenteEntity " + where).list();
         session.close();
         if (dipendentiEntities.isEmpty()) {
             return null;
@@ -43,10 +44,10 @@ public class DipendentiDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized List<DipendentiEntity> getByQuery(String query) {
+    public synchronized List<DipendenteEntity> getByQuery(String query) {
         Session session = DBManager.getSession();
 
-        List<DipendentiEntity> dipendentiEntities = session.createQuery(query).list();
+        List<DipendenteEntity> dipendentiEntities = session.createQuery(query).list();
         session.close();
         if (dipendentiEntities.isEmpty()) {
             return null;
@@ -56,52 +57,52 @@ public class DipendentiDaoHibernate implements DAO {
     }
 
     @Override
-    public synchronized DipendentiEntity getById(int id) {
+    public synchronized DipendenteEntity getById(int id) {
         Session session = DBManager.getSession();
 
-        DipendentiEntity dipendentiEntity = (DipendentiEntity) session.createQuery("from DipendentiEntity where id = " + id).list().get(0);
+        DipendenteEntity dipendenteEntity = (DipendenteEntity) session.createQuery("from DipendenteEntity where id = " + id).list().get(0);
         session.close();
-        if (dipendentiEntity == null){
+        if (dipendenteEntity == null){
             return null;
         } else {
-            return dipendentiEntity;
+            return dipendenteEntity;
         }
     }
 
     public synchronized int store(AbstractEntity entity) {
 
-        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+        DipendenteEntity dipendenteEntity = (DipendenteEntity) entity;
 
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.save(dipendentiEntity);
+        session.save(dipendenteEntity);
         session.getTransaction().commit();
         session.close();
 
-        return dipendentiEntity.getId();
+        return dipendenteEntity.getId();
     }
 
     public synchronized void delete(AbstractEntity entity) {
 
-        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+        DipendenteEntity dipendenteEntity = (DipendenteEntity) entity;
 
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.delete(dipendentiEntity);
+        session.delete(dipendenteEntity);
         session.getTransaction().commit();
         session.close();
     }
 
     public synchronized void update(AbstractEntity entity) {
 
-        DipendentiEntity dipendentiEntity = (DipendentiEntity) entity;
+        DipendenteEntity dipendenteEntity = (DipendenteEntity) entity;
 
         Session session = DBManager.getSession();
 
         session.beginTransaction();
-        session.update(dipendentiEntity);
+        session.update(dipendenteEntity);
         session.getTransaction().commit();
         session.close();
     }

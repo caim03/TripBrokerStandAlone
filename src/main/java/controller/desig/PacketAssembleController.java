@@ -1,8 +1,8 @@
 package controller.desig;
 
 import model.DBManager;
-import model.dao.CreaPacchettoDaoHibernate;
-import model.entityDB.CreaPacchettoEntity;
+import model.dao.PacchettoDaoHibernate;
+import model.entityDB.PacchettoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.ViaggioEntity;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Controller class for both packet prototype creation and editing use cases.
- * If the CreaPacchettoEntity instance passed to this controller already has an ID set,
+ * If the PacchettoEntity instance passed to this controller already has an ID set,
  * it means the user is requiring an entity update; otherwise, this is the first time
  * the user creates the instance and has to be stored in catalog.
  */
@@ -25,7 +25,7 @@ public class PacketAssembleController {
      * @return boolean: whether or not the operation was successful
      * @throws Exception: incomplete/invalid submitted input is handled via Exception
      */
-    public static boolean handle(CreaPacchettoEntity entity, double bound0, double bound1, List<OffertaEntity> offers) throws Exception {
+    public static boolean handle(PacchettoEntity entity, double bound0, double bound1, List<OffertaEntity> offers) throws Exception {
         //regardless the operation, coherence checks are made
         performChecks(entity, bound0, bound1, offers);
         try {
@@ -45,14 +45,14 @@ public class PacketAssembleController {
 
     /**
      * Store method.
-     * @param entity: CreaPacchettoEntity to be stored
+     * @param entity: PacchettoEntity to be stored
      * @param offers: List<OffertaEntity> to bond to entity
      * @return boolean: whether or not the operation was successful
      */
-    private static boolean create(CreaPacchettoEntity entity, List<OffertaEntity> offers) {
+    private static boolean create(PacchettoEntity entity, List<OffertaEntity> offers) {
         try {
             DBManager.initHibernate();
-            CreaPacchettoDaoHibernate dao = (CreaPacchettoDaoHibernate) CreaPacchettoDaoHibernate.instance();
+            PacchettoDaoHibernate dao = (PacchettoDaoHibernate) PacchettoDaoHibernate.instance();
             dao.bindAll(dao.store(entity), offers); //storing & binding
         }
         catch (Exception e) {
@@ -67,14 +67,14 @@ public class PacketAssembleController {
 
     /**
      * Update method.
-     * @param entity: CreaPacchettoEntity to update
+     * @param entity: PacchettoEntity to update
      * @param offers: List<OffertaEntity> to bond to entity
      * @return boolean: whether or not the operation was successful
      */
-    private static boolean update(CreaPacchettoEntity entity, List<OffertaEntity> offers) {
+    private static boolean update(PacchettoEntity entity, List<OffertaEntity> offers) {
         try {
             DBManager.initHibernate();
-            CreaPacchettoDaoHibernate dao = (CreaPacchettoDaoHibernate) CreaPacchettoDaoHibernate.instance();
+            PacchettoDaoHibernate dao = (PacchettoDaoHibernate) PacchettoDaoHibernate.instance();
             dao.update(entity); //updating & disrupting bonds
             dao.bindAll(entity.getId(), offers); //bonding
         }
@@ -90,13 +90,13 @@ public class PacketAssembleController {
 
     /**
      * Utility method for coherence checking.
-     * @param entity: CreaPacchettoEntity to check.
+     * @param entity: PacchettoEntity to check.
      * @param bound0: double; price lower bound
      * @param bound1: double; price upper bound
      * @param offers: List<OffertaEntity>; offers assembled by entity
      * @throws Exception: incomplete/invalid submitted input is handled via Exception
      */
-    private static void performChecks(CreaPacchettoEntity entity, double bound0, double bound1, List<OffertaEntity> offers)
+    private static void performChecks(PacchettoEntity entity, double bound0, double bound1, List<OffertaEntity> offers)
             throws Exception {
 
         if (!checkString(entity.getNome())) throw new Exception("Riempire tutti i campi obbligatori");
