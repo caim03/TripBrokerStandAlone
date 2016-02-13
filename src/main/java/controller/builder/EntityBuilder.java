@@ -17,10 +17,7 @@ public abstract class EntityBuilder<T extends OffertaEntity, A extends EntityBui
     protected T entity;
 
     /** @return ProdottoEntity; return the product entity **/
-    public T getEntity(){
-
-        return entity;
-    }
+    public T getEntity() { return entity; }
 
     /** @param name; this string represents the name of the product
      *  @param price; this double represents the price of the product
