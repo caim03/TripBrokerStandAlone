@@ -363,7 +363,7 @@ public class SellProductView extends LayerPane {
         @Override protected void pickers() { }
         @Override protected void checkbox() { }
         @Override String getQuery() {
-            String query = "where stato = 1";
+            String query = "where stato = 1 and tipo like '" + Constants.packet + "'";
 
             String buffer = cityField.getText();
             if (buffer != null && !"".equals(buffer))

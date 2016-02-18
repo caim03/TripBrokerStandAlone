@@ -1,15 +1,19 @@
 package controller.admin;
 
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.PacchettoDaoHibernate;
 import model.dao.DAO;
 import model.dao.ProdottoDaoHibernate;
 import model.entityDB.PacchettoEntity;
 import model.entityDB.ProdottoEntity;
+import view.admin.PacketApproveView;
 
 /** Controller for a packet prototype approval use case;
  * it updates the packet state according to the Admin's decision. **/
 public class ApproveController {
+
+    public static Node getView() { return new PacketApproveView(); }
 
     /** @param entity; the packet whose state has to be updated
      *  @param state; integer representing the packet future state **/

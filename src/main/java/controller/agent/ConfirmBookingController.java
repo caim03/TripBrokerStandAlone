@@ -1,3 +1,4 @@
+
 package controller.agent;
 
 import controller.Constants;
@@ -19,7 +20,7 @@ public class ConfirmBookingController {
      * Failure is handled by View class, apparently
      * @param entity; the booking that must be confirmed
      **/
-    public static void handle(PrenotazioneEntity entity) {
+    public static boolean handle(PrenotazioneEntity entity) {
 
         try {
             DBManager.initHibernate();
@@ -30,7 +31,12 @@ public class ConfirmBookingController {
 
             PrenotazioneDaoHibernate.instance().delete(entity); //Booking instance can be released from DB
         }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         finally { DBManager.shutdown(); }
+        return true;
     }
 
     /**

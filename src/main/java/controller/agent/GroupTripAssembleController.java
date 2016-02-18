@@ -6,6 +6,8 @@ import model.dao.PacchettoOffertaDaoHibernate;
 import model.dao.ViaggioGruppoDaoHibernate;
 import model.entityDB.*;
 import view.TripBrokerConsole;
+import view.agent.GroupTripAssembleView;
+import view.desig.PacketAssembleView;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * Controller class for group trips creation use case.
  */
 public class GroupTripAssembleController {
+
+    public static PacketAssembleView getView() { return new GroupTripAssembleView(); }
 
     /**
      * @param entity; ViaggioGruppoEntity to create

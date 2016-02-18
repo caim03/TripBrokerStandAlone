@@ -1,10 +1,13 @@
 package controller.desig;
 
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.PacchettoDaoHibernate;
 import model.entityDB.PacchettoEntity;
 import model.entityDB.OffertaEntity;
 import model.entityDB.ViaggioEntity;
+import view.PacketFormView;
+import view.desig.PacketAssembleView;
 
 import java.util.List;
 
@@ -15,6 +18,9 @@ import java.util.List;
  * the user creates the instance and has to be stored in catalog.
  */
 public class PacketAssembleController {
+
+    public static PacketAssembleView getView() { return new PacketAssembleView(); }
+    public static PacketAssembleView getView(PacchettoEntity entity) { return new PacketAssembleView(new PacketFormView(entity)); }
 
     /**
      * Main controller interface. It considers whether performing entity storing or update.

@@ -1,15 +1,19 @@
 package controller.admin;
 
 import controller.Constants;
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.DAO;
 import model.dao.PoliticaDaoHibernate;
 import model.entityDB.PoliticaEntity;
+import view.admin.ModifyPoliticsView;
 
 /**
  * Controller class for politics management use case.
  */
 public class ModifyPoliticsController {
+
+    public static Node getView() { return new ModifyPoliticsView(); }
 
     /**
      * @param entity: PoliticaEntity to update

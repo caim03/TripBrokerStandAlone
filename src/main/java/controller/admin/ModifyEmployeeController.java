@@ -1,14 +1,18 @@
 package controller.admin;
 
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.DipendenteDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.DipendenteEntity;
+import view.admin.ManageRolesView;
 
 /**
  * Controller class for employee credential management use case.
  */
 public class ModifyEmployeeController {
+
+    public static Node getView() { return new ManageRolesView(); }
 
     /**
      * @param entity: DipendenteEntity instance to update

@@ -1,23 +1,18 @@
 package view.material;
 
 import controller.Constants;
-import controller.command.DrawerHandler;
 import controller.command.Command;
+import controller.command.DrawerHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import view.TripBrokerConsole;
-
-import java.awt.*;
 
 public class NavigationDrawer extends VBox {
 

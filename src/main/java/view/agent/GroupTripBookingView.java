@@ -16,7 +16,6 @@ public class GroupTripBookingView extends LayerPane {
         list = new DBListView("from ViaggioGruppoEntity entity where entity.prenotazioni + entity.acquisti < entity.max");
         list.fill();
         list.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-
             if (newValue == null) return;
             PopupView popupView = new BookingPopup((ViaggioGruppoEntity) newValue);
             new MaterialPopup(this, popupView).show();

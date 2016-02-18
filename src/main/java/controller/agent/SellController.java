@@ -1,6 +1,7 @@
 package controller.agent;
 
 import controller.Constants;
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.OffertaDaoHibernate;
 import model.dao.DAO;
@@ -9,11 +10,14 @@ import model.dao.StatusDaoHibenate;
 import model.entityDB.OffertaEntity;
 import model.entityDB.PoliticaEntity;
 import model.entityDB.StatusEntity;
+import view.agent.SellProductView;
 
 /**
  * Controller class for products selling use case.
  */
 public class SellController {
+
+    public static Node getView() { return new SellProductView(); }
 
     /**
      * @param entity; OffertaEntity to be purchased

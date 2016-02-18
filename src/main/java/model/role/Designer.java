@@ -11,12 +11,23 @@ import controller.command.ShowCommand;
  ***/
 public class Designer extends Ruolo {
 
+    private static String
+            classes[] = new String[] {
+                "controller.CatalogController",
+                "controller.desig.PacketAssembleController",
+                "controller.desig.PacketEditController" },
+
+            methods[] = new String[] {
+                "getView",
+                "getView",
+                "getView" };
+
     @Override
-    protected void addCommands() throws ClassNotFoundException {
+    protected void addCommands() throws ClassNotFoundException, NoSuchMethodException {
         container.addCommands(
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketAssembleView"))), // packet assemble command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.desig.PacketEditView"))), // packet edit command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[0]).getMethod(methods[0]))), // visualize catalog command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[1]).getMethod(methods[1]))), // packet assemble command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[2]).getMethod(methods[2]))), // packet edit command
                 new LogoutCommand(stage)); // logout command
     }
 

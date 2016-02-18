@@ -1,5 +1,6 @@
 package view.desig;
 
+import controller.desig.PacketAssembleController;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -53,8 +54,7 @@ public class PacketEditView extends DBTablePane {
             if (newValue != null) {
 
                 MaterialPopup popup = new MaterialPopup(this,
-                        new FormPopup(new PacketAssembleView(
-                                new PacketFormView((PacchettoEntity) newValue))), true);
+                        new FormPopup(PacketAssembleController.getView((PacchettoEntity) newValue)), true);
 
                 popup.show();
             }

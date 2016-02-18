@@ -1,8 +1,10 @@
 package controller.agent;
 
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.*;
 import model.entityDB.*;
+import view.agent.GroupTripBookingView;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  **/
 
 public class BookingController {
+
+    public static Node getView() { return new GroupTripBookingView(); }
 
     /** @param entity; ViaggioGruppoEntity to be booked
      *  @param name; String, part of client's credential

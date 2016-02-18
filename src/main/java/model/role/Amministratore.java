@@ -12,15 +12,33 @@ import controller.command.ShowFormCommand;
  ***/
 public class Amministratore extends Ruolo {
 
+    private static String
+            classes[] = new String[] {
+            "controller.CatalogController",
+            "controller.admin.ApproveController",
+            "controller.admin.ModifyPoliticsController",
+            "controller.admin.ModifyEmployeeController",
+            "controller.admin.AddNewEmployeeController",
+            "controller.admin.CompanyStatusController"
+    },
+
+    methods[] = new String[] {
+            "getView",
+            "getView",
+            "getView",
+            "getView",
+            "getView",
+            "getView" };
+
     @Override
-    protected void addCommands() throws ClassNotFoundException {
+    protected void addCommands() throws ClassNotFoundException, NoSuchMethodException {
         container.addCommands(
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.CatalogView"))), // visualize catalog command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.PacketApproveView"))), // approve packets command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ModifyPoliticsView"))), // modify politics command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.ManageRolesView"))), // menage roles command
-                new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName("view.admin.AddNewEmployeeView"))), // add employee command
-                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName("view.admin.CompanyStatusView"))), // add employee command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[0]).getMethod(methods[0]))), // visualize catalog command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[1]).getMethod(methods[1]))), // approve packets command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[2]).getMethod(methods[2]))), // modify politics command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[3]).getMethod(methods[3]))), // menage roles command
+                new RefreshMacroCommand(container, new ShowFormCommand(container, Class.forName(classes[4]).getMethod(methods[4]))), // add employee command
+                new RefreshMacroCommand(container, new ShowCommand(container, Class.forName(classes[5]).getMethod(methods[5]))), // add employee command
                 new LogoutCommand(stage)); // logout command
     }
 

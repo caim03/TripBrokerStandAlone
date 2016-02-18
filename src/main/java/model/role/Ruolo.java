@@ -33,7 +33,7 @@ public abstract class Ruolo {
         welcomeMessage();
 
         try { addCommands(); }
-        catch (ClassNotFoundException e) { e.printStackTrace(); }
+        catch (ClassNotFoundException | NoSuchMethodException e) { e.printStackTrace(); }
 
         Scene scene = new Scene(container);
         scene.getStylesheets().add("material.css");
@@ -46,7 +46,7 @@ public abstract class Ruolo {
     public abstract String getRole();
     /*** @result String; return the role as a string ***/
 
-    protected abstract void addCommands() throws ClassNotFoundException;
+    protected abstract void addCommands() throws ClassNotFoundException, NoSuchMethodException;
 
     private void welcomeMessage() {
 

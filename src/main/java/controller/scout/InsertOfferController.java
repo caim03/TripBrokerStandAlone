@@ -2,6 +2,7 @@ package controller.scout;
 
 import controller.Constants;
 import controller.builder.EntityBuilder;
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.*;
 import model.entityDB.EventoEntity;
@@ -9,6 +10,7 @@ import model.entityDB.OffertaEntity;
 import model.entityDB.StatusEntity;
 import model.entityDB.ViaggioEntity;
 import org.hibernate.HibernateException;
+import view.scout.OfferInsertionView;
 
 import java.sql.Timestamp;
 
@@ -16,6 +18,8 @@ import java.sql.Timestamp;
  * Controller class for offer insertion use case.
  */
 public class InsertOfferController {
+
+    public static Node getView() { return new OfferInsertionView(); }
 
     /**
      * @param name; String; offer name

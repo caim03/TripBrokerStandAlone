@@ -7,6 +7,8 @@ import view.Collector;
 import view.material.ConsolePane;
 import view.material.FlatButton;
 
+import java.lang.reflect.Method;
+
 /**
  * ShowCommand subclass used for particular Collector GUI elements; it ensures
  * ShowCommand functionality but also instantiate a Toolbar Button whose responsibility
@@ -14,12 +16,9 @@ import view.material.FlatButton;
  */
 public class ShowFormCommand extends ShowCommand {
 
-    /**
-     * Main constructor. It basically calls for the super constructor.
-     * @param container ConsolePane.
-     * @param c Class: a Node Class, implementing the Collector interface.
-     */
-    public ShowFormCommand(ConsolePane container, Class c) { super(container, c); }
+    public ShowFormCommand(ConsolePane container, Method method, Object... args) {
+        super(container, method, args);
+    }
 
     /**
      * Execution firstly calls for super method; once the generated Node instance

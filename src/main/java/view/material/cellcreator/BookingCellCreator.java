@@ -2,6 +2,7 @@ package view.material.cellcreator;
 
 import controller.agent.CancelBookingController;
 import controller.agent.ConfirmBookingController;
+import controller.agent.ManageBookingController;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -35,50 +36,38 @@ public class BookingCellCreator extends AbstractCellCreator<PrenotazioneEntity> 
             cell.getChildren().remove(cancel);
             cell.getChildren().add(circle = ProgressCircle.miniCircle());
             new Thread(() -> {
-                try {
-                    ConfirmBookingController.handle(entity);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
+                boolean result = ManageBookingController.confirm(entity);
+                if (result)
                     Platform.runLater(() -> {
-                        Notifications.create().text("Errore durante la conferma").showError();
-                        cell.getChildren().remove(circle);
-                        cell.getChildren().addAll(confirm, cancel);
+                        Notifications.create().text("Prenotazione confermata").show();
+                        listView.getItems().remove(entity);
                     });
-                    return;
-                }
-                Platform.runLater(() -> {
-                    Notifications.create().text("Prenotazione confermata").show();
-                    listView.getItems().remove(entity);
+                else Platform.runLater(() -> {
+                    Notifications.create().text("Errore durante la conferma").showError();
+                    cell.getChildren().remove(circle);
+                    cell.getChildren().addAll(confirm, cancel);
                 });
             }).start();
         });
+
         cancel.setOnMouseClicked(event -> {
             ProgressCircle circle;
             cell.getChildren().remove(confirm);
             cell.getChildren().remove(cancel);
             cell.getChildren().add(circle = ProgressCircle.miniCircle());
             new Thread(() -> {
-                boolean result = false;
-                try { result = CancelBookingController.handle(entity); }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    Platform.runLater(() -> {
-                        Notifications.create().text("Errore durante la conferma").showError();
-                        cell.getChildren().remove(circle);
-                        cell.getChildren().addAll(confirm, cancel);
-                    });
-                    return;
-                }
+                boolean result = ManageBookingController.cancel(entity);
                 if (result)
                     Platform.runLater(() -> {
                         Notifications.create().text("Prenotazione cancellata").show();
                         listView.getItems().remove(entity);
                     });
-
                 else
-                    Platform.runLater(() -> Notifications.create().
-                            text("Errore durante la conferma").showError());
+                    Platform.runLater(() -> {
+                        Notifications.create().text("Errore durante la conferma").showError();
+                        cell.getChildren().remove(circle);
+                        cell.getChildren().addAll(confirm, cancel);
+                    });
             }).start();
         });
 

@@ -3,6 +3,10 @@ package controller.command;
 import javafx.scene.Node;
 import view.material.ConsolePane;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * Command implementation that allows for on-the-fly creation of a certain GUI element and its
  * consequential attachment to ConsolePane main panel.
@@ -11,17 +15,14 @@ public class ShowCommand extends Command {
 
     protected ConsolePane container;
     protected Class c;
+    protected Method method;
+    protected Object args[];
     protected Node view;
 
-    /**
-     * Main constructor.
-     * @param container ConsolePane
-     * @param c Class: a generic Class object; in order to enhance performance, GUI elements
-     *          are only created when they are being attached to 'container'
-     */
-    public ShowCommand(ConsolePane container, Class c) {
+    public ShowCommand(ConsolePane container, Method method, Object... args) {
         this.container = container;
-        this.c = c;
+        this.method = method;
+        this.args = args;
     }
 
     /**
@@ -33,9 +34,13 @@ public class ShowCommand extends Command {
     @Override
     public void execute() {
         try {
-            view = (Node) c.newInstance();
+            view = (Node) method.invoke(null, args);
             container.setCenter(view);
         }
-        catch (InstantiationException | IllegalAccessException | ClassCastException e) { e.printStackTrace(); }
+        catch (InvocationTargetException |
+               IllegalAccessException |
+               ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

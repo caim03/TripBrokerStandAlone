@@ -1,14 +1,17 @@
 package controller.admin;
 
-
+import javafx.scene.Node;
 import model.DBManager;
 import model.dao.DipendenteDaoHibernate;
 import model.dao.DAO;
 import model.entityDB.DipendenteEntity;
+import view.admin.AddNewEmployeeView;
 
 /*** Controller class for the employee additions use case. ***/
 
 public class AddNewEmployeeController {
+
+    public static Node getView() { return new AddNewEmployeeView(); }
 
     /** @param name; String representing the employee's name
      *  @param surname; String representing the employee's surname
