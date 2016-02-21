@@ -1,6 +1,6 @@
 package view.popup;
 
-import controller.Constants;
+import controller.agent.SellController;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,12 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import model.DBManager;
-import model.dao.DAO;
-import model.dao.OffertaDaoHibernate;
-import model.dao.StatusDaoHibenate;
 import model.entityDB.PacchettoEntity;
-import model.entityDB.StatusEntity;
 import org.controlsfx.control.Notifications;
 import view.material.*;
 
@@ -64,42 +59,38 @@ public class SellPacketPopup extends PopupDecorator {
                     button.addEventFilter(MouseEvent.MOUSE_CLICKED,
                             event -> {
 
-                                int purchased;
-                                try { purchased = Integer.parseInt(spinner.getValue()); }
-                                catch (NumberFormatException e) {
-                                    Notifications.create().text("Seleziona una quantità").showWarning();
-                                    return;
-                                }
+                                final int purchased[] = new int[1];
+                                try { purchased[0] = Integer.parseInt(spinner.getValue()); }
+                                catch (NumberFormatException e) { purchased[0] = 0; }
 
                                 ProgressCircle circle = ProgressCircle.miniCircle();
                                 box.getChildren().clear();
                                 box.getChildren().add(circle);
 
                                 new Thread(() -> {
-                                    try {
-                                        DBManager.initHibernate();
-                                        int i;
-                                        for (i = 0; i < entity.retrieveOffers().size(); ++i) {
-                                            entity.retrieveOffers().get(i).
-                                                    setQuantità(entity.retrieveOffers().get(i).getQuantità() - purchased);
-
-                                            OffertaDaoHibernate.instance().update(entity.retrieveOffers().get(i));
-                                        }
-                                        DAO dao = StatusDaoHibenate.getInstance();
-                                        StatusEntity entries = (StatusEntity) dao.getById(Constants.entries);
-                                        entries.update(Math.round(entity.getPrezzo() * qu * 100) / 100.0);
-                                        dao.update(entries);
-                                    }
+                                    boolean result = false;
+                                    try { result = SellController.handle(entity, purchased[0]); }
                                     catch (Exception e) {
-                                        Notifications.create().
-                                                text("Errore - non è stato possibile effettuare l'acquisto").
-                                                showError();
+                                        Platform.runLater(() -> {
+                                            Notifications.create().
+                                                    text(e.getMessage()).
+                                                    showWarning();
+                                            box.getChildren().clear();
+                                            box.getChildren().add(button);
+                                        });
+                                        return;
                                     }
-                                    finally { DBManager.shutdown(); }
 
-                                    Platform.runLater(() -> {
+                                    if (result) {
+                                        Platform.runLater(() -> {
+                                            parent.hide();
+                                            Notifications.create().text("Pacchetto acquistato x" + purchased[0]).show();
+                                        });
+                                    }
+                                    else
+                                        Platform.runLater(() -> {
                                         parent.hide();
-                                        Notifications.create().text("Pacchetto acquistato x" + purchased).show();
+                                        Notifications.create().text("Errore durante l'acquisto").showError();
                                     });
                                 }).start();
                             });
